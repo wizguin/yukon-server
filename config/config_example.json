@@ -1,0 +1,16 @@
+{
+    "world": {
+        "1": {
+            "host": "localhost",
+            "port": 6112,
+            "maxUsers": 100
+        }
+    },
+    "database": {
+        "host": "localhost",
+        "user": "user",
+        "password": "password",
+        "database": "database",
+        "dialect": "mysql"
+    }
+}

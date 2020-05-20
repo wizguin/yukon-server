@@ -1,0 +1,25 @@
+{
+  "name": "mittens-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec babel-node ./World.js"
+  },
+  "author": "wizguin",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.6"
+  },
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "crypto": "^1.0.1",
+    "fs": "0.0.1-security",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.10",
+    "socket.io": "^2.3.0"
+  }
+}
