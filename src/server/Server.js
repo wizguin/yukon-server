@@ -13,11 +13,11 @@ export default class Server {
         this.server = io.listen(config.port)
         this.server.on('connection', this.connectionMade.bind(this))
 
-        console.log(`Server listening on port ${config.port}`)
+        console.log(`[Server] Server listening on port ${config.port}`)
     }
 
     connectionMade(socket) {
-        console.log('connect', socket.id)
+        console.log('[Server] Connection from: ', socket.id)
         let user = new User(socket, this.db)
         this.users.push(user)
 
@@ -30,7 +30,7 @@ export default class Server {
     }
 
     connectionLost(user) {
-        console.log('disconnect', user.socket.id)
+        console.log('[Server] Disconnect from: ', user.socket.id)
         this.handler.close(user)
     }
 

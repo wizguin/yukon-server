@@ -5,16 +5,18 @@ import DataHandler from './src/handlers/DataHandler'
 
 class World extends Server {
 
-    constructor() {
+    constructor(world) {
+        console.log(`[World] Starting world ${world}`)
+
         let users = []
         let config = require('./config/config.json')
         let db = new Database(config.database)
         let handler = new DataHandler(users)
 
-        super(config.world['1'], users, db, handler)
+        super(config.world[world], users, db, handler)
     }
 
 }
 
 
-new World()
+new World(1)

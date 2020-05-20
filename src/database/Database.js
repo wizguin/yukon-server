@@ -7,7 +7,8 @@ export default class Database {
     constructor(config) {
         this.sequelize = new Sequelize(config.database, config.user, config.password, {
             host: config.host,
-            dialect: 'mysql'
+            dialect: 'mysql',
+            logging: (config.debug) ? console.log : false
         })
 
         this.users = Users.init(this.sequelize, Sequelize)
@@ -15,10 +16,10 @@ export default class Database {
         this.sequelize
             .authenticate()
             .then(() => {
-                console.log('Connected to database')
+                console.log('[Database] Connected to database')
             })
             .catch(error => {
-                console.error(`Unable to connect to the database: ${error}`)
+                console.error(`[Database] Unable to connect to the database: ${error}`)
             })
     }
 

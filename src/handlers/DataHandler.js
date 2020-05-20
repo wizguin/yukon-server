@@ -1,9 +1,14 @@
+import PluginManager from '../plugins/PluginManager'
+
+
 export default class DataHandler {
 
     constructor(users) {
         this.users = users
 
         this.rooms = require('../../config/rooms.json')
+
+        this.plugins = new PluginManager(this)
     }
 
     handle(message, user) {
@@ -20,7 +25,7 @@ export default class DataHandler {
     }
 
     fireEvent(event, args, user) {
-
+        this.plugins.getEvent(event, args, user)
     }
 
     close(user) {
