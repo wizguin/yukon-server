@@ -13,7 +13,7 @@ export default class Server {
         this.server = io.listen(config.port)
         this.server.on('connection', this.connectionMade.bind(this))
 
-        console.log('Server listening on port ' + config.port)
+        console.log(`Server listening on port ${config.port}`)
     }
 
     connectionMade(socket) {

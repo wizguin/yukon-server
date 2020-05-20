@@ -18,7 +18,7 @@ export default class Database {
                 console.log('Connected to database')
             })
             .catch(error => {
-                console.error('Unable to connect to the database: ', error)
+                console.error(`Unable to connect to the database: ${error}`)
             })
     }
 
