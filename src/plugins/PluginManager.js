@@ -32,7 +32,7 @@ export default class PluginManager {
         try {
             this.events[event](args, user)
         } catch(error) {
-            console.error(`[PluginManager] Event ${event} not handled: ${error}`)
+            console.error(`[PluginManager] Event (${event}) not handled: ${error}`)
         }
     }
 

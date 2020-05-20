@@ -29,8 +29,11 @@ export default class DataHandler {
     }
 
     close(user) {
-        this.sendRoom(user, 'remove_player', {user: user.data.id})
-        this.rooms[user.room].users.splice(this.rooms[user.room].users.indexOf(user))
+        if (user.data) {
+            this.sendRoom(user, 'remove_player', {user: user.data.id})
+            this.rooms[user.room].users.splice(this.rooms[user.room].users.indexOf(user))
+        }
+
         this.users.splice(this.users.indexOf(user))
     }
 
