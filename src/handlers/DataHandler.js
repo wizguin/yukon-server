@@ -15,11 +15,11 @@ export default class DataHandler {
         message.split('\xdd').filter(Boolean).forEach(packet => {
             try {
                 let parsed = JSON.parse(packet)
-                console.log(parsed)
+                console.log(`[DataHandler] Received: ${parsed.action} ${JSON.stringify(parsed.args)}`)
                 this.fireEvent(parsed.action, parsed.args, user)
 
             } catch(error) {
-                console.error(error)
+                console.error(`[DataHandler] Error: ${error}`)
             }
         })
     }

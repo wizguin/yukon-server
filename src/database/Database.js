@@ -5,10 +5,13 @@ import Users from './tables/Users'
 export default class Database {
 
     constructor(config) {
-        this.sequelize = new Sequelize(config.database, config.user, config.password, {
-            host: config.host,
-            dialect: 'mysql',
-            logging: (config.debug) ? console.log : false
+        this.sequelize = new Sequelize(
+            config.database,
+            config.user,
+            config.password, {
+                host: config.host,
+                dialect: config.dialect,
+                logging: (config.debug) ? console.log : false
         })
 
         this.users = Users.init(this.sequelize, Sequelize)
@@ -21,6 +24,17 @@ export default class Database {
             .catch(error => {
                 console.error(`[Database] Unable to connect to the database: ${error}`)
             })
+    }
+
+
+    getUserByUsername(username) {
+        return this.users.findOne({ where: { username: username } }).then(function(userData) {
+            if (userData) {
+                return userData
+            } else {
+                return null
+            }
+        })
     }
 
 }

@@ -17,7 +17,7 @@ export default class Server {
     }
 
     connectionMade(socket) {
-        console.log('[Server] Connection from: ', socket.id)
+        console.log(`[Server] Connection from: ${socket.id}`)
         let user = new User(socket, this.db)
         this.users.push(user)
 
@@ -30,7 +30,7 @@ export default class Server {
     }
 
     connectionLost(user) {
-        console.log('[Server] Disconnect from: ', user.socket.id)
+        console.log(`[Server] Disconnect from: ${user.socket.id}`)
         this.handler.close(user)
     }
 
