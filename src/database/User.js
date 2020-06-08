@@ -30,6 +30,7 @@ export default class User {
             feet: this.data.feet,
             flag: this.data.flag,
             photo: this.data.photo,
+            coins: this.data.coins,
             x: this.x,
             y: this.y,
             frame: this.frame
