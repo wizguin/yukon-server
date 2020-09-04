@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize'
+
 import Users from './tables/Users'
+import Inventories from './tables/Inventories'
 
 
 export default class Database {
@@ -15,6 +17,7 @@ export default class Database {
         })
 
         this.users = Users.init(this.sequelize, Sequelize)
+        this.inventories = Inventories.init(this.sequelize, Sequelize)
 
         this.sequelize
             .authenticate()
@@ -32,11 +35,21 @@ export default class Database {
             where: { username: username },
             attributes: { exclude: ['password'] }
 
-        }).then(function(userData) {
-            if (userData) {
-                return userData
+        }).then(function(result) {
+            if (result) {
+                return result
             } else {
                 return null
+            }
+        })
+    }
+
+    getInventory(userId) {
+        return this.inventories.findAll({ where: { userId: userId }, attributes: ['itemId'] }).then(function(result) {
+            if (result) {
+                return result.map(result => result.itemId)
+            } else {
+                return []
             }
         })
     }

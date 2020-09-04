@@ -75,7 +75,7 @@ export default class Users extends Sequelize.Model {
                 flag: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false
-                },
+                }
             },
             { sequelize, timestamps: false }
         )

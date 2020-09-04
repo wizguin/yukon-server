@@ -31,6 +31,7 @@ export default class User {
             flag: this.data.flag,
             photo: this.data.photo,
             coins: this.data.coins,
+            inventory: this.inventory,
             x: this.x,
             y: this.y,
             frame: this.frame
