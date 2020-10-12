@@ -1,4 +1,5 @@
 import PluginManager from '../plugins/PluginManager'
+import rooms from '../config/rooms.json'
 
 
 export default class DataHandler {
@@ -6,7 +7,7 @@ export default class DataHandler {
     constructor(users) {
         this.users = users
 
-        this.rooms = require('../../config/rooms.json')
+        this.rooms = rooms
 
         this.plugins = new PluginManager(this)
     }
@@ -30,15 +31,15 @@ export default class DataHandler {
 
     close(user) {
         if (user.data) {
-            this.sendRoom(user, 'remove_player', {user: user.data.id})
-            this.rooms[user.room].users.splice(this.rooms[user.room].users.indexOf(user))
+            this.sendRoom(user, 'remove_player', { user: user.data.id })
+            delete this.rooms[user.room].users[user.socket.id]
         }
 
-        this.users.splice(this.users.indexOf(user))
+        delete this.users[user.socket.id]
     }
 
     sendRoom(user, action, args = {}) {
-        for (let u of this.rooms[user.room].users) {
+        for (let u of Object.values(this.rooms[user.room].users)) {
             if (u != user) u.send(action, args)
         }
     }

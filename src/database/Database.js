@@ -22,7 +22,7 @@ export default class Database {
         this.sequelize
             .authenticate()
             .then(() => {
-                console.log('[Database] Connected to database')
+                // Connected
             })
             .catch(error => {
                 console.error(`[Database] Unable to connect to the database: ${error}`)

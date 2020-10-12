@@ -6,7 +6,7 @@ export default class Plugin {
     }
 
     sendRoom(user, action, args = {}) {
-        for (let u of this.rooms[user.room].users) {
+        for (let u of Object.values(this.rooms[user.room].users)) {
             if (u != user) u.send(action, args)
         }
     }

@@ -1,25 +1,26 @@
 {
-  "name": "mittens-server",
+  "name": "yukon-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node ./World.js"
+    "dev": "nodemon --exec babel-node ./src/World.js"
   },
   "author": "wizguin",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.6",
-    "@babel/node": "^7.8.7",
-    "@babel/preset-env": "^7.9.6"
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "validator": "^13.1.17"
   },
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "crypto": "^1.0.1",
     "fs": "0.0.1-security",
-    "mysql2": "^2.1.0",
-    "sequelize": "^5.21.10",
+    "mysql2": "^2.2.5",
+    "sequelize": "^5.22.3",
     "socket.io": "^2.3.0"
   }
 }

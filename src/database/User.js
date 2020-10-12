@@ -10,7 +10,7 @@ export default class User {
         this.room = 221
         this.x = 0
         this.y = 0
-        this.frame = 0
+        this.frame = 1
     }
 
     send(action, args = {}) {
@@ -31,7 +31,6 @@ export default class User {
             flag: this.data.flag,
             photo: this.data.photo,
             coins: this.data.coins,
-            inventory: this.inventory,
             x: this.x,
             y: this.y,
             frame: this.frame
