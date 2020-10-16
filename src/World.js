@@ -9,15 +9,16 @@ import worlds from './config/worlds.json'
 
 class World extends Server {
 
-    constructor(id, _handler = DataHandler) {
+    constructor(id) {
         let users = {}
         let db = new Database(database)
-        let handler = new _handler(users)
+
+        let handler = (id == 'login') ? new LoginHandler(users, db) : new DataHandler(users)
 
         super(id, worlds[id], users, db, handler)
     }
 
 }
 
-new World('login', LoginHandler)
+new World('login')
 new World('blizzard')

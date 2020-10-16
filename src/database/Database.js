@@ -32,8 +32,7 @@ export default class Database {
 
     getUserByUsername(username) {
         return this.users.findOne({
-            where: { username: username },
-            attributes: { exclude: ['password'] }
+            where: { username: username }
 
         }).then(function(result) {
             if (result) {
