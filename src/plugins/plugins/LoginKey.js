@@ -1,18 +1,18 @@
 import Plugin from '../Plugin'
 
 
-export default class Login extends Plugin {
+export default class LoginKey extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
         this.events = {
-            'login': this.login
+            'login_key': this.loginKey
         }
     }
 
     // Events
 
-    async login(args, user) {
+    async loginKey(args, user) {
         let userData = await user.db.getUserByUsername(args.username)
 
         if (userData) {
@@ -29,7 +29,7 @@ export default class Login extends Plugin {
         if (loginKey == user.data.loginKey) {
             delete user.data.dataValues.loginKey
             user.inventory = await user.db.getInventory(user.data.dataValues.id)
-            user.send('login', { success: true })
+            user.send('login_key', { success: true })
         } else {
             user.send('error', { error: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE' })
         }
