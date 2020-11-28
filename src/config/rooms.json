@@ -1,4 +1,14 @@
 {
+    "200": {
+        "isGame": false,
+        "name": "village",
+        "users": {}
+    },
+    "220": {
+        "isGame": false,
+        "name": "lodge",
+        "users": {}
+    },
     "221": {
         "isGame": false,
         "name": "attic",
