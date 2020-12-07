@@ -1,3 +1,4 @@
+import Room from '../database/Room'
 import PluginManager from '../plugins/PluginManager'
 
 
@@ -13,9 +14,20 @@ export default class DataHandler {
     async init() {
         // Crumbs
         this.items = await this.db.getItems()
-        this.rooms = await this.db.getRooms()
+        this.rooms = await this.setRooms()
 
         this.plugins = new PluginManager(this)
+    }
+
+    async setRooms() {
+        let roomsData = await this.db.getRooms()
+        let rooms = {}
+
+        for (let data of roomsData) {
+            rooms[data.id] = new Room(data)
+        }
+
+        return rooms
     }
 
     handle(message, user) {
@@ -36,18 +48,9 @@ export default class DataHandler {
     }
 
     close(user) {
-        if (user.data) {
-            this.sendRoom(user, 'remove_player', { user: user.data.id })
-            delete this.rooms[user.room].users[user.socket.id]
-        }
+        if (user.data) user.room.remove(user)
 
         delete this.users[user.socket.id]
-    }
-
-    sendRoom(user, action, args = {}) {
-        for (let u of Object.values(this.rooms[user.room].users)) {
-            if (u != user) u.send(action, args)
-        }
     }
 
 }

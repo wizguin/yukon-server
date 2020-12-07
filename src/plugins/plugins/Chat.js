@@ -12,7 +12,7 @@ export default class Chat extends Plugin {
 
     sendMessage(args, user) {
         // Todo: message verification
-        this.sendRoom(user, 'send_message', { id: user.data.id, message: args.message })
+        user.room.send(user, 'send_message', { id: user.data.id, message: args.message })
     }
 
 }

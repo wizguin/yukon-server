@@ -15,7 +15,8 @@ export default class Actions extends Plugin {
         user.x = args.x
         user.y = args.y
         user.frame = 1
-        this.sendRoom(user, 'send_position', { id: user.data.id, x: args.x, y: args.y })
+
+        user.room.send(user, 'send_position', { id: user.data.id, x: args.x, y: args.y })
     }
 
     sendFrame(args, user) {
@@ -24,7 +25,8 @@ export default class Actions extends Plugin {
         } else {
             user.frame = 1
         }
-        this.sendRoom(user, 'send_frame', { id: user.data.id, frame: args.frame, loop: args.loop })
+
+        user.rooms.send(user, 'send_frame', { id: user.data.id, frame: args.frame, loop: args.loop })
     }
 
 }

@@ -53,8 +53,6 @@ export default class Database {
 
         }).then((result) => {
             if (result) {
-                result.map(room => (room.users = {})) // Add empty users object to each room
-                result = this.arrayToObject(result, 'id')
                 return result
             } else {
                 return null

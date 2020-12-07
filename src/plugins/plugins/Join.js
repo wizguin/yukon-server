@@ -15,47 +15,34 @@ export default class Join extends Plugin {
     // Events
 
     loadPlayer(args, user) {
-        user.send('load_player', { user: user.getData(), inventory: user.inventory, room: user.room })
+        user.room = this.getRandomSpawn()
+        user.send('load_player', { user: user.getData(), inventory: user.inventory, room: user.room.id })
     }
 
     joinServer(args, user) {
         user.x = args.x
         user.y = args.y
 
-        this.add(user)
+        user.room.add(user)
     }
 
     joinRoom(args, user) {
-        this.remove(user)
+        user.room.remove(user)
 
-        user.room = args.room
+        user.room = this.rooms[args.room]
         user.x = args.x
         user.y = args.y
         user.frame = 1
 
-        this.add(user)
+        user.room.add(user)
     }
 
     // Functions
 
-    add(user) {
-        this.rooms[user.room].users[user.socket.id] = user
+    getRandomSpawn() {
+        let spawns = Object.values(this.rooms).filter(room => room.spawn)
 
-        user.send('join_room', { room: user.room, users: this.getUsers(user.room) })
-        this.sendRoom(user, 'add_player', { user: user.getData() })
-    }
-
-    remove(user) {
-        this.sendRoom(user, 'remove_player', { user: user.data.id })
-        delete this.rooms[user.room].users[user.socket.id]
-    }
-
-    getUsers(room) {
-        let users = []
-        for (let user of Object.values(this.rooms[room].users)) {
-            users.push(user.getData())
-        }
-        return users
+        return spawns[Math.floor(Math.random() * spawns.length)]
     }
 
 }

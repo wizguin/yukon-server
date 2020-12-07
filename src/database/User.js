@@ -6,15 +6,10 @@ export default class User {
 
         this.data = null
         this.inventory = null
-
-        this.room = 221
+        this.room = null
         this.x = 0
         this.y = 0
         this.frame = 1
-    }
-
-    send(action, args = {}) {
-        this.socket.emit('message', JSON.stringify({action: action, args: args}))
     }
 
     getData() {
@@ -35,6 +30,10 @@ export default class User {
             y: this.y,
             frame: this.frame
         }
+    }
+
+    send(action, args = {}) {
+        this.socket.emit('message', JSON.stringify({action: action, args: args}))
     }
 
 }
