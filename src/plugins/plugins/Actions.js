@@ -26,7 +26,7 @@ export default class Actions extends Plugin {
             user.frame = 1
         }
 
-        user.rooms.send(user, 'send_frame', { id: user.data.id, frame: args.frame, loop: args.loop })
+        user.room.send(user, 'send_frame', { id: user.data.id, frame: args.frame, loop: args.loop })
     }
 
 }
