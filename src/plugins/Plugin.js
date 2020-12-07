@@ -1,8 +1,9 @@
 export default class Plugin {
 
-    constructor(users, rooms) {
-        this.users = users
-        this.rooms = rooms
+    constructor(handler) {
+        this.users = handler.users
+        this.items = handler.items
+        this.rooms = handler.rooms
     }
 
     sendRoom(user, action, args = {}) {

@@ -1,13 +1,19 @@
 import PluginManager from '../plugins/PluginManager'
-import rooms from '../config/rooms.json'
 
 
 export default class DataHandler {
 
-    constructor(users) {
+    constructor(users, db) {
         this.users = users
+        this.db = db
 
-        this.rooms = rooms
+        this.init()
+    }
+
+    async init() {
+        // Crumbs
+        this.items = await this.db.getItems()
+        this.rooms = await this.db.getRooms()
 
         this.plugins = new PluginManager(this)
     }

@@ -14,7 +14,7 @@ export default class PluginManager {
     loadPlugins(handler) {
         fs.readdirSync(this.dir).forEach(plugin => {
             let pluginImport = require(path.join(this.dir, plugin)).default
-            let pluginObject = new pluginImport(handler.users, handler.rooms)
+            let pluginObject = new pluginImport(handler)
 
             this.loadEvents(pluginObject)
         })
