@@ -11,14 +11,14 @@ export default class Room {
     }
 
     get strings() {
-        return this.userValues.map(user => user.getData())
+        return this.userValues.map(user => user.string)
     }
 
     add(user) {
         this.users[user.socket.id] = user
 
         user.send('join_room', { room: this.id, users: this.strings })
-        this.send(user, 'add_player', { user: user.getData() })
+        this.send(user, 'add_player', { user: user.string })
     }
 
     remove(user) {

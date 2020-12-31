@@ -12,7 +12,7 @@ export default class User {
         this.frame = 1
     }
 
-    getData() {
+    get string() {
         return {
             id: this.data.id,
             username: this.data.username,
@@ -32,8 +32,13 @@ export default class User {
         }
     }
 
+    setItem(slot, item) {
+        this.data[slot] = item
+        this.room.send(this, 'update_player', { id: this.data.id, item: item, slot: slot }, [])
+    }
+
     send(action, args = {}) {
-        this.socket.emit('message', JSON.stringify({action: action, args: args}))
+        this.socket.emit('message', JSON.stringify({ action: action, args: args }))
     }
 
 }
