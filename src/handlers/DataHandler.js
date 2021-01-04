@@ -48,6 +48,7 @@ export default class DataHandler {
     }
 
     close(user) {
+        if (!user) return
         if (user.data) user.room.remove(user)
 
         delete this.users[user.socket.id]

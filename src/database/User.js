@@ -1,8 +1,12 @@
+import Inventory from './Inventory'
+
+
 export default class User {
 
-    constructor(socket, db) {
+    constructor(socket, handler) {
         this.socket = socket
-        this.db = db
+        this.db = handler.db
+        this.items = handler.items
 
         this.data = null
         this.inventory = null
@@ -32,7 +36,13 @@ export default class User {
         }
     }
 
+    setInventory(inventory) {
+        this.inventory = new Inventory(this.items, inventory)
+    }
+
     setItem(slot, item) {
+        if (this.data[slot] == item) return
+
         this.data[slot] = item
         this.room.send(this, 'update_player', { id: this.data.id, item: item, slot: slot }, [])
     }

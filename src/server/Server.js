@@ -18,7 +18,7 @@ export default class Server {
 
     connectionMade(socket) {
         console.log(`[Server] Connection from: ${socket.id}`)
-        let user = new User(socket, this.db)
+        let user = new User(socket, this.handler)
         this.users[socket.id] = user
 
         socket.on('message', (message) => { this.messageReceived(message, user) })

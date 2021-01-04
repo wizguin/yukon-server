@@ -23,6 +23,9 @@ export default class Database {
         this.rooms = Rooms.init(this.sequelize, Sequelize)
         this.users = Users.init(this.sequelize, Sequelize)
 
+        // Used to translate type id to string
+        this.slots = [ 'color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award' ]
+
         this.sequelize
             .authenticate()
             .then(() => {
@@ -40,6 +43,7 @@ export default class Database {
         }).then((result) => {
             if (result) {
                 result = this.arrayToObject(result, 'id')
+                result.slots = this.slots
                 return result
             } else {
                 return null
