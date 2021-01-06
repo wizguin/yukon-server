@@ -45,6 +45,8 @@ export default class User {
 
         this.data[slot] = item
         this.room.send(this, 'update_player', { id: this.data.id, item: item, slot: slot }, [])
+
+        this.db.users.update({ [slot]: item }, { where: { id: this.data.id }})
     }
 
     send(action, args = {}) {
