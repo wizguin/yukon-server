@@ -74,6 +74,8 @@ export default class LoginHandler {
             // Comparing password and checking for user existence
             user.send('login', await this.comparePasswords(args.username, args.password))
         }
+
+        user.close()
     }
 
     async comparePasswords(username, password) {

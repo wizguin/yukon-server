@@ -53,4 +53,8 @@ export default class User {
         this.socket.emit('message', JSON.stringify({ action: action, args: args }))
     }
 
+    close() {
+        this.socket.disconnect(true)
+    }
+
 }

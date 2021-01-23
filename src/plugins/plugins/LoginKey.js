@@ -20,6 +20,7 @@ export default class LoginKey extends Plugin {
             this.compareLoginKey(args.loginKey, user)
         } else {
             user.send('error', { error: 'Penguin not found. Try Again?' })
+            user.close()
         }
     }
 
@@ -31,6 +32,7 @@ export default class LoginKey extends Plugin {
             user.send('login_key', { success: true })
         } else {
             user.send('error', { error: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE' })
+            user.close()
         }
     }
 
