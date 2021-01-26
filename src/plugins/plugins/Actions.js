@@ -7,7 +7,8 @@ export default class Actions extends Plugin {
         super(users, rooms)
         this.events = {
             'send_position': this.sendPosition,
-            'send_frame': this.sendFrame
+            'send_frame': this.sendFrame,
+            'snowball': this.snowball
         }
     }
 
@@ -27,6 +28,10 @@ export default class Actions extends Plugin {
         }
 
         user.room.send(user, 'send_frame', { id: user.data.id, frame: args.frame, loop: args.loop })
+    }
+
+    snowball(args, user) {
+        user.room.send(user, 'snowball', { id: user.data.id, x: args.x, y: args.y })
     }
 
 }
