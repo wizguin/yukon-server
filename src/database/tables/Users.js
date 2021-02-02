@@ -36,10 +36,6 @@ export default class Users extends Sequelize.Model {
                     type: DataTypes.INTEGER(11),
                     allowNull: false
                 },
-                buddies: {
-                    type: DataTypes.TEXT,
-                    allowNull: false
-                },
                 head: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false

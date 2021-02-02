@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize'
 
+import Buddies from './tables/Buddies'
 import Inventories from './tables/Inventories'
 import Items from './tables/Items'
 import Rooms from './tables/Rooms'
@@ -18,6 +19,7 @@ export default class Database {
                 logging: (config.debug) ? console.log : false
         })
 
+        this.buddies = Buddies.init(this.sequelize, Sequelize)
         this.inventories = Inventories.init(this.sequelize, Sequelize)
         this.items = Items.init(this.sequelize, Sequelize)
         this.rooms = Rooms.init(this.sequelize, Sequelize)
@@ -73,6 +75,33 @@ export default class Database {
                 return result
             } else {
                 return null
+            }
+        })
+    }
+
+    getUserById(userId) {
+        return this.users.findOne({
+            where: { id: userId }
+
+        }).then((result) => {
+            if (result) {
+                return result
+            } else {
+                return null
+            }
+        })
+    }
+
+    getBuddies(userId) {
+        return this.buddies.findAll({
+            where: { userId: userId },
+            attributes: ['buddyId']
+
+        }).then((result) => {
+            if (result) {
+                return result.map(result => result.buddyId)
+            } else {
+                return []
             }
         })
     }

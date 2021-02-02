@@ -1,3 +1,4 @@
+import Buddy from './Buddy'
 import Inventory from './Inventory'
 
 
@@ -9,11 +10,13 @@ export default class User {
         this.items = handler.items
 
         this.data = null
-        this.inventory = null
         this.room = null
         this.x = 0
         this.y = 0
         this.frame = 1
+
+        this.buddy = null
+        this.inventory = null
     }
 
     get string() {
@@ -34,6 +37,11 @@ export default class User {
             y: this.y,
             frame: this.frame
         }
+    }
+
+    async setBuddies(buddies) {
+        this.buddy = new Buddy(this.db)
+        await this.buddy.init(buddies)
     }
 
     setInventory(inventory) {

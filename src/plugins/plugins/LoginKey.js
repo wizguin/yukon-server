@@ -28,7 +28,10 @@ export default class LoginKey extends Plugin {
 
     async compareLoginKey(loginKey, user) {
         if (loginKey == user.data.loginKey) {
-            user.setInventory(await user.db.getInventory(user.data.dataValues.id))
+
+            await user.setBuddies(await user.db.getBuddies(user.data.id))
+            user.setInventory(await user.db.getInventory(user.data.id))
+
             user.send('login_key', { success: true })
         } else {
             user.send('error', { error: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE' })

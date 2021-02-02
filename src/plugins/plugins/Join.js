@@ -16,7 +16,14 @@ export default class Join extends Plugin {
 
     loadPlayer(args, user) {
         user.room = this.getRandomSpawn()
-        user.send('load_player', { user: user.string, inventory: user.inventory.string, room: user.room.id })
+
+        user.send('load_player', {
+            user: user.string,
+            room: user.room.id,
+
+            buddies: user.buddy.list,
+            inventory: user.inventory.list
+        })
     }
 
     joinServer(args, user) {

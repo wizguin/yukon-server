@@ -9,19 +9,19 @@ export default class Inventory {
         Object.assign(this, template)
 
         // Assigns inventory list to slots
-        this.sort(inventory)
+        this.init(inventory)
     }
 
-    get string() {
+    get list() {
         let { items, ...inventory } = this
         return inventory
     }
 
     get flat() {
-        return Object.values(this.string).flat()
+        return Object.values(this.list).flat()
     }
 
-    sort(inventory) {
+    init(inventory) {
         for (let item of inventory) {
             let type = this.items[item].type
             let slot = this.items.slots[type - 1]
