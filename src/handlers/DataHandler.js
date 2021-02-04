@@ -6,6 +6,7 @@ export default class DataHandler {
 
     constructor(users, db) {
         this.users = users
+        this.usersById = {}
         this.db = db
 
         this.init()
@@ -49,7 +50,11 @@ export default class DataHandler {
 
     close(user) {
         if (!user) return
-        if (user.data) user.room.remove(user)
+
+        if (user.data) {
+            user.room.remove(user)
+            if (user.data.id) delete this.usersById[user.data.id]
+        }
 
         delete this.users[user.socket.id]
     }

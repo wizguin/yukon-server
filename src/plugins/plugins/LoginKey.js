@@ -29,6 +29,8 @@ export default class LoginKey extends Plugin {
     async compareLoginKey(loginKey, user) {
         if (loginKey == user.data.loginKey) {
 
+            this.usersById[user.data.id] = user
+
             await user.setBuddies(await user.db.getBuddies(user.data.id))
             user.setInventory(await user.db.getInventory(user.data.id))
 
