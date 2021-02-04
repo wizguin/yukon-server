@@ -6,8 +6,8 @@ export default class User {
 
     constructor(socket, handler) {
         this.socket = socket
+        this.handler = handler
         this.db = handler.db
-        this.items = handler.items
 
         this.data = null
         this.room = null
@@ -37,6 +37,10 @@ export default class User {
             y: this.y,
             frame: this.frame
         }
+    }
+
+    get items() {
+        return this.handler.items
     }
 
     async setBuddies(buddies) {
