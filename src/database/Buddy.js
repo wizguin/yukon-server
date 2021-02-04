@@ -5,6 +5,10 @@ export default class Buddy {
         this.list = []
     }
 
+    get flat() {
+        return this.list.map(buddy => buddy.id)
+    }
+
     async init(buddies) {
         for (let buddy of buddies) {
             let user = await this.db.getUserById(buddy)
@@ -14,6 +18,10 @@ export default class Buddy {
 
     getOnline(id) {
         return false
+    }
+
+    includes(buddy) {
+        return this.flat.includes(buddy)
     }
 
 }
