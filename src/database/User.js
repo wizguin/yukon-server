@@ -44,7 +44,7 @@ export default class User {
     }
 
     async setBuddies(buddies) {
-        this.buddy = new Buddy(this.db)
+        this.buddy = new Buddy(this)
         await this.buddy.init(buddies)
     }
 

@@ -14,16 +14,35 @@ export default class Buddy extends Plugin {
     }
 
     buddyRequest(args, user) {
-        if (user.buddy.includes(args.id)) return
-        if (!(args.id in this.usersById)) return
-        if (user.data.id == args.id) return
+        let recipient = this.usersById[args.id]
 
-        let buddy = this.usersById[args.id]
-        buddy.send('buddy_request', { id: user.data.id, username: user.data.username })
+        // Send request to recipient if they are online
+        if (recipient) {
+            recipient.buddy.addRequest(user.data.id, user.data.username)
+        }
     }
 
     buddyAccept(args, user) {
+        if (user.data.id == args.id) return
+        if (user.buddy.includes(args.id)) return
+        if (!(user.buddy.requests.includes(args.id))) return
 
+        // Remove request
+        user.buddy.requests = user.buddy.requests.filter(item => item != args.id)
+
+        // Add to recipient buddy list
+        user.buddy.addBuddy(args.id, args.username)
+
+        // Add to requester buddy list
+        let requester = this.usersById[args.id]
+
+        if (requester) {
+            requester.buddy.addBuddy(user.data.id, user.data.username, true)
+        }
+
+        // Db queries
+        this.db.buddies.create({ userId: user.data.id, buddyId: args.id })
+        this.db.buddies.create({ userId: args.id, buddyId: user.data.id })
     }
 
     buddyRemove(args, user) {
