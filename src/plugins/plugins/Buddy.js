@@ -16,6 +16,7 @@ export default class Buddy extends Plugin {
     buddyRequest(args, user) {
         if (user.buddy.includes(args.id)) return
         if (!(args.id in this.usersById)) return
+        if (user.data.id == args.id) return
 
         let buddy = this.usersById[args.id]
         buddy.send('buddy_request', { id: user.data.id, username: user.data.username })
