@@ -15,7 +15,8 @@ export default class Chat extends Plugin {
         if (!user.inventory.includes(args.item)) return
 
         let item = this.items[args.item]
-        if (!item || item.bait || item.award) return
+        //if (!item || item.bait || item.award) return
+        if (!item || item.award) return
 
         let slot = this.items.slots[item.type - 1]
         user.setItem(slot, args.item)
