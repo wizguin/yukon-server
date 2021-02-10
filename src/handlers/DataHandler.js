@@ -53,6 +53,7 @@ export default class DataHandler {
 
         if (user.data) {
             user.room.remove(user)
+            if (user.buddy) user.buddy.sendOffline()
             if (user.data.id) delete this.usersById[user.data.id]
         }
 
