@@ -11,6 +11,8 @@ export default class Get extends Plugin {
     }
 
     async getPlayer(args, user) {
+        if (!args.id) return
+
         let userData = await this.db.getUserById(args.id)
         let { banned, coins, loginKey, password, rank, ...penguin } = userData.dataValues
 
