@@ -14,6 +14,7 @@ export default class Buddy extends Plugin {
     }
 
     buddyRequest(args, user) {
+        if (args.id == user.data.id) return
         let recipient = this.usersById[args.id]
 
         // Send request to recipient if they are online
@@ -23,7 +24,6 @@ export default class Buddy extends Plugin {
     }
 
     buddyAccept(args, user) {
-        if (user.data.id == args.id) return
         if (user.buddy.includes(args.id)) return
         if (!(user.buddy.requests.includes(args.id))) return
 
@@ -46,7 +46,15 @@ export default class Buddy extends Plugin {
     }
 
     buddyRemove(args, user) {
+        if (!user.buddy.includes(args.id)) return
 
+        user.buddy.removeBuddy(args.id)
+
+        let buddy = this.usersById[args.id]
+        if (buddy) buddy.buddy.removeBuddy(user.data.id)
+
+        this.db.buddies.destroy({ where: { userId: user.data.id, buddyId: args.id } })
+        this.db.buddies.destroy({ where: { userId: args.id, buddyId: user.data.id } })
     }
 
     buddyFind(args, user) {

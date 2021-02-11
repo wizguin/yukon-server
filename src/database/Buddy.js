@@ -51,6 +51,12 @@ export default class Buddy {
         this.user.send('buddy_accept', { id: id, username: username, requester: requester, online: online })
     }
 
+    removeBuddy(id) {
+        // Filter buddy out of list
+        this.list = this.list.filter(obj => obj.id != id)
+        this.user.send('buddy_remove', { id: id })
+    }
+
     /*========== Online status ==========*/
 
     isOnline(id) {
