@@ -8,6 +8,7 @@ export default class Buddy extends Plugin {
         this.events = {
             'buddy_request': this.buddyRequest,
             'buddy_accept': this.buddyAccept,
+            'buddy_reject': this.buddyReject,
             'buddy_remove': this.buddyRemove,
             'buddy_find': this.buddyFind
         }
@@ -43,6 +44,11 @@ export default class Buddy extends Plugin {
         // Db queries
         this.db.buddies.create({ userId: user.data.id, buddyId: args.id })
         this.db.buddies.create({ userId: args.id, buddyId: user.data.id })
+    }
+
+    buddyReject(args, user) {
+        // Remove request
+        user.buddy.requests = user.buddy.requests.filter(item => item != args.id)
     }
 
     buddyRemove(args, user) {
