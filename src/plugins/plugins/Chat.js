@@ -13,11 +13,11 @@ export default class Chat extends Plugin {
 
     sendMessage(args, user) {
         // Todo: message verification
-        user.room.send(user, 'send_message', { id: user.data.id, message: args.message })
+        user.room.send(user, 'send_message', { id: user.data.id, message: args.message }, [user], true)
     }
 
     sendEmote(args, user) {
-        user.room.send(user, 'send_emote', { id: user.data.id, emote: args.emote })
+        user.room.send(user, 'send_emote', { id: user.data.id, emote: args.emote }, [user], true)
     }
 
 }

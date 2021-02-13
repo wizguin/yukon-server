@@ -34,11 +34,14 @@ export default class Room {
      * @param {string} action - Packet name
      * @param {object} args - Packet arguments
      * @param {Array} filter - Users to exclude
+     * @param {boolean} checkIgnore - Whether or not to exclude users who have user added to their ignore list
      */
-    send(user, action, args = {}, filter = [ user ]) {
+    send(user, action, args = {}, filter = [user], checkIgnore = false) {
         let users = this.userValues.filter(u => !filter.includes(u))
 
         for (let u of users) {
+            if (checkIgnore && u.ignore.includes(user.data.id)) continue
+
             u.send(action, args)
         }
     }
