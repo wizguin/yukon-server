@@ -24,7 +24,14 @@ export default class Ignore {
     }
 
     addIgnore(id, username) {
+        this.list.push({ id: id, username: username })
+        this.user.send('ignore_add', { id: id, username: username })
+    }
 
+    removeIgnore(id) {
+        // Filter ignore out of list
+        this.list = this.list.filter(obj => obj.id != id)
+        this.user.send('ignore_remove', { id: id })
     }
 
 }

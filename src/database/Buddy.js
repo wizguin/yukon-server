@@ -35,6 +35,8 @@ export default class Buddy {
 
     addRequest(id, username) {
         if (this.user.data.id == id) return
+        // If user is ignored
+        if (this.user.ignore.includes(id)) return
         // If buddy already added
         if (this.includes(id)) return
         // If request has already been received
