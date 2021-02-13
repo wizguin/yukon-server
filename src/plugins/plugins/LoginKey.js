@@ -32,6 +32,7 @@ export default class LoginKey extends Plugin {
             this.usersById[user.data.id] = user
 
             await user.setBuddies(await user.db.getBuddies(user.data.id))
+            await user.setIgnores(await user.db.getIgnores(user.data.id))
             user.setInventory(await user.db.getInventory(user.data.id))
 
             user.send('login_key', { success: true })

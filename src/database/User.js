@@ -1,4 +1,5 @@
 import Buddy from './Buddy'
+import Ignore from './Ignore'
 import Inventory from './Inventory'
 
 
@@ -16,6 +17,7 @@ export default class User {
         this.frame = 1
 
         this.buddy = null
+        this.ignore = null
         this.inventory = null
     }
 
@@ -46,6 +48,11 @@ export default class User {
     async setBuddies(buddies) {
         this.buddy = new Buddy(this)
         await this.buddy.init(buddies)
+    }
+
+    async setIgnores(ignores) {
+        this.ignore = new Ignore(this)
+        await this.ignore.init(ignores)
     }
 
     setInventory(inventory) {

@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 
 
-export default class Inventories extends Sequelize.Model {
+export default class Ignores extends Sequelize.Model {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -11,7 +11,7 @@ export default class Inventories extends Sequelize.Model {
                     allowNull: false,
                     primaryKey: true
                 },
-                itemId: {
+                ignoreId: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false
                 }

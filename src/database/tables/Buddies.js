@@ -9,8 +9,7 @@ export default class Buddies extends Sequelize.Model {
                 userId: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false,
-                    primaryKey: true,
-                    autoIncrement: true
+                    primaryKey: true
                 },
                 buddyId: {
                     type: DataTypes.INTEGER(11),

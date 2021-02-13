@@ -22,6 +22,7 @@ export default class Join extends Plugin {
             room: user.room.id,
 
             buddies: user.buddy.list,
+            ignores: user.ignore.list,
             inventory: user.inventory.list
         })
     }

@@ -1,6 +1,7 @@
 import Sequelize from 'sequelize'
 
 import Buddies from './tables/Buddies'
+import Ignores from './tables/Ignores'
 import Inventories from './tables/Inventories'
 import Items from './tables/Items'
 import Rooms from './tables/Rooms'
@@ -20,6 +21,7 @@ export default class Database {
         })
 
         this.buddies = Buddies.init(this.sequelize, Sequelize)
+        this.ignores = Ignores.init(this.sequelize, Sequelize)
         this.inventories = Inventories.init(this.sequelize, Sequelize)
         this.items = Items.init(this.sequelize, Sequelize)
         this.rooms = Rooms.init(this.sequelize, Sequelize)
@@ -100,6 +102,20 @@ export default class Database {
         }).then((result) => {
             if (result) {
                 return result.map(result => result.buddyId)
+            } else {
+                return []
+            }
+        })
+    }
+
+    getIgnores(userId) {
+        return this.ignores.findAll({
+            where: { userId: userId },
+            attributes: ['ignoreId']
+
+        }).then((result) => {
+            if (result) {
+                return result.map(result => result.ignoreId)
             } else {
                 return []
             }
