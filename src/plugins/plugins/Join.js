@@ -28,9 +28,6 @@ export default class Join extends Plugin {
     }
 
     joinServer(args, user) {
-        user.x = args.x
-        user.y = args.y
-
         user.room.add(user)
     }
 
