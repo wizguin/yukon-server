@@ -6,7 +6,8 @@ export default class Get extends Plugin {
     constructor(users, rooms) {
         super(users, rooms)
         this.events = {
-            'get_player': this.getPlayer
+            'get_player': this.getPlayer,
+            'get_item': this.getItem
         }
     }
 
@@ -17,7 +18,15 @@ export default class Get extends Plugin {
         let { banned, coins, loginKey, password, rank, ...penguin } = userData.dataValues
 
         if (userData) {
-            user.send('get_player', { penguin: penguin, showCard: args.showCard })
+            user.send('get_player', { penguin: penguin })
+        }
+    }
+
+    getItem(args, user) {
+        let item = user.inventory.validateItem(args.item)
+
+        if (item) {
+            user.send('get_item', { item: args.item, name: item.name, cost: item.cost })
         }
     }
 

@@ -7,6 +7,7 @@ export default class Chat extends Plugin {
         super(users, rooms)
         this.events = {
             'update_player': this.updatePlayer,
+            'add_item': this.addItem,
             'remove_item': this.removeItem
         }
     }
@@ -20,6 +21,10 @@ export default class Chat extends Plugin {
 
         let slot = this.items.slots[item.type - 1]
         user.setItem(slot, args.item)
+    }
+
+    addItem(args, user) {
+        user.addItem(args.item)
     }
 
     removeItem(args, user) {

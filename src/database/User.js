@@ -56,7 +56,7 @@ export default class User {
     }
 
     setInventory(inventory) {
-        this.inventory = new Inventory(this.items, inventory)
+        this.inventory = new Inventory(this, this.items, inventory)
     }
 
     setItem(slot, item) {
@@ -65,7 +65,25 @@ export default class User {
         this.data[slot] = item
         this.room.send(this, 'update_player', { id: this.data.id, item: item, slot: slot }, [])
 
-        this.db.users.update({ [slot]: item }, { where: { id: this.data.id }})
+        this.update({ [slot]: item })
+    }
+
+    addItem(id) {
+        let item = this.inventory.validateItem(id)
+        if (!item) return
+
+        let slot = this.items.slots[item.type - 1]
+
+        this.data.coins -= item.cost
+        this.inventory.add(id, slot)
+
+        this.send('add_item', { item: id, name: item.name, slot: slot, coins: this.data.coins })
+
+        this.update({ coins: this.data.coins })
+    }
+
+    update(query) {
+        this.db.users.update(query, { where: { id: this.data.id }})
     }
 
     send(action, args = {}) {
