@@ -19,6 +19,9 @@ export default class User {
         this.buddy = null
         this.ignore = null
         this.inventory = null
+
+        // Game server authentication
+        this.authenticated = false
     }
 
     get string() {

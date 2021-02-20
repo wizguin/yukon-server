@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node ./src/World.js"
+    "dev": "nodemon --exec babel-node ./src/World.js",
+    "secret-gen": "node ./src/utils/secret-gen.js"
   },
   "author": "wizguin",
   "license": "ISC",
@@ -19,8 +20,9 @@
     "crypto": "^1.0.1",
     "fastest-validator": "^1.9.0",
     "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
     "sequelize": "^5.22.3",
-    "socket.io": "^2.4.1"
+    "socket.io": "^3.1.1"
   }
 }

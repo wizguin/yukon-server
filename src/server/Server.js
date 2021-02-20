@@ -1,19 +1,24 @@
 import User from '../database/User'
 
-import io from 'socket.io'
-
 
 export default class Server {
 
-    constructor(id, config, users, db, handler) {
+    constructor(id, users, db, handler, config) {
         this.users = users
         this.db = db
         this.handler = handler
 
-        this.server = io.listen(config.port)
+        const io = require('socket.io')({
+            cors: {
+                origin: config.socketio.origin,
+                methods: ['GET', 'POST']
+            }
+        })
+
+        this.server = io.listen(config.worlds[id].port)
         this.server.on('connection', this.connectionMade.bind(this))
 
-        console.log(`[Server] Started world ${id} on port ${config.port}`)
+        console.log(`[Server] Started world ${id} on port ${config.worlds[id].port}`)
     }
 
     connectionMade(socket) {
@@ -21,8 +26,8 @@ export default class Server {
         let user = new User(socket, this.handler)
         this.users[socket.id] = user
 
-        socket.on('message', (message) => { this.messageReceived(message, user) })
-        socket.on('disconnect', () => { this.connectionLost(user) })
+        socket.on('message', (message) => this.messageReceived(message, user))
+        socket.on('disconnect', () => this.connectionLost(user))
     }
 
     messageReceived(message, user) {

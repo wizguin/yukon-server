@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
+import jwt from 'jsonwebtoken'
 import Validator from 'fastest-validator'
 
 
@@ -8,9 +9,10 @@ import Validator from 'fastest-validator'
  */
 export default class LoginHandler {
 
-    constructor(users, db) {
+    constructor(users, db, config) {
         this.users = users
         this.db = db
+        this.config = config.crypto
 
         this.check = this.createValidator()
     }
@@ -72,13 +74,13 @@ export default class LoginHandler {
 
         } else {
             // Comparing password and checking for user existence
-            user.send('login', await this.comparePasswords(args.username, args.password))
+            user.send('login', await this.comparePasswords(args.username, args.password, user.socket))
         }
 
         user.close()
     }
 
-    async comparePasswords(username, password) {
+    async comparePasswords(username, password, socket) {
         let user = await this.db.getUserByUsername(username)
         if (!user) {
             return {
@@ -96,14 +98,25 @@ export default class LoginHandler {
         }
 
         // Generate new login key, used to validate user on game server
-        user.loginKey = crypto.randomBytes(20).toString('hex')
+        let loginKey = crypto.randomBytes(32).toString('hex')
+        let address = socket.handshake.address
+        let userAgent = socket.request.headers['user-agent']
+
+        // Create hash of login key and user data
+        let hash = await bcrypt.hash(`${user.username}${loginKey}${address}${userAgent}`, this.config.rounds)
+
+        // JWT to be stored on database
+        user.loginKey = jwt.sign({
+            hash: hash
+        }, this.config.secret, { expiresIn: this.config.loginKeyExpiry })
+
         await user.save()
 
         // All validation passed
         return {
             success: true,
             username: username,
-            loginKey: user.loginKey
+            loginKey: loginKey
         }
     }
 

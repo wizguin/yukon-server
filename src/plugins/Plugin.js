@@ -4,6 +4,7 @@ export default class Plugin {
         this.db = handler.db
         this.users = handler.users
         this.usersById = handler.usersById
+        this.config = handler.config
         this.items = handler.items
         this.rooms = handler.rooms
     }

@@ -3,20 +3,19 @@ import DataHandler from './handlers/DataHandler'
 import LoginHandler from './handlers/LoginHandler'
 import Server from './server/Server'
 
-import database from './config/database.json'
-import worlds from './config/worlds.json'
+import config from './config/config.json'
 
 
 class World extends Server {
 
     constructor(id) {
         let users = {}
-        let db = new Database(database)
+        let db = new Database(config.database)
 
         let handler = (id == 'login') ? LoginHandler : DataHandler
-        handler = new handler(users, db)
+        handler = new handler(users, db, config)
 
-        super(id, worlds[id], users, db, handler)
+        super(id, users, db, handler, config)
     }
 
 }

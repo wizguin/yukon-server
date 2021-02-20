@@ -1,3 +1,6 @@
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
 import Plugin from '../Plugin'
 
 
@@ -17,29 +20,43 @@ export default class LoginKey extends Plugin {
 
         if (userData) {
             user.data = userData
-            this.compareLoginKey(args.loginKey, user)
+            this.compareLoginKey(user, args.loginKey)
         } else {
-            user.send('error', { error: 'Penguin not found. Try Again?' })
             user.close()
         }
     }
 
     // Functions
 
-    async compareLoginKey(loginKey, user) {
-        if (loginKey == user.data.loginKey) {
+    async compareLoginKey(user, loginKey) {
+        let decoded
 
-            this.usersById[user.data.id] = user
-
-            await user.setBuddies(await user.db.getBuddies(user.data.id))
-            await user.setIgnores(await user.db.getIgnores(user.data.id))
-            user.setInventory(await user.db.getInventory(user.data.id))
-
-            user.send('login_key', { success: true })
-        } else {
-            user.send('error', { error: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE' })
-            user.close()
+        // Verify JWT
+        try {
+            decoded = jwt.verify(user.data.loginKey, this.config.crypto.secret)
+        } catch (err) {
+            return user.close()
         }
+
+        // Verify hash
+        let address = user.socket.handshake.address
+        let userAgent = user.socket.request.headers['user-agent']
+        let match = await bcrypt.compare(`${user.data.username}${loginKey}${address}${userAgent}`, decoded.hash)
+
+        if (!match) return user.close()
+
+        // Remove from database
+        user.update({ loginKey: null })
+
+        // Success
+        this.usersById[user.data.id] = user
+
+        await user.setBuddies(await user.db.getBuddies(user.data.id))
+        await user.setIgnores(await user.db.getIgnores(user.data.id))
+        user.setInventory(await user.db.getInventory(user.data.id))
+
+        user.authenticated = true
+        user.send('login_key', { success: true })
     }
 
 }

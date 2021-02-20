@@ -4,10 +4,11 @@ import PluginManager from '../plugins/PluginManager'
 
 export default class DataHandler {
 
-    constructor(users, db) {
+    constructor(users, db, config) {
         this.users = users
         this.usersById = {}
         this.db = db
+        this.config = config
 
         this.init()
     }
@@ -36,6 +37,10 @@ export default class DataHandler {
             try {
                 let parsed = JSON.parse(packet)
                 console.log(`[DataHandler] Received: ${parsed.action} ${JSON.stringify(parsed.args)}`)
+
+                // Only allow login_key until user is authenticated
+                if (!user.authenticated && parsed.action != 'login_key') return user.close()
+
                 this.fireEvent(parsed.action, parsed.args, user)
 
             } catch(error) {
@@ -51,11 +56,9 @@ export default class DataHandler {
     close(user) {
         if (!user) return
 
-        if (user.data) {
-            user.room.remove(user)
-            if (user.buddy) user.buddy.sendOffline()
-            if (user.data.id) delete this.usersById[user.data.id]
-        }
+        if (user.room) user.room.remove(user)
+        if (user.buddy) user.buddy.sendOffline()
+        if (user.data.id) delete this.usersById[user.data.id]
 
         delete this.users[user.socket.id]
     }

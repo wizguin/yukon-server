@@ -22,7 +22,7 @@ export default class Users extends Sequelize.Model {
                 },
                 loginKey: {
                     type: DataTypes.TEXT,
-                    allowNull: false
+                    allowNull: true
                 },
                 rank: {
                     type: DataTypes.BOOLEAN,

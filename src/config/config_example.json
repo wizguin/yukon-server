@@ -1,0 +1,29 @@
+{
+    "crypto": {
+        "secret": "",
+        "rounds": 10,
+        "loginKeyExpiry": 300
+    },
+    "database": {
+        "host": "localhost",
+        "user": "user",
+        "password": "password",
+        "database": "yukon",
+        "dialect": "mysql",
+        "debug": false
+    },
+    "socketio": {
+        "origin": "http://localhost:8080"
+    },
+    "worlds": {
+        "login": {
+            "host": "localhost",
+            "port": 6111
+        },
+        "blizzard": {
+            "host": "localhost",
+            "port": 6112,
+            "maxUsers": 100
+        }
+    }
+}
