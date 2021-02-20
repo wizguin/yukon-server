@@ -13,11 +13,11 @@ export default class Users extends Sequelize.Model {
                     autoIncrement: true
                 },
                 username: {
-                    type: DataTypes.TEXT,
+                    type: DataTypes.STRING(12),
                     allowNull: false
                 },
                 password: {
-                    type: DataTypes.TEXT,
+                    type: DataTypes.STRING(60),
                     allowNull: false
                 },
                 loginKey: {

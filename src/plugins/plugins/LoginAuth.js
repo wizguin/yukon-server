@@ -4,23 +4,23 @@ import jwt from 'jsonwebtoken'
 import Plugin from '../Plugin'
 
 
-export default class LoginKey extends Plugin {
+export default class LoginAuth extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
         this.events = {
-            'login_key': this.loginKey
+            'login_auth': this.loginAuth
         }
     }
 
     // Events
 
-    async loginKey(args, user) {
+    async loginAuth(args, user) {
         let userData = await user.db.getUserByUsername(args.username)
 
         if (userData) {
             user.data = userData
-            this.compareLoginKey(user, args.loginKey)
+            this.compareLoginKey(user, args.key)
         } else {
             user.close()
         }
@@ -28,7 +28,7 @@ export default class LoginKey extends Plugin {
 
     // Functions
 
-    async compareLoginKey(user, loginKey) {
+    async compareLoginKey(user, key) {
         let decoded
 
         // Verify JWT
@@ -41,7 +41,7 @@ export default class LoginKey extends Plugin {
         // Verify hash
         let address = user.socket.handshake.address
         let userAgent = user.socket.request.headers['user-agent']
-        let match = await bcrypt.compare(`${user.data.username}${loginKey}${address}${userAgent}`, decoded.hash)
+        let match = await bcrypt.compare(`${user.data.username}${key}${address}${userAgent}`, decoded.hash)
 
         if (!match) return user.close()
 
@@ -56,7 +56,7 @@ export default class LoginKey extends Plugin {
         user.setInventory(await user.db.getInventory(user.data.id))
 
         user.authenticated = true
-        user.send('login_key', { success: true })
+        user.send('login_auth', { success: true })
     }
 
 }

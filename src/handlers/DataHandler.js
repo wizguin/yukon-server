@@ -38,8 +38,8 @@ export default class DataHandler {
                 let parsed = JSON.parse(packet)
                 console.log(`[DataHandler] Received: ${parsed.action} ${JSON.stringify(parsed.args)}`)
 
-                // Only allow login_key until user is authenticated
-                if (!user.authenticated && parsed.action != 'login_key') return user.close()
+                // Only allow login_auth until user is authenticated
+                if (!user.authenticated && parsed.action != 'login_auth') return user.close()
 
                 this.fireEvent(parsed.action, parsed.args, user)
 

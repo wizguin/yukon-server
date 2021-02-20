@@ -97,18 +97,10 @@ export default class LoginHandler {
             }
         }
 
+        // Generate random key, used by client for authentication
+        let randomKey = crypto.randomBytes(32).toString('hex')
         // Generate new login key, used to validate user on game server
-        let loginKey = crypto.randomBytes(32).toString('hex')
-        let address = socket.handshake.address
-        let userAgent = socket.request.headers['user-agent']
-
-        // Create hash of login key and user data
-        let hash = await bcrypt.hash(`${user.username}${loginKey}${address}${userAgent}`, this.config.rounds)
-
-        // JWT to be stored on database
-        user.loginKey = jwt.sign({
-            hash: hash
-        }, this.config.secret, { expiresIn: this.config.loginKeyExpiry })
+        user.loginKey = await this.genLoginKey(socket, user, randomKey)
 
         await user.save()
 
@@ -116,8 +108,25 @@ export default class LoginHandler {
         return {
             success: true,
             username: username,
-            loginKey: loginKey
+            key: randomKey
         }
+    }
+
+    async genLoginKey(socket, user, randomKey) {
+        let address = socket.handshake.address
+        let userAgent = socket.request.headers['user-agent']
+
+        // Create hash of login key and user data
+        let hash = await bcrypt.hash(`${user.username}${randomKey}${address}${userAgent}`, this.config.rounds)
+
+        // JWT to be stored on database
+        return jwt.sign({
+            hash: hash
+        }, this.config.secret, { expiresIn: this.config.loginKeyExpiry })
+    }
+
+    async genAuthToken() {
+
     }
 
     close(user) {
