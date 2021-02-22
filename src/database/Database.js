@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize'
 
+import AuthTokens from './tables/AuthTokens'
 import Buddies from './tables/Buddies'
 import Ignores from './tables/Ignores'
 import Inventories from './tables/Inventories'
@@ -20,6 +21,7 @@ export default class Database {
                 logging: (config.debug) ? console.log : false
         })
 
+        this.authTokens = AuthTokens.init(this.sequelize, Sequelize)
         this.buddies = Buddies.init(this.sequelize, Sequelize)
         this.ignores = Ignores.init(this.sequelize, Sequelize)
         this.inventories = Inventories.init(this.sequelize, Sequelize)
@@ -84,6 +86,19 @@ export default class Database {
     getUserById(userId) {
         return this.users.findOne({
             where: { id: userId }
+
+        }).then((result) => {
+            if (result) {
+                return result
+            } else {
+                return null
+            }
+        })
+    }
+
+    getAuthToken(userId, selector) {
+        return this.authTokens.findOne({
+            where: { userId: userId, selector: selector }
 
         }).then((result) => {
             if (result) {

@@ -38,8 +38,8 @@ export default class DataHandler {
                 let parsed = JSON.parse(packet)
                 console.log(`[DataHandler] Received: ${parsed.action} ${JSON.stringify(parsed.args)}`)
 
-                // Only allow login_auth until user is authenticated
-                if (!user.authenticated && parsed.action != 'login_auth') return user.close()
+                // Only allow game_auth until user is authenticated
+                if (!user.authenticated && parsed.action != 'game_auth') return user.close()
 
                 this.fireEvent(parsed.action, parsed.args, user)
 
@@ -58,7 +58,7 @@ export default class DataHandler {
 
         if (user.room) user.room.remove(user)
         if (user.buddy) user.buddy.sendOffline()
-        if (user.data.id) delete this.usersById[user.data.id]
+        if (user.data && user.data.id) delete this.usersById[user.data.id]
 
         delete this.users[user.socket.id]
     }

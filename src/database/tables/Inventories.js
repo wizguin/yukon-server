@@ -13,7 +13,8 @@ export default class Inventories extends Sequelize.Model {
                 },
                 itemId: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    primaryKey: true
                 }
             },
             { sequelize, timestamps: false }

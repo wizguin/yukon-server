@@ -15,6 +15,17 @@ export default class LoginHandler {
         this.config = config.crypto
 
         this.check = this.createValidator()
+
+        this.responses = {
+            notFound: {
+                success: false,
+                message: 'Penguin not found. Try Again?'
+            },
+            wrongPassword: {
+                success: false,
+                message: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE'
+            }
+        }
     }
 
     createValidator() {
@@ -54,13 +65,24 @@ export default class LoginHandler {
         message.split('\xdd').filter(Boolean).forEach(packet => {
             try {
                 let parsed = JSON.parse(packet)
-                if (parsed.action == 'login') this.login(parsed.args, user)
 
+                switch (parsed.action) {
+                    case 'login':
+                        this.login(parsed.args, user)
+                        break
+                    case 'token_login':
+                        this.tokenLogin(parsed.args, user)
+                        break
+                    default:
+                        break
+                }
             } catch(error) {
                 console.error(`[DataHandler] Error: ${error}`)
             }
         })
     }
+
+    // Events
 
     async login(args, user) {
         let check = this.check({ username: args.username, password: args.password })
@@ -74,40 +96,64 @@ export default class LoginHandler {
 
         } else {
             // Comparing password and checking for user existence
-            user.send('login', await this.comparePasswords(args.username, args.password, user.socket))
+            user.send('login', await this.comparePasswords(args, user.socket))
         }
 
         user.close()
     }
 
-    async comparePasswords(username, password, socket) {
-        let user = await this.db.getUserByUsername(username)
+    async tokenLogin(args, user) {
+        user.send('login', await this.compareTokens(args, user.socket))
+        user.close()
+    }
+
+    // Functions
+
+    async comparePasswords(args, socket) {
+        let user = await this.db.getUserByUsername(args.username)
         if (!user) {
-            return {
-                success: false,
-                message: 'Penguin not found. Try Again?'
-            }
+            return this.responses.notFound
         }
 
-        let match = await bcrypt.compare(password, user.password)
+        let match = await bcrypt.compare(args.password, user.password)
         if (!match) {
-            return {
-                success: false,
-                message: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE'
-            }
+            return this.responses.wrongPassword
         }
 
+        return await this.onLoginSuccess(socket, user)
+    }
+
+    async compareTokens(args, socket) {
+        let user = await this.db.getUserByUsername(args.username)
+        if (!user) {
+            return this.responses.notFound
+        }
+
+        let split = args.token.split(':')
+        let token = await this.db.getAuthToken(user.id, split[0])
+        if (!token) {
+            return this.responses.wrongPassword
+        }
+
+        let match = await bcrypt.compare(split[1], token.validator)
+        if (!match) {
+            return this.responses.wrongPassword
+        }
+
+        return await this.onLoginSuccess(socket, user)
+    }
+
+    async onLoginSuccess(socket, user) {
         // Generate random key, used by client for authentication
         let randomKey = crypto.randomBytes(32).toString('hex')
         // Generate new login key, used to validate user on game server
         user.loginKey = await this.genLoginKey(socket, user, randomKey)
 
-        await user.save()
-
         // All validation passed
+        await user.save()
         return {
             success: true,
-            username: username,
+            username: user.username,
             key: randomKey
         }
     }
@@ -123,10 +169,6 @@ export default class LoginHandler {
         return jwt.sign({
             hash: hash
         }, this.config.secret, { expiresIn: this.config.loginKeyExpiry })
-    }
-
-    async genAuthToken() {
-
     }
 
     close(user) {

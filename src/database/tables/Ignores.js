@@ -13,7 +13,8 @@ export default class Ignores extends Sequelize.Model {
                 },
                 ignoreId: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    primaryKey: true
                 }
             },
             { sequelize, timestamps: false }
