@@ -7,6 +7,7 @@ import Inventories from './tables/Inventories'
 import Items from './tables/Items'
 import Rooms from './tables/Rooms'
 import Users from './tables/Users'
+import UserIgloos from './tables/UserIgloos'
 
 
 export default class Database {
@@ -28,6 +29,7 @@ export default class Database {
         this.items = Items.init(this.sequelize, Sequelize)
         this.rooms = Rooms.init(this.sequelize, Sequelize)
         this.users = Users.init(this.sequelize, Sequelize)
+        this.userIgloos = UserIgloos.init(this.sequelize, Sequelize)
 
         // Used to translate type id to string
         this.slots = [ 'color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award' ]
@@ -147,6 +149,20 @@ export default class Database {
                 return result.map(result => result.itemId)
             } else {
                 return []
+            }
+        })
+    }
+
+    getIgloo(userId) {
+        return this.userIgloos.findOne({
+            where: { userId: userId },
+            raw: true
+
+        }).then((result) => {
+            if (result) {
+                return result
+            } else {
+                return null
             }
         })
     }

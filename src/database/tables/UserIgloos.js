@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 
 
-export default class Items extends Sequelize.Model {
+export default class UserIgloos extends Sequelize.Model {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -9,38 +9,35 @@ export default class Items extends Sequelize.Model {
                 id: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false,
-                    primaryKey: true
+                    primaryKey: true,
+                    autoIncrement: true
                 },
-                name: {
-                    type: DataTypes.STRING(50),
-                    allowNull: false
-                },
-                type: {
-                    type: DataTypes.INTEGER(6),
-                    allowNull: false
-                },
-                cost: {
+                userId: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false
                 },
-                member: {
-                    type: DataTypes.BOOLEAN,
+                type: {
+                    type: DataTypes.INTEGER(11),
                     allowNull: false
                 },
-                bait: {
-                    type: DataTypes.BOOLEAN,
+                flooring: {
+                    type: DataTypes.INTEGER(11),
                     allowNull: false
                 },
-                patched: {
-                    type: DataTypes.BOOLEAN,
+                music: {
+                    type: DataTypes.INTEGER(11),
                     allowNull: false
                 },
-                treasure: {
+                location: {
+                    type: DataTypes.INTEGER(11),
+                    allowNull: false
+                },
+                locked: {
                     type: DataTypes.BOOLEAN,
                     allowNull: false
                 }
             },
-            { sequelize, timestamps: false }
+            { sequelize, timestamps: false, tableName: 'user_igloos' }
         )
     }
 
