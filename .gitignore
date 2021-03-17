@@ -117,3 +117,6 @@ dist
 
 # config
 config.json
+
+# exported json
+src/utils/json
