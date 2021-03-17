@@ -2,6 +2,7 @@ import Sequelize from 'sequelize'
 
 import AuthTokens from './tables/AuthTokens'
 import Buddies from './tables/Buddies'
+import Furnitures from './tables/Furnitures'
 import Ignores from './tables/Ignores'
 import Inventories from './tables/Inventories'
 import Items from './tables/Items'
@@ -24,6 +25,7 @@ export default class Database {
 
         this.authTokens = AuthTokens.init(this.sequelize, Sequelize)
         this.buddies = Buddies.init(this.sequelize, Sequelize)
+        this.furnitures = Furnitures.init(this.sequelize, Sequelize)
         this.ignores = Ignores.init(this.sequelize, Sequelize)
         this.inventories = Inventories.init(this.sequelize, Sequelize)
         this.items = Items.init(this.sequelize, Sequelize)
