@@ -1,4 +1,5 @@
 import Buddy from './Buddy'
+import FurnitureInventory from './FurnitureInventory'
 import Ignore from './Ignore'
 import Inventory from './Inventory'
 
@@ -48,6 +49,10 @@ export default class User {
         return this.handler.items
     }
 
+    get furnitures() {
+        return this.handler.furnitures
+    }
+
     async setBuddies(buddies) {
         this.buddy = new Buddy(this)
         await this.buddy.init(buddies)
@@ -60,6 +65,10 @@ export default class User {
 
     setInventory(inventory) {
         this.inventory = new Inventory(this, this.items, inventory)
+    }
+
+    setFurnitureInventory(inventory) {
+        this.furnitureInventory = new FurnitureInventory(this, this.furnitures, inventory)
     }
 
     setItem(slot, item) {

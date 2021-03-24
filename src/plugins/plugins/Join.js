@@ -25,7 +25,8 @@ export default class Join extends Plugin {
 
             buddies: user.buddy.list,
             ignores: user.ignore.list,
-            inventory: user.inventory.list
+            inventory: user.inventory.list,
+            furniture: user.furnitureInventory.list
         })
     }
 
