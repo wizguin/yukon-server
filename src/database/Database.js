@@ -3,6 +3,7 @@ import Sequelize from 'sequelize'
 import AuthTokens from './tables/AuthTokens'
 import Buddies from './tables/Buddies'
 import Furnitures from './tables/Furnitures'
+import FurnitureInventories from './tables/FurnitureInventories'
 import Ignores from './tables/Ignores'
 import Inventories from './tables/Inventories'
 import Items from './tables/Items'
@@ -26,6 +27,7 @@ export default class Database {
         this.authTokens = AuthTokens.init(this.sequelize, Sequelize)
         this.buddies = Buddies.init(this.sequelize, Sequelize)
         this.furnitures = Furnitures.init(this.sequelize, Sequelize)
+        this.furnitureInventories = FurnitureInventories.init(this.sequelize, Sequelize)
         this.ignores = Ignores.init(this.sequelize, Sequelize)
         this.inventories = Inventories.init(this.sequelize, Sequelize)
         this.items = Items.init(this.sequelize, Sequelize)
@@ -46,125 +48,116 @@ export default class Database {
             })
     }
 
-    getItems() {
-        return this.items.findAll({
+    async getItems() {
+        return await this.findAll('items', {
             raw: true
 
-        }).then((result) => {
-            if (result) {
-                result = this.arrayToObject(result, 'id')
-                result.slots = this.slots
-                return result
-            } else {
-                return null
-            }
+        }, {}, (result) => {
+            result = this.arrayToObject(result, 'id')
+            result.slots = this.slots
+            return result
         })
     }
 
-    getRooms() {
-        return this.rooms.findAll({
+    async getFurnitures() {
+        return await this.findAll('furnitures', {
             raw: true
 
-        }).then((result) => {
-            if (result) {
-                return result
-            } else {
-                return null
-            }
+        }, {}, (result) => {
+            return this.arrayToObject(result, 'id')
         })
     }
 
-    getUserByUsername(username) {
-        return this.users.findOne({
+    async getRooms() {
+        return await this.findAll('rooms', {
+            raw: true
+        })
+    }
+
+    async getUserByUsername(username) {
+        return await this.findOne('users', {
             where: { username: username }
-
-        }).then((result) => {
-            if (result) {
-                return result
-            } else {
-                return null
-            }
         })
     }
 
-    getUserById(userId) {
-        return this.users.findOne({
+    async getUserById(userId) {
+        return await this.findOne('users', {
             where: { id: userId }
-
-        }).then((result) => {
-            if (result) {
-                return result
-            } else {
-                return null
-            }
         })
     }
 
-    getAuthToken(userId, selector) {
-        return this.authTokens.findOne({
+    async getAuthToken(userId, selector) {
+        return await this.findOne('authTokens', {
             where: { userId: userId, selector: selector }
-
-        }).then((result) => {
-            if (result) {
-                return result
-            } else {
-                return null
-            }
         })
     }
 
-    getBuddies(userId) {
-        return this.buddies.findAll({
+    async getBuddies(userId) {
+        return await this.findAll('buddies', {
             where: { userId: userId },
             attributes: ['buddyId']
 
-        }).then((result) => {
-            if (result) {
-                return result.map(result => result.buddyId)
-            } else {
-                return []
-            }
+        }, [], (result) => {
+            return result.map(result => result.buddyId)
         })
     }
 
-    getIgnores(userId) {
-        return this.ignores.findAll({
+    async getIgnores(userId) {
+        return await this.findAll('ignores', {
             where: { userId: userId },
             attributes: ['ignoreId']
 
-        }).then((result) => {
-            if (result) {
-                return result.map(result => result.ignoreId)
-            } else {
-                return []
-            }
+        }, [], (result) => {
+            return result.map(result => result.ignoreId)
         })
     }
 
-    getInventory(userId) {
-        return this.inventories.findAll({
+    async getInventory(userId) {
+        return await this.findAll('inventories', {
             where: { userId: userId },
             attributes: ['itemId']
 
-        }).then((result) => {
-            if (result) {
-                return result.map(result => result.itemId)
-            } else {
-                return []
-            }
+        }, [], (result) => {
+            return result.map(result => result.itemId)
         })
     }
 
-    getIgloo(userId) {
-        return this.userIgloos.findOne({
+    async getFurnitureInventory(userId) {
+        return await this.findAll('furnitureInventories', {
+            where: { userId: userId },
+            attributes: ['itemId', 'quantity']
+
+        }, [], (result) => {
+            return result.map(result => [result.itemId, result.quantity])
+        })
+    }
+
+    async getIgloo(userId) {
+        return await this.findOne('userIgloos', {
             where: { userId: userId },
             raw: true
+        })
+    }
 
-        }).then((result) => {
-            if (result) {
+    /*========== Helper functions ==========*/
+
+    findOne(table, options = {}, emptyReturn = null, callback = null) {
+        return this.find('findOne', table, options, emptyReturn, callback)
+    }
+
+    findAll(table, options = {}, emptyReturn = null, callback = null) {
+        return this.find('findAll', table, options, emptyReturn, callback)
+    }
+
+    find(find, table, options, emptyReturn, callback) {
+        return this[table][find](options).then((result) => {
+
+            if (callback && result) {
+                return callback(result)
+            } else if (result) {
                 return result
             } else {
-                return null
+                return emptyReturn
             }
         })
     }
