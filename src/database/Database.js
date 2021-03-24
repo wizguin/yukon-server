@@ -125,10 +125,11 @@ export default class Database {
     async getFurnitureInventory(userId) {
         return await this.findAll('furnitureInventories', {
             where: { userId: userId },
-            attributes: ['itemId', 'quantity']
+            attributes: ['itemId', 'quantity'],
+            raw: true
 
         }, [], (result) => {
-            return result.map(result => [result.itemId, result.quantity])
+            return this.arrayToObject(result, 'itemId', 'quantity')
         })
     }
 
@@ -162,9 +163,12 @@ export default class Database {
         })
     }
 
-    arrayToObject(array, key) {
+    arrayToObject(array, key, value = null) {
         return array.reduce((obj, item) => {
-            obj[item[key]] = item
+            // If a value is passed in then the key will be mapped to item[value]
+            let result = (value) ? item[value] : item
+
+            obj[item[key]] = result
             delete item[key]
 
             return obj
