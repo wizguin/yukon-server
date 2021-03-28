@@ -16,7 +16,8 @@ export default class Igloo extends Room {
             type: this.type,
             flooring: this.flooring,
             music: this.music,
-            location: this.location
+            location: this.location,
+            furniture: this.furniture
         })
         this.send(user, 'add_player', { user: user.string })
     }

@@ -9,6 +9,7 @@ import Inventories from './tables/Inventories'
 import Items from './tables/Items'
 import Rooms from './tables/Rooms'
 import Users from './tables/Users'
+import UserFurnitures from './tables/UserFurnitures'
 import UserIgloos from './tables/UserIgloos'
 
 
@@ -33,6 +34,7 @@ export default class Database {
         this.items = Items.init(this.sequelize, Sequelize)
         this.rooms = Rooms.init(this.sequelize, Sequelize)
         this.users = Users.init(this.sequelize, Sequelize)
+        this.userFurnitures = UserFurnitures.init(this.sequelize, Sequelize)
         this.userIgloos = UserIgloos.init(this.sequelize, Sequelize)
 
         // Used to translate type id to string
@@ -137,6 +139,22 @@ export default class Database {
         return await this.findOne('userIgloos', {
             where: { userId: userId },
             raw: true
+
+        }, null, async (result) => {
+            // Add furniture to igloo object
+            result.furniture = await this.getUserFurnitures(result.id)
+            return result
+        })
+    }
+
+    async getUserFurnitures(iglooId) {
+        return await this.findAll('userFurnitures', {
+            where: { iglooId: iglooId },
+            raw: true
+
+        }, [], (result) => {
+            // Removes igloo id from all objects in furniture array
+            return result.map(({ iglooId, ...furnitures}) => furnitures)
         })
     }
 
