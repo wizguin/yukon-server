@@ -26,12 +26,12 @@ export default class UserFurnitures extends Sequelize.Model {
                     allowNull: false,
                     primaryKey: true
                 },
-                frame: {
+                rotation: {
                     type: DataTypes.INTEGER(6),
                     allowNull: false,
                     primaryKey: true
                 },
-                rotation: {
+                frame: {
                     type: DataTypes.INTEGER(6),
                     allowNull: false,
                     primaryKey: true
