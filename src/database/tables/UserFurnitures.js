@@ -6,35 +6,35 @@ export default class UserFurnitures extends Sequelize.Model {
     static init(sequelize, DataTypes) {
         return super.init(
             {
-                iglooId: {
+                id: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false,
-                    primaryKey: true
+                    primaryKey: true,
+                    autoIncrement: true
+                },
+                iglooId: {
+                    type: DataTypes.INTEGER(11),
+                    allowNull: false
                 },
                 furnitureId: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false,
-                    primaryKey: true
+                    allowNull: false
                 },
                 x: {
                     type: DataTypes.INTEGER(6),
-                    allowNull: false,
-                    primaryKey: true
+                    allowNull: false
                 },
                 y: {
                     type: DataTypes.INTEGER(6),
-                    allowNull: false,
-                    primaryKey: true
+                    allowNull: false
                 },
                 rotation: {
                     type: DataTypes.INTEGER(6),
-                    allowNull: false,
-                    primaryKey: true
+                    allowNull: false
                 },
                 frame: {
                     type: DataTypes.INTEGER(6),
-                    allowNull: false,
-                    primaryKey: true
+                    allowNull: false
                 }
             },
             { sequelize, timestamps: false, tableName: 'user_furnitures' }

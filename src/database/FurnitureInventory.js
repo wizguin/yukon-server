@@ -8,7 +8,7 @@ export default class FurnitureInventory {
     }
 
     includes(item) {
-        return this.list.includes(item)
+        return item in this.list
     }
 
 }
