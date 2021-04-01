@@ -12,7 +12,7 @@ export default class UserFurnitures extends Sequelize.Model {
                     primaryKey: true,
                     autoIncrement: true
                 },
-                iglooId: {
+                userId: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false
                 },

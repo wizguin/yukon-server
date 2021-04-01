@@ -142,19 +142,19 @@ export default class Database {
 
         }, null, async (result) => {
             // Add furniture to igloo object
-            result.furniture = await this.getUserFurnitures(result.id)
+            result.furniture = await this.getUserFurnitures(userId)
             return result
         })
     }
 
-    async getUserFurnitures(iglooId) {
+    async getUserFurnitures(userId) {
         return await this.findAll('userFurnitures', {
-            where: { iglooId: iglooId },
+            where: { userId: userId },
             raw: true
 
         }, [], (result) => {
-            // Removes igloo id from all objects in furniture array
-            return result.map(({ iglooId, ...furnitures}) => furnitures)
+            // Removes user id from all objects in furniture array
+            return result.map(({ userId, ...furnitures}) => furnitures)
         })
     }
 

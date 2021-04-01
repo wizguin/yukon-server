@@ -13,7 +13,7 @@ export default class Igloo extends Plugin {
     // Events
 
     async updateFurniture(args, user) {
-        await this.db.userFurnitures.destroy({ where: { iglooId: user.data.id  } })
+        await this.db.userFurnitures.destroy({ where: { userId: user.data.id  } })
 
         if (!args.furniture) return
 
@@ -34,7 +34,7 @@ export default class Igloo extends Plugin {
             if (quantities[id] > user.furnitureInventory.list[id]) continue
 
             furniture.push(item)
-            this.db.userFurnitures.create({ ...item, iglooId: user.data.id })
+            this.db.userFurnitures.create({ ...item, userId: user.data.id })
         }
 
         // Update on igloo object
