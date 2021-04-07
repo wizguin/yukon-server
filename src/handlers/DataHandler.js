@@ -1,4 +1,4 @@
-import Room from '../database/Room'
+import Room from '../objects/room/Room'
 import PluginManager from '../plugins/PluginManager'
 
 

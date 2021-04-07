@@ -1,5 +1,5 @@
 import Plugin from '../Plugin'
-import Igloo from '../../database/Igloo'
+import Igloo from '../../objects/room/Igloo'
 
 
 export default class Join extends Plugin {
