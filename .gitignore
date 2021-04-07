@@ -119,4 +119,4 @@ dist
 config.json
 
 # exported json
-src/utils/json
+utils/json

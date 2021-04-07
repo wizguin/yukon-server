@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon --exec babel-node ./src/World.js",
 
-    "secret-gen": "node ./src/utils/secret-gen.js",
-    "table-to-json": "babel-node ./src/utils/table-to-json.js"
+    "secret-gen": "node ./utils/secret-gen.js",
+    "table-to-json": "babel-node ./utils/table-to-json.js"
   },
   "author": "wizguin",
   "license": "ISC",

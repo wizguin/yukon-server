@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const fs = require('fs')
 const path = require('path')
 
-const file = path.resolve(__dirname, '../config/config.json')
+const file = path.resolve(__dirname, '../src/config/config.json')
 const config = require(file)
 
 

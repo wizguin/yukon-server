@@ -4,8 +4,8 @@ import fs from 'fs'
 import path from 'path'
 import readline from 'readline'
 
-import config from '../config/config.json'
-import Database from '../database/Database'
+import config from '../src/config/config.json'
+import Database from '../src/database/Database'
 
 
 const db = new Database(config.database)
