@@ -23,7 +23,7 @@ export default class Get extends Plugin {
     }
 
     getItem(args, user) {
-        let item = user.inventory.validateItem(args.item)
+        let item = user.validatePurchase.item(args.item)
 
         if (item) {
             user.send('get_item', { item: args.item, name: item.name, cost: item.cost })

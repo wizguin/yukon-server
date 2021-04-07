@@ -14,18 +14,22 @@ export default class Chat extends Plugin {
     }
 
     updatePlayer(args, user) {
-        if (!user.inventory.includes(args.item)) return
-
         let item = this.items[args.item]
-        //if (!item || item.bait || item.award) return
-        if (!item || item.award) return
+        if (!item || item.award || !user.inventory.includes(args.item)) return
 
         let slot = this.items.slots[item.type - 1]
         user.setItem(slot, args.item)
     }
 
     addItem(args, user) {
-        user.addItem(args.item)
+        let item = user.validatePurchase.item(args.item)
+        if (!item) return
+
+        let slot = this.items.slots[item.type - 1]
+        user.inventory.add(args.item, slot)
+
+        user.updateCoins(-item.cost)
+        user.send('add_item', { item: args.item, name: item.name, slot: slot, coins: user.data.coins })
     }
 
     removeItem(args, user) {

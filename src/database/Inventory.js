@@ -49,26 +49,4 @@ export default class Inventory {
         this.db.inventories.create({ userId: this.user.data.id, itemId: item })
     }
 
-    validateItem(id) {
-        let item = this.items[id]
-        if (!item) return false
-
-        if (item.cost > this.user.data.coins) {
-            this.user.send('error', { error: 'You need more coins.' })
-            return false
-
-        } else if (this.includes(id)) {
-            this.user.send('error', { error: 'You already have this item.' })
-            return false
-
-        } else if (item.patched) {
-            this.user.send('error', { error: 'This item is not currently available.' })
-            return false
-
-        } else {
-            // Item validated
-            return item
-        }
-    }
-
 }

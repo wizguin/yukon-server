@@ -2,6 +2,7 @@ import Buddy from './Buddy'
 import FurnitureInventory from './FurnitureInventory'
 import Ignore from './Ignore'
 import Inventory from './Inventory'
+import PurchaseValidator from './PurchaseValidator'
 
 
 export default class User {
@@ -9,8 +10,10 @@ export default class User {
     constructor(socket, handler) {
         this.socket = socket
         this.handler = handler
-        this.crumbs = handler.crumbs
         this.db = handler.db
+        this.crumbs = handler.crumbs
+
+        this.validatePurchase = new PurchaseValidator(this)
 
         this.data = null
         this.room = null
@@ -73,17 +76,8 @@ export default class User {
         this.update({ [slot]: item })
     }
 
-    addItem(id) {
-        let item = this.inventory.validateItem(id)
-        if (!item) return
-
-        let slot = this.crumbs.items.slots[item.type - 1]
-
-        this.data.coins -= item.cost
-        this.inventory.add(id, slot)
-
-        this.send('add_item', { item: id, name: item.name, slot: slot, coins: this.data.coins })
-
+    updateCoins(coins) {
+        this.data.coins += coins
         this.update({ coins: this.data.coins })
     }
 
