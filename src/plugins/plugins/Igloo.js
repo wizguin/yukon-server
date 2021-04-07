@@ -6,23 +6,48 @@ export default class Igloo extends Plugin {
     constructor(users, rooms) {
         super(users, rooms)
         this.events = {
+            'add_igloo': this.addIgloo,
+            'update_igloo': this.updateIgloo,
             'update_furniture': this.updateFurniture,
-            'update_flooring': this.updateFlooring
+            'update_flooring': this.updateFlooring,
         }
     }
 
     // Events
 
-    async updateFurniture(args, user) {
-        await this.db.userFurnitures.destroy({ where: { userId: user.data.id  } })
+    async addIgloo(args, user) {
 
-        if (!args.furniture) return
+    }
 
+    async updateIgloo(args, user) {
         let igloo = this.getIgloo(user.data.id)
-        if (!igloo) return
+        if (!args.igloo || !igloo || igloo != user.room) {
+            return
+        }
+
+        // check crumb
+        let iglooItem = true
+        if (!iglooItem) return
+
+        await igloo.clearFurniture()
+
+        igloo.update({ type: args.igloo })
+        igloo.update({ flooring: 0 })
+        igloo.type = args.igloo
+        igloo.flooring = 0
+
+        user.send('update_igloo', { igloo: args.igloo })
+    }
+
+    async updateFurniture(args, user) {
+        let igloo = this.getIgloo(user.data.id)
+        if (!Array.isArray(args.furniture) || !igloo || igloo != user.room) {
+            return
+        }
+
+        await igloo.clearFurniture()
 
         let quantities = {}
-        let furniture = []
 
         for (let item of args.furniture) {
             let id = item.furnitureId
@@ -34,12 +59,9 @@ export default class Igloo extends Plugin {
             // Validate quantity
             if (quantities[id] > user.furnitureInventory.list[id]) continue
 
-            furniture.push(item)
+            igloo.furniture.push(item)
             this.db.userFurnitures.create({ ...item, userId: user.data.id })
         }
-
-        // Update on igloo object
-        igloo.furniture = furniture
     }
 
     updateFlooring(args, user) {

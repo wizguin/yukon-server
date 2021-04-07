@@ -28,4 +28,9 @@ export default class Igloo extends Room {
         this.db.userIgloos.update(query, { where: { userId: this.userId }})
     }
 
+    async clearFurniture() {
+        await this.db.userFurnitures.destroy({ where: { userId: this.userId } })
+        this.furniture = []
+    }
+
 }
