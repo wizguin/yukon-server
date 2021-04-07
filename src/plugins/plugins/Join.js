@@ -66,10 +66,7 @@ export default class Join extends Plugin {
             let igloo = await this.db.getIgloo(id)
             if (!igloo) return null
 
-            igloo.id = id
-            delete igloo.userId
-
-            this.rooms[internalId] = new Igloo(igloo)
+            this.rooms[internalId] = new Igloo(igloo, this.db)
         }
 
         return this.rooms[internalId]

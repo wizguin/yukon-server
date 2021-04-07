@@ -16,7 +16,8 @@ export default class DataHandler {
     async init() {
         this.crumbs = {
             items: await this.db.getItems(),
-            furnitures: await this.db.getFurnitures()
+            furnitures: await this.db.getFurnitures(),
+            floorings: await this.db.getFloorings()
         }
 
         this.rooms = await this.setRooms()

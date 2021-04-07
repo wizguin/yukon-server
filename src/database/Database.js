@@ -2,6 +2,7 @@ import Sequelize from 'sequelize'
 
 import AuthTokens from './tables/AuthTokens'
 import Buddies from './tables/Buddies'
+import Floorings from './tables/Floorings'
 import Furnitures from './tables/Furnitures'
 import FurnitureInventories from './tables/FurnitureInventories'
 import Ignores from './tables/Ignores'
@@ -27,6 +28,7 @@ export default class Database {
 
         this.authTokens = AuthTokens.init(this.sequelize, Sequelize)
         this.buddies = Buddies.init(this.sequelize, Sequelize)
+        this.floorings = Floorings.init(this.sequelize, Sequelize)
         this.furnitures = Furnitures.init(this.sequelize, Sequelize)
         this.furnitureInventories = FurnitureInventories.init(this.sequelize, Sequelize)
         this.ignores = Ignores.init(this.sequelize, Sequelize)
@@ -63,6 +65,15 @@ export default class Database {
 
     async getFurnitures() {
         return await this.findAll('furnitures', {
+            raw: true
+
+        }, {}, (result) => {
+            return this.arrayToObject(result, 'id')
+        })
+    }
+
+    async getFloorings() {
+        return await this.findAll('floorings', {
             raw: true
 
         }, {}, (result) => {

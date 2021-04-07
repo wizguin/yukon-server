@@ -6,7 +6,8 @@ export default class Igloo extends Plugin {
     constructor(users, rooms) {
         super(users, rooms)
         this.events = {
-            'update_furniture': this.updateFurniture
+            'update_furniture': this.updateFurniture,
+            'update_flooring': this.updateFlooring
         }
     }
 
@@ -39,6 +40,20 @@ export default class Igloo extends Plugin {
 
         // Update on igloo object
         igloo.furniture = furniture
+    }
+
+    updateFlooring(args, user) {
+        let igloo = this.getIgloo(user.data.id)
+        if (!igloo || igloo != user.room) return
+
+        let flooring = user.validatePurchase.flooring(args.flooring)
+        if (!flooring) return
+
+        igloo.update({ flooring: args.flooring })
+        igloo.flooring = args.flooring
+
+        user.updateCoins(-flooring.cost)
+        user.send('update_flooring', { flooring: args.flooring, coins: user.data.coins })
     }
 
     // Functions
