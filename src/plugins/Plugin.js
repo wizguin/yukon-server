@@ -5,8 +5,7 @@ export default class Plugin {
         this.users = handler.users
         this.usersById = handler.usersById
         this.config = handler.config
-        this.items = handler.items
-        this.furnitures = handler.furnitures
+        this.crumbs = handler.crumbs
         this.rooms = handler.rooms
     }
 

@@ -1,13 +1,12 @@
 export default class Inventory {
 
-    constructor(user, items, inventory) {
+    constructor(user, inventory) {
         this.user = user
         this.db = user.db
-        // Item crumbs
-        this.items = items
+        this.items = user.crumbs.items
 
         // Generates object from slots in format: { color: [], head: [], ... }
-        let template = Object.fromEntries(items.slots.map(slot => [slot, []]))
+        let template = Object.fromEntries(this.items.slots.map(slot => [slot, []]))
         Object.assign(this, template)
 
         // Assigns inventory list to slots

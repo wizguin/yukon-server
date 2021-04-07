@@ -1,9 +1,9 @@
 export default class FurnitureInventory {
 
-    constructor(user, furnitures, inventory) {
+    constructor(user, inventory) {
         this.user = user
         this.db = user.db
-        this.crumbs = furnitures
+        this.furnitures = user.crumbs.furnitures
         this.list = inventory
     }
 

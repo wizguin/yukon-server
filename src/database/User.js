@@ -9,6 +9,7 @@ export default class User {
     constructor(socket, handler) {
         this.socket = socket
         this.handler = handler
+        this.crumbs = handler.crumbs
         this.db = handler.db
 
         this.data = null
@@ -45,14 +46,6 @@ export default class User {
         }
     }
 
-    get items() {
-        return this.handler.items
-    }
-
-    get furnitures() {
-        return this.handler.furnitures
-    }
-
     async setBuddies(buddies) {
         this.buddy = new Buddy(this)
         await this.buddy.init(buddies)
@@ -64,11 +57,11 @@ export default class User {
     }
 
     setInventory(inventory) {
-        this.inventory = new Inventory(this, this.items, inventory)
+        this.inventory = new Inventory(this, inventory)
     }
 
     setFurnitureInventory(inventory) {
-        this.furnitureInventory = new FurnitureInventory(this, this.furnitures, inventory)
+        this.furnitureInventory = new FurnitureInventory(this, inventory)
     }
 
     setItem(slot, item) {
@@ -84,7 +77,7 @@ export default class User {
         let item = this.inventory.validateItem(id)
         if (!item) return
 
-        let slot = this.items.slots[item.type - 1]
+        let slot = this.crumbs.items.slots[item.type - 1]
 
         this.data.coins -= item.cost
         this.inventory.add(id, slot)

@@ -14,9 +14,11 @@ export default class DataHandler {
     }
 
     async init() {
-        // Crumbs
-        this.items = await this.db.getItems()
-        this.furnitures = await this.db.getFurnitures()
+        this.crumbs = {
+            items: await this.db.getItems(),
+            furnitures: await this.db.getFurnitures()
+        }
+
         this.rooms = await this.setRooms()
 
         this.plugins = new PluginManager(this)

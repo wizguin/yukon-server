@@ -10,6 +10,7 @@ export default class Chat extends Plugin {
             'add_item': this.addItem,
             'remove_item': this.removeItem
         }
+        this.items = this.crumbs.items
     }
 
     updatePlayer(args, user) {
