@@ -9,7 +9,7 @@ export default class Igloo extends Plugin {
             'add_igloo': this.addIgloo,
             'update_igloo': this.updateIgloo,
             'update_furniture': this.updateFurniture,
-            'update_flooring': this.updateFlooring,
+            'update_flooring': this.updateFlooring
         }
     }
 
@@ -21,7 +21,7 @@ export default class Igloo extends Plugin {
 
     async updateIgloo(args, user) {
         let igloo = this.getIgloo(user.data.id)
-        if (!args.igloo || !igloo || igloo != user.room) {
+        if (!args.type || !igloo || igloo != user.room || igloo.type == args.type) {
             return
         }
 
@@ -31,12 +31,13 @@ export default class Igloo extends Plugin {
 
         await igloo.clearFurniture()
 
-        igloo.update({ type: args.igloo })
+        igloo.update({ type: args.type })
         igloo.update({ flooring: 0 })
-        igloo.type = args.igloo
+        igloo.type = args.type
         igloo.flooring = 0
 
-        user.send('update_igloo', { igloo: args.igloo })
+        // Refresh igloo
+        igloo.refresh(user)
     }
 
     async updateFurniture(args, user) {

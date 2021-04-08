@@ -9,10 +9,8 @@ export default class Igloo extends Room {
         this.db = db
     }
 
-    add(user) {
-        this.users[user.socket.id] = user
-
-        user.send('join_igloo', {
+    get string() {
+        return {
             igloo: this.userId,
             users: this.strings,
             type: this.type,
@@ -20,8 +18,23 @@ export default class Igloo extends Room {
             music: this.music,
             location: this.location,
             furniture: this.furniture
-        })
+        }
+    }
+
+    add(user) {
+        this.users[user.socket.id] = user
+
+        user.send('join_igloo', this.string)
         this.send(user, 'add_player', { user: user.string })
+    }
+
+    refresh(user) {
+        for (let u of this.userValues) {
+            u.x = 0
+            u.y = 0
+            u.frame = 1
+        }
+        this.send(user, 'join_igloo', this.string, [])
     }
 
     update(query) {
