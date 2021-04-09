@@ -5,6 +5,8 @@ import Buddies from './tables/Buddies'
 import Floorings from './tables/Floorings'
 import Furnitures from './tables/Furnitures'
 import FurnitureInventories from './tables/FurnitureInventories'
+import Igloos from './tables/Igloos'
+import IglooInventories from './tables/IglooInventories'
 import Ignores from './tables/Ignores'
 import Inventories from './tables/Inventories'
 import Items from './tables/Items'
@@ -31,6 +33,8 @@ export default class Database {
         this.floorings = Floorings.init(this.sequelize, Sequelize)
         this.furnitures = Furnitures.init(this.sequelize, Sequelize)
         this.furnitureInventories = FurnitureInventories.init(this.sequelize, Sequelize)
+        this.igloos = Igloos.init(this.sequelize, Sequelize)
+        this.iglooInventories = IglooInventories.init(this.sequelize, Sequelize)
         this.ignores = Ignores.init(this.sequelize, Sequelize)
         this.inventories = Inventories.init(this.sequelize, Sequelize)
         this.items = Items.init(this.sequelize, Sequelize)
@@ -53,32 +57,21 @@ export default class Database {
     }
 
     async getItems() {
-        return await this.findAll('items', {
-            raw: true
+        let items = await this.getCrumb('items')
+        items.slots = this.slots
+        return items
+    }
 
-        }, {}, (result) => {
-            result = this.arrayToObject(result, 'id')
-            result.slots = this.slots
-            return result
-        })
+    async getIgloos() {
+        return await this.getCrumb('igloos')
     }
 
     async getFurnitures() {
-        return await this.findAll('furnitures', {
-            raw: true
-
-        }, {}, (result) => {
-            return this.arrayToObject(result, 'id')
-        })
+        return await this.getCrumb('furnitures')
     }
 
     async getFloorings() {
-        return await this.findAll('floorings', {
-            raw: true
-
-        }, {}, (result) => {
-            return this.arrayToObject(result, 'id')
-        })
+        return await this.getCrumb('floorings')
     }
 
     async getRooms() {
@@ -132,6 +125,16 @@ export default class Database {
 
         }, [], (result) => {
             return result.map(result => result.itemId)
+        })
+    }
+
+    async getIglooInventory(userId) {
+        return await this.findAll('iglooInventories', {
+            where: { userId: userId },
+            attributes: ['iglooId']
+
+        }, [], (result) => {
+            return result.map(result => result.iglooId)
         })
     }
 
@@ -189,6 +192,15 @@ export default class Database {
             } else {
                 return emptyReturn
             }
+        })
+    }
+
+    async getCrumb(table) {
+        return await this.findAll(table, {
+            raw: true
+
+        }, {}, (result) => {
+            return this.arrayToObject(result, 'id')
         })
     }
 

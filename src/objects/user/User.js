@@ -1,5 +1,6 @@
 import Buddy from './Buddy'
 import FurnitureInventory from './FurnitureInventory'
+import IglooInventory from './IglooInventory'
 import Ignore from './Ignore'
 import Inventory from './Inventory'
 import PurchaseValidator from './PurchaseValidator'
@@ -61,6 +62,10 @@ export default class User {
 
     setInventory(inventory) {
         this.inventory = new Inventory(this, inventory)
+    }
+
+    setIglooInventory(inventory) {
+        this.iglooInventory = new IglooInventory(this, inventory)
     }
 
     setFurnitureInventory(inventory) {

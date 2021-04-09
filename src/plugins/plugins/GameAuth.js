@@ -63,6 +63,7 @@ export default class GameAuth extends Plugin {
         await user.setBuddies(await user.db.getBuddies(user.data.id))
         await user.setIgnores(await user.db.getIgnores(user.data.id))
         user.setInventory(await user.db.getInventory(user.data.id))
+        user.setIglooInventory(await user.db.getIglooInventory(user.data.id))
         user.setFurnitureInventory(await user.db.getFurnitureInventory(user.data.id))
 
         user.authenticated = true
