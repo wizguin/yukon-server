@@ -21,13 +21,13 @@ export default class Actions extends Plugin {
     }
 
     sendFrame(args, user) {
-        if (args.loop) {
+        if (args.set) {
             user.frame = args.frame
         } else {
             user.frame = 1
         }
 
-        user.room.send(user, 'send_frame', { id: user.data.id, frame: args.frame, loop: args.loop })
+        user.room.send(user, 'send_frame', { id: user.data.id, frame: args.frame })
     }
 
     snowball(args, user) {
