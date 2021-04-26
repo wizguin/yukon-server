@@ -57,6 +57,11 @@ export default class GameAuth extends Plugin {
         // Create new token
         if (args.createToken) token = await this.genAuthToken(user)
 
+        // Disconnect if already logged in
+        if (user.data.id in this.usersById) {
+            this.usersById[user.data.id].close()
+        }
+
         // Success
         this.usersById[user.data.id] = user
 
