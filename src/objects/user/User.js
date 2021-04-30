@@ -28,6 +28,7 @@ export default class User {
 
         // Game server authentication
         this.authenticated = false
+        this.token = {}
     }
 
     get string() {
