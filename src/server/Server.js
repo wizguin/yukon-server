@@ -1,3 +1,5 @@
+import RateLimiterFlexible from 'rate-limiter-flexible'
+
 import User from '../objects/user/User'
 
 
@@ -13,6 +15,12 @@ export default class Server {
                 origin: config.socketio.origin,
                 methods: ['GET', 'POST']
             }
+        })
+
+        this.rateLimiter = new RateLimiterFlexible.RateLimiterMemory({
+            // 10 events allowed per second
+            points: 10,
+            duration: 1
         })
 
         this.server = io.listen(config.worlds[id].port)
@@ -31,7 +39,15 @@ export default class Server {
     }
 
     messageReceived(message, user) {
-        this.handler.handle(message, user)
+        // Consume 1 point per event from IP address
+        this.rateLimiter.consume(user.socket.handshake.address)
+            .then(() => {
+                // Allowed
+                this.handler.handle(message, user)
+            })
+            .catch(() => {
+                // Blocked
+            })
     }
 
     connectionLost(user) {

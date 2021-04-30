@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec babel-node ./src/World.js",
-
     "secret-gen": "node ./utils/secret-gen.js",
     "table-to-json": "babel-node ./utils/table-to-json.js"
   },
@@ -24,6 +23,7 @@
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
+    "rate-limiter-flexible": "^2.2.1",
     "sequelize": "^5.22.3",
     "socket.io": "^3.1.1",
     "uuid": "^8.3.2"
