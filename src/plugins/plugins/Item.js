@@ -26,7 +26,7 @@ export default class Chat extends Plugin {
         if (!item) return
 
         let slot = this.items.slots[item.type - 1]
-        user.inventory.add(args.item, slot)
+        user.inventory.add(args.item)
 
         user.updateCoins(-item.cost)
         user.send('add_item', { item: args.item, name: item.name, slot: slot, coins: user.data.coins })

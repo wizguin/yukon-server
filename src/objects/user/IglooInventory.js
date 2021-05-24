@@ -8,7 +8,7 @@ export default class IglooInventory {
     }
 
     includes(item) {
-        return item in this.list
+        return this.list.includes(item)
     }
 
 }

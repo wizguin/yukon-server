@@ -144,7 +144,7 @@ export default class Database {
             attributes: ['itemId', 'quantity'],
             raw: true
 
-        }, [], (result) => {
+        }, {}, (result) => {
             return this.arrayToObject(result, 'itemId', 'quantity')
         })
     }
