@@ -7,6 +7,7 @@ export default class Igloo extends Plugin {
         super(users, rooms)
         this.events = {
             'add_igloo': this.addIgloo,
+            'add_furniture': this.addFurniture,
             'update_igloo': this.updateIgloo,
             'update_furniture': this.updateFurniture,
             'update_flooring': this.updateFlooring
@@ -17,6 +18,17 @@ export default class Igloo extends Plugin {
 
     async addIgloo(args, user) {
 
+    }
+
+    addFurniture(args, user) {
+        let furniture = user.validatePurchase.furniture(args.furniture)
+        if (!furniture) return
+
+        // If furniture added successfuly
+        if (user.furnitureInventory.add(args.furniture)) {
+            user.updateCoins(-furniture.cost)
+            user.send('add_furniture', { furniture: args.furniture, coins: user.data.coins })
+        }
     }
 
     async updateIgloo(args, user) {

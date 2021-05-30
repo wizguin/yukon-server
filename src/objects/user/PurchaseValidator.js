@@ -14,7 +14,7 @@ export default class PurchaseValidator {
     }
 
     furniture(id) {
-
+        return this.validate(id, 'furnitures')
     }
 
     flooring(id) {
