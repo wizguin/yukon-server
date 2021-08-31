@@ -40,7 +40,7 @@ export default class Items extends Sequelize.Model {
                     allowNull: false
                 }
             },
-            { sequelize, timestamps: false }
+            { sequelize, timestamps: false, tableName: 'items' }
         )
     }
 

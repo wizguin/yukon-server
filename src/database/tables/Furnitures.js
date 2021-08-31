@@ -48,7 +48,7 @@ export default class Furnitures extends Sequelize.Model {
                     allowNull: true
                 }
             },
-            { sequelize, timestamps: false }
+            { sequelize, timestamps: false, tableName: 'furnitures' }
         )
     }
 

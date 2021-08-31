@@ -26,7 +26,7 @@ export default class Floorings extends Sequelize.Model {
                     defaultValue: 0
                 }
             },
-            { sequelize, timestamps: false }
+            { sequelize, timestamps: false, tableName: 'floorings' }
         )
     }
 

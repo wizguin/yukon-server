@@ -17,7 +17,7 @@ export default class Inventories extends Sequelize.Model {
                     primaryKey: true
                 }
             },
-            { sequelize, timestamps: false }
+            { sequelize, timestamps: false, tableName: 'inventories' }
         )
     }
 

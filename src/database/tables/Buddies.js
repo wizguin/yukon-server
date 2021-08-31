@@ -17,7 +17,7 @@ export default class Buddies extends Sequelize.Model {
                     primaryKey: true
                 }
             },
-            { sequelize, timestamps: false }
+            { sequelize, timestamps: false, tableName: 'buddies' }
         )
     }
 

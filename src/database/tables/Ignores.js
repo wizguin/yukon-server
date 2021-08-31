@@ -17,7 +17,7 @@ export default class Ignores extends Sequelize.Model {
                     primaryKey: true
                 }
             },
-            { sequelize, timestamps: false }
+            { sequelize, timestamps: false, tableName: 'ignores' }
         )
     }
 

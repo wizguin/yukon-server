@@ -73,7 +73,7 @@ export default class Users extends Sequelize.Model {
                     allowNull: false
                 }
             },
-            { sequelize, timestamps: false }
+            { sequelize, timestamps: false, tableName: 'users' }
         )
     }
 
