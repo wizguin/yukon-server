@@ -14,6 +14,7 @@ import Rooms from './tables/Rooms'
 import Users from './tables/Users'
 import UserFurnitures from './tables/UserFurnitures'
 import UserIgloos from './tables/UserIgloos'
+import Waddles from './tables/Waddles'
 
 
 export default class Database {
@@ -42,6 +43,7 @@ export default class Database {
         this.users = Users.init(this.sequelize, Sequelize)
         this.userFurnitures = UserFurnitures.init(this.sequelize, Sequelize)
         this.userIgloos = UserIgloos.init(this.sequelize, Sequelize)
+        this.waddles = Waddles.init(this.sequelize, Sequelize)
 
         // Used to translate type id to string
         this.slots = [ 'color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award' ]
@@ -76,6 +78,12 @@ export default class Database {
 
     async getRooms() {
         return await this.findAll('rooms', {
+            raw: true
+        })
+    }
+
+    async getWaddles() {
+        return await this.findAll('waddles', {
             raw: true
         })
     }

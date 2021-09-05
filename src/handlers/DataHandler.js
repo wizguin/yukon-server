@@ -1,4 +1,5 @@
 import Room from '../objects/room/Room'
+import RoomWaddle from '../objects/room/RoomWaddle'
 import PluginManager from '../plugins/PluginManager'
 
 
@@ -23,7 +24,17 @@ export default class DataHandler {
 
         this.rooms = await this.setRooms()
 
+        await this.setWaddles()
+
         this.plugins = new PluginManager(this)
+    }
+
+    async setWaddles() {
+        let waddles = await this.db.getWaddles()
+
+        for (let waddle of waddles) {
+            this.rooms[waddle.roomId].waddles[waddle.id] = new RoomWaddle(waddle)
+        }
     }
 
     async setRooms() {
@@ -63,6 +74,7 @@ export default class DataHandler {
 
         if (user.room) user.room.remove(user)
         if (user.buddy) user.buddy.sendOffline()
+        if (user.waddle) user.waddle.remove(user)
         if (user.data && user.data.id) delete this.usersById[user.data.id]
 
         delete this.users[user.socket.id]

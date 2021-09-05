@@ -16,15 +16,17 @@ export default class User {
 
         this.validatePurchase = new PurchaseValidator(this)
 
-        this.data = null
-        this.room = null
+        this.data
+        this.room
         this.x = 0
         this.y = 0
         this.frame = 1
 
-        this.buddy = null
-        this.ignore = null
-        this.inventory = null
+        this.buddy
+        this.ignore
+        this.inventory
+
+        this.waddle
 
         // Game server authentication
         this.authenticated = false

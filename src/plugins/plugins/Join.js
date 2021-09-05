@@ -46,7 +46,10 @@ export default class Join extends Plugin {
 
     // Limit this to 1/2 uses per second
     joinRoom(args, user, room = this.rooms[args.room]) {
-        if (room === user.room) return
+        if (room === user.room || user.waddle) {
+            return
+        }
+
         user.room.remove(user)
 
         user.room = room

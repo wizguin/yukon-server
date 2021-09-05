@@ -15,9 +15,9 @@ export default class Actions extends Plugin {
     sendPosition(args, user) {
         user.x = args.x
         user.y = args.y
-        user.frame = 1
+        user.frame = args.endFrame || 1
 
-        user.room.send(user, 'send_position', { id: user.data.id, x: args.x, y: args.y })
+        user.room.send(user, 'send_position', { id: user.data.id, x: args.x, y: args.y, endFrame: args.endFrame })
     }
 
     sendFrame(args, user) {
