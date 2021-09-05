@@ -29,12 +29,4 @@ export default class RoomWaddle {
         user.room.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: null }, [])
     }
 
-    send(user, action, args = {}, filter = [user, null]) {
-        let users = this.users.filter(u => !filter.includes(u))
-
-        for (let u of users) {
-            u.send(action, args)
-        }
-    }
-
 }
