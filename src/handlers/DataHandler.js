@@ -1,5 +1,5 @@
 import Room from '../objects/room/Room'
-import RoomWaddle from '../objects/room/RoomWaddle'
+import WaddleRoom from '../objects/room/WaddleRoom'
 import PluginManager from '../plugins/PluginManager'
 
 
@@ -33,7 +33,7 @@ export default class DataHandler {
         let waddles = await this.db.getWaddles()
 
         for (let waddle of waddles) {
-            this.rooms[waddle.roomId].waddles[waddle.id] = new RoomWaddle(waddle)
+            this.rooms[waddle.roomId].waddles[waddle.id] = new WaddleRoom(waddle)
         }
     }
 

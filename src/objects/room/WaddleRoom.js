@@ -1,4 +1,7 @@
-export default class RoomWaddle {
+import SledInstance from '../instance/SledInstance'
+
+
+export default class WaddleRoom {
 
     constructor(data) {
         Object.assign(this, data)
@@ -16,6 +19,11 @@ export default class RoomWaddle {
 
         user.waddle = this
 
+        // Start game
+        if (!this.users.includes(null)) {
+            return this.start()
+        }
+
         user.send('join_waddle', { waddle: this.id, seat: seat })
         user.room.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: user.data.username }, [])
     }
@@ -27,6 +35,22 @@ export default class RoomWaddle {
         user.waddle = null
 
         user.room.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: null }, [])
+    }
+
+    start() {
+        let instance = new SledInstance(this)
+
+        this.reset()
+        instance.start()
+    }
+
+    reset() {
+        for (let [seat, user] of this.users.entries()) {
+            if (user) {
+                this.users[seat] = null
+                user.room.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: null }, [])
+            }
+        }
     }
 
 }

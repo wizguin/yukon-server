@@ -89,6 +89,21 @@ export default class User {
         this.update({ coins: this.data.coins })
     }
 
+    joinRoom(room, x = 0, y = 0) {
+        if (!room || room === this.room) {
+            return
+        }
+
+        this.room.remove(this)
+
+        this.room = room
+        this.x = x
+        this.y = y
+        this.frame = 1
+
+        this.room.add(this)
+    }
+
     update(query) {
         this.db.users.update(query, { where: { id: this.data.id }})
     }

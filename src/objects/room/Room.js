@@ -5,6 +5,7 @@ export default class Room {
 
         this.users = {}
 
+        // Only used by rooms with waddles
         this.waddles = {}
     }
 
@@ -19,12 +20,18 @@ export default class Room {
     add(user) {
         this.users[user.socket.id] = user
 
+        if (this.game) {
+            return user.send('join_game', { room: this.id })
+        }
+
         user.send('join_room', { room: this.id, users: this.strings })
         this.send(user, 'add_player', { user: user.string })
     }
 
     remove(user) {
-        this.send(user, 'remove_player', { user: user.data.id })
+        if (!this.game) {
+            this.send(user, 'remove_player', { user: user.data.id })
+        }
 
         delete this.users[user.socket.id]
     }

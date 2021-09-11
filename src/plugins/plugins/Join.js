@@ -45,24 +45,13 @@ export default class Join extends Plugin {
     }
 
     // Limit this to 1/2 uses per second
-    joinRoom(args, user, room = this.rooms[args.room]) {
-        if (room === user.room || user.waddle) {
-            return
-        }
-
-        user.room.remove(user)
-
-        user.room = room
-        user.x = args.x
-        user.y = args.y
-        user.frame = 1
-
-        user.room.add(user)
+    joinRoom(args, user) {
+        user.joinRoom(this.rooms[args.room], args.x, args.y)
     }
 
     async joinIgloo(args, user) {
         let igloo = await this.getIgloo(args.igloo)
-        if (igloo) this.joinRoom(args, user, igloo)
+        user.joinRoom(igloo, args.x, args.y)
     }
 
     // Functions
