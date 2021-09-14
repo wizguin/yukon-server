@@ -4,11 +4,15 @@ export default class WaddleInstance {
         this.users = [...waddle.users]
     }
 
-    start() {
+    init() {
         for (let user of this.users) {
             user.waddle = this
-            user.joinRoom(user.handler.rooms[this.roomId])
+            user.joinRoom(user.handler.rooms[this.id])
         }
+    }
+
+    startGame(user) {
+        // To be overridden in derived class
     }
 
     remove(user) {

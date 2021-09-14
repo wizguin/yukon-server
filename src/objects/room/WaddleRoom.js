@@ -9,10 +9,6 @@ export default class WaddleRoom {
         this.users = new Array(data.seats).fill(null)
     }
 
-    get usernames() {
-        return this.users.map(user => (user) ? user.data.username : null)
-    }
-
     add(user) {
         let seat = this.users.indexOf(null)
         this.users[seat] = user
@@ -41,7 +37,7 @@ export default class WaddleRoom {
         let instance = new SledInstance(this)
 
         this.reset()
-        instance.start()
+        instance.init()
     }
 
     reset() {
