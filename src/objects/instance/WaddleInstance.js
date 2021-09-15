@@ -2,6 +2,9 @@ export default class WaddleInstance {
 
     constructor(waddle) {
         this.users = [...waddle.users]
+
+        this.ready = []
+        this.started = false
     }
 
     init() {
@@ -11,22 +14,49 @@ export default class WaddleInstance {
         }
     }
 
+    // Events
+
     startGame(user) {
-        // To be overridden in derived class
+        if (!this.started && !this.ready.includes(user)) {
+            this.ready.push(user)
+
+            this.checkStart()
+        }
     }
 
     sendMove(args, user) {
         // To be overridden in derived class
     }
 
+    // Functions
+
+    checkStart() {
+        // Compare with non null values in case user disconnects
+        if (this.ready.length == this.users.filter(Boolean).length) {
+            this.gameReady()
+        }
+    }
+
+    gameReady() {
+        this.started = true
+    }
+
     remove(user) {
+        // Remove from users
         let seat = this.users.indexOf(user)
         this.users[seat] = null
 
+        // Remove from ready
+        this.ready = this.ready.filter(u => u != user)
+
         user.waddle = null
+
+        if (!this.started) {
+            this.checkStart()
+        }
     }
 
-    send(user, action, args = {}, filter = [user]) {
+    send(action, args = {}, user = null, filter = [user]) {
         let users = this.users.filter(u => !filter.includes(u))
 
         for (let u of users) {

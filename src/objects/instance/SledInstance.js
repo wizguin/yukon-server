@@ -9,8 +9,11 @@ export default class SledInstance extends WaddleInstance {
         this.id = 999
     }
 
-    // Todo: sync start
-    startGame(user) {
+    sendMove(args, user) {
+        this.send('send_move', { id: args.id, x: args.x, y: args.y }, user)
+    }
+
+    gameReady() {
         let users = this.users.filter(Boolean).map(user => {
             return {
                 username: user.data.username,
@@ -19,11 +22,9 @@ export default class SledInstance extends WaddleInstance {
             }
         })
 
-        user.send('start_game', { seats: this.users.length, users: users })
-    }
+        this.send('start_game', { seats: this.users.length, users: users })
 
-    sendMove(args, user) {
-        this.send(user, 'send_move', { id: args.id, x: args.x, y: args.y })
+        super.gameReady()
     }
 
 }
