@@ -53,6 +53,10 @@ export default class User {
         }
     }
 
+    get inWaddleGame() {
+        return this.waddle && this.room.game && this.waddle.id == this.room.id
+    }
+
     async setBuddies(buddies) {
         this.buddy = new Buddy(this)
         await this.buddy.init(buddies)

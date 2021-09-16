@@ -5,6 +5,9 @@ export default class WaddleInstance {
 
         this.ready = []
         this.started = false
+
+        this.payouts = []
+        this.minPayout = 5
     }
 
     init() {
@@ -29,6 +32,12 @@ export default class WaddleInstance {
     }
 
     // Functions
+
+    getPayout(user, score) {
+        this.remove(user)
+
+        return this.payouts[score] || this.minPayout
+    }
 
     checkStart() {
         // Compare with non null values in case user disconnects
@@ -57,7 +66,7 @@ export default class WaddleInstance {
     }
 
     send(action, args = {}, user = null, filter = [user]) {
-        let users = this.users.filter(u => !filter.includes(u))
+        let users = this.users.filter(u => !filter.includes(u)).filter(Boolean)
 
         for (let u of users) {
             u.send(action, args)

@@ -18,8 +18,8 @@ export default class Server {
         })
 
         this.rateLimiter = new RateLimiterFlexible.RateLimiterMemory({
-            // 10 events allowed per second
-            points: 10,
+            // 20 events allowed per second
+            points: 20,
             duration: 1
         })
 
