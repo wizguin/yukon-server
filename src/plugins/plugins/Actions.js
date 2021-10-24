@@ -27,7 +27,7 @@ export default class Actions extends Plugin {
             user.frame = 1
         }
 
-        user.room.send(user, 'send_frame', { id: user.data.id, frame: args.frame })
+        user.room.send(user, 'send_frame', { id: user.data.id, frame: args.frame, set: args.set })
     }
 
     snowball(args, user) {
