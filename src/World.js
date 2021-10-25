@@ -3,7 +3,7 @@ import DataHandler from './handlers/DataHandler'
 import LoginHandler from './handlers/LoginHandler'
 import Server from './server/Server'
 
-import config from './config/config.json'
+import config from '../config/config.json'
 
 
 class World extends Server {
