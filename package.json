@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node ./dist/World.js",
     "dev": "nodemon --exec babel-node ./src/World.js",
+    "build": "babel src -d dist --copy-files",
     "secret-gen": "node ./utils/secret-gen.js",
     "table-to-json": "babel-node ./utils/table-to-json.js"
   },
