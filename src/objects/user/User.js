@@ -49,12 +49,17 @@ export default class User {
             coins: this.data.coins,
             x: this.x,
             y: this.y,
-            frame: this.frame
+            frame: this.frame,
+            rank: this.data.rank
         }
     }
 
     get inWaddleGame() {
         return this.waddle && this.room.game && this.waddle.id == this.room.id
+    }
+
+    get isModerator() {
+        return this.data.rank > 1
     }
 
     async setBuddies(buddies) {
