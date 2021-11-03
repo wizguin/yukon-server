@@ -19,7 +19,7 @@ export default class Moderation extends Plugin {
     kickPlayer(args, user) {
         let recipient = this.usersById[args.id]
 
-        if (user.isModerator && recipient) {
+        if (user.isModerator && recipient && recipient.data.rank < user.data.rank) {
             recipient.close()
         }
     }
