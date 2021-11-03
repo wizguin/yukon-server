@@ -25,7 +25,7 @@ export default class Users extends Sequelize.Model {
                     allowNull: true
                 },
                 rank: {
-                    type: DataTypes.BOOLEAN,
+                    type: DataTypes.INTEGER(1),
                     allowNull: false
                 },
                 banned: {
