@@ -1,6 +1,7 @@
 import Sequelize from 'sequelize'
 
 import AuthTokens from './tables/AuthTokens'
+import Bans from './tables/Bans'
 import Buddies from './tables/Buddies'
 import Floorings from './tables/Floorings'
 import Furnitures from './tables/Furnitures'
@@ -16,6 +17,8 @@ import UserFurnitures from './tables/UserFurnitures'
 import UserIgloos from './tables/UserIgloos'
 import Waddles from './tables/Waddles'
 
+const Op = Sequelize.Op
+
 
 export default class Database {
 
@@ -30,6 +33,7 @@ export default class Database {
         })
 
         this.authTokens = AuthTokens.init(this.sequelize, Sequelize)
+        this.bans = Bans.init(this.sequelize, Sequelize)
         this.buddies = Buddies.init(this.sequelize, Sequelize)
         this.floorings = Floorings.init(this.sequelize, Sequelize)
         this.furnitures = Furnitures.init(this.sequelize, Sequelize)
@@ -103,6 +107,17 @@ export default class Database {
     async getAuthToken(userId, selector) {
         return await this.findOne('authTokens', {
             where: { userId: userId, selector: selector }
+        })
+    }
+
+    async getActiveBan(userId) {
+        return await this.findOne('bans', {
+            where: {
+                userId: userId,
+                expires: {
+                    [Op.gt]: Date.now()
+                }
+            }
         })
     }
 

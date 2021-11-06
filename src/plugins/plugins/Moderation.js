@@ -17,15 +17,44 @@ export default class Moderation extends Plugin {
     }
 
     kickPlayer(args, user) {
+        if (!user.isModerator) {
+            return
+        }
+
         let recipient = this.usersById[args.id]
 
-        if (user.isModerator && recipient && recipient.data.rank < user.data.rank) {
+        if (recipient && recipient.data.rank < user.data.rank) {
             recipient.close()
         }
     }
 
-    banPlayer(args, user) {
+    async banPlayer(args, user) {
+        if (!user.isModerator) {
+            return
+        }
 
+        let recipient = this.usersById[args.id]
+        let recipientRank = await this.getRecipientRank(recipient, args.id)
+
+        if (recipientRank < user.data.rank) {
+            this.applyBan(user, args.id)
+        }
+
+        if (recipient) {
+            recipient.close()
+        }
+    }
+
+    applyBan(moderator, id, hours = 24, message = '') {
+        let expires = Date.now() + (hours * 60 * 60 * 1000)
+
+        this.db.bans.create({ userId: id, expires: expires, moderatorId: moderator.data.id, message: message })
+    }
+
+    async getRecipientRank(recipient, id) {
+        return (recipient)
+            ? recipient.data.rank
+            : (await this.db.getUserById(id)).rank
     }
 
 }

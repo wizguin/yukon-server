@@ -120,6 +120,11 @@ export default class LoginHandler {
             return this.responses.wrongPassword
         }
 
+        let banned = await this.checkBanned(user)
+        if (banned) {
+            return banned
+        }
+
         return await this.onLoginSuccess(socket, user)
     }
 
@@ -140,7 +145,25 @@ export default class LoginHandler {
             return this.responses.wrongPassword
         }
 
+        let banned = await this.checkBanned(user)
+        if (banned) {
+            return banned
+        }
+
         return await this.onLoginSuccess(socket, user)
+    }
+
+    async checkBanned(user) {
+        let activeBan = await this.db.getActiveBan(user.id)
+        if (!activeBan) {
+            return
+        }
+
+        let hours = Math.round((activeBan.expires - Date.now()) / 60 / 60 / 1000)
+        return {
+            success: false,
+            message: `Banned:\nYou are banned for the next ${hours} hours`
+        }
     }
 
     async onLoginSuccess(socket, user) {
