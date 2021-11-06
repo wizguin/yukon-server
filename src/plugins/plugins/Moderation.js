@@ -37,7 +37,7 @@ export default class Moderation extends Plugin {
         let recipientRank = await this.getRecipientRank(recipient, args.id)
 
         if (recipientRank < user.data.rank) {
-            this.applyBan(user, args.id)
+            await this.applyBan(user, args.id)
         }
 
         if (recipient) {
@@ -45,8 +45,14 @@ export default class Moderation extends Plugin {
         }
     }
 
-    applyBan(moderator, id, hours = 24, message = '') {
+    async applyBan(moderator, id, hours = 24, message = '') {
         let expires = Date.now() + (hours * 60 * 60 * 1000)
+
+        let banCount = await this.db.getBanCount(id)
+        // 5th ban is a permanent ban
+        if (banCount >= 4) {
+            this.db.users.update({ permaban: true }, { where: { id: id }})
+        }
 
         this.db.bans.create({ userId: id, expires: expires, moderatorId: moderator.data.id, message: message })
     }

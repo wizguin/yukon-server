@@ -24,6 +24,10 @@ export default class LoginHandler {
             wrongPassword: {
                 success: false,
                 message: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE'
+            },
+            permaban: {
+                success: false,
+                message: 'Banned:\nYou are banned forever'
             }
         }
     }
@@ -154,6 +158,10 @@ export default class LoginHandler {
     }
 
     async checkBanned(user) {
+        if (user.permaban) {
+            return this.responses.permaban
+        }
+
         let activeBan = await this.db.getActiveBan(user.id)
         if (!activeBan) {
             return

@@ -121,6 +121,12 @@ export default class Database {
         })
     }
 
+    async getBanCount(userId) {
+        return await Bans.count({
+            where: { userId: userId }
+        })
+    }
+
     async getBuddies(userId) {
         return await this.findAll('buddies', {
             where: { userId: userId },
