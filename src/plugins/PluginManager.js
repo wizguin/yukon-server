@@ -5,7 +5,7 @@ import path from 'path'
 export default class PluginManager {
 
     constructor(handler) {
-        this.dir = __dirname + '/plugins'
+        this.dir = `${__dirname}/plugins`
         this.events = {}
 
         this.loadPlugins(handler)

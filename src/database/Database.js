@@ -1,21 +1,6 @@
+import fs from 'fs'
+import path from 'path'
 import Sequelize from 'sequelize'
-
-import AuthTokens from './tables/AuthTokens'
-import Bans from './tables/Bans'
-import Buddies from './tables/Buddies'
-import Floorings from './tables/Floorings'
-import Furnitures from './tables/Furnitures'
-import FurnitureInventories from './tables/FurnitureInventories'
-import Igloos from './tables/Igloos'
-import IglooInventories from './tables/IglooInventories'
-import Ignores from './tables/Ignores'
-import Inventories from './tables/Inventories'
-import Items from './tables/Items'
-import Rooms from './tables/Rooms'
-import Users from './tables/Users'
-import UserFurnitures from './tables/UserFurnitures'
-import UserIgloos from './tables/UserIgloos'
-import Waddles from './tables/Waddles'
 
 const Op = Sequelize.Op
 
@@ -32,25 +17,11 @@ export default class Database {
                 logging: (config.debug) ? console.log : false
         })
 
-        this.authTokens = AuthTokens.init(this.sequelize, Sequelize)
-        this.bans = Bans.init(this.sequelize, Sequelize)
-        this.buddies = Buddies.init(this.sequelize, Sequelize)
-        this.floorings = Floorings.init(this.sequelize, Sequelize)
-        this.furnitures = Furnitures.init(this.sequelize, Sequelize)
-        this.furnitureInventories = FurnitureInventories.init(this.sequelize, Sequelize)
-        this.igloos = Igloos.init(this.sequelize, Sequelize)
-        this.iglooInventories = IglooInventories.init(this.sequelize, Sequelize)
-        this.ignores = Ignores.init(this.sequelize, Sequelize)
-        this.inventories = Inventories.init(this.sequelize, Sequelize)
-        this.items = Items.init(this.sequelize, Sequelize)
-        this.rooms = Rooms.init(this.sequelize, Sequelize)
-        this.users = Users.init(this.sequelize, Sequelize)
-        this.userFurnitures = UserFurnitures.init(this.sequelize, Sequelize)
-        this.userIgloos = UserIgloos.init(this.sequelize, Sequelize)
-        this.waddles = Waddles.init(this.sequelize, Sequelize)
-
         // Used to translate type id to string
         this.slots = [ 'color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award' ]
+
+        this.dir = `${__dirname}/models`
+        this.loadModels()
 
         this.sequelize
             .authenticate()
@@ -60,6 +31,17 @@ export default class Database {
             .catch(error => {
                 console.error(`[Database] Unable to connect to the database: ${error}`)
             })
+    }
+
+    loadModels() {
+        fs.readdirSync(this.dir).forEach(model => {
+            let modelImport = require(path.join(this.dir, model)).default
+            let modelObject = modelImport.init(this.sequelize, Sequelize)
+
+            let name = model.charAt(0).toLowerCase() + model.slice(1, -3)
+
+            this[name] = modelObject
+        })
     }
 
     async getItems() {
