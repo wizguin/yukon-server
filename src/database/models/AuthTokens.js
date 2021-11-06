@@ -24,8 +24,7 @@ export default class AuthTokens extends Sequelize.Model {
                     type: Sequelize.DATE,
                     allowNull: false,
                     defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-                },
-
+                }
             },
             { sequelize, timestamps: false, tableName: 'auth_tokens' }
         )
