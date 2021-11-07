@@ -38,10 +38,10 @@ export default class Moderation extends Plugin {
 
         if (recipientRank < user.data.rank) {
             await this.applyBan(user, args.id)
-        }
 
-        if (recipient) {
-            recipient.close()
+            if (recipient) {
+                recipient.close()
+            }
         }
     }
 

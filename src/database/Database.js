@@ -104,7 +104,7 @@ export default class Database {
     }
 
     async getBanCount(userId) {
-        return await Bans.count({
+        return await this.bans.count({
             where: { userId: userId }
         })
     }
