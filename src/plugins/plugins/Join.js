@@ -23,6 +23,8 @@ export default class Join extends Plugin {
             user: user.string,
             room: user.room.id,
 
+            joinTime: user.data.joinTime,
+
             buddies: user.buddy.list,
             ignores: user.ignore.list,
             inventory: user.inventory.list,

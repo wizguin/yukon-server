@@ -28,9 +28,14 @@ export default class Users extends Sequelize.Model {
                     type: DataTypes.INTEGER(1),
                     allowNull: false
                 },
-                permaban: {
+                permaBan: {
                     type: DataTypes.BOOLEAN,
                     allowNull: false
+                },
+                joinTime: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                    defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
                 },
                 coins: {
                     type: DataTypes.INTEGER(11),
