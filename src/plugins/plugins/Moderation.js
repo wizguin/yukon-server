@@ -51,7 +51,7 @@ export default class Moderation extends Plugin {
         let banCount = await this.db.getBanCount(id)
         // 5th ban is a permanent ban
         if (banCount >= 4) {
-            this.db.users.update({ permaban: true }, { where: { id: id }})
+            this.db.users.update({ permaBan: true }, { where: { id: id }})
         }
 
         this.db.bans.create({ userId: id, expires: expires, moderatorId: moderator.data.id, message: message })

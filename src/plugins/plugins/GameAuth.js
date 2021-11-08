@@ -28,7 +28,7 @@ export default class GameAuth extends Plugin {
 
         // Check banned
         let activeBan = await user.db.getActiveBan(user.data.id)
-        if (activeBan || user.data.permaban) {
+        if (activeBan || user.data.permaBan) {
             return user.close()
         }
 
