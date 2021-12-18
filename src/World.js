@@ -20,5 +20,10 @@ class World extends Server {
 
 }
 
-new World('login')
-new World('blizzard')
+let args = process.argv.slice(2)
+
+for (let world of args) {
+    if (world in config.worlds) {
+        new World(world)
+    }
+}

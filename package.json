@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dist/World.js",
-    "dev": "nodemon --exec babel-node ./src/World.js",
+    "start": "pm2 start ecosystem.config.js",
+    "stop": "pm2 stop ecosystem.config.js",
+    "restart": "pm2 restart ecosystem.config.js",
+    "monit": "pm2 monit",
+    "list": "pm2 list",
+    "dev": "nodemon --exec babel-node ./src/World.js create login blizzard",
     "build": "babel src -d dist --copy-files",
     "secret-gen": "node ./utils/secret-gen.js",
     "table-to-json": "babel-node ./utils/table-to-json.js"
@@ -16,7 +20,8 @@
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
-    "@babel/preset-env": "^7.12.11"
+    "@babel/preset-env": "^7.12.11",
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -25,6 +30,7 @@
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
+    "pm2": "^5.1.2",
     "rate-limiter-flexible": "^2.2.1",
     "sequelize": "^5.22.3",
     "socket.io": "^3.1.1",
