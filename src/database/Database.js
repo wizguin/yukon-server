@@ -183,6 +183,10 @@ export default class Database {
         })
     }
 
+    async getWorldPopulations() {
+        return await this.getCrumb('worlds')
+    }
+
     /*========== Helper functions ==========*/
 
     findOne(table, options = {}, emptyReturn = null, callback = null) {
