@@ -12,8 +12,8 @@ class World extends Server {
         let users = {}
         let db = new Database(config.database)
 
-        let handler = (id == 'login') ? LoginHandler : DataHandler
-        handler = new handler(users, db, config)
+        let handler = (id == 'Login') ? LoginHandler : DataHandler
+        handler = new handler(id, users, db, config)
 
         super(id, users, db, handler, config)
     }

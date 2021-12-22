@@ -16,14 +16,14 @@
         "origin": "http://localhost:8080"
     },
     "worlds": {
-        "login": {
+        "Login": {
             "host": "localhost",
             "port": 6111
         },
-        "blizzard": {
+        "Blizzard": {
             "host": "localhost",
             "port": 6112,
-            "maxUsers": 100
+            "maxUsers": 300
         }
     }
 }
