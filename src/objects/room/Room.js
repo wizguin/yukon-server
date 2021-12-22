@@ -17,6 +17,10 @@ export default class Room {
         return this.userValues.map(user => user.string)
     }
 
+    get isFull() {
+        return Object.keys(this.users).length >= this.maxUsers
+    }
+
     add(user) {
         this.users[user.socket.id] = user
 
