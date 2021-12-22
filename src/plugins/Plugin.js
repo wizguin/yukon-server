@@ -1,6 +1,8 @@
 export default class Plugin {
 
     constructor(handler) {
+        this.handler = handler
+
         this.db = handler.db
         this.users = handler.users
         this.usersById = handler.usersById

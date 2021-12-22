@@ -19,12 +19,21 @@ export default class GameAuth extends Plugin {
 
     async gameAuth(args, user) {
         // Already authenticated
-        if (user.authenticated) return
+        if (user.authenticated) {
+            return
+        }
 
         let userData = await user.db.getUserByUsername(args.username)
-        if (!userData) return user.close()
+        if (!userData) {
+            return user.close()
+        }
 
         user.data = userData
+
+        // Full server
+        if (this.handler.population > this.handler.maxUsers && !user.isModerator) {
+            return user.close()
+        }
 
         // Check banned
         let activeBan = await user.db.getActiveBan(user.data.id)
@@ -53,7 +62,9 @@ export default class GameAuth extends Plugin {
         let userAgent = user.socket.request.headers['user-agent']
         let match = await bcrypt.compare(`${user.data.username}${args.key}${address}${userAgent}`, decoded.hash)
 
-        if (!match) return user.close()
+        if (!match) {
+            return user.close()
+        }
 
         // Remove login key from database
         user.update({ loginKey: null })
@@ -86,7 +97,12 @@ export default class GameAuth extends Plugin {
 
         // Send response
         user.send('game_auth', { success: true })
-        if (token) user.send('auth_token', { token: token })
+        if (token) {
+            user.send('auth_token', { token: token })
+        }
+
+        // Update world population
+        await this.handler.updateWorldPopulation()
     }
 
     async genAuthToken(user) {

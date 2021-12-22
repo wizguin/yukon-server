@@ -9,10 +9,11 @@ import Validator from 'fastest-validator'
  */
 export default class LoginHandler {
 
-    constructor(users, db, config) {
+    constructor(id, users, db, config) {
+        this.id = id
         this.users = users
         this.db = db
-        this.config = config.crypto
+        this.config = config
 
         this.check = this.createValidator()
 
@@ -180,12 +181,15 @@ export default class LoginHandler {
         // Generate new login key, used to validate user on game server
         user.loginKey = await this.genLoginKey(socket, user, randomKey)
 
+        let populations = await this.getWorldPopulations(user.rank > 1)
+
         // All validation passed
         await user.save()
         return {
             success: true,
             username: user.username,
-            key: randomKey
+            key: randomKey,
+            populations: populations
         }
     }
 
@@ -194,12 +198,34 @@ export default class LoginHandler {
         let userAgent = socket.request.headers['user-agent']
 
         // Create hash of login key and user data
-        let hash = await bcrypt.hash(`${user.username}${randomKey}${address}${userAgent}`, this.config.rounds)
+        let hash = await bcrypt.hash(`${user.username}${randomKey}${address}${userAgent}`, this.config.crypto.rounds)
 
         // JWT to be stored on database
         return jwt.sign({
             hash: hash
-        }, this.config.secret, { expiresIn: this.config.loginKeyExpiry })
+        }, this.config.crypto.secret, { expiresIn: this.config.crypto.loginKeyExpiry })
+    }
+
+    async getWorldPopulations(isModerator) {
+        let pops = await this.db.getWorldPopulations()
+        let populations = {}
+
+        for (let world of Object.keys(pops)) {
+            let maxUsers = this.config.worlds[world].maxUsers
+            let population = pops[world].population
+
+            if (population >= maxUsers) {
+                populations[world] = (isModerator) ? 5 : 6
+                continue
+            }
+
+            let barSize = Math.round(maxUsers / 5)
+            let bars = Math.max(Math.ceil(population / barSize), 1) || 1
+
+            populations[world] = bars
+        }
+
+        return populations
     }
 
     close(user) {
