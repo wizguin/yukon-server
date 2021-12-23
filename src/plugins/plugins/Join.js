@@ -63,7 +63,7 @@ export default class Join extends Plugin {
 
         // All spawns full
         if (!spawns.length) {
-            spawns = Object.values(this.rooms).filter(room => !room.isFull)
+            spawns = Object.values(this.rooms).filter(room => !room.game && !room.isFull)
         }
 
         return spawns[Math.floor(Math.random() * spawns.length)]
