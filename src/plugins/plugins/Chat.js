@@ -1,5 +1,7 @@
 import Plugin from '../Plugin'
 
+import profaneWords from 'profane-words'
+
 
 export default class Chat extends Plugin {
 
@@ -22,9 +24,13 @@ export default class Chat extends Plugin {
     // Events
 
     sendMessage(args, user) {
-        // Todo: message verification
+        // Todo: message validation
         if (args.message.startsWith('!')) {
             return this.processCommand(args.message.substring(1), user)
+        }
+
+        if (profaneWords.some((word) => args.message.indexOf(word) >= 0)) {
+            return
         }
 
         user.room.send(user, 'send_message', { id: user.data.id, message: args.message }, [user], true)
