@@ -29,7 +29,7 @@ export default class Chat extends Plugin {
             return this.processCommand(args.message.substring(1), user)
         }
 
-        if (profaneWords.some((word) => args.message.indexOf(word) >= 0)) {
+        if (profaneWords.some((word) => args.message.toLowerCase().indexOf(word) >= 0)) {
             return
         }
 
