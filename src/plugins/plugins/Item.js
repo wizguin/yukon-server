@@ -10,20 +10,27 @@ export default class Chat extends Plugin {
             'add_item': this.addItem,
             'remove_item': this.removeItem
         }
+
         this.items = this.crumbs.items
     }
 
     updatePlayer(args, user) {
         let item = this.items[args.item]
-        if (!item || item.award || !user.inventory.includes(args.item)) return
+        if (!item || item.award || !user.inventory.includes(args.item)) {
+            return
+        }
 
         let slot = this.items.slots[item.type - 1]
         user.setItem(slot, args.item)
     }
 
     addItem(args, user) {
+        args.item = parseInt(args.item)
+
         let item = user.validatePurchase.item(args.item)
-        if (!item) return
+        if (!item) {
+            return
+        }
 
         let slot = this.items.slots[item.type - 1]
         user.inventory.add(args.item)
@@ -33,7 +40,9 @@ export default class Chat extends Plugin {
     }
 
     removeItem(args, user) {
-        if (!this.items.slots.includes(args.type)) return
+        if (!this.items.slots.includes(args.type)) {
+            return
+        }
 
         user.setItem(args.type, 0)
     }

@@ -10,10 +10,23 @@ export default class Chat extends Plugin {
             'send_safe': this.sendSafe,
             'send_emote': this.sendEmote
         }
+
+        this.commands = {
+            'ai': this.addItem,
+            'users': this.userPopulation
+        }
+
+        this.bindCommands()
     }
+
+    // Events
 
     sendMessage(args, user) {
         // Todo: message verification
+        if (args.message.startsWith('!')) {
+            return this.processCommand(args.message.substring(1), user)
+        }
+
         user.room.send(user, 'send_message', { id: user.data.id, message: args.message }, [user], true)
     }
 
@@ -23,6 +36,31 @@ export default class Chat extends Plugin {
 
     sendEmote(args, user) {
         user.room.send(user, 'send_emote', { id: user.data.id, emote: args.emote }, [user], true)
+    }
+
+    // Commands
+
+    bindCommands() {
+        for (let command in this.commands) {
+            this.commands[command] = this.commands[command].bind(this)
+        }
+    }
+
+    processCommand(message, user) {
+        let args = message.split(' ')
+        let command = args.shift()
+
+        if (command in this.commands) {
+            return this.commands[command](args, user)
+        }
+    }
+
+    addItem(args, user) {
+        this.plugins.item.addItem({ item: args[0] }, user)
+    }
+
+    userPopulation(args, user) {
+        user.send('error', { error: `Users online: ${this.handler.population}` })
     }
 
 }

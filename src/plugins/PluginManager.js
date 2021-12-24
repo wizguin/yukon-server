@@ -6,7 +6,9 @@ export default class PluginManager {
 
     constructor(handler) {
         this.dir = `${__dirname}/plugins`
+
         this.events = {}
+        this.plugins = {}
 
         this.loadPlugins(handler)
     }
@@ -15,6 +17,8 @@ export default class PluginManager {
         fs.readdirSync(this.dir).forEach(plugin => {
             let pluginImport = require(path.join(this.dir, plugin)).default
             let pluginObject = new pluginImport(handler)
+
+            this.plugins[plugin.replace('.js', '').toLowerCase()] = pluginObject
 
             this.loadEvents(pluginObject)
         })

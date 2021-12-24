@@ -11,4 +11,8 @@ export default class Plugin {
         this.rooms = handler.rooms
     }
 
+    get plugins() {
+        return this.handler.plugins.plugins
+    }
+
 }
