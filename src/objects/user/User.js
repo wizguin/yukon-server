@@ -103,6 +103,10 @@ export default class User {
             return
         }
 
+        if (room.isFull) {
+            return this.send('error', { error: 'Sorry this room is currently full' })
+        }
+
         this.room.remove(this)
 
         this.room = room
