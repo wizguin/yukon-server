@@ -9,6 +9,7 @@
     "restart": "pm2 restart ecosystem.config.js",
     "monit": "pm2 monit",
     "list": "pm2 list",
+    "logs": "pm2 logs",
     "dev": "nodemon --exec babel-node ./src/World.js Login Blizzard",
     "build": "babel src -d dist --copy-files",
     "secret-gen": "node ./utils/secret-gen.js",
