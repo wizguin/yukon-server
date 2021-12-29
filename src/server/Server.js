@@ -10,7 +10,7 @@ export default class Server {
         this.db = db
         this.handler = handler
 
-        const io = require('socket.io')({
+        let io = this.createIo(config.socketio.protocol, {
             cors: {
                 origin: config.socketio.origin,
                 methods: ['GET', 'POST']
@@ -27,6 +27,25 @@ export default class Server {
         this.server.on('connection', this.connectionMade.bind(this))
 
         console.log(`[Server] Started world ${id} on port ${config.worlds[id].port}`)
+    }
+
+    createIo(protocol, options) {
+        let server = this[`${protocol}Server`]()
+
+        return require('socket.io')(server, options)
+    }
+
+    httpServer() {
+        return require('http').createServer()
+    }
+
+    httpsServer() {
+        let fs = require('fs')
+
+        return require('https').createServer({
+            key: fs.readFileSync('./config/ssl/key.pem'),
+            cert: fs.readFileSync('./config/ssl/cert.pem')
+        })
     }
 
     connectionMade(socket) {

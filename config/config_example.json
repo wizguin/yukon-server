@@ -13,7 +13,8 @@
         "debug": false
     },
     "socketio": {
-        "origin": "http://localhost:8080"
+        "origin": "http://localhost:8080",
+        "protocol": "http"
     },
     "worlds": {
         "Login": {
