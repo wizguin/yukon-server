@@ -44,13 +44,14 @@ export default class Server {
 
     httpsServer(ssl) {
         let fs = require('fs')
+        let loaded = {}
 
         // Loads ssl files
         for (let key in ssl) {
-            ssl[key] = fs.readFileSync(ssl[key]).toString()
+            loaded[key] = fs.readFileSync(ssl[key]).toString()
         }
 
-        return require('https').createServer(ssl)
+        return require('https').createServer(loaded)
     }
 
     connectionMade(socket) {
