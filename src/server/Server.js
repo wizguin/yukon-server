@@ -14,7 +14,8 @@ export default class Server {
             cors: {
                 origin: config.socketio.origin,
                 methods: ['GET', 'POST']
-            }
+            },
+            path: '/'
         })
 
         this.rateLimiter = new RateLimiterFlexible.RateLimiterMemory({
