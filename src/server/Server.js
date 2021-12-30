@@ -10,7 +10,7 @@ export default class Server {
         this.db = db
         this.handler = handler
 
-        let io = this.createIo(config.socketio.protocol, {
+        let io = this.createIo(config.socketio, {
             cors: {
                 origin: config.socketio.origin,
                 methods: ['GET', 'POST']
@@ -30,8 +30,10 @@ export default class Server {
         console.log(`[Server] Started world ${id} on port ${config.worlds[id].port}`)
     }
 
-    createIo(protocol, options) {
-        let server = this[`${protocol}Server`]()
+    createIo(config, options) {
+        let server = (config.https)
+            ? this.httpsServer(config.ssl)
+            : this.httpServer()
 
         return require('socket.io')(server, options)
     }
@@ -40,13 +42,15 @@ export default class Server {
         return require('http').createServer()
     }
 
-    httpsServer() {
+    httpsServer(ssl) {
         let fs = require('fs')
 
-        return require('https').createServer({
-            key: fs.readFileSync('./config/ssl/key.pem'),
-            cert: fs.readFileSync('./config/ssl/cert.pem')
-        })
+        // Loads ssl files
+        for (let key in ssl) {
+            ssl[key] = fs.readFileSync(ssl[key]).toString()
+        }
+
+        return require('https').createServer(ssl)
     }
 
     connectionMade(socket) {

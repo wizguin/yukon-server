@@ -14,7 +14,12 @@
     },
     "socketio": {
         "origin": "http://localhost:8080",
-        "protocol": "http"
+        "https": false,
+        "ssl": {
+            "cert": "/path/to/cert.crt",
+            "ca": "/path/to/ca.ca-bundle",
+            "key": "/path/to/key.key"
+        }
     },
     "worlds": {
         "Login": {

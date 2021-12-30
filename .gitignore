@@ -120,6 +120,3 @@ config.json
 
 # exported json
 utils/json
-
-# ssl
-config/ssl
