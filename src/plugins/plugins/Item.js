@@ -16,7 +16,7 @@ export default class Chat extends Plugin {
 
     updatePlayer(args, user) {
         let item = this.items[args.item]
-        if (!item || item.award || !user.inventory.includes(args.item)) {
+        if (!item || item.type == 10 || !user.inventory.includes(args.item)) {
             return
         }
 
