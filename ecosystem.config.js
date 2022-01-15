@@ -9,6 +9,11 @@ let apps = Object.keys(config.worlds).map(world => {
     }
 })
 
+apps.push({
+    name: 'API',
+    script: './dist/api/api.js'
+})
+
 module.exports = {
     apps: apps
 }

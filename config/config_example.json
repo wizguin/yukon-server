@@ -13,13 +13,18 @@
         "debug": false
     },
     "socketio": {
-        "origin": "http://localhost:8080",
         "https": false,
         "ssl": {
             "cert": "/path/to/cert.crt",
             "ca": "/path/to/ca.ca-bundle",
             "key": "/path/to/key.key"
         }
+    },
+    "cors": {
+        "origin": "http://localhost:8080"
+    },
+    "api": {
+        "port": 8000
     },
     "worlds": {
         "Login": {

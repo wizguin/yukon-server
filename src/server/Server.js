@@ -12,7 +12,7 @@ export default class Server {
 
         let io = this.createIo(config.socketio, {
             cors: {
-                origin: config.socketio.origin,
+                origin: config.cors.origin,
                 methods: ['GET', 'POST']
             },
             path: '/'
