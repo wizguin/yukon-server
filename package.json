@@ -1,9 +1,9 @@
 {
   "name": "yukon-server",
-  "version": "1.1.0-beta",
+  "version": "1.0.0-beta",
   "description": "A server for https://github.com/wizguin/yukon",
   "scripts": {
-    "dev": "node ./concurrently.js",
+    "dev": "nodemon ./src/World.js Login Blizzard --exec babel-node",
     "build": "babel src -d dist --copy-files",
     "start": "pm2 start ecosystem.config.js",
     "stop": "pm2 stop ecosystem.config.js",
@@ -29,17 +29,13 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
-    "concurrently": "^7.0.0",
     "nodemon": "^2.0.15"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "express": "^4.17.2",
     "fastest-validator": "^1.9.0",
     "fs": "0.0.1-security",
-    "http-proxy-middleware": "^2.0.1",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
     "pm2": "^5.1.2",

@@ -23,9 +23,6 @@
     "cors": {
         "origin": "http://localhost:8080"
     },
-    "api": {
-        "port": 8000
-    },
     "worlds": {
         "Login": {
             "host": "localhost",
