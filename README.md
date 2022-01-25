@@ -113,6 +113,14 @@ npm run monit
 npm run secret-gen
 ```
 
+### Account creation
+
+The easiest way to create accounts locally would be to simply enter them manually. Make sure to use a bcrypt hashed password, a tool such as [this](https://www.browserling.com/tools/bcrypt) can be used to generate one.
+
+```console
+$2a$10$nAxC5GXU0i/dacalTX.iZuRrtpmwmZ9ZzL.U3Zroh0jeSXiswFsne
+```
+
 ## Production Usage
 
 The following is required when running the project in production.
