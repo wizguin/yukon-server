@@ -140,7 +140,7 @@ npm run build
 
 ```console
 "cors": {
-    "origin": "http://localhost:8080"
+    "origin": "example.com"
 },
 ```
 
