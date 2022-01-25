@@ -62,7 +62,9 @@ export default class Chat extends Plugin {
     }
 
     addItem(args, user) {
-        this.plugins.item.addItem({ item: args[0] }, user)
+        if (user.isModerator) {
+            this.plugins.item.addItem({ item: args[0] }, user)
+        }
     }
 
     userPopulation(args, user) {
