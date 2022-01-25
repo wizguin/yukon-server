@@ -18,7 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 * [A MySQL database](https://www.mysql.com/)
 * [Node.js](https://nodejs.org/en/)
-* [Yukon client](https://github.com/wizguin/yukon)
+* [yukon](https://github.com/wizguin/yukon)
 
 ### Installation
 
