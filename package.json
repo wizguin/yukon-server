@@ -3,7 +3,7 @@
   "version": "1.0.0-beta",
   "description": "A server for https://github.com/wizguin/yukon",
   "scripts": {
-    "dev": "nodemon ./src/World.js Login Blizzard --exec babel-node",
+    "dev": "babel-watch ./src/World.js Login Blizzard",
     "build": "babel src -d dist --copy-files",
     "start": "pm2 start ecosystem.config.js",
     "stop": "pm2 stop ecosystem.config.js",
@@ -29,11 +29,10 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
-    "nodemon": "^2.0.15"
+    "babel-watch": "^7.7.0"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "crypto": "^1.0.1",
     "fastest-validator": "^1.9.0",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
