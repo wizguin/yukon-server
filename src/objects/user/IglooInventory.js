@@ -11,4 +11,11 @@ export default class IglooInventory {
         return this.list.includes(item)
     }
 
+    add(igloo) {
+        this.list.push(igloo)
+
+        // Db query
+        this.db.iglooInventories.create({ userId: this.user.data.id, iglooId: igloo })
+    }
+
 }

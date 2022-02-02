@@ -17,7 +17,13 @@ export default class Igloo extends Plugin {
     // Events
 
     async addIgloo(args, user) {
+        let igloo = user.validatePurchase.igloo(args.igloo)
+        if (!igloo) return
 
+        user.iglooInventory.add(args.igloo)
+
+        user.updateCoins(-igloo.cost)
+        user.send('add_igloo', { igloo: args.igloo, coins: user.data.coins })
     }
 
     addFurniture(args, user) {
@@ -33,7 +39,7 @@ export default class Igloo extends Plugin {
 
     async updateIgloo(args, user) {
         let igloo = this.getIgloo(user.data.id)
-        if (!args.type || !igloo || igloo != user.room || igloo.type == args.type) {
+        if (!args.type || !igloo || igloo != user.room || !user.iglooInventory.includes(args.type) || igloo.type == args.type) {
             return
         }
 

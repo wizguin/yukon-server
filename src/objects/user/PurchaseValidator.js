@@ -10,7 +10,7 @@ export default class PurchaseValidator {
     }
 
     igloo(id) {
-
+        return this.validate(id, 'igloos', this.user.iglooInventory)
     }
 
     furniture(id) {
