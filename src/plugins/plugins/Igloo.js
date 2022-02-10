@@ -10,7 +10,10 @@ export default class Igloo extends Plugin {
             'add_furniture': this.addFurniture,
             'update_igloo': this.updateIgloo,
             'update_furniture': this.updateFurniture,
-            'update_flooring': this.updateFlooring
+            'update_flooring': this.updateFlooring,
+            'open_igloo': this.openIgloo,
+            'close_igloo': this.closeIgloo,
+            'get_igloos': this.getIgloos
         }
     }
 
@@ -18,7 +21,9 @@ export default class Igloo extends Plugin {
 
     async addIgloo(args, user) {
         let igloo = user.validatePurchase.igloo(args.igloo)
-        if (!igloo) return
+        if (!igloo) {
+            return
+        }
 
         user.iglooInventory.add(args.igloo)
 
@@ -28,7 +33,9 @@ export default class Igloo extends Plugin {
 
     addFurniture(args, user) {
         let furniture = user.validatePurchase.furniture(args.furniture)
-        if (!furniture) return
+        if (!furniture) {
+            return
+        }
 
         // If furniture added successfuly
         if (user.furnitureInventory.add(args.furniture)) {
@@ -45,7 +52,9 @@ export default class Igloo extends Plugin {
 
         // check crumb
         let iglooItem = true
-        if (!iglooItem) return
+        if (!iglooItem) {
+            return
+        }
 
         await igloo.clearFurniture()
 
@@ -70,13 +79,17 @@ export default class Igloo extends Plugin {
 
         for (let item of args.furniture) {
             let id = item.furnitureId
-            if (!item || !user.furnitureInventory.includes(id)) continue
+            if (!item || !user.furnitureInventory.includes(id)) {
+                continue
+            }
 
             // Update quantity
             quantities[id] = (quantities[id]) ? quantities[id] + 1 : 1
 
             // Validate quantity
-            if (quantities[id] > user.furnitureInventory.list[id]) continue
+            if (quantities[id] > user.furnitureInventory.list[id]) {
+                continue
+            }
 
             igloo.furniture.push(item)
             this.db.userFurnitures.create({ ...item, userId: user.data.id })
@@ -85,16 +98,38 @@ export default class Igloo extends Plugin {
 
     updateFlooring(args, user) {
         let igloo = this.getIgloo(user.data.id)
-        if (!igloo || igloo != user.room) return
+        if (!igloo || igloo != user.room) {
+            return
+        }
 
         let flooring = user.validatePurchase.flooring(args.flooring)
-        if (!flooring) return
+        if (!flooring) {
+            return
+        }
 
         igloo.update({ flooring: args.flooring })
         igloo.flooring = args.flooring
 
         user.updateCoins(-flooring.cost)
         user.send('update_flooring', { flooring: args.flooring, coins: user.data.coins })
+    }
+
+    openIgloo(args, user) {
+        let igloo = this.getIgloo(user.data.id)
+        if (igloo && igloo == user.room) {
+            this.openIgloos.add(user)
+        }
+    }
+
+    closeIgloo(args, user) {
+        let igloo = this.getIgloo(user.data.id)
+        if (igloo && igloo == user.room) {
+            this.openIgloos.remove(user)
+        }
+    }
+
+    getIgloos(args, user) {
+        user.send('get_igloos', { igloos: this.openIgloos.list })
     }
 
     // Functions

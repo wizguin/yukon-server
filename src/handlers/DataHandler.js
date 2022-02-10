@@ -1,5 +1,6 @@
 import Room from '../objects/room/Room'
 import WaddleRoom from '../objects/room/WaddleRoom'
+import OpenIgloos from '../objects/room/OpenIgloos'
 import PluginManager from '../plugins/PluginManager'
 
 
@@ -13,6 +14,8 @@ export default class DataHandler {
 
         this.usersById = {}
         this.maxUsers = config.worlds[id].maxUsers
+
+        this.openIgloos = new OpenIgloos()
 
         this.init()
     }
@@ -96,6 +99,8 @@ export default class DataHandler {
         if (user.data && user.data.id && user.data.id in this.usersById) {
             delete this.usersById[user.data.id]
         }
+
+        this.openIgloos.remove(user)
 
         delete this.users[user.socket.id]
 
