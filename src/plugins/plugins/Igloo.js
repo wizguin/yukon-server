@@ -13,7 +13,8 @@ export default class Igloo extends Plugin {
             'update_flooring': this.updateFlooring,
             'open_igloo': this.openIgloo,
             'close_igloo': this.closeIgloo,
-            'get_igloos': this.getIgloos
+            'get_igloos': this.getIgloos,
+            'get_igloo_open': this.getIglooOpen
         }
     }
 
@@ -130,6 +131,11 @@ export default class Igloo extends Plugin {
 
     getIgloos(args, user) {
         user.send('get_igloos', { igloos: this.openIgloos.list })
+    }
+
+    getIglooOpen(args, user) {
+        let open = this.openIgloos.includes(args.igloo)
+        user.send('get_igloo_open', { open: open })
     }
 
     // Functions
