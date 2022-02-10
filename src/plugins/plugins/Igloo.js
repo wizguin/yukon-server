@@ -11,6 +11,7 @@ export default class Igloo extends Plugin {
             'update_igloo': this.updateIgloo,
             'update_furniture': this.updateFurniture,
             'update_flooring': this.updateFlooring,
+            'update_music': this.updateMusic,
             'open_igloo': this.openIgloo,
             'close_igloo': this.closeIgloo,
             'get_igloos': this.getIgloos,
@@ -113,6 +114,18 @@ export default class Igloo extends Plugin {
 
         user.updateCoins(-flooring.cost)
         user.send('update_flooring', { flooring: args.flooring, coins: user.data.coins })
+    }
+
+    updateMusic(args, user) {
+        let igloo = this.getIgloo(user.data.id)
+        if (!igloo || igloo != user.room || igloo.music == args.music) {
+            return
+        }
+
+        igloo.update({ music: args.music })
+        igloo.music = args.music
+
+        user.send('update_music', { music: args.music })
     }
 
     openIgloo(args, user) {
