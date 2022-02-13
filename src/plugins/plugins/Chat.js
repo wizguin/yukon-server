@@ -1,7 +1,5 @@
 import Plugin from '../Plugin'
 
-import profaneWords from 'profane-words'
-
 
 export default class Chat extends Plugin {
 
@@ -16,6 +14,7 @@ export default class Chat extends Plugin {
         this.commands = {
             'ai': this.addItem,
             'af': this.addFurniture,
+            'jr': this.joinRoom,
             'users': this.userPopulation
         }
 
@@ -28,10 +27,6 @@ export default class Chat extends Plugin {
         // Todo: message validation
         if (args.message.startsWith('!')) {
             return this.processCommand(args.message.substring(1), user)
-        }
-
-        if (profaneWords.some((word) => args.message.toLowerCase().indexOf(word) >= 0)) {
-            return
         }
 
         user.room.send(user, 'send_message', { id: user.data.id, message: args.message }, [user], true)
@@ -71,6 +66,12 @@ export default class Chat extends Plugin {
     addFurniture(args, user) {
         if (user.isModerator) {
             this.plugins.igloo.addFurniture({ furniture: args[0] }, user)
+        }
+    }
+
+    joinRoom(args, user) {
+        if (user.isModerator) {
+            this.plugins.join.joinRoom({ room: args[0] }, user)
         }
     }
 
