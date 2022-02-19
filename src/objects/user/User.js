@@ -95,8 +95,13 @@ export default class User {
     }
 
     updateCoins(coins) {
-        this.data.coins += coins
-        this.update({ coins: this.data.coins })
+        coins = parseInt(coins)
+
+        if (!isNaN(coins)) {
+            this.data.coins = Math.max(Math.min(1000000000, this.data.coins + coins), 0)
+
+            this.update({ coins: this.data.coins })
+        }
     }
 
     joinRoom(room, x = 0, y = 0) {

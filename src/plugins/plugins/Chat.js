@@ -14,6 +14,7 @@ export default class Chat extends Plugin {
         this.commands = {
             'ai': this.addItem,
             'af': this.addFurniture,
+            'ac': this.addCoins,
             'jr': this.joinRoom,
             'users': this.userPopulation
         }
@@ -66,6 +67,13 @@ export default class Chat extends Plugin {
     addFurniture(args, user) {
         if (user.isModerator) {
             this.plugins.igloo.addFurniture({ furniture: args[0] }, user)
+        }
+    }
+
+    addCoins(args, user) {
+        if (user.isModerator) {
+            user.updateCoins(args[0])
+            user.send('game_over', { coins: user.data.coins })
         }
     }
 
