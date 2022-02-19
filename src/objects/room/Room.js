@@ -25,7 +25,7 @@ export default class Room {
         this.users[user.socket.id] = user
 
         if (this.game) {
-            return user.send('join_game', { room: this.id })
+            return user.send('join_game', { game: this.id })
         }
 
         user.send('join_room', { room: this.id, users: this.strings })
