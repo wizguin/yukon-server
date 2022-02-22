@@ -68,13 +68,14 @@ export default class Join extends Plugin {
     }
 
     async getIgloo(id) {
-        let internalId = id + 2000 // Ensures igloos are above all default rooms
+        // Ensures igloos are above all default rooms
+        let internalId = id + this.config.game.iglooIdOffset
 
         if (!(internalId in this.rooms)) {
             let igloo = await this.db.getIgloo(id)
             if (!igloo) return null
 
-            this.rooms[internalId] = new Igloo(igloo, this.db)
+            this.rooms[internalId] = new Igloo(igloo, this.db, this.config.game.iglooIdOffset)
         }
 
         return this.rooms[internalId]

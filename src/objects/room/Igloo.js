@@ -3,10 +3,13 @@ import Room from './Room'
 
 export default class Igloo extends Room {
 
-    constructor(data, db) {
+    constructor(data, db, iglooIdOffset) {
         super(data)
 
         this.db = db
+        this.iglooIdOffset = iglooIdOffset
+
+        this.isIgloo = true
     }
 
     get string() {
@@ -19,6 +22,10 @@ export default class Igloo extends Room {
             location: this.location,
             furniture: this.furniture
         }
+    }
+
+    get id() {
+        return this.userId + this.iglooIdOffset
     }
 
     add(user) {

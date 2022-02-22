@@ -154,7 +154,7 @@ export default class Igloo extends Plugin {
     // Functions
 
     getIgloo(id) {
-        let internalId = id + 2000
+        let internalId = id + this.config.game.iglooIdOffset
 
         if (internalId in this.rooms) {
             return this.rooms[internalId]

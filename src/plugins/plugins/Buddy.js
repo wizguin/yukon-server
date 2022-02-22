@@ -63,11 +63,25 @@ export default class Buddy extends Plugin {
     }
 
     buddyFind(args, user) {
-        if (user.buddy.includes(args.id) && args.id in this.usersById) {
-            let buddy = this.usersById[args.id]
-
-            if (buddy.room) user.send('buddy_find', { find: `${buddy.data.username} ${buddy.room.find}` })
+        if (!user.buddy.includes(args.id) || !(args.id in this.usersById)) {
+            return
         }
+
+        let buddy = this.usersById[args.id]
+
+        if (!buddy.room) {
+            return
+        }
+
+        let result = { find: buddy.room.id }
+
+        if (buddy.room.isIgloo) {
+            result.igloo = true
+        } else if (buddy.room.game) {
+            result.game = true
+        }
+
+        user.send('buddy_find', result)
     }
 
 }

@@ -30,10 +30,6 @@ export default class Rooms extends Sequelize.Model {
                 spawn: {
                     type: DataTypes.BOOLEAN,
                     allowNull: false
-                },
-                find: {
-                    type: DataTypes.STRING(50),
-                    allowNull: false
                 }
             },
             { sequelize, timestamps: false, tableName: 'rooms' }
