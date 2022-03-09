@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2022 at 01:26 PM
--- Server version: 10.1.29-MariaDB
--- PHP Version: 7.2.0
+-- Generation Time: Mar 09, 2022 at 03:46 PM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -32,7 +31,7 @@ CREATE TABLE `auth_tokens` (
   `userId` int(11) NOT NULL,
   `selector` char(36) NOT NULL,
   `validator` char(60) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Authentication tokens for saved logins';
 
 -- --------------------------------------------------------
@@ -44,7 +43,7 @@ CREATE TABLE `auth_tokens` (
 CREATE TABLE `bans` (
   `id` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  `issued` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `issued` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `expires` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `moderatorId` int(11) DEFAULT NULL,
   `message` varchar(60) DEFAULT NULL
@@ -70,8 +69,8 @@ CREATE TABLE `buddies` (
 CREATE TABLE `floorings` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `cost` int(11) NOT NULL DEFAULT '0',
-  `patched` tinyint(1) NOT NULL DEFAULT '0'
+  `cost` int(11) NOT NULL DEFAULT 0,
+  `patched` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Igloo flooring crumbs';
 
 --
@@ -113,13 +112,13 @@ INSERT INTO `floorings` (`id`, `name`, `cost`, `patched`) VALUES
 CREATE TABLE `furnitures` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `type` tinyint(1) NOT NULL DEFAULT '1',
-  `sort` tinyint(1) NOT NULL DEFAULT '1',
-  `cost` int(11) NOT NULL DEFAULT '0',
-  `member` tinyint(1) NOT NULL DEFAULT '0',
-  `bait` tinyint(1) NOT NULL DEFAULT '0',
-  `patched` tinyint(1) NOT NULL DEFAULT '0',
-  `max` int(3) NOT NULL DEFAULT '99',
+  `type` tinyint(1) NOT NULL DEFAULT 1,
+  `sort` tinyint(1) NOT NULL DEFAULT 1,
+  `cost` int(11) NOT NULL DEFAULT 0,
+  `member` tinyint(1) NOT NULL DEFAULT 0,
+  `bait` tinyint(1) NOT NULL DEFAULT 0,
+  `patched` tinyint(1) NOT NULL DEFAULT 0,
+  `max` int(3) NOT NULL DEFAULT 99,
   `fps` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Igloo furniture crumbs';
 
@@ -1535,8 +1534,8 @@ CREATE TABLE `furniture_inventories` (
 CREATE TABLE `igloos` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `cost` int(11) NOT NULL DEFAULT '0',
-  `patched` tinyint(1) NOT NULL DEFAULT '0'
+  `cost` int(11) NOT NULL DEFAULT 0,
+  `patched` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Igloo crumbs';
 
 --
@@ -1683,12 +1682,12 @@ CREATE TABLE `inventories` (
 CREATE TABLE `items` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `type` int(6) NOT NULL DEFAULT '1',
-  `cost` int(11) NOT NULL DEFAULT '0',
-  `member` tinyint(1) NOT NULL DEFAULT '0',
-  `bait` tinyint(1) NOT NULL DEFAULT '0',
-  `patched` tinyint(1) NOT NULL DEFAULT '0',
-  `treasure` tinyint(1) NOT NULL DEFAULT '0'
+  `type` int(6) NOT NULL DEFAULT 1,
+  `cost` int(11) NOT NULL DEFAULT 0,
+  `member` tinyint(1) NOT NULL DEFAULT 0,
+  `bait` tinyint(1) NOT NULL DEFAULT 0,
+  `patched` tinyint(1) NOT NULL DEFAULT 0,
+  `treasure` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Clothing crumbs';
 
 --
@@ -7035,41 +7034,48 @@ INSERT INTO `items` (`id`, `name`, `type`, `cost`, `member`, `bait`, `patched`, 
 CREATE TABLE `rooms` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `member` tinyint(1) NOT NULL DEFAULT '0',
-  `maxUsers` int(6) NOT NULL DEFAULT '80',
-  `game` tinyint(1) NOT NULL DEFAULT '0',
-  `spawn` tinyint(1) NOT NULL DEFAULT '0',
-  `find` varchar(50) NOT NULL
+  `member` tinyint(1) NOT NULL DEFAULT 0,
+  `maxUsers` int(6) NOT NULL DEFAULT 80,
+  `game` tinyint(1) NOT NULL DEFAULT 0,
+  `spawn` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Room crumbs';
 
 --
 -- Dumping data for table `rooms`
 --
 
-INSERT INTO `rooms` (`id`, `name`, `member`, `maxUsers`, `game`, `spawn`, `find`) VALUES
-(100, 'Town', 0, 80, 0, 1, 'is in the Town'),
-(110, 'Coffee Shop', 0, 80, 0, 0, 'is in the Coffee Shop'),
-(111, 'Book Room', 0, 80, 0, 0, 'is in the Book Room'),
-(120, 'Dance Club', 0, 80, 0, 0, 'is in the Dance Club'),
-(121, 'Dance Lounge', 0, 80, 0, 0, 'is in the Dance Lounge'),
-(130, 'Gift Shop', 0, 80, 0, 0, 'is in the Gift Shop'),
-(200, 'Ski Village', 0, 80, 0, 1, 'is in the Ski Village'),
-(220, 'Ski Lodge', 0, 80, 0, 0, 'is in the Ski Lodge'),
-(221, 'Lodge Attic', 0, 80, 0, 0, 'is in the Lodge Attic'),
-(230, 'Ski Hill', 0, 80, 0, 0, 'is on top of the Mountain'),
-(300, 'Plaza', 0, 80, 0, 1, 'is in the Plaza'),
-(310, 'Pet Shop', 0, 80, 0, 0, 'is in the Pet Shop'),
-(321, 'Dojo Exterior', 0, 80, 0, 0, 'is in the Dojo Courtyard'),
-(400, 'Beach', 0, 80, 0, 1, 'is at the Beach'),
-(800, 'Dock', 0, 80, 0, 1, 'is at the Dock'),
-(801, 'Forts', 0, 80, 0, 1, 'is at the Snow Forts'),
-(802, 'Ice Rink', 0, 80, 0, 0, 'is at the Stadium'),
-(805, 'Ice Berg', 0, 80, 0, 1, 'is on the Iceberg (hidden on your map)'),
-(806, 'Cave', 0, 80, 0, 0, 'is in the Cave (hidden underground)'),
-(807, 'Mine Shack', 0, 80, 0, 0, 'is in the Mine Shack'),
-(809, 'Forest', 0, 80, 0, 0, 'is in the Forest'),
-(810, 'Cove', 0, 80, 0, 0, 'is at the Cove'),
-(999, 'Sled Race', 0, 80, 1, 0, 'is in a Sled Race');
+INSERT INTO `rooms` (`id`, `name`, `member`, `maxUsers`, `game`, `spawn`) VALUES
+(100, 'town', 0, 80, 0, 1),
+(110, 'coffee', 0, 80, 0, 0),
+(111, 'book', 0, 80, 0, 0),
+(120, 'dance', 0, 80, 0, 0),
+(121, 'lounge', 0, 80, 0, 0),
+(130, 'shop', 0, 80, 0, 0),
+(200, 'village', 0, 80, 0, 1),
+(220, 'lodge', 0, 80, 0, 0),
+(221, 'attic', 0, 80, 0, 0),
+(230, 'mtn', 0, 80, 0, 0),
+(300, 'plaza', 0, 80, 0, 1),
+(310, 'pet', 0, 80, 0, 0),
+(321, 'dojoext', 0, 80, 0, 0),
+(400, 'beach', 0, 80, 0, 1),
+(800, 'dock', 0, 80, 0, 1),
+(801, 'forts', 0, 80, 0, 1),
+(802, 'rink', 0, 80, 0, 0),
+(805, 'berg', 0, 80, 0, 1),
+(806, 'cave', 0, 80, 0, 0),
+(807, 'shack', 0, 80, 0, 0),
+(809, 'forest', 0, 80, 0, 0),
+(810, 'cove', 0, 80, 0, 0),
+(900, 'astro', 0, 80, 1, 0),
+(901, 'beans', 0, 80, 1, 0),
+(902, 'roundup', 0, 80, 1, 0),
+(903, 'hydro', 0, 80, 1, 0),
+(904, 'fish', 0, 80, 1, 0),
+(909, 'thinice', 0, 80, 1, 0),
+(912, 'waves', 0, 80, 1, 0),
+(916, 'sub', 0, 80, 1, 0),
+(999, 'sled', 0, 80, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -7082,20 +7088,20 @@ CREATE TABLE `users` (
   `username` varchar(12) NOT NULL,
   `email` varchar(254) DEFAULT NULL,
   `password` char(60) NOT NULL,
-  `loginKey` text,
-  `rank` tinyint(1) NOT NULL DEFAULT '1',
-  `permaBan` tinyint(1) NOT NULL DEFAULT '0',
-  `joinTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `coins` int(11) NOT NULL DEFAULT '500',
-  `head` int(11) NOT NULL DEFAULT '0',
-  `face` int(11) NOT NULL DEFAULT '0',
-  `neck` int(11) NOT NULL DEFAULT '0',
-  `body` int(11) NOT NULL DEFAULT '0',
-  `hand` int(11) NOT NULL DEFAULT '0',
-  `feet` int(11) NOT NULL DEFAULT '0',
-  `color` int(11) NOT NULL DEFAULT '1',
-  `photo` int(11) NOT NULL DEFAULT '0',
-  `flag` int(11) NOT NULL DEFAULT '0'
+  `loginKey` text DEFAULT NULL,
+  `rank` tinyint(1) NOT NULL DEFAULT 1,
+  `permaBan` tinyint(1) NOT NULL DEFAULT 0,
+  `joinTime` timestamp NOT NULL DEFAULT current_timestamp(),
+  `coins` int(11) NOT NULL DEFAULT 500,
+  `head` int(11) NOT NULL DEFAULT 0,
+  `face` int(11) NOT NULL DEFAULT 0,
+  `neck` int(11) NOT NULL DEFAULT 0,
+  `body` int(11) NOT NULL DEFAULT 0,
+  `hand` int(11) NOT NULL DEFAULT 0,
+  `feet` int(11) NOT NULL DEFAULT 0,
+  `color` int(11) NOT NULL DEFAULT 1,
+  `photo` int(11) NOT NULL DEFAULT 0,
+  `flag` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Users';
 
 --
@@ -7119,10 +7125,10 @@ CREATE TABLE `user_furnitures` (
   `id` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `furnitureId` int(11) NOT NULL,
-  `x` smallint(6) NOT NULL DEFAULT '0',
-  `y` smallint(6) NOT NULL DEFAULT '0',
-  `rotation` smallint(6) NOT NULL DEFAULT '1',
-  `frame` smallint(6) NOT NULL DEFAULT '1'
+  `x` smallint(6) NOT NULL DEFAULT 0,
+  `y` smallint(6) NOT NULL DEFAULT 0,
+  `rotation` smallint(6) NOT NULL DEFAULT 1,
+  `frame` smallint(6) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Furniture placed inside igloos';
 
 -- --------------------------------------------------------
@@ -7133,11 +7139,11 @@ CREATE TABLE `user_furnitures` (
 
 CREATE TABLE `user_igloos` (
   `userId` int(11) NOT NULL,
-  `type` int(11) NOT NULL DEFAULT '1',
-  `flooring` int(11) NOT NULL DEFAULT '0',
-  `music` int(11) NOT NULL DEFAULT '0',
-  `location` int(11) NOT NULL DEFAULT '1',
-  `locked` tinyint(1) NOT NULL DEFAULT '1'
+  `type` int(11) NOT NULL DEFAULT 1,
+  `flooring` int(11) NOT NULL DEFAULT 0,
+  `music` int(11) NOT NULL DEFAULT 0,
+  `location` int(11) NOT NULL DEFAULT 1,
+  `locked` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User igloo settings';
 
 -- --------------------------------------------------------
@@ -7171,7 +7177,7 @@ INSERT INTO `waddles` (`id`, `roomId`, `seats`, `game`) VALUES
 
 CREATE TABLE `worlds` (
   `id` varchar(100) NOT NULL,
-  `population` smallint(3) NOT NULL DEFAULT '0'
+  `population` smallint(3) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Server populations';
 
 --
