@@ -26,8 +26,6 @@ export default class User {
         this.ignore
         this.inventory
 
-        this.waddle
-
         // Game server authentication
         this.authenticated = false
         this.token = {}
@@ -53,10 +51,6 @@ export default class User {
             rank: this.data.rank,
             joinTime: this.data.joinTime
         }
-    }
-
-    get inWaddleGame() {
-        return this.waddle && this.room.game && this.waddle.id == this.room.id
     }
 
     get isModerator() {

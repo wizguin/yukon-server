@@ -4,9 +4,6 @@ export default class Room {
         Object.assign(this, data)
 
         this.users = {}
-
-        // Only used by rooms with waddles
-        this.waddles = {}
     }
 
     get userValues() {
