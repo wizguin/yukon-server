@@ -197,8 +197,10 @@ export default class LoginHandler {
         let address = socket.handshake.address
         let userAgent = socket.request.headers['user-agent']
 
+        let digest = crypto.createHash('sha256').update(`${user.username}${randomKey}${address}${userAgent}`).digest('hex')
+
         // Create hash of login key and user data
-        let hash = await bcrypt.hash(`${user.username}${randomKey}${address}${userAgent}`, this.config.crypto.rounds)
+        let hash = await bcrypt.hash(digest, this.config.crypto.rounds)
 
         // JWT to be stored on database
         return jwt.sign({

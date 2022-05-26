@@ -41,6 +41,11 @@ export default class GameAuth extends Plugin {
             return user.close()
         }
 
+        // Confirm key length to avoid DoS attacks caused by malicously long key lengths
+        if (args.key.length != 64) {
+            return user.close()
+        }
+
         this.compareLoginKey(args, user)
     }
 
@@ -60,7 +65,9 @@ export default class GameAuth extends Plugin {
         // Verify hash
         let address = user.socket.handshake.address
         let userAgent = user.socket.request.headers['user-agent']
-        let match = await bcrypt.compare(`${user.data.username}${args.key}${address}${userAgent}`, decoded.hash)
+
+        let digest = crypto.createHash('sha256').update(`${user.data.username}${args.key}${address}${userAgent}`).digest('hex')
+        let match = await bcrypt.compare(digest, decoded.hash)
 
         if (!match) {
             return user.close()
