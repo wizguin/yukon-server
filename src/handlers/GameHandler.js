@@ -3,7 +3,7 @@ import OpenIgloos from '../objects/room/OpenIgloos'
 import PluginManager from '../plugins/PluginManager'
 
 
-export default class DataHandler {
+export default class GameHandler {
 
     constructor(id, users, db, config) {
         this.id = id
@@ -49,7 +49,7 @@ export default class DataHandler {
         message.split('\xdd').filter(Boolean).forEach(packet => {
             try {
                 let parsed = JSON.parse(packet)
-                console.log(`[DataHandler] Received: ${parsed.action} ${JSON.stringify(parsed.args)}`)
+                console.log(`[GameHandler] Received: ${parsed.action} ${JSON.stringify(parsed.args)}`)
 
                 // Only allow game_auth until user is authenticated
                 if (!user.authenticated && parsed.action != 'game_auth') {
@@ -59,7 +59,7 @@ export default class DataHandler {
                 this.fireEvent(parsed.action, parsed.args, user)
 
             } catch(error) {
-                console.error(`[DataHandler] Error: ${error}`)
+                console.error(`[GameHandler] Error: ${error}`)
             }
         })
     }

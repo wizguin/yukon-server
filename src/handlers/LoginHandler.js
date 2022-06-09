@@ -82,7 +82,7 @@ export default class LoginHandler {
                         break
                 }
             } catch(error) {
-                console.error(`[DataHandler] Error: ${error}`)
+                console.error(`[LoginHandler] Error: ${error}`)
             }
         })
     }

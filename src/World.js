@@ -1,5 +1,5 @@
 import Database from './database/Database'
-import DataHandler from './handlers/DataHandler'
+import GameHandler from './handlers/GameHandler'
 import LoginHandler from './handlers/LoginHandler'
 import Server from './server/Server'
 
@@ -12,7 +12,7 @@ class World extends Server {
         let users = {}
         let db = new Database(config.database)
 
-        let handler = (id == 'Login') ? LoginHandler : DataHandler
+        let handler = (id == 'Login') ? LoginHandler : GameHandler
         handler = new handler(id, users, db, config)
 
         super(id, users, db, handler, config)
