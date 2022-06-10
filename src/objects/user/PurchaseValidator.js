@@ -2,7 +2,10 @@ export default class PurchaseValidator {
 
     constructor(user) {
         this.user = user
-        this.crumbs = user.crumbs
+    }
+
+    get crumbs() {
+        return this.user.crumbs
     }
 
     item(id) {

@@ -3,7 +3,6 @@ export default class Inventory {
     constructor(user, inventory) {
         this.user = user
         this.db = user.db
-        this.items = user.crumbs.items
         this.list = inventory
     }
 
