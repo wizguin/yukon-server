@@ -55,9 +55,11 @@ export default class Server {
     }
 
     connectionMade(socket) {
-        console.log(`[Server] Connection from: ${socket.id}`)
+        let ip = (socket.client.request.headers['cf-connecting-ip']) ? socket.client.request.headers['cf-connecting-ip'] : socket.request.connection.remoteAddress
+        console.log(`[Server] Connection from: ${ip}`)
         let user = new User(socket, this.handler)
         this.users[socket.id] = user
+        this.users[socket.id].ipAddress = ip
 
         socket.on('message', (message) => this.messageReceived(message, user))
         socket.on('disconnect', () => this.connectionLost(user))
@@ -65,7 +67,7 @@ export default class Server {
 
     messageReceived(message, user) {
         // Consume 1 point per event from IP address
-        this.rateLimiter.consume(user.socket.handshake.address)
+        this.rateLimiter.consume(user.ipAddress)
             .then(() => {
                 // Allowed
                 this.handler.handle(message, user)
