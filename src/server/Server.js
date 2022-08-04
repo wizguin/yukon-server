@@ -9,6 +9,7 @@ export default class Server {
         this.users = users
         this.db = db
         this.handler = handler
+        this.config = config
 
         let io = this.createIo(config.socketio, {
             cors: {
@@ -18,9 +19,13 @@ export default class Server {
             path: '/'
         })
 
-        this.rateLimiter = new RateLimiterFlexible.RateLimiterMemory({
-            // 20 events allowed per second
-            points: 20,
+        this.addressLimiter = new RateLimiterFlexible.RateLimiterMemory({
+            points: config.rateLimit.addressEventsPerSecond,
+            duration: 1
+        })
+
+        this.userLimiter = new RateLimiterFlexible.RateLimiterMemory({
+            points: config.rateLimit.userEventsPerSecond,
             duration: 1
         })
 
@@ -55,29 +60,53 @@ export default class Server {
     }
 
     connectionMade(socket) {
-        console.log(`[Server] Connection from: ${socket.id}`)
         let user = new User(socket, this.handler)
+        user.address = this.getSocketAddress(socket)
+
         this.users[socket.id] = user
+
+        console.log(`[Server] Connection from: ${socket.id} ${user.address}`)
 
         socket.on('message', (message) => this.messageReceived(message, user))
         socket.on('disconnect', () => this.connectionLost(user))
     }
 
     messageReceived(message, user) {
-        // Consume 1 point per event from IP address
-        this.rateLimiter.consume(user.socket.handshake.address)
+        this.addressLimiter.consume(user.address)
             .then(() => {
-                // Allowed
-                this.handler.handle(message, user)
+
+                this.userLimiter.consume(user.socket.id)
+                    .then(() => {
+                        this.handler.handle(message, user)
+                    })
+                    .catch(() => {
+                        // Blocked user
+                    })
+
             })
             .catch(() => {
-                // Blocked
+                // Blocked address
             })
     }
 
     connectionLost(user) {
-        console.log(`[Server] Disconnect from: ${user.socket.id}`)
+        console.log(`[Server] Disconnect from: ${user.socket.id} ${user.address}`)
         this.handler.close(user)
+    }
+
+    getSocketAddress(socket) {
+        let headers = socket.handshake.headers
+        let ipAddressHeader = this.config.rateLimit.ipAddressHeader
+
+        if (ipAddressHeader && headers[ipAddressHeader]) {
+            return headers[ipAddressHeader]
+        }
+
+        if (headers['x-forwarded-for']) {
+            return headers['x-forwarded-for'].split(',')[0]
+        }
+
+        return socket.handshake.address
     }
 
 }

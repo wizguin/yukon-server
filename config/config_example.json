@@ -34,6 +34,11 @@
             "maxUsers": 300
         }
     },
+    "rateLimit": {
+        "addressEventsPerSecond": 50,
+        "userEventsPerSecond": 10,
+        "ipAddressHeader": false
+    },
     "game": {
         "iglooIdOffset": 2000
     }
