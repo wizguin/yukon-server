@@ -1,7 +1,7 @@
 import Plugin from '../Plugin'
 
 
-export default class Chat extends Plugin {
+export default class Item extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
