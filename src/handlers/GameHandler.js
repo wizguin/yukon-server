@@ -69,7 +69,7 @@ export default class GameHandler {
     }
 
     close(user) {
-        if (!user) {
+        if (!user || !user.authenticated) {
             return
         }
 
@@ -85,7 +85,9 @@ export default class GameHandler {
             delete this.usersById[user.data.id]
         }
 
-        this.openIgloos.remove(user)
+        if (user.data && user.data.id) {
+            this.openIgloos.remove(user)
+        }
 
         delete this.users[user.socket.id]
 
