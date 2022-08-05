@@ -75,7 +75,9 @@ export default class Server {
         this.addressLimiter.consume(user.address)
             .then(() => {
 
-                this.userLimiter.consume(user.socket.id)
+                let id = this.getUserId(user)
+
+                this.userLimiter.consume(id)
                     .then(() => {
                         this.handler.handle(message, user)
                     })
@@ -107,6 +109,12 @@ export default class Server {
         }
 
         return socket.handshake.address
+    }
+
+    getUserId(user) {
+        return (user.data && user.data.id)
+            ? user.data.id
+            : user.socket.id
     }
 
 }
