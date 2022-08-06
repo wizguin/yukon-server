@@ -23,6 +23,9 @@ export default class Database {
         this.dir = `${__dirname}/models`
         this.loadModels()
 
+        this.usernameRegex = /[^ -~]/i
+        this.selectorRegex = /[^a-z0-9-]/i
+
         this.sequelize
             .authenticate()
             .then(() => {
@@ -75,6 +78,10 @@ export default class Database {
     }
 
     async getUserByUsername(username) {
+        if (this.usernameRegex.test(username)) {
+            return null
+        }
+
         return await this.findOne('users', {
             where: { username: username }
         })
@@ -87,6 +94,10 @@ export default class Database {
     }
 
     async getAuthToken(userId, selector) {
+        if (this.selectorRegex.test(selector)) {
+            return null
+        }
+
         return await this.findOne('authTokens', {
             where: { userId: userId, selector: selector }
         })

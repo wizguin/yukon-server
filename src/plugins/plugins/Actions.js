@@ -1,10 +1,13 @@
 import Plugin from '../Plugin'
 
+import { hasProps, isInRange } from '../../utils/validation'
+
 
 export default class Actions extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
+
         this.events = {
             'send_position': this.sendPosition,
             'send_frame': this.sendFrame,
@@ -13,6 +16,18 @@ export default class Actions extends Plugin {
     }
 
     sendPosition(args, user) {
+        if (!hasProps(args, 'x', 'y')) {
+            return
+        }
+
+        if (!isInRange(args.x, 0, 1520)) {
+            return
+        }
+
+        if (!isInRange(args.y, 0, 960)) {
+            return
+        }
+
         user.x = args.x
         user.y = args.y
         user.frame = 1
@@ -21,6 +36,14 @@ export default class Actions extends Plugin {
     }
 
     sendFrame(args, user) {
+        if (!hasProps(args, 'frame')) {
+            return
+        }
+
+        if (!isInRange(args.frame, 1, 26)) {
+            return
+        }
+
         if (args.set) {
             user.frame = args.frame
         } else {
@@ -31,6 +54,18 @@ export default class Actions extends Plugin {
     }
 
     snowball(args, user) {
+        if (!hasProps(args, 'x', 'y')) {
+            return
+        }
+
+        if (!isInRange(args.x, 0, 1520)) {
+            return
+        }
+
+        if (!isInRange(args.y, 0, 960)) {
+            return
+        }
+
         user.room.send(user, 'snowball', { id: user.data.id, x: args.x, y: args.y })
     }
 

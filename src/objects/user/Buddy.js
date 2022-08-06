@@ -25,7 +25,9 @@ export default class Buddy {
             this.list.push({ id: user.id, username: user.username, online: online })
 
             // Send online status to buddy
-            if (online) this.sendOnline(user.id)
+            if (online) {
+                this.sendOnline(user.id)
+            }
         }
     }
 
@@ -34,13 +36,24 @@ export default class Buddy {
     }
 
     addRequest(id, username) {
-        if (this.user.data.id == id) return
-        // If user is ignored
-        if (this.user.ignore.includes(id)) return
+        if (this.user.data.id == id) {
+            return
+        }
+
         // If buddy already added
-        if (this.includes(id)) return
+        if (this.includes(id)) {
+            return
+        }
+
+        // If user is ignored
+        if (this.user.ignore.includes(id)) {
+            return
+        }
+
         // If request has already been received
-        if (this.requests.includes(id)) return
+        if (this.requests.includes(id)) {
+            return
+        }
 
         this.requests.push(id)
         this.user.send('buddy_request', { id: id, username: username })
@@ -58,8 +71,6 @@ export default class Buddy {
         this.list = this.list.filter(obj => obj.id != id)
         this.user.send('buddy_remove', { id: id })
     }
-
-    /*========== Online status ==========*/
 
     isOnline(id) {
         return id in this.usersById

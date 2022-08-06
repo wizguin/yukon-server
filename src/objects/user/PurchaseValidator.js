@@ -1,3 +1,6 @@
+import { isNumber } from '../../utils/validation'
+
+
 export default class PurchaseValidator {
 
     constructor(user) {
@@ -25,6 +28,12 @@ export default class PurchaseValidator {
     }
 
     validate(id, type, includes = []) {
+        id = parseInt(id)
+
+        if (!isNumber(id)) {
+            return false
+        }
+
         let item = this.crumbs[type][id]
 
         if (!item) {

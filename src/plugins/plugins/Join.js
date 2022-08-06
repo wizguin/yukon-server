@@ -1,11 +1,14 @@
 import Plugin from '../Plugin'
 import Igloo from '../../objects/room/Igloo'
 
+import { isNumber } from '../../utils/validation'
+
 
 export default class Join extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
+
         this.events = {
             'load_player': this.loadPlayer,
             'join_server': this.joinServer,
@@ -44,13 +47,13 @@ export default class Join extends Plugin {
         user.room.add(user)
     }
 
-    // Limit this to 1/2 uses per second
     joinRoom(args, user) {
         user.joinRoom(this.rooms[args.room], args.x, args.y)
     }
 
     async joinIgloo(args, user) {
         let igloo = await this.getIgloo(args.igloo)
+
         user.joinRoom(igloo, args.x, args.y)
     }
 
@@ -68,12 +71,19 @@ export default class Join extends Plugin {
     }
 
     async getIgloo(id) {
+        if (!isNumber(id)) {
+            return null
+        }
+
         // Ensures igloos are above all default rooms
         let internalId = id + this.config.game.iglooIdOffset
 
         if (!(internalId in this.rooms)) {
             let igloo = await this.db.getIgloo(id)
-            if (!igloo) return null
+
+            if (!igloo) {
+                return null
+            }
 
             this.rooms[internalId] = new Igloo(igloo, this.db, this.config.game.iglooIdOffset)
         }

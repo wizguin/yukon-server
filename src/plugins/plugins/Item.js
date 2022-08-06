@@ -5,6 +5,7 @@ export default class Item extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
+
         this.events = {
             'update_player': this.updatePlayer,
             'add_item': this.addItem,
@@ -16,6 +17,7 @@ export default class Item extends Plugin {
 
     updatePlayer(args, user) {
         let item = this.items[args.item]
+
         if (!item || item.type == 10 || !user.inventory.includes(args.item)) {
             return
         }
@@ -25,9 +27,8 @@ export default class Item extends Plugin {
     }
 
     addItem(args, user) {
-        args.item = parseInt(args.item)
-
         let item = user.validatePurchase.item(args.item)
+
         if (!item) {
             return
         }

@@ -5,6 +5,8 @@ import Ignore from './Ignore'
 import Inventory from './Inventory'
 import PurchaseValidator from './PurchaseValidator'
 
+import { isInRange } from '../../utils/validation'
+
 
 export default class User {
 
@@ -107,6 +109,14 @@ export default class User {
 
         if (room.isFull) {
             return this.send('error', { error: 'Sorry this room is currently full' })
+        }
+
+        if (!isInRange(x, 0, 1520)) {
+            x = 0
+        }
+
+        if (!isInRange(y, 0, 960)) {
+            y = 0
         }
 
         this.room.remove(this)

@@ -1,15 +1,18 @@
+import Plugin from '../Plugin'
+
+import { hasProps } from '../../utils/validation'
+
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { v4 as uuid } from 'uuid'
-
-import Plugin from '../Plugin'
 
 
 export default class GameAuth extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
+
         this.events = {
             'game_auth': this.gameAuth
         }
@@ -18,6 +21,10 @@ export default class GameAuth extends Plugin {
     // Events
 
     async gameAuth(args, user) {
+        if (!hasProps(args, 'username', 'key')) {
+            return
+        }
+
         // Already authenticated
         if (user.authenticated) {
             return
@@ -41,7 +48,7 @@ export default class GameAuth extends Plugin {
             return user.close()
         }
 
-        // Confirm key length to avoid DoS attacks caused by malicously long key lengths
+        // Confirm key length
         if (args.key.length != 64) {
             return user.close()
         }

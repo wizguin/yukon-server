@@ -1,19 +1,25 @@
 import Plugin from '../Plugin'
 
+import { isInRange, isNumber } from '../../utils/validation'
+
 
 export default class Igloo extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
+
         this.events = {
             'add_igloo': this.addIgloo,
             'add_furniture': this.addFurniture,
+
             'update_igloo': this.updateIgloo,
             'update_furniture': this.updateFurniture,
             'update_flooring': this.updateFlooring,
             'update_music': this.updateMusic,
+
             'open_igloo': this.openIgloo,
             'close_igloo': this.closeIgloo,
+
             'get_igloos': this.getIgloos,
             'get_igloo_open': this.getIglooOpen
         }
@@ -23,6 +29,7 @@ export default class Igloo extends Plugin {
 
     async addIgloo(args, user) {
         let igloo = user.validatePurchase.igloo(args.igloo)
+
         if (!igloo) {
             return
         }
@@ -35,6 +42,7 @@ export default class Igloo extends Plugin {
 
     addFurniture(args, user) {
         let furniture = user.validatePurchase.furniture(args.furniture)
+
         if (!furniture) {
             return
         }
@@ -48,13 +56,12 @@ export default class Igloo extends Plugin {
 
     async updateIgloo(args, user) {
         let igloo = this.getIgloo(user.data.id)
-        if (!args.type || !igloo || igloo != user.room || !user.iglooInventory.includes(args.type) || igloo.type == args.type) {
+
+        if (!igloo || igloo != user.room || igloo.type == args.type) {
             return
         }
 
-        // check crumb
-        let iglooItem = true
-        if (!iglooItem) {
+        if (!user.iglooInventory.includes(args.type)) {
             return
         }
 
@@ -62,6 +69,7 @@ export default class Igloo extends Plugin {
 
         igloo.update({ type: args.type })
         igloo.update({ flooring: 0 })
+
         igloo.type = args.type
         igloo.flooring = 0
 
@@ -71,6 +79,7 @@ export default class Igloo extends Plugin {
 
     async updateFurniture(args, user) {
         let igloo = this.getIgloo(user.data.id)
+
         if (!Array.isArray(args.furniture) || !igloo || igloo != user.room) {
             return
         }
@@ -81,6 +90,7 @@ export default class Igloo extends Plugin {
 
         for (let item of args.furniture) {
             let id = item.furnitureId
+
             if (!item || !user.furnitureInventory.includes(id)) {
                 continue
             }
@@ -100,11 +110,13 @@ export default class Igloo extends Plugin {
 
     updateFlooring(args, user) {
         let igloo = this.getIgloo(user.data.id)
+
         if (!igloo || igloo != user.room) {
             return
         }
 
         let flooring = user.validatePurchase.flooring(args.flooring)
+
         if (!flooring) {
             return
         }
@@ -118,7 +130,16 @@ export default class Igloo extends Plugin {
 
     updateMusic(args, user) {
         let igloo = this.getIgloo(user.data.id)
+
         if (!igloo || igloo != user.room || igloo.music == args.music) {
+            return
+        }
+
+        if (!isNumber(args.music)) {
+            return
+        }
+
+        if (!isInRange(args.music, 0, 999)) {
             return
         }
 
@@ -130,6 +151,7 @@ export default class Igloo extends Plugin {
 
     openIgloo(args, user) {
         let igloo = this.getIgloo(user.data.id)
+
         if (igloo && igloo == user.room) {
             this.openIgloos.add(user)
         }
@@ -137,6 +159,7 @@ export default class Igloo extends Plugin {
 
     closeIgloo(args, user) {
         let igloo = this.getIgloo(user.data.id)
+
         if (igloo && igloo == user.room) {
             this.openIgloos.remove(user)
         }
@@ -148,6 +171,7 @@ export default class Igloo extends Plugin {
 
     getIglooOpen(args, user) {
         let open = this.openIgloos.includes(args.igloo)
+
         user.send('get_igloo_open', { open: open })
     }
 

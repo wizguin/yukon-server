@@ -5,6 +5,7 @@ export default class Moderation extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
+
         this.events = {
             'mute_player': this.mutePlayer,
             'kick_player': this.kickPlayer,
@@ -34,14 +35,17 @@ export default class Moderation extends Plugin {
         }
 
         let recipient = this.usersById[args.id]
+
+        if (!recipient) {
+            return
+        }
+
         let recipientRank = await this.getRecipientRank(recipient, args.id)
 
         if (recipientRank < user.data.rank) {
             await this.applyBan(user, args.id)
 
-            if (recipient) {
-                recipient.close()
-            }
+            recipient.close()
         }
     }
 

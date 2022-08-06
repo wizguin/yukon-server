@@ -1,10 +1,13 @@
 import Plugin from '../Plugin'
 
+import { hasProps } from '../../utils/validation'
+
 
 export default class Buddy extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
+
         this.events = {
             'buddy_request': this.buddyRequest,
             'buddy_accept': this.buddyAccept,
@@ -24,9 +27,13 @@ export default class Buddy extends Plugin {
     }
 
     buddyAccept(args, user) {
-        if (user.buddy.includes(args.id)) return
-        if (user.ignore.includes(args.id)) return
-        if (!(user.buddy.requests.includes(args.id))) return
+        if (!hasProps(args, 'id', 'username')) {
+            return
+        }
+
+        if (!(user.buddy.requests.includes(args.id))) {
+            return
+        }
 
         // Remove request
         user.buddy.requests = user.buddy.requests.filter(item => item != args.id)
@@ -51,12 +58,16 @@ export default class Buddy extends Plugin {
     }
 
     buddyRemove(args, user) {
-        if (!user.buddy.includes(args.id)) return
+        if (!user.buddy.includes(args.id)) {
+            return
+        }
 
         user.buddy.removeBuddy(args.id)
 
         let buddy = this.usersById[args.id]
-        if (buddy) buddy.buddy.removeBuddy(user.data.id)
+        if (buddy) {
+            buddy.buddy.removeBuddy(user.data.id)
+        }
 
         this.db.buddies.destroy({ where: { userId: user.data.id, buddyId: args.id } })
         this.db.buddies.destroy({ where: { userId: args.id, buddyId: user.data.id } })

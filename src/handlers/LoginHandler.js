@@ -1,3 +1,5 @@
+import { hasProps, isString } from '../utils/validation'
+
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
@@ -134,12 +136,24 @@ export default class LoginHandler {
     }
 
     async compareTokens(args, socket) {
+        if (!hasProps(args, 'username', 'token')) {
+            return this.responses.wrongPassword
+        }
+
+        if (!isString(args.token)) {
+            return this.responses.wrongPassword
+        }
+
         let user = await this.db.getUserByUsername(args.username)
         if (!user) {
             return this.responses.notFound
         }
 
         let split = args.token.split(':')
+        if (split.length != 2) {
+            return this.responses.wrongPassword
+        }
+
         let token = await this.db.getAuthToken(user.id, split[0])
         if (!token) {
             return this.responses.wrongPassword
