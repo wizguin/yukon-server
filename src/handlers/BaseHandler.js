@@ -1,4 +1,4 @@
-import PluginManager from '../plugins/PluginManager'
+import PluginManager from '@plugin/PluginManager'
 
 import EventEmitter from 'events'
 

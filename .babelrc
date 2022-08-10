@@ -11,7 +11,7 @@
             "root": ["./src"],
             "alias": {
                 "@objects": "./src/objects",
-                "@plugin": "./src/plugins",
+                "@plugin": "./src/plugin",
                 "@utils": "./src/utils"
             }
         }]
