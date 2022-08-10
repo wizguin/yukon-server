@@ -1,23 +1,41 @@
 import Plugin from '../Plugin'
 
 
-export default class MiniGame extends Plugin {
+export default class Minigame extends Plugin {
 
     constructor(users, rooms) {
         super(users, rooms)
+
         this.events = {
+            'get_game': this.getGame,
+            'join_game': this.joinGame,
+            'send_move': this.sendMove,
             'game_over': this.gameOver
         }
     }
 
-    gameOver(args, user) {
-        if (!user.room.game) {
-            return
+    getGame(args, user) {
+        if (user.minigameRoom) {
+            user.minigameRoom.getGame(args, user)
         }
+    }
 
-        user.updateCoins(args.coins)
+    joinGame(args, user) {
+        if (user.minigameRoom) {
+            user.minigameRoom.joinGame(args, user)
+        }
+    }
 
-        user.send('game_over', { coins: user.data.coins })
+    sendMove(args, user) {
+        if (user.minigameRoom) {
+            user.minigameRoom.sendMove(args, user)
+        }
+    }
+
+    gameOver(args, user) {
+        if (user.room.game || user.minigameRoom) {
+            user.updateCoins(args.coins, true)
+        }
     }
 
 }

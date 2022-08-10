@@ -4,6 +4,8 @@ export default class Room {
         Object.assign(this, data)
 
         this.users = {}
+
+        this.tables = {}
     }
 
     get userValues() {

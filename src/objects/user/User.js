@@ -14,7 +14,6 @@ export default class User {
         this.socket = socket
         this.handler = handler
         this.db = handler.db
-        this.crumbs = handler.crumbs
 
         this.address
 
@@ -30,35 +29,19 @@ export default class User {
         this.ignore
         this.inventory
 
+        this.minigameRoom
+
         // Game server authentication
         this.authenticated = false
         this.token = {}
     }
 
-    get string() {
-        return {
-            id: this.data.id,
-            username: this.data.username,
-            color: this.data.color,
-            head: this.data.head,
-            face: this.data.face,
-            neck: this.data.neck,
-            body: this.data.body,
-            hand: this.data.hand,
-            feet: this.data.feet,
-            flag: this.data.flag,
-            photo: this.data.photo,
-            coins: this.data.coins,
-            x: this.x,
-            y: this.y,
-            frame: this.frame,
-            rank: this.data.rank,
-            joinTime: this.data.joinTime
-        }
-    }
-
     get isModerator() {
         return this.data.rank > 1
+    }
+
+    get crumbs() {
+        return this.handler.crumbs
     }
 
     async setBuddies(buddies) {
@@ -84,7 +67,9 @@ export default class User {
     }
 
     setItem(slot, item) {
-        if (this.data[slot] == item) return
+        if (this.data[slot] == item) {
+            return
+        }
 
         this.data[slot] = item
         this.room.send(this, 'update_player', { id: this.data.id, item: item, slot: slot }, [])
@@ -92,7 +77,7 @@ export default class User {
         this.update({ [slot]: item })
     }
 
-    updateCoins(coins) {
+    updateCoins(coins, gameOver = false) {
         coins = parseInt(coins)
 
         if (!isNaN(coins)) {
@@ -100,10 +85,14 @@ export default class User {
 
             this.update({ coins: this.data.coins })
         }
+
+        if (gameOver) {
+            this.send('game_over', { coins: this.data.coins })
+        }
     }
 
     joinRoom(room, x = 0, y = 0) {
-        if (!room || room === this.room) {
+        if (!room || room === this.room || this.minigameRoom) {
             return
         }
 
@@ -129,6 +118,14 @@ export default class User {
         this.room.add(this)
     }
 
+    joinTable(table) {
+        if (table && !this.minigameRoom) {
+            this.minigameRoom = table
+
+            this.minigameRoom.add(this)
+        }
+    }
+
     update(query) {
         this.db.users.update(query, { where: { id: this.data.id }})
     }
@@ -139,6 +136,28 @@ export default class User {
 
     close() {
         this.socket.disconnect(true)
+    }
+
+    get string() {
+        return {
+            id: this.data.id,
+            username: this.data.username,
+            color: this.data.color,
+            head: this.data.head,
+            face: this.data.face,
+            neck: this.data.neck,
+            body: this.data.body,
+            hand: this.data.hand,
+            feet: this.data.feet,
+            flag: this.data.flag,
+            photo: this.data.photo,
+            coins: this.data.coins,
+            x: this.x,
+            y: this.y,
+            frame: this.frame,
+            rank: this.data.rank,
+            joinTime: this.data.joinTime
+        }
     }
 
 }

@@ -1,7 +1,8 @@
-import Room from '../objects/room/Room'
-import OpenIgloos from '../objects/room/OpenIgloos'
 import PluginManager from '../plugins/PluginManager'
 
+import OpenIgloos from '../objects/room/OpenIgloos'
+import Room from '../objects/room/Room'
+import TableFactory from '../objects/room/table/TableFactory'
 
 export default class GameHandler {
 
@@ -28,6 +29,7 @@ export default class GameHandler {
         }
 
         this.rooms = await this.setRooms()
+        await this.setTables()
 
         this.plugins = new PluginManager(this)
 
@@ -43,6 +45,15 @@ export default class GameHandler {
         }
 
         return rooms
+    }
+
+    async setTables() {
+        let tables = await this.db.getTables()
+
+        for (let table of tables) {
+            let room = this.rooms[table.roomId]
+            this.rooms[table.roomId].tables[table.id] = TableFactory.createTable(table, room)
+        }
     }
 
     handle(message, user) {
@@ -79,6 +90,10 @@ export default class GameHandler {
 
         if (user.buddy) {
             user.buddy.sendOffline()
+        }
+
+        if (user.minigameRoom) {
+            user.minigameRoom.remove(user)
         }
 
         if (user.data && user.data.id && user.data.id in this.usersById) {
