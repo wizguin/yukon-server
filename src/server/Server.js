@@ -6,6 +6,7 @@ import User from '../objects/user/User'
 export default class Server {
 
     constructor(id, users, db, handler, config) {
+        this.id = id
         this.users = users
         this.db = db
         this.handler = handler
@@ -32,7 +33,7 @@ export default class Server {
         this.server = io.listen(config.worlds[id].port)
         this.server.on('connection', this.connectionMade.bind(this))
 
-        console.log(`[Server] Started world ${id} on port ${config.worlds[id].port}`)
+        console.log(`[${id}] Started world ${id} on port ${config.worlds[id].port}`)
     }
 
     createIo(config, options) {
@@ -65,7 +66,7 @@ export default class Server {
 
         this.users[socket.id] = user
 
-        console.log(`[Server] Connection from: ${socket.id} ${user.address}`)
+        console.log(`[${this.id}] Connection from: ${socket.id} ${user.address}`)
 
         socket.on('message', (message) => this.messageReceived(message, user))
         socket.on('disconnect', () => this.connectionLost(user))
@@ -92,7 +93,7 @@ export default class Server {
     }
 
     connectionLost(user) {
-        console.log(`[Server] Disconnect from: ${user.socket.id} ${user.address}`)
+        console.log(`[${this.id}] Disconnect from: ${user.socket.id} ${user.address}`)
         this.handler.close(user)
     }
 
