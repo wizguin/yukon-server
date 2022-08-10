@@ -1,21 +1,14 @@
-import PluginManager from '../plugins/PluginManager'
+import BaseHandler from './BaseHandler'
 
 import OpenIgloos from '../objects/room/OpenIgloos'
 import Room from '../objects/room/Room'
 import TableFactory from '../objects/room/table/TableFactory'
 
-import EventEmitter from 'events'
 
-
-export default class GameHandler {
+export default class GameHandler extends BaseHandler {
 
     constructor(id, users, db, config) {
-        this.id = id
-        this.users = users
-        this.db = db
-        this.config = config
-
-        this.events = new EventEmitter()
+        super(id, users, db, config)
 
         this.usersById = {}
         this.maxUsers = config.worlds[id].maxUsers
@@ -36,7 +29,7 @@ export default class GameHandler {
         this.rooms = await this.setRooms()
         await this.setTables()
 
-        this.plugins = new PluginManager(this)
+        this.startPlugins()
 
         this.updateWorldPopulation()
     }
@@ -61,25 +54,17 @@ export default class GameHandler {
         }
     }
 
-    handle(message, user) {
-        try {
-            console.log(`[GameHandler] Received: ${message.action} ${JSON.stringify(message.args)}`)
-
-            // Only allow game_auth until user is authenticated
-            if (!user.authenticated && message.action != 'game_auth') {
-                return user.close()
-            }
-
-            this.events.emit(message.action, message.args, user)
-
-        } catch(error) {
-            console.error(`[GameHandler] Error: ${error}`)
-        }
+    handleGuard(message, user) {
+        return !user.authenticated && message.action != 'game_auth'
     }
 
     close(user) {
-        if (!user || !user.authenticated) {
+        if (!user) {
             return
+        }
+
+        if (!user.authenticated) {
+            return this.closeAndUpdatePopulation(user)
         }
 
         if (user.room) {
@@ -102,13 +87,17 @@ export default class GameHandler {
             this.openIgloos.remove(user)
         }
 
-        delete this.users[user.socket.id]
-
-        this.updateWorldPopulation()
+        this.closeAndUpdatePopulation(user)
     }
 
     get population() {
         return Object.keys(this.users).length
+    }
+
+    closeAndUpdatePopulation(user) {
+        super.close(user)
+
+        this.updateWorldPopulation()
     }
 
     async updateWorldPopulation() {
