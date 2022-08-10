@@ -4,7 +4,7 @@ import path from 'path'
 
 export default class PluginManager {
 
-    constructor(handler, pluginsDir = '') {
+    constructor(handler, pluginsDir) {
         this.events = handler.events
         this.id = handler.id
 
@@ -15,14 +15,18 @@ export default class PluginManager {
     }
 
     loadPlugins(handler) {
-        fs.readdirSync(this.dir).forEach(plugin => {
+        let plugins = fs.readdirSync(this.dir).filter(file => {
+            return path.extname(file) == '.js'
+        })
+
+        for (let plugin of plugins) {
             let pluginImport = require(path.join(this.dir, plugin)).default
             let pluginObject = new pluginImport(handler)
 
             this.plugins[plugin.replace('.js', '').toLowerCase()] = pluginObject
 
             this.loadEvents(pluginObject)
-        })
+        }
 
         let pluginsCount = Object.keys(this.plugins).length
         let eventsCount = this.events._eventsCount

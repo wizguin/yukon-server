@@ -1,12 +1,12 @@
-import Plugin from '@plugin/Plugin'
+import GamePlugin from '@plugin/GamePlugin'
 
 import { hasProps, isInRange } from '@utils/validation'
 
 
-export default class Actions extends Plugin {
+export default class Actions extends GamePlugin {
 
-    constructor(users, rooms) {
-        super(users, rooms)
+    constructor(handler) {
+        super(handler)
 
         this.events = {
             'send_position': this.sendPosition,

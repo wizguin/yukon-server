@@ -1,12 +1,12 @@
-import Plugin from '@plugin/Plugin'
+import GamePlugin from '@plugin/GamePlugin'
 
 import { hasProps, isNumber, isString, isLength } from '@utils/validation'
 
 
-export default class Chat extends Plugin {
+export default class Chat extends GamePlugin {
 
-    constructor(users, rooms) {
-        super(users, rooms)
+    constructor(handler) {
+        super(handler)
 
         this.events = {
             'send_message': this.sendMessage,

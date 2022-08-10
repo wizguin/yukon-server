@@ -1,12 +1,12 @@
-import Plugin from '@plugin/Plugin'
+import GamePlugin from '@plugin/GamePlugin'
 
 import { hasProps, isNumber } from '@utils/validation'
 
 
-export default class Get extends Plugin {
+export default class Get extends GamePlugin {
 
-    constructor(users, rooms) {
-        super(users, rooms)
+    constructor(handler) {
+        super(handler)
 
         this.events = {
             'get_player': this.getPlayer

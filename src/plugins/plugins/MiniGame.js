@@ -1,10 +1,10 @@
-import Plugin from '@plugin/Plugin'
+import GamePlugin from '@plugin/GamePlugin'
 
 
-export default class Minigame extends Plugin {
+export default class Minigame extends GamePlugin {
 
-    constructor(users, rooms) {
-        super(users, rooms)
+    constructor(handler) {
+        super(handler)
 
         this.events = {
             'get_game': this.getGame,

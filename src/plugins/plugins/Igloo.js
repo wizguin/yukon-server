@@ -1,12 +1,12 @@
-import Plugin from '@plugin/Plugin'
+import GamePlugin from '@plugin/GamePlugin'
 
-import { isInRange, isNumber } from '@utils/validation'
+import { isInRange } from '@utils/validation'
 
 
-export default class Igloo extends Plugin {
+export default class Igloo extends GamePlugin {
 
-    constructor(users, rooms) {
-        super(users, rooms)
+    constructor(handler) {
+        super(handler)
 
         this.events = {
             'add_igloo': this.addIgloo,
@@ -132,10 +132,6 @@ export default class Igloo extends Plugin {
         let igloo = this.getIgloo(user.data.id)
 
         if (!igloo || igloo != user.room || igloo.music == args.music) {
-            return
-        }
-
-        if (!isNumber(args.music)) {
             return
         }
 

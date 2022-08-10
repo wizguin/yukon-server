@@ -1,4 +1,4 @@
-import Plugin from '@plugin/Plugin'
+import GamePlugin from '@plugin/GamePlugin'
 
 import { hasProps } from '@utils/validation'
 
@@ -8,10 +8,10 @@ import jwt from 'jsonwebtoken'
 import { v4 as uuid } from 'uuid'
 
 
-export default class GameAuth extends Plugin {
+export default class GameAuth extends GamePlugin {
 
-    constructor(users, rooms) {
-        super(users, rooms)
+    constructor(handler) {
+        super(handler)
 
         this.events = {
             'game_auth': this.gameAuth

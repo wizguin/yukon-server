@@ -1,12 +1,12 @@
-import Plugin from '@plugin/Plugin'
+import GamePlugin from '@plugin/GamePlugin'
 
 import { hasProps } from '@utils/validation'
 
 
-export default class Buddy extends Plugin {
+export default class Buddy extends GamePlugin {
 
-    constructor(users, rooms) {
-        super(users, rooms)
+    constructor(handler) {
+        super(handler)
 
         this.events = {
             'buddy_request': this.buddyRequest,

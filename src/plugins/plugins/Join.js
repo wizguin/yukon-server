@@ -1,14 +1,14 @@
-import Plugin from '@plugin/Plugin'
+import GamePlugin from '@plugin/GamePlugin'
 
 import { isNumber } from '@utils/validation'
 
 import Igloo from '@objects/room/Igloo'
 
 
-export default class Join extends Plugin {
+export default class Join extends GamePlugin {
 
-    constructor(users, rooms) {
-        super(users, rooms)
+    constructor(handler) {
+        super(handler)
 
         this.events = {
             'load_player': this.loadPlayer,
