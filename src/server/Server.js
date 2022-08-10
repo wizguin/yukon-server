@@ -32,8 +32,6 @@ export default class Server {
 
         this.server = io.listen(config.worlds[id].port)
         this.server.on('connection', this.connectionMade.bind(this))
-
-        console.log(`[${id}] Started world ${id} on port ${config.worlds[id].port}`)
     }
 
     createIo(config, options) {

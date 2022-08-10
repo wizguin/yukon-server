@@ -9,6 +9,8 @@ import config from '../config/config.json'
 class World extends Server {
 
     constructor(id) {
+        console.log(`[${id}] Starting world ${id} on port ${config.worlds[id].port}`)
+
         let users = {}
         let db = new Database(config.database)
 
