@@ -117,8 +117,7 @@ export default class Chat extends Plugin {
 
     addCoins(args, user) {
         if (user.isModerator) {
-            user.updateCoins(args[0])
-            user.send('game_over', { coins: user.data.coins })
+            user.updateCoins(args[0], true)
         }
     }
 
