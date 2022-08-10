@@ -1,6 +1,6 @@
-import Plugin from '../Plugin'
+import Plugin from '@plugin/Plugin'
 
-import { hasProps } from '../../utils/validation'
+import { hasProps } from '@utils/validation'
 
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'

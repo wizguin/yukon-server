@@ -1,6 +1,6 @@
-import Plugin from '../Plugin'
+import Plugin from '@plugin/Plugin'
 
-import { hasProps, isInRange } from '../../utils/validation'
+import { hasProps, isInRange } from '@utils/validation'
 
 
 export default class Actions extends Plugin {

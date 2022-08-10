@@ -29,6 +29,7 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
+    "babel-plugin-module-resolver": "^4.1.0",
     "babel-watch": "^7.7.0",
     "rimraf": "^3.0.2"
   },

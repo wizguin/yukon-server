@@ -1,4 +1,4 @@
-import Plugin from '../Plugin'
+import Plugin from '@plugin/Plugin'
 
 
 export default class Item extends Plugin {

@@ -1,6 +1,6 @@
-import Plugin from '../Plugin'
+import Plugin from '@plugin/Plugin'
 
-import { hasProps, isNumber, isString, isLength } from '../../utils/validation'
+import { hasProps, isNumber, isString, isLength } from '@utils/validation'
 
 
 export default class Chat extends Plugin {

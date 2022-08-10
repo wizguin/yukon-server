@@ -1,6 +1,6 @@
-import Plugin from '../Plugin'
+import Plugin from '@plugin/Plugin'
 
-import { isInRange, isNumber } from '../../utils/validation'
+import { isInRange, isNumber } from '@utils/validation'
 
 
 export default class Igloo extends Plugin {

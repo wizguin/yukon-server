@@ -1,7 +1,8 @@
-import Plugin from '../Plugin'
-import Igloo from '../../objects/room/Igloo'
+import Plugin from '@plugin/Plugin'
 
-import { isNumber } from '../../utils/validation'
+import { isNumber } from '@utils/validation'
+
+import Igloo from '@objects/room/Igloo'
 
 
 export default class Join extends Plugin {

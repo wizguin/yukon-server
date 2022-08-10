@@ -1,6 +1,6 @@
-import Plugin from '../Plugin'
+import Plugin from '@plugin/Plugin'
 
-import { hasProps } from '../../utils/validation'
+import { hasProps } from '@utils/validation'
 
 
 export default class Buddy extends Plugin {

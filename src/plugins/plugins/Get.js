@@ -1,6 +1,6 @@
-import Plugin from '../Plugin'
+import Plugin from '@plugin/Plugin'
 
-import { hasProps, isNumber } from '../../utils/validation'
+import { hasProps, isNumber } from '@utils/validation'
 
 
 export default class Get extends Plugin {

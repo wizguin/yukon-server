@@ -5,5 +5,15 @@
                 "node": "current"
             }
         }]
+    ],
+    "plugins": [
+        ["module-resolver", {
+            "root": ["./src"],
+            "alias": {
+                "@objects": "./src/objects",
+                "@plugin": "./src/plugins",
+                "@utils": "./src/utils"
+            }
+        }]
     ]
 }
