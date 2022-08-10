@@ -29,7 +29,7 @@ export default class GameHandler extends BaseHandler {
         this.rooms = await this.setRooms()
         await this.setTables()
 
-        this.startPlugins()
+        this.startPlugins('/game')
 
         this.updateWorldPopulation()
     }
