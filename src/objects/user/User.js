@@ -131,7 +131,7 @@ export default class User {
     }
 
     send(action, args = {}) {
-        this.socket.emit('message', JSON.stringify({ action: action, args: args }))
+        this.socket.emit('message', { action: action, args: args })
     }
 
     close() {

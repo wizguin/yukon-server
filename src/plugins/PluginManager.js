@@ -4,10 +4,11 @@ import path from 'path'
 
 export default class PluginManager {
 
-    constructor(handler) {
-        this.dir = `${__dirname}/plugins`
+    constructor(handler, pluginsDir = '') {
+        this.events = handler.events
+        this.id = handler.id
 
-        this.events = {}
+        this.dir = `${__dirname}/plugins${pluginsDir}`
         this.plugins = {}
 
         this.loadPlugins(handler)
@@ -22,19 +23,16 @@ export default class PluginManager {
 
             this.loadEvents(pluginObject)
         })
+
+        let pluginsCount = Object.keys(this.plugins).length
+        let eventsCount = this.events._eventsCount
+
+        console.log(`[${this.id}] Loaded ${pluginsCount} plugins and ${eventsCount} events`)
     }
 
     loadEvents(plugin) {
         for (let event in plugin.events) {
-            this.events[event] = plugin.events[event].bind(plugin)
-        }
-    }
-
-    getEvent(event, args, user) {
-        try {
-            this.events[event](args, user)
-        } catch(error) {
-            console.error(`[PluginManager] Event (${event}) not handled: ${error}`)
+            this.events.on(event, plugin.events[event].bind(plugin))
         }
     }
 

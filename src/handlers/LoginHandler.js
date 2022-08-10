@@ -69,24 +69,23 @@ export default class LoginHandler {
     }
 
     handle(message, user) {
-        message.split('\xdd').filter(Boolean).forEach(packet => {
-            try {
-                let parsed = JSON.parse(packet)
+        try {
+            switch (message.action) {
+                case 'login':
+                    this.login(message.args, user)
+                    break
 
-                switch (parsed.action) {
-                    case 'login':
-                        this.login(parsed.args, user)
-                        break
-                    case 'token_login':
-                        this.tokenLogin(parsed.args, user)
-                        break
-                    default:
-                        break
-                }
-            } catch(error) {
-                console.error(`[LoginHandler] Error: ${error}`)
+                case 'token_login':
+                    this.tokenLogin(message.args, user)
+                    break
+
+                default:
+                    break
             }
-        })
+
+        } catch(error) {
+            console.error(`[LoginHandler] Error: ${error}`)
+        }
     }
 
     // Events

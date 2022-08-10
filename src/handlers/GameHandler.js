@@ -4,6 +4,9 @@ import OpenIgloos from '../objects/room/OpenIgloos'
 import Room from '../objects/room/Room'
 import TableFactory from '../objects/room/table/TableFactory'
 
+import EventEmitter from 'events'
+
+
 export default class GameHandler {
 
     constructor(id, users, db, config) {
@@ -11,6 +14,8 @@ export default class GameHandler {
         this.users = users
         this.db = db
         this.config = config
+
+        this.events = new EventEmitter()
 
         this.usersById = {}
         this.maxUsers = config.worlds[id].maxUsers
@@ -57,26 +62,19 @@ export default class GameHandler {
     }
 
     handle(message, user) {
-        message.split('\xdd').filter(Boolean).forEach(packet => {
-            try {
-                let parsed = JSON.parse(packet)
-                console.log(`[GameHandler] Received: ${parsed.action} ${JSON.stringify(parsed.args)}`)
+        try {
+            console.log(`[GameHandler] Received: ${message.action} ${JSON.stringify(message.args)}`)
 
-                // Only allow game_auth until user is authenticated
-                if (!user.authenticated && parsed.action != 'game_auth') {
-                    return user.close()
-                }
-
-                this.fireEvent(parsed.action, parsed.args, user)
-
-            } catch(error) {
-                console.error(`[GameHandler] Error: ${error}`)
+            // Only allow game_auth until user is authenticated
+            if (!user.authenticated && message.action != 'game_auth') {
+                return user.close()
             }
-        })
-    }
 
-    fireEvent(event, args, user) {
-        this.plugins.getEvent(event, args, user)
+            this.events.emit(message.action, message.args, user)
+
+        } catch(error) {
+            console.error(`[GameHandler] Error: ${error}`)
+        }
     }
 
     close(user) {
