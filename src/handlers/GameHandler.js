@@ -1,8 +1,8 @@
 import BaseHandler from './BaseHandler'
 
-import OpenIgloos from '../objects/room/OpenIgloos'
-import Room from '../objects/room/Room'
-import TableFactory from '../objects/room/table/TableFactory'
+import OpenIgloos from '@objects/room/OpenIgloos'
+import Room from '@objects/room/Room'
+import TableFactory from '@objects/room/table/TableFactory'
 
 
 export default class GameHandler extends BaseHandler {

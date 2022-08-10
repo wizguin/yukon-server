@@ -1,4 +1,4 @@
-import { isNumber } from '../../utils/validation'
+import { isNumber } from '@utils/validation'
 
 
 export default class PurchaseValidator {

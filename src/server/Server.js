@@ -1,6 +1,6 @@
 import RateLimiterFlexible from 'rate-limiter-flexible'
 
-import User from '../objects/user/User'
+import User from '@objects/user/User'
 
 
 export default class Server {

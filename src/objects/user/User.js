@@ -5,7 +5,7 @@ import Ignore from './Ignore'
 import Inventory from './Inventory'
 import PurchaseValidator from './PurchaseValidator'
 
-import { isInRange } from '../../utils/validation'
+import { isInRange } from '@utils/validation'
 
 
 export default class User {
