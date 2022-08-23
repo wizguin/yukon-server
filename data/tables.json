@@ -1,0 +1,34 @@
+{
+    "200": {
+        "roomId": 221,
+        "game": "four"
+    },
+    "201": {
+        "roomId": 221,
+        "game": "four"
+    },
+    "202": {
+        "roomId": 221,
+        "game": "four"
+    },
+    "203": {
+        "roomId": 221,
+        "game": "four"
+    },
+    "204": {
+        "roomId": 221,
+        "game": "four"
+    },
+    "205": {
+        "roomId": 220,
+        "game": "four"
+    },
+    "206": {
+        "roomId": 220,
+        "game": "four"
+    },
+    "207": {
+        "roomId": 220,
+        "game": "four"
+    }
+}

@@ -4,6 +4,8 @@ import OpenIgloos from '@objects/room/OpenIgloos'
 import Room from '@objects/room/Room'
 import TableFactory from '@objects/room/table/TableFactory'
 
+import data from '@data/data'
+
 
 export default class GameHandler extends BaseHandler {
 
@@ -38,19 +40,18 @@ export default class GameHandler extends BaseHandler {
         let roomsData = await this.db.getRooms()
         let rooms = {}
 
-        for (let data of roomsData) {
-            rooms[data.id] = new Room(data)
+        for (let room of roomsData) {
+            rooms[room.id] = new Room(room)
         }
 
         return rooms
     }
 
-    async setTables() {
-        let tables = await this.db.getTables()
-
-        for (let table of tables) {
+    setTables() {
+        for (let [id, table] of Object.entries(data.tables)) {
             let room = this.rooms[table.roomId]
-            this.rooms[table.roomId].tables[table.id] = TableFactory.createTable(table, room)
+
+            room.tables[id] = TableFactory.createTable(table, room)
         }
     }
 
