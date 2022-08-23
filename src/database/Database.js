@@ -71,12 +71,6 @@ export default class Database {
         })
     }
 
-    async getTables() {
-        return await this.findAll('tables', {
-            raw: true
-        })
-    }
-
     async getWaddles() {
         return await this.findAll('waddles', {
             raw: true
