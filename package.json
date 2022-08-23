@@ -1,6 +1,6 @@
 {
   "name": "yukon-server",
-  "version": "1.3.0-beta",
+  "version": "1.3.1-beta",
   "description": "A server for https://github.com/wizguin/yukon",
   "scripts": {
     "dev": "babel-watch ./src/World.js Login Blizzard",

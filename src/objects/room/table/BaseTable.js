@@ -1,7 +1,9 @@
 export default class BaseTable {
 
-    constructor(table, room) {
+    constructor(id, table, room) {
         Object.assign(this, table)
+
+        this.id = parseInt(id)
         this.room = room
 
         this.init()

@@ -51,7 +51,7 @@ export default class GameHandler extends BaseHandler {
         for (let [id, table] of Object.entries(data.tables)) {
             let room = this.rooms[table.roomId]
 
-            room.tables[id] = TableFactory.createTable(table, room)
+            room.tables[id] = TableFactory.createTable(id, table, room)
         }
     }
 

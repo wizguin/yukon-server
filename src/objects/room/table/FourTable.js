@@ -5,10 +5,6 @@ import { isNumber } from '@utils/validation'
 
 export default class FourTable extends BaseTable {
 
-    constructor(table, room) {
-        super(table, room)
-    }
-
     init() {
         super.init()
 
