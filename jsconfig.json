@@ -4,6 +4,8 @@
         "module": "es6",
         "baseUrl": "./",
         "paths": {
+            "@data/*": ["data/*"],
+            "@database/*": ["src/database/*"],
             "@objects/*": ["src/objects/*"],
             "@plugin/*": ["src/plugin/*"],
             "@utils/*": ["src/utils/*"]

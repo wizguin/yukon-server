@@ -10,6 +10,8 @@
         ["module-resolver", {
             "root": ["./src"],
             "alias": {
+                "@data": "./data",
+                "@database": "./src/database",
                 "@objects": "./src/objects",
                 "@plugin": "./src/plugin",
                 "@utils": "./src/utils"
