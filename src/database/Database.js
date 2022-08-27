@@ -142,19 +142,19 @@ export default class Database {
     }
 
     async getIgloo(userId) {
-        return await this.findOne('userIgloos', {
+        return await this.findOne('igloos', {
             where: { userId: userId },
             raw: true
 
         }, null, async (result) => {
             // Add furniture to igloo object
-            result.furniture = await this.getUserFurnitures(userId)
+            result.furniture = await this.getFurnitures(userId)
             return result
         })
     }
 
-    async getUserFurnitures(userId) {
-        return await this.findAll('userFurnitures', {
+    async getFurnitures(userId) {
+        return await this.findAll('furnitures', {
             where: { userId: userId },
             raw: true
 

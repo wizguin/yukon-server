@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 
 
-export default class UserFurnitures extends Sequelize.Model {
+export default class Furnitures extends Sequelize.Model {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -37,7 +37,7 @@ export default class UserFurnitures extends Sequelize.Model {
                     allowNull: false
                 }
             },
-            { sequelize, timestamps: false, tableName: 'user_furnitures' }
+            { sequelize, timestamps: false, tableName: 'furnitures' }
         )
     }
 

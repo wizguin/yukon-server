@@ -104,7 +104,7 @@ export default class Igloo extends GamePlugin {
             }
 
             igloo.furniture.push(item)
-            this.db.userFurnitures.create({ ...item, userId: user.data.id })
+            this.db.furnitures.create({ ...item, userId: user.data.id })
         }
     }
 

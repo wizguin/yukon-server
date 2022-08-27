@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 
 
-export default class UserIgloos extends Sequelize.Model {
+export default class Igloos extends Sequelize.Model {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -32,7 +32,7 @@ export default class UserIgloos extends Sequelize.Model {
                     allowNull: false
                 }
             },
-            { sequelize, timestamps: false, tableName: 'user_igloos' }
+            { sequelize, timestamps: false, tableName: 'igloos' }
         )
     }
 
