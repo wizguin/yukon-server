@@ -12,35 +12,30 @@ export default class GameHandler extends BaseHandler {
     constructor(id, users, db, config) {
         super(id, users, db, config)
 
+        this.crumbs = {
+            items: data.items,
+            igloos: data.igloos,
+            furnitures: data.furnitures,
+            floorings: data.floorings
+        }
+
         this.usersById = {}
         this.maxUsers = config.worlds[id].maxUsers
 
+        this.rooms = this.setRooms()
+        this.setTables()
+
         this.openIgloos = new OpenIgloos()
-
-        this.init()
-    }
-
-    async init() {
-        this.crumbs = {
-            items: await this.db.getItems(),
-            igloos: await this.db.getIgloos(),
-            furnitures: await this.db.getFurnitures(),
-            floorings: await this.db.getFloorings()
-        }
-
-        this.rooms = await this.setRooms()
-        await this.setTables()
 
         this.startPlugins('/game')
 
         this.updateWorldPopulation()
     }
 
-    async setRooms() {
-        let roomsData = await this.db.getRooms()
+    setRooms() {
         let rooms = {}
 
-        for (let room of roomsData) {
+        for (let room of data.rooms) {
             rooms[room.id] = new Room(room)
         }
 
@@ -48,10 +43,10 @@ export default class GameHandler extends BaseHandler {
     }
 
     setTables() {
-        for (let [id, table] of Object.entries(data.tables)) {
+        for (let table of data.tables) {
             let room = this.rooms[table.roomId]
 
-            room.tables[id] = TableFactory.createTable(id, table, room)
+            room.tables[table.id] = TableFactory.createTable(table, room)
         }
     }
 
@@ -101,7 +96,7 @@ export default class GameHandler extends BaseHandler {
         this.updateWorldPopulation()
     }
 
-    async updateWorldPopulation() {
+    updateWorldPopulation() {
         this.db.worlds.update({ population: this.population }, { where: { id: this.id }})
     }
 

@@ -7,8 +7,8 @@ export default class TableFactory {
         'four': FourTable
     }
 
-    static createTable(id, table, room) {
-        return new this.types[table.game](id, table, room)
+    static createTable(table, room) {
+        return new this.types[table.game](table, room)
     }
 
 }

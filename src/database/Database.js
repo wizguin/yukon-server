@@ -47,36 +47,6 @@ export default class Database {
         })
     }
 
-    async getItems() {
-        let items = await this.getCrumb('items')
-        items.slots = this.slots
-        return items
-    }
-
-    async getIgloos() {
-        return await this.getCrumb('igloos')
-    }
-
-    async getFurnitures() {
-        return await this.getCrumb('furnitures')
-    }
-
-    async getFloorings() {
-        return await this.getCrumb('floorings')
-    }
-
-    async getRooms() {
-        return await this.findAll('rooms', {
-            raw: true
-        })
-    }
-
-    async getWaddles() {
-        return await this.findAll('waddles', {
-            raw: true
-        })
-    }
-
     async getUserByUsername(username) {
         if (this.usernameRegex.test(username)) {
             return null

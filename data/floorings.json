@@ -1,0 +1,122 @@
+{
+    "0": {
+        "name": "Floor Removal",
+        "cost": 20,
+        "patched": 0
+    },
+    "1": {
+        "name": "Terracotta Tile",
+        "cost": 680,
+        "patched": 0
+    },
+    "2": {
+        "name": "Maple Hardwood",
+        "cost": 620,
+        "patched": 0
+    },
+    "3": {
+        "name": "Green Carpet",
+        "cost": 530,
+        "patched": 0
+    },
+    "4": {
+        "name": "Burgundy Carpet",
+        "cost": 530,
+        "patched": 0
+    },
+    "5": {
+        "name": "Black & White Tile",
+        "cost": 510,
+        "patched": 0
+    },
+    "6": {
+        "name": "Linoleum",
+        "cost": 540,
+        "patched": 0
+    },
+    "7": {
+        "name": "Dance Floor",
+        "cost": 1000,
+        "patched": 0
+    },
+    "8": {
+        "name": "Painted Dance Steps",
+        "cost": 280,
+        "patched": 0
+    },
+    "9": {
+        "name": "Bamboo Floor",
+        "cost": 370,
+        "patched": 0
+    },
+    "10": {
+        "name": "Dirt & Leaves",
+        "cost": 400,
+        "patched": 0
+    },
+    "11": {
+        "name": "Blue Turf",
+        "cost": 530,
+        "patched": 0
+    },
+    "12": {
+        "name": "Whirlpool",
+        "cost": 750,
+        "patched": 0
+    },
+    "13": {
+        "name": "Cherry Hardwood",
+        "cost": 620,
+        "patched": 0
+    },
+    "14": {
+        "name": "Phony Lawn",
+        "cost": 700,
+        "patched": 0
+    },
+    "15": {
+        "name": "Black Carpet",
+        "cost": 530,
+        "patched": 0
+    },
+    "16": {
+        "name": "Dark Stone Tile",
+        "cost": 800,
+        "patched": 0
+    },
+    "17": {
+        "name": "Pink Carpet",
+        "cost": 530,
+        "patched": 0
+    },
+    "18": {
+        "name": "Sand Floor",
+        "cost": 400,
+        "patched": 0
+    },
+    "19": {
+        "name": "Sunny Sky Floor",
+        "cost": 530,
+        "patched": 0
+    },
+    "20": {
+        "name": "Cobblestone",
+        "cost": 1200,
+        "patched": 0
+    },
+    "21": {
+        "name": "Snowy Floor",
+        "cost": 400,
+        "patched": 0
+    },
+    "22": {
+        "name": "Lime Green Carpet",
+        "cost": 530,
+        "patched": 0
+    },
+    "23": {
+        "name": "Woven Rice Mat",
+        "cost": 750,
+        "patched": 0
+    }
+}

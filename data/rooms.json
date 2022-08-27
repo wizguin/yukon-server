@@ -1,0 +1,250 @@
+[
+    {
+        "id": 100,
+        "name": "town",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 1
+    },
+    {
+        "id": 110,
+        "name": "coffee",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 111,
+        "name": "book",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 120,
+        "name": "dance",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 121,
+        "name": "lounge",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 130,
+        "name": "shop",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 200,
+        "name": "village",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 1
+    },
+    {
+        "id": 220,
+        "name": "lodge",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 221,
+        "name": "attic",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 230,
+        "name": "mtn",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 300,
+        "name": "plaza",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 1
+    },
+    {
+        "id": 310,
+        "name": "pet",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 321,
+        "name": "dojoext",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 400,
+        "name": "beach",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 1
+    },
+    {
+        "id": 800,
+        "name": "dock",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 1
+    },
+    {
+        "id": 801,
+        "name": "forts",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 1
+    },
+    {
+        "id": 802,
+        "name": "rink",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 805,
+        "name": "berg",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 1
+    },
+    {
+        "id": 806,
+        "name": "cave",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 807,
+        "name": "shack",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 809,
+        "name": "forest",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 810,
+        "name": "cove",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 900,
+        "name": "astro",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 901,
+        "name": "beans",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 902,
+        "name": "roundup",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 903,
+        "name": "hydro",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 904,
+        "name": "fish",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 909,
+        "name": "thinice",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 912,
+        "name": "waves",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 916,
+        "name": "sub",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 999,
+        "name": "sled",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    }
+]

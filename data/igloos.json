@@ -1,0 +1,482 @@
+{
+    "0": {
+        "name": "Igloo Removal",
+        "cost": 0,
+        "patched": 0
+    },
+    "1": {
+        "name": "Basic Igloo",
+        "cost": 1500,
+        "patched": 0
+    },
+    "2": {
+        "name": "Candy Igloo",
+        "cost": 1500,
+        "patched": 0
+    },
+    "3": {
+        "name": "Deluxe Blue Igloo",
+        "cost": 4000,
+        "patched": 0
+    },
+    "4": {
+        "name": "Big Candy Igloo",
+        "cost": 4000,
+        "patched": 0
+    },
+    "5": {
+        "name": "Secret Stone Igloo",
+        "cost": 2000,
+        "patched": 0
+    },
+    "6": {
+        "name": "Snow Igloo",
+        "cost": 1000,
+        "patched": 0
+    },
+    "8": {
+        "name": "Secret Deluxe Stone Igloo",
+        "cost": 5000,
+        "patched": 0
+    },
+    "9": {
+        "name": "Deluxe Snow Igloo",
+        "cost": 3000,
+        "patched": 0
+    },
+    "10": {
+        "name": "Bamboo Hut",
+        "cost": 3200,
+        "patched": 0
+    },
+    "11": {
+        "name": "Log Cabin",
+        "cost": 4100,
+        "patched": 0
+    },
+    "12": {
+        "name": "Gym",
+        "cost": 4800,
+        "patched": 0
+    },
+    "13": {
+        "name": "Split Level Igloo",
+        "cost": 4600,
+        "patched": 0
+    },
+    "14": {
+        "name": "Candy Split Level Igloo",
+        "cost": 4600,
+        "patched": 0
+    },
+    "15": {
+        "name": "Snowglobe",
+        "cost": 3700,
+        "patched": 0
+    },
+    "16": {
+        "name": "Ice Castle",
+        "cost": 2400,
+        "patched": 0
+    },
+    "17": {
+        "name": "Split Level Snow Igloo",
+        "cost": 4600,
+        "patched": 0
+    },
+    "18": {
+        "name": "Fish Bowl",
+        "cost": 2400,
+        "patched": 0
+    },
+    "19": {
+        "name": "Tent",
+        "cost": 2700,
+        "patched": 0
+    },
+    "20": {
+        "name": "Jack O' Lantern",
+        "cost": 2700,
+        "patched": 0
+    },
+    "21": {
+        "name": "Backyard Igloo",
+        "cost": 4200,
+        "patched": 0
+    },
+    "22": {
+        "name": "Pink Ice Palace",
+        "cost": 2400,
+        "patched": 0
+    },
+    "23": {
+        "name": "Ship Igloo",
+        "cost": 4300,
+        "patched": 0
+    },
+    "24": {
+        "name": "Dojo Igloo",
+        "cost": 1300,
+        "patched": 0
+    },
+    "25": {
+        "name": "Gingerbread House",
+        "cost": 2100,
+        "patched": 0
+    },
+    "26": {
+        "name": "Restaurant Igloo",
+        "cost": 4800,
+        "patched": 0
+    },
+    "27": {
+        "name": "Tree House Igloo",
+        "cost": 4500,
+        "patched": 0
+    },
+    "28": {
+        "name": "Theatre Igloo",
+        "cost": 4600,
+        "patched": 0
+    },
+    "29": {
+        "name": "Circus Tent",
+        "cost": 3000,
+        "patched": 0
+    },
+    "30": {
+        "name": "Snowy Backyard Igloo",
+        "cost": 3000,
+        "patched": 0
+    },
+    "31": {
+        "name": "Cave Igloo",
+        "cost": 1500,
+        "patched": 0
+    },
+    "32": {
+        "name": "Green Clover Igloo",
+        "cost": 2050,
+        "patched": 0
+    },
+    "33": {
+        "name": "Grey Ice Castle",
+        "cost": 2400,
+        "patched": 0
+    },
+    "35": {
+        "name": "Cozy Cottage Igloo",
+        "cost": 2500,
+        "patched": 0
+    },
+    "36": {
+        "name": "Estate Igloo",
+        "cost": 2500,
+        "patched": 0
+    },
+    "37": {
+        "name": "In Half Igloo",
+        "cost": 2300,
+        "patched": 0
+    },
+    "38": {
+        "name": "Shadowy Keep",
+        "cost": 1800,
+        "patched": 0
+    },
+    "39": {
+        "name": "Dragon's Lair",
+        "cost": 3000,
+        "patched": 0
+    },
+    "40": {
+        "name": "Mermaid Cove",
+        "cost": 3030,
+        "patched": 0
+    },
+    "41": {
+        "name": "Whale's Mouth",
+        "cost": 2700,
+        "patched": 0
+    },
+    "42": {
+        "name": "Trick-or-Treat Igloo",
+        "cost": 2000,
+        "patched": 0
+    },
+    "43": {
+        "name": "Deluxe Gingerbread House",
+        "cost": 0,
+        "patched": 0
+    },
+    "45": {
+        "name": "Invisible Snowy",
+        "cost": 0,
+        "patched": 0
+    },
+    "46": {
+        "name": "Invisible Beach",
+        "cost": 0,
+        "patched": 0
+    },
+    "47": {
+        "name": "Invisible Forest",
+        "cost": 0,
+        "patched": 0
+    },
+    "48": {
+        "name": "Invisible Mountain",
+        "cost": 0,
+        "patched": 0
+    },
+    "49": {
+        "name": "Shipwreck Igloo",
+        "cost": 900,
+        "patched": 0
+    },
+    "50": {
+        "name": "Wildlife Den",
+        "cost": 900,
+        "patched": 0
+    },
+    "51": {
+        "name": "Medieval Manor",
+        "cost": 1200,
+        "patched": 0
+    },
+    "52": {
+        "name": "Warehouse",
+        "cost": 950,
+        "patched": 0
+    },
+    "53": {
+        "name": "Pineapple Igloo",
+        "cost": 0,
+        "patched": 0
+    },
+    "54": {
+        "name": "Creepy Cavern",
+        "cost": 1500,
+        "patched": 0
+    },
+    "55": {
+        "name": "Frost Bite Palace",
+        "cost": 2000,
+        "patched": 0
+    },
+    "56": {
+        "name": "Fresh Baked Gingerbread House",
+        "cost": 2500,
+        "patched": 0
+    },
+    "57": {
+        "name": "Penthouse",
+        "cost": 4000,
+        "patched": 0
+    },
+    "58": {
+        "name": "VIP Penthouse",
+        "cost": 4500,
+        "patched": 0
+    },
+    "59": {
+        "name": "Invisible Age of Dinosaurs",
+        "cost": 0,
+        "patched": 0
+    },
+    "60": {
+        "name": "Puffle Tree Fort",
+        "cost": 0,
+        "patched": 0
+    },
+    "61": {
+        "name": "Secret Base",
+        "cost": 1600,
+        "patched": 0
+    },
+    "62": {
+        "name": "Imperial Base Igloo",
+        "cost": 1000,
+        "patched": 0
+    },
+    "63": {
+        "name": "Beach Party Igloo",
+        "cost": 1500,
+        "patched": 0
+    },
+    "64": {
+        "name": "Gymnasium Igloo",
+        "cost": 0,
+        "patched": 0
+    },
+    "65": {
+        "name": "Magical Hideout",
+        "cost": 1500,
+        "patched": 0
+    },
+    "66": {
+        "name": "Eerie Castle",
+        "cost": 2000,
+        "patched": 0
+    },
+    "67": {
+        "name": "Sweet Swirl Igloo",
+        "cost": 0,
+        "patched": 0
+    },
+    "68": {
+        "name": "Train Station Igloo",
+        "cost": 1100,
+        "patched": 0
+    },
+    "69": {
+        "name": "Main Event Igloo",
+        "cost": 1000,
+        "patched": 0
+    },
+    "70": {
+        "name": "CP Airliner",
+        "cost": 1200,
+        "patched": 0
+    },
+    "71": {
+        "name": "Puffle Tree House",
+        "cost": 1500,
+        "patched": 0
+    },
+    "72": {
+        "name": "Invisible Distant Planet",
+        "cost": 0,
+        "patched": 0
+    },
+    "73": {
+        "name": "Space Dome Igloo",
+        "cost": 2000,
+        "patched": 0
+    },
+    "74": {
+        "name": "Invisible Soccer Pitch",
+        "cost": 0,
+        "patched": 0
+    },
+    "75": {
+        "name": "Tour Bus Igloo",
+        "cost": 1800,
+        "patched": 0
+    },
+    "76": {
+        "name": "Ice Palace Igloo",
+        "cost": 0,
+        "patched": 0
+    },
+    "77": {
+        "name": "Sharks Gym",
+        "cost": 1500,
+        "patched": 0
+    },
+    "78": {
+        "name": "Schoolhouse Igloo",
+        "cost": 0,
+        "patched": 0
+    },
+    "79": {
+        "name": "Ghostly Cavern Igloo",
+        "cost": 1800,
+        "patched": 0
+    },
+    "80": {
+        "name": "Invisible Undersea",
+        "cost": 0,
+        "patched": 0
+    },
+    "81": {
+        "name": "Invisible Merry Walrus Iceberg",
+        "cost": 0,
+        "patched": 0
+    },
+    "82": {
+        "name": "Ezra's Hideout",
+        "cost": 1800,
+        "patched": 0
+    },
+    "83": {
+        "name": "Starship Igloo",
+        "cost": 0,
+        "patched": 0
+    },
+    "84": {
+        "name": "Talent Show Stage",
+        "cost": 1500,
+        "patched": 0
+    },
+    "85": {
+        "name": "Red Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "86": {
+        "name": "Orange Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "87": {
+        "name": "Yellow Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "88": {
+        "name": "Green Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "89": {
+        "name": "Blue Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "90": {
+        "name": "Purple Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "91": {
+        "name": "Black Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "92": {
+        "name": "White Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "93": {
+        "name": "Brown Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "94": {
+        "name": "Pink Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "95": {
+        "name": "Gold Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "96": {
+        "name": "Rainbow Puffle Tree House",
+        "cost": 1000,
+        "patched": 0
+    },
+    "97": {
+        "name": "Spring Palace",
+        "cost": 0,
+        "patched": 0
+    },
+    "98": {
+        "name": "Stage Igloo",
+        "cost": 1500,
+        "patched": 0
+    }
+}

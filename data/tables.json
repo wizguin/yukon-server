@@ -1,34 +1,42 @@
-{
-    "200": {
+[
+    {
+        "id": 200,
         "roomId": 221,
         "game": "four"
     },
-    "201": {
+    {
+        "id": 201,
         "roomId": 221,
         "game": "four"
     },
-    "202": {
+    {
+        "id": 202,
         "roomId": 221,
         "game": "four"
     },
-    "203": {
+    {
+        "id": 203,
         "roomId": 221,
         "game": "four"
     },
-    "204": {
+    {
+        "id": 204,
         "roomId": 221,
         "game": "four"
     },
-    "205": {
+    {
+        "id": 205,
         "roomId": 220,
         "game": "four"
     },
-    "206": {
+    {
+        "id": 206,
         "roomId": 220,
         "game": "four"
     },
-    "207": {
+    {
+        "id": 207,
         "roomId": 220,
         "game": "four"
     }
-}
+]
