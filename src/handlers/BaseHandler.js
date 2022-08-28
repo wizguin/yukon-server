@@ -15,7 +15,11 @@ export default class BaseHandler {
 
         this.plugins
 
-        this.events = new EventEmitter()
+        this.events = new EventEmitter({ captureRejections: true })
+
+        this.events.on('error', (error) => {
+            this.error(error)
+        })
     }
 
     startPlugins(pluginsDir = '') {
@@ -35,7 +39,7 @@ export default class BaseHandler {
             this.events.emit(message.action, message.args, user)
 
         } catch(error) {
-            console.error(`[${this.id}] Error: ${error}`)
+            this.error(error)
         }
     }
 
@@ -45,6 +49,10 @@ export default class BaseHandler {
 
     close(user) {
         delete this.users[user.socket.id]
+    }
+
+    error(error) {
+        console.error(`[${this.id}] ERROR: ${error.stack}`)
     }
 
 }
