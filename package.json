@@ -11,8 +11,7 @@
     "list": "pm2 list",
     "logs": "pm2 logs",
     "monit": "pm2 monit",
-    "secret-gen": "node ./utils/secret-gen.js",
-    "table-to-json": "babel-node ./utils/table-to-json.js"
+    "secret-gen": "node ./utils/secret-gen.js"
   },
   "repository": {
     "type": "git",
