@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2022 at 12:56 PM
+-- Generation Time: Aug 28, 2022 at 02:18 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -282,7 +282,8 @@ ALTER TABLE `bans`
 -- Indexes for table `buddies`
 --
 ALTER TABLE `buddies`
-  ADD PRIMARY KEY (`userId`,`buddyId`) USING BTREE;
+  ADD PRIMARY KEY (`userId`,`buddyId`) USING BTREE,
+  ADD KEY `buddies_ibfk_2` (`buddyId`);
 
 --
 -- Indexes for table `furnitures`
@@ -313,7 +314,8 @@ ALTER TABLE `igloo_inventories`
 -- Indexes for table `ignores`
 --
 ALTER TABLE `ignores`
-  ADD PRIMARY KEY (`userId`,`ignoreId`) USING BTREE;
+  ADD PRIMARY KEY (`userId`,`ignoreId`) USING BTREE,
+  ADD KEY `ignores_ibfk_2` (`ignoreId`);
 
 --
 -- Indexes for table `inventories`
@@ -326,7 +328,7 @@ ALTER TABLE `inventories`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`) USING BTREE;
 
 --
 -- Indexes for table `worlds`
