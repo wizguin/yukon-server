@@ -22,7 +22,7 @@ export default class Item extends GamePlugin {
             return
         }
 
-        let slot = this.items.slots[item.type - 1]
+        let slot = this.db.slots[item.type - 1]
         user.setItem(slot, args.item)
     }
 
@@ -33,7 +33,7 @@ export default class Item extends GamePlugin {
             return
         }
 
-        let slot = this.items.slots[item.type - 1]
+        let slot = this.db.slots[item.type - 1]
         user.inventory.add(args.item)
 
         user.updateCoins(-item.cost)
@@ -41,7 +41,7 @@ export default class Item extends GamePlugin {
     }
 
     removeItem(args, user) {
-        if (!this.items.slots.includes(args.type)) {
+        if (!this.db.slots.includes(args.type)) {
             return
         }
 
