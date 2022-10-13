@@ -66,6 +66,10 @@ export default class Database {
         }
     }
 
+    buildUser() {
+        return new this.users({}, { isNewRecord: false })
+    }
+
     async getUserByUsername(username) {
         if (this.usernameRegex.test(username)) {
             return null
