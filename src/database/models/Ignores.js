@@ -1,7 +1,7 @@
-import Sequelize from 'sequelize'
+import BaseModel from '../BaseModel'
 
 
-export default class Ignores extends Sequelize.Model {
+export default class Ignores extends BaseModel {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -19,6 +19,17 @@ export default class Ignores extends Sequelize.Model {
             },
             { sequelize, timestamps: false, tableName: 'ignores' }
         )
+    }
+
+    static associate({ users }) {
+        this.belongsTo(users, {
+            foreignKey: 'userId'
+        })
+        this.hasOne(users, {
+            foreignKey: 'id',
+            sourceKey: 'ignoreId',
+            as: 'user'
+        })
     }
 
 }

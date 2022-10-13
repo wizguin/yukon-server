@@ -21,7 +21,9 @@ export default class Database {
         this.slots = [ 'color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award' ]
 
         this.dir = `${__dirname}/models`
-        this.loadModels()
+
+        let models = this.loadModels()
+        this.loadAssociations(models)
 
         this.usernameRegex = /[^ -~]/i
         this.selectorRegex = /[^a-z0-9-]/i
@@ -37,6 +39,8 @@ export default class Database {
     }
 
     loadModels() {
+        let models = []
+
         fs.readdirSync(this.dir).forEach(model => {
             let modelImport = require(path.join(this.dir, model)).default
             let modelObject = modelImport.init(this.sequelize, Sequelize)
@@ -44,7 +48,19 @@ export default class Database {
             let name = model.charAt(0).toLowerCase() + model.slice(1, -3)
 
             this[name] = modelObject
+
+            models.push(modelObject)
         })
+
+        return models
+    }
+
+    loadAssociations(models) {
+        for (let model of models) {
+            if (model.associate) {
+                model.associate(this)
+            }
+        }
     }
 
     async getUserByUsername(username) {

@@ -1,7 +1,9 @@
+import BaseModel from '../BaseModel'
+
 import Sequelize from 'sequelize'
 
 
-export default class Users extends Sequelize.Model {
+export default class Users extends BaseModel {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -80,6 +82,43 @@ export default class Users extends Sequelize.Model {
             },
             { sequelize, timestamps: false, tableName: 'users' }
         )
+    }
+
+    static associate(db) {
+        this.hasOne(db.authTokens, {
+            foreignKey: 'userId',
+            as: 'authToken'
+        })
+        this.hasOne(db.bans, {
+            foreignKey: 'userId',
+            as: 'ban'
+        })
+        this.hasMany(db.buddies, {
+            foreignKey: 'userId',
+            as: 'buddies'
+        })
+        this.belongsTo(db.buddies, {
+            foreignKey: 'id'
+        })
+        this.hasMany(db.ignores, {
+            foreignKey: 'userId',
+            as: 'ignores'
+        })
+        this.belongsTo(db.ignores, {
+            foreignKey: 'id'
+        })
+        this.hasMany(db.inventories, {
+            foreignKey: 'userId',
+            as: 'inventory'
+        })
+        this.hasMany(db.iglooInventories, {
+            foreignKey: 'userId',
+            as: 'igloos'
+        })
+        this.hasMany(db.furnitureInventories, {
+            foreignKey: 'userId',
+            as: 'furniture'
+        })
     }
 
 }

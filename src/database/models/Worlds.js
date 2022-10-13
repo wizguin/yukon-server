@@ -1,7 +1,7 @@
-import Sequelize from 'sequelize'
+import BaseModel from '../BaseModel'
 
 
-export default class Worlds extends Sequelize.Model {
+export default class Worlds extends BaseModel {
 
     static init(sequelize, DataTypes) {
         return super.init(
