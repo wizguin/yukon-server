@@ -11,11 +11,14 @@ export default class Database {
         this.sequelize = new Sequelize(
             config.database,
             config.user,
-            config.password, {
+            config.password,
+            {
                 host: config.host,
                 dialect: config.dialect,
-                logging: (config.debug) ? console.log : false
-        })
+                logging: (config.debug) ? console.log : false,
+                logQueryParameters: config.logQueryParameters
+            }
+        )
 
         // Used to translate type id to string
         this.slots = [ 'color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award' ]

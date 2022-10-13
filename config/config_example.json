@@ -10,7 +10,8 @@
         "password": "password",
         "database": "yukon",
         "dialect": "mysql",
-        "debug": false
+        "debug": false,
+        "logQueryParameters": false
     },
     "socketio": {
         "https": false,
@@ -23,6 +24,11 @@
     "cors": {
         "origin": "http://localhost:8080"
     },
+    "rateLimit": {
+        "addressEventsPerSecond": 50,
+        "userEventsPerSecond": 10,
+        "ipAddressHeader": false
+    },
     "worlds": {
         "Login": {
             "host": "localhost",
@@ -33,11 +39,6 @@
             "port": 6112,
             "maxUsers": 300
         }
-    },
-    "rateLimit": {
-        "addressEventsPerSecond": 50,
-        "userEventsPerSecond": 10,
-        "ipAddressHeader": false
     },
     "game": {
         "iglooIdOffset": 2000
