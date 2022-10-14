@@ -21,18 +21,18 @@ export default class Server {
             path: '/'
         })
 
-        this.addressLimiter = new RateLimiterFlexible.RateLimiterMemory({
-            points: config.rateLimit.addressEventsPerSecond,
-            duration: 1
-        })
-
-        this.userLimiter = new RateLimiterFlexible.RateLimiterMemory({
-            points: config.rateLimit.userEventsPerSecond,
-            duration: 1
-        })
+        this.addressLimiter = this.createLimiter(config.rateLimit.addressEventsPerSecond)
+        this.userLimiter = this.createLimiter(config.rateLimit.userEventsPerSecond)
 
         this.server = io.listen(config.worlds[id].port)
         this.server.on('connection', this.connectionMade.bind(this))
+    }
+
+    createLimiter(points, duration = 1) {
+        return new RateLimiterFlexible.RateLimiterMemory({
+            points: points,
+            duration: duration
+        })
     }
 
     createIo(config, options) {
