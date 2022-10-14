@@ -13,6 +13,8 @@ export default {
         this.config = server.config
 
         this.address = this.getSocketAddress()
+
+        this.isModerator = false
     },
 
     send(action, args = {}) {
@@ -77,6 +79,8 @@ export default {
             ]
 
         }).then(() => {
+            this.setPermissions()
+
             return true
 
         }).catch((error) => {
@@ -84,6 +88,10 @@ export default {
 
             return false
         })
+    },
+
+    setPermissions() {
+        this.isModerator = this.rank >= 2
     }
 
 }

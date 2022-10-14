@@ -36,10 +36,6 @@ const GameUserMixin = {
         this.validatePurchase = new PurchaseValidator(this)
     },
 
-    isModerator() {
-        return this.rank > 1
-    },
-
     setItem(slot, item) {
         if (this[slot] == item) {
             return
@@ -181,6 +177,8 @@ const GameUserMixin = {
             result.inventory = new InventoryCollection(this, result.inventory)
             result.igloos = new IglooCollection(this, result.igloos)
             result.furniture = new FurnitureCollection(this, result.furniture)
+
+            this.setPermissions()
 
             return true
 

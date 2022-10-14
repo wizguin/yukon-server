@@ -174,7 +174,7 @@ export default class Login extends Plugin {
         // Generate new login key, used to validate user on game server
         user.loginKey = await this.genLoginKey(user, randomKey)
 
-        let populations = await this.getWorldPopulations(user.rank > 1)
+        let populations = await this.getWorldPopulations(user.isModerator)
 
         // All validation passed
         await user.save()

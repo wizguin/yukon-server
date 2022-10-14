@@ -34,9 +34,9 @@ export default class GameAuth extends GamePlugin {
             return user.close()
         }
 
-        // if (this.handler.population > this.handler.maxUsers && !user.isModerator()) {
-        //     return user.close()
-        // }
+        if (this.handler.population > this.handler.maxUsers && !user.isModerator) {
+            return user.close()
+        }
 
         if (user.ban || user.permaBan) {
             return user.close()
