@@ -1,6 +1,7 @@
 import RateLimiterFlexible from 'rate-limiter-flexible'
 
-import User from '@objects/user/User'
+
+import UserFactory from '@objects/user/UserFactory'
 
 
 export default class Server {
@@ -59,8 +60,7 @@ export default class Server {
     }
 
     connectionMade(socket) {
-        let user = new User(socket, this.handler)
-        user.address = this.getSocketAddress(socket)
+        let user = UserFactory(this, socket)
 
         this.users[socket.id] = user
 
@@ -74,7 +74,7 @@ export default class Server {
         this.addressLimiter.consume(user.address)
             .then(() => {
 
-                let id = this.getUserId(user)
+                let id = user.getId()
 
                 this.userLimiter.consume(id)
                     .then(() => {
@@ -93,27 +93,6 @@ export default class Server {
     connectionLost(user) {
         console.log(`[${this.id}] Disconnect from: ${user.socket.id} ${user.address}`)
         this.handler.close(user)
-    }
-
-    getSocketAddress(socket) {
-        let headers = socket.handshake.headers
-        let ipAddressHeader = this.config.rateLimit.ipAddressHeader
-
-        if (ipAddressHeader && headers[ipAddressHeader]) {
-            return headers[ipAddressHeader]
-        }
-
-        if (headers['x-forwarded-for']) {
-            return headers['x-forwarded-for'].split(',')[0]
-        }
-
-        return socket.handshake.address
-    }
-
-    getUserId(user) {
-        return (user.data && user.data.id)
-            ? user.data.id
-            : user.socket.id
     }
 
 }

@@ -37,7 +37,7 @@ export default class Item extends GamePlugin {
         user.inventory.add(args.item)
 
         user.updateCoins(-item.cost)
-        user.send('add_item', { item: args.item, name: item.name, slot: slot, coins: user.data.coins })
+        user.send('add_item', { item: args.item, name: item.name, slot: slot, coins: user.coins })
     }
 
     removeItem(args, user) {

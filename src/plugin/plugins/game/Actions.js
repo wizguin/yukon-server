@@ -32,7 +32,7 @@ export default class Actions extends GamePlugin {
         user.y = args.y
         user.frame = 1
 
-        user.room.send(user, 'send_position', { id: user.data.id, x: args.x, y: args.y })
+        user.room.send(user, 'send_position', { id: user.id, x: args.x, y: args.y })
     }
 
     sendFrame(args, user) {
@@ -50,7 +50,7 @@ export default class Actions extends GamePlugin {
             user.frame = 1
         }
 
-        user.room.send(user, 'send_frame', { id: user.data.id, frame: args.frame, set: args.set })
+        user.room.send(user, 'send_frame', { id: user.id, frame: args.frame, set: args.set })
     }
 
     snowball(args, user) {
@@ -66,7 +66,7 @@ export default class Actions extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'snowball', { id: user.data.id, x: args.x, y: args.y })
+        user.room.send(user, 'snowball', { id: user.id, x: args.x, y: args.y })
     }
 
 }

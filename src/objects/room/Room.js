@@ -12,10 +12,6 @@ export default class Room {
         return Object.values(this.users)
     }
 
-    get strings() {
-        return this.userValues.map(user => user.string)
-    }
-
     get isFull() {
         return Object.keys(this.users).length >= this.maxUsers
     }
@@ -27,13 +23,13 @@ export default class Room {
             return user.send('join_game_room', { game: this.id })
         }
 
-        user.send('join_room', { room: this.id, users: this.strings })
-        this.send(user, 'add_player', { user: user.string })
+        user.send('join_room', { room: this.id, users: this.userValues })
+        this.send(user, 'add_player', { user: user })
     }
 
     remove(user) {
         if (!this.game) {
-            this.send(user, 'remove_player', { user: user.data.id })
+            this.send(user, 'remove_player', { user: user.id })
         }
 
         delete this.users[user.socket.id]
@@ -52,7 +48,9 @@ export default class Room {
         let users = this.userValues.filter(u => !filter.includes(u))
 
         for (let u of users) {
-            if (checkIgnore && u.ignore.includes(user.data.id)) continue
+            if (checkIgnore && u.ignores.includes(user.id)) {
+                continue
+            }
 
             u.send(action, args)
         }

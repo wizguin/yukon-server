@@ -2,8 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import Sequelize from 'sequelize'
 
-const Op = Sequelize.Op
-
 
 export default class Database {
 
@@ -86,81 +84,20 @@ export default class Database {
         })
     }
 
-    async getAuthToken(userId, selector) {
-        if (this.selectorRegex.test(selector)) {
-            return null
-        }
+    async getUsername(userId) {
+        return await this.findOne('users', {
+            where: { id: userId },
+            attributes: ['username'],
+            raw: true
 
-        return await this.findOne('authTokens', {
-            where: { userId: userId, selector: selector }
-        })
-    }
-
-    async getActiveBan(userId) {
-        return await this.findOne('bans', {
-            where: {
-                userId: userId,
-                expires: {
-                    [Op.gt]: Date.now()
-                }
-            }
+        }, null, (result) => {
+            return result.username
         })
     }
 
     async getBanCount(userId) {
         return await this.bans.count({
             where: { userId: userId }
-        })
-    }
-
-    async getBuddies(userId) {
-        return await this.findAll('buddies', {
-            where: { userId: userId },
-            attributes: ['buddyId']
-
-        }, [], (result) => {
-            return result.map(result => result.buddyId)
-        })
-    }
-
-    async getIgnores(userId) {
-        return await this.findAll('ignores', {
-            where: { userId: userId },
-            attributes: ['ignoreId']
-
-        }, [], (result) => {
-            return result.map(result => result.ignoreId)
-        })
-    }
-
-    async getInventory(userId) {
-        return await this.findAll('inventories', {
-            where: { userId: userId },
-            attributes: ['itemId']
-
-        }, [], (result) => {
-            return result.map(result => result.itemId)
-        })
-    }
-
-    async getIglooInventory(userId) {
-        return await this.findAll('iglooInventories', {
-            where: { userId: userId },
-            attributes: ['iglooId']
-
-        }, [], (result) => {
-            return result.map(result => result.iglooId)
-        })
-    }
-
-    async getFurnitureInventory(userId) {
-        return await this.findAll('furnitureInventories', {
-            where: { userId: userId },
-            attributes: ['itemId', 'quantity'],
-            raw: true
-
-        }, {}, (result) => {
-            return this.arrayToObject(result, 'itemId', 'quantity')
         })
     }
 
@@ -182,8 +119,7 @@ export default class Database {
             raw: true
 
         }, [], (result) => {
-            // Removes user id from all objects in furniture array
-            return result.map(({ userId, ...furnitures}) => furnitures)
+            return result.map(({ id, userId, ...furniture }) => furniture)
         })
     }
 

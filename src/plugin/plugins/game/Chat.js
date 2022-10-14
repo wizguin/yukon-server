@@ -54,7 +54,7 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_message', { id: user.data.id, message: args.message }, [user], true)
+        user.room.send(user, 'send_message', { id: user.id, message: args.message }, [user], true)
     }
 
     sendSafe(args, user) {
@@ -66,7 +66,7 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_safe', { id: user.data.id, safe: args.safe }, [user], true)
+        user.room.send(user, 'send_safe', { id: user.id, safe: args.safe }, [user], true)
     }
 
     sendEmote(args, user) {
@@ -78,7 +78,7 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_emote', { id: user.data.id, emote: args.emote }, [user], true)
+        user.room.send(user, 'send_emote', { id: user.id, emote: args.emote }, [user], true)
     }
 
     // Commands

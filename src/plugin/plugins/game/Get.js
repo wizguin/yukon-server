@@ -23,7 +23,7 @@ export default class Get extends GamePlugin {
         }
 
         if (args.id in this.usersById) {
-            return user.send('get_player', { penguin: this.usersById[args.id].string })
+            return user.send('get_player', { penguin: this.usersById[args.id] })
         }
 
         let userData = await this.db.getUserById(args.id)

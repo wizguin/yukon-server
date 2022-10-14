@@ -50,14 +50,15 @@ export default class Login extends Plugin {
 
         } else {
             // Comparing password and checking for user existence
-            user.send('login', await this.comparePasswords(args, user.socket))
+            user.send('login', await this.comparePasswords(args, user))
         }
 
         user.close()
     }
 
     async tokenLogin(args, user) {
-        user.send('login', await this.compareTokens(args, user.socket))
+        user.send('login', await this.compareTokens(args, user))
+
         user.close()
     }
 
@@ -96,9 +97,9 @@ export default class Login extends Plugin {
         return validator.compile(schema)
     }
 
-    async comparePasswords(args, socket) {
-        let user = await this.db.getUserByUsername(args.username)
-        if (!user) {
+    async comparePasswords(args, user) {
+        let load = await user.load(args.username)
+        if (!load) {
             return this.responses.notFound
         }
 
@@ -107,15 +108,15 @@ export default class Login extends Plugin {
             return this.responses.wrongPassword
         }
 
-        let banned = await this.checkBanned(user)
+        let banned = this.checkBanned(user)
         if (banned) {
             return banned
         }
 
-        return await this.onLoginSuccess(socket, user)
+        return await this.onLoginSuccess(user)
     }
 
-    async compareTokens(args, socket) {
+    async compareTokens(args, user) {
         if (!hasProps(args, 'username', 'token')) {
             return this.responses.wrongPassword
         }
@@ -124,56 +125,54 @@ export default class Login extends Plugin {
             return this.responses.wrongPassword
         }
 
-        let user = await this.db.getUserByUsername(args.username)
-        if (!user) {
-            return this.responses.notFound
-        }
-
         let split = args.token.split(':')
         if (split.length != 2) {
             return this.responses.wrongPassword
         }
 
-        let token = await this.db.getAuthToken(user.id, split[0])
-        if (!token) {
+        let load = await user.load(args.username, split[0])
+        if (!load) {
+            return this.responses.notFound
+        }
+
+        if (!user.authToken) {
             return this.responses.wrongPassword
         }
 
-        let match = await bcrypt.compare(split[1], token.validator)
+        let match = await bcrypt.compare(split[1], user.authToken.validator)
         if (!match) {
             return this.responses.wrongPassword
         }
 
-        let banned = await this.checkBanned(user)
+        let banned = this.checkBanned(user)
         if (banned) {
             return banned
         }
 
-        return await this.onLoginSuccess(socket, user)
+        return await this.onLoginSuccess(user)
     }
 
-    async checkBanned(user) {
+    checkBanned(user) {
         if (user.permaBan) {
             return this.responses.permaBan
         }
 
-        let activeBan = await this.db.getActiveBan(user.id)
-        if (!activeBan) {
+        if (!user.ban) {
             return
         }
 
-        let hours = Math.round((activeBan.expires - Date.now()) / 60 / 60 / 1000)
+        let hours = Math.round((user.ban.expires - Date.now()) / 60 / 60 / 1000)
         return {
             success: false,
             message: `Banned:\nYou are banned for the next ${hours} hours`
         }
     }
 
-    async onLoginSuccess(socket, user) {
+    async onLoginSuccess(user) {
         // Generate random key, used by client for authentication
         let randomKey = crypto.randomBytes(32).toString('hex')
         // Generate new login key, used to validate user on game server
-        user.loginKey = await this.genLoginKey(socket, user, randomKey)
+        user.loginKey = await this.genLoginKey(user, randomKey)
 
         let populations = await this.getWorldPopulations(user.rank > 1)
 
@@ -187,16 +186,9 @@ export default class Login extends Plugin {
         }
     }
 
-    async genLoginKey(socket, user, randomKey) {
-        let address = socket.handshake.address
-        let userAgent = socket.request.headers['user-agent']
+    async genLoginKey(user, randomKey) {
+        let hash = user.createLoginHash(randomKey)
 
-        let digest = crypto.createHash('sha256').update(`${user.username}${randomKey}${address}${userAgent}`).digest('hex')
-
-        // Create hash of login key and user data
-        let hash = await bcrypt.hash(digest, this.config.crypto.rounds)
-
-        // JWT to be stored on database
         return jwt.sign({
             hash: hash
         }, this.config.crypto.secret, { expiresIn: this.config.crypto.loginKeyExpiry })

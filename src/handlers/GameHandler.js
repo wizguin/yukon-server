@@ -67,19 +67,19 @@ export default class GameHandler extends BaseHandler {
             user.room.remove(user)
         }
 
-        if (user.buddy) {
-            user.buddy.sendOffline()
+        if (user.buddies) {
+            user.buddies.sendOffline()
         }
 
         if (user.minigameRoom) {
             user.minigameRoom.remove(user)
         }
 
-        if (user.data && user.data.id && user.data.id in this.usersById) {
-            delete this.usersById[user.data.id]
+        if (user.id && user.id in this.usersById) {
+            delete this.usersById[user.id]
         }
 
-        if (user.data && user.data.id) {
+        if (user.id) {
             this.openIgloos.remove(user)
         }
 

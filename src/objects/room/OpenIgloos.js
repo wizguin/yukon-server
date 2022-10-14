@@ -13,14 +13,14 @@ export default class OpenIgloos {
     }
 
     add(user) {
-        if (!this.includes(user.data.id)) {
-            this.list.push({ id: user.data.id, username: user.data.username })
+        if (!this.includes(user.id)) {
+            this.list.push({ id: user.id, username: user.username })
         }
     }
 
     remove(user) {
-        if (this.includes(user.data.id)) {
-            this.list = this.list.filter(igloo => igloo.id != user.data.id)
+        if (this.includes(user.id)) {
+            this.list = this.list.filter(igloo => igloo.id != user.id)
         }
     }
 

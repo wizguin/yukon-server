@@ -24,25 +24,25 @@ export default class Join extends GamePlugin {
         user.room = this.getRandomSpawn()
 
         user.send('load_player', {
-            user: user.string,
+            user: user,
             room: user.room.id,
 
-            buddies: user.buddy.list,
-            ignores: user.ignore.list,
-            inventory: user.inventory.list,
-            igloos: user.iglooInventory.list,
-            furniture: user.furnitureInventory.list
+            buddies: user.buddies,
+            ignores: user.ignores,
+            inventory: user.inventory,
+            igloos: user.igloos,
+            furniture: user.furniture
         })
     }
 
     joinServer(args, user) {
         // Update token on database now that user has fully connected
         if (user.token.oldSelector) {
-            this.db.authTokens.destroy({ where: { userId: user.data.id, selector: user.token.oldSelector } })
+            this.db.authTokens.destroy({ where: { userId: user.id, selector: user.token.oldSelector } })
         }
 
         if (user.token.selector && user.token.validatorHash) {
-            this.db.authTokens.create({ userId: user.data.id, selector: user.token.selector, validator: user.token.validatorHash })
+            this.db.authTokens.create({ userId: user.id, selector: user.token.selector, validator: user.token.validatorHash })
         }
 
         user.room.add(user)
