@@ -28,11 +28,13 @@ export default class Users extends BaseModel {
                 },
                 rank: {
                     type: DataTypes.INTEGER(1),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 1
                 },
                 permaBan: {
                     type: DataTypes.BOOLEAN,
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 },
                 joinTime: {
                     type: Sequelize.DATE,
@@ -41,43 +43,53 @@ export default class Users extends BaseModel {
                 },
                 coins: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 500
                 },
                 head: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 },
                 face: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 },
                 neck: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 },
                 body: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 },
                 hand: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 },
                 feet: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 },
                 color: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 1
                 },
                 photo: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 },
                 flag: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: false,
+                    defaultValue: 0
                 }
             },
             { sequelize, timestamps: false, tableName: 'users' }
