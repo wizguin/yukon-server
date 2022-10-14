@@ -41,6 +41,7 @@
         }
     },
     "game": {
+        "preferredSpawn": 0,
         "iglooIdOffset": 2000
     }
 }

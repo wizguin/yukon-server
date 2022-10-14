@@ -21,7 +21,7 @@ export default class Join extends GamePlugin {
     // Events
 
     loadPlayer(args, user) {
-        user.room = this.getRandomSpawn()
+        user.room = this.getSpawn()
 
         user.send('load_player', {
             user: user,
@@ -60,7 +60,13 @@ export default class Join extends GamePlugin {
 
     // Functions
 
-    getRandomSpawn() {
+    getSpawn() {
+        let preferredSpawn = this.config.game.preferredSpawn
+
+        if (preferredSpawn && !this.rooms[preferredSpawn].isFull) {
+            return this.rooms[preferredSpawn]
+        }
+
         let spawns = Object.values(this.rooms).filter(room => room.spawn && !room.isFull)
 
         // All spawns full
