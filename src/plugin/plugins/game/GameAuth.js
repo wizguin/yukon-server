@@ -34,7 +34,7 @@ export default class GameAuth extends GamePlugin {
             return user.close()
         }
 
-        if (this.handler.population > this.handler.maxUsers && !user.isModerator) {
+        if (this.handler.population >= this.handler.maxUsers && !user.isModerator) {
             return user.close()
         }
 
@@ -88,16 +88,17 @@ export default class GameAuth extends GamePlugin {
 
         // Success
         this.usersById[user.id] = user
+
         user.authenticated = true
+
+        // Update world population
+        await this.handler.updateWorldPopulation()
 
         // Send response
         user.send('game_auth', { success: true })
         if (token) {
             user.send('auth_token', { token: token })
         }
-
-        // Update world population
-        await this.handler.updateWorldPopulation()
     }
 
     async genAuthToken(user) {

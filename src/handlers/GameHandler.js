@@ -86,8 +86,12 @@ export default class GameHandler extends BaseHandler {
         this.closeAndUpdatePopulation(user)
     }
 
+    get authenticated() {
+        return Object.values(this.users).filter(user => user.authenticated)
+    }
+
     get population() {
-        return Object.keys(this.users).length
+        return this.authenticated.length
     }
 
     closeAndUpdatePopulation(user) {
