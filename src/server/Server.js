@@ -1,7 +1,6 @@
-import RateLimiterFlexible from 'rate-limiter-flexible'
-
-
 import UserFactory from '@objects/user/UserFactory'
+
+import RateLimiterFlexible from 'rate-limiter-flexible'
 
 
 export default class Server {
@@ -21,8 +20,10 @@ export default class Server {
             path: '/'
         })
 
-        this.addressLimiter = this.createLimiter(config.rateLimit.addressEventsPerSecond)
-        this.userLimiter = this.createLimiter(config.rateLimit.userEventsPerSecond)
+        if (config.rateLimit.enabled) {
+            this.addressLimiter = this.createLimiter(config.rateLimit.addressEventsPerSecond)
+            this.userLimiter = this.createLimiter(config.rateLimit.userEventsPerSecond)
+        }
 
         this.server = io.listen(config.worlds[id].port)
         this.server.on('connection', this.connectionMade.bind(this))
@@ -71,6 +72,11 @@ export default class Server {
     }
 
     messageReceived(message, user) {
+        if (!this.config.rateLimit.enabled) {
+            this.handler.handle(message, user)
+            return
+        }
+
         this.addressLimiter.consume(user.address)
             .then(() => {
 

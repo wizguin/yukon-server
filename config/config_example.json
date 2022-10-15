@@ -25,6 +25,7 @@
         "origin": "http://localhost:8080"
     },
     "rateLimit": {
+        "enabled": true,
         "addressEventsPerSecond": 50,
         "userEventsPerSecond": 10,
         "ipAddressHeader": false
