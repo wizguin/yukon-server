@@ -26,6 +26,7 @@
     },
     "rateLimit": {
         "enabled": true,
+        "addressConnectsPerSecond": 5,
         "addressEventsPerSecond": 50,
         "userEventsPerSecond": 10,
         "ipAddressHeader": false

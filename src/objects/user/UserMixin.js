@@ -1,3 +1,5 @@
+import getSocketAddress from './getSocketAddress'
+
 import crypto from 'crypto'
 import { Op } from 'sequelize'
 
@@ -12,7 +14,7 @@ export default {
         this.handler = server.handler
         this.config = server.config
 
-        this.address = this.getSocketAddress()
+        this.address = getSocketAddress(socket, this.config)
 
         this.isModerator = false
     },
@@ -27,21 +29,6 @@ export default {
 
     getId() {
         return (this.id) ? this.id : this.socket.id
-    },
-
-    getSocketAddress() {
-        let headers = this.socket.handshake.headers
-        let ipAddressHeader = this.config.rateLimit.ipAddressHeader
-
-        if (ipAddressHeader && headers[ipAddressHeader]) {
-            return headers[ipAddressHeader]
-        }
-
-        if (headers['x-forwarded-for']) {
-            return headers['x-forwarded-for'].split(',')[0]
-        }
-
-        return this.socket.handshake.address
     },
 
     createLoginHash(randomKey) {
