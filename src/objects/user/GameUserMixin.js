@@ -51,7 +51,7 @@ const GameUserMixin = {
             return
         }
 
-        if (room.isFull) {
+        if (room.isFull && !this.isModerator) {
             return this.send('error', { error: 'Sorry this room is currently full' })
         }
 
