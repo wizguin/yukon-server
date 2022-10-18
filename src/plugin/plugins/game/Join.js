@@ -82,19 +82,19 @@ export default class Join extends GamePlugin {
         }
 
         // Ensures igloos are above all default rooms
-        let internalId = id + this.config.game.iglooIdOffset
+        let iglooId = id + this.config.game.iglooIdOffset
 
-        if (!(internalId in this.rooms)) {
+        if (!(iglooId in this.rooms)) {
             let igloo = await this.db.getIgloo(id)
 
             if (!igloo) {
                 return null
             }
 
-            this.rooms[internalId] = new Igloo(igloo, this.db, this.config.game.iglooIdOffset)
+            this.rooms[iglooId] = new Igloo(igloo, this.db, this.config.game.iglooIdOffset)
         }
 
-        return this.rooms[internalId]
+        return this.rooms[iglooId]
     }
 
 }
