@@ -163,7 +163,7 @@ export default class Igloo extends GamePlugin {
     }
 
     getIgloos(args, user) {
-        user.send('get_igloos', { igloos: this.openIgloos.list })
+        user.send('get_igloos', { igloos: this.openIgloos })
     }
 
     getIglooOpen(args, user) {

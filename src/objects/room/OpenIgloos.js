@@ -24,4 +24,8 @@ export default class OpenIgloos {
         }
     }
 
+    toJSON() {
+        return this.list
+    }
+
 }
