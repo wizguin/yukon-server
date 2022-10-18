@@ -35,17 +35,22 @@ export default class Ignore extends GamePlugin {
             return
         }
 
-        let username = await this.db.getUsername(args.id)
+        let ignore = this.usersById[args.id]
+        let username
+
+        if (ignore) {
+            username = ignore.username
+            ignore.clearBuddyRequest(user.id)
+
+        } else {
+            username = await this.db.getUsername(args.id)
+        }
+
         if (!username) {
             return
         }
 
         user.clearBuddyRequest(args.id)
-
-        let ignore = this.usersById[args.id]
-        if (ignore) {
-            ignore.clearBuddyRequest(user.id)
-        }
 
         user.ignores.add(args.id)
         user.send('ignore_add', { id: args.id, username: username })
