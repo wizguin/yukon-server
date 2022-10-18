@@ -19,6 +19,7 @@ export default class Chat extends GamePlugin {
             'af': this.addFurniture,
             'ac': this.addCoins,
             'jr': this.joinRoom,
+            'id': this.id,
             'users': this.userPopulation
         }
 
@@ -125,6 +126,10 @@ export default class Chat extends GamePlugin {
         if (user.isModerator) {
             this.plugins.join.joinRoom({ room: args[0] }, user)
         }
+    }
+
+    id(args, user) {
+        user.send('error', { error: `Your ID: ${user.id}` })
     }
 
     userPopulation(args, user) {
