@@ -27,9 +27,9 @@ const GameUserMixin = {
         this.room
         this.minigameRoom
 
-        this.x = 0
-        this.y = 0
-        this.frame = 1
+        this.x
+        this.y
+        this.frame
 
         this.buddyRequests = []
 
@@ -193,9 +193,7 @@ const GameUserMixin = {
         return pick(this,
             'id',
             'username',
-            'rank',
             'joinTime',
-            'coins',
             'head',
             'face',
             'neck',

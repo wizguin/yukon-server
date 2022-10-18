@@ -21,12 +21,10 @@ export default class Join extends GamePlugin {
     // Events
 
     loadPlayer(args, user) {
-        user.room = this.getSpawn()
-
         user.send('load_player', {
             user: user,
-            room: user.room.id,
-
+            rank: user.rank,
+            coins: user.coins,
             buddies: user.buddies,
             ignores: user.ignores,
             inventory: user.inventory,
@@ -45,7 +43,8 @@ export default class Join extends GamePlugin {
             this.db.authTokens.create({ userId: user.id, selector: user.token.selector, validator: user.token.validatorHash })
         }
 
-        user.room.add(user)
+        let spawn = this.getSpawn()
+        user.joinRoom(spawn)
     }
 
     joinRoom(args, user) {

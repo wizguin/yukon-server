@@ -1,5 +1,7 @@
 import BaseModel from '../BaseModel'
 
+import pick from '@utils/pick'
+
 import Sequelize from 'sequelize'
 
 
@@ -131,6 +133,22 @@ export default class Users extends BaseModel {
             foreignKey: 'userId',
             as: 'furniture'
         })
+    }
+
+    get anonymous() {
+        return pick(this,
+            'id',
+            'username',
+            'head',
+            'face',
+            'neck',
+            'body',
+            'hand',
+            'feet',
+            'color',
+            'photo',
+            'flag',
+        )
     }
 
 }
