@@ -91,9 +91,6 @@ export default class GameAuth extends GamePlugin {
 
         user.authenticated = true
 
-        // Update world population
-        await this.handler.updateWorldPopulation()
-
         // Send response
         user.send('game_auth', { success: true })
         if (token) {

@@ -22,6 +22,7 @@ const GameUserMixin = {
         this.crumbs = this.handler.crumbs
 
         this.authenticated = false
+        this.joinedServer = false
         this.token = {}
 
         this.room

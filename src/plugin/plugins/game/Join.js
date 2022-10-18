@@ -19,7 +19,7 @@ export default class Join extends GamePlugin {
 
     // Events
 
-    joinServer(args, user) {
+    async joinServer(args, user) {
         user.send('load_player', {
             user: user,
             rank: user.rank,
@@ -42,6 +42,10 @@ export default class Join extends GamePlugin {
 
         let spawn = this.getSpawn()
         user.joinRoom(spawn)
+
+        user.joinedServer = true
+
+        await this.handler.updateWorldPopulation()
     }
 
     joinRoom(args, user) {
