@@ -11,7 +11,6 @@ export default class Join extends GamePlugin {
         super(handler)
 
         this.events = {
-            'load_player': this.loadPlayer,
             'join_server': this.joinServer,
             'join_room': this.joinRoom,
             'join_igloo': this.joinIgloo
@@ -20,7 +19,7 @@ export default class Join extends GamePlugin {
 
     // Events
 
-    loadPlayer(args, user) {
+    joinServer(args, user) {
         user.send('load_player', {
             user: user,
             rank: user.rank,
@@ -31,9 +30,7 @@ export default class Join extends GamePlugin {
             igloos: user.igloos,
             furniture: user.furniture
         })
-    }
 
-    joinServer(args, user) {
         // Update token on database now that user has fully connected
         if (user.token.oldSelector) {
             this.db.authTokens.destroy({ where: { userId: user.id, selector: user.token.oldSelector } })
