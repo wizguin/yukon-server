@@ -123,8 +123,21 @@ export default class Chat extends GamePlugin {
     }
 
     joinRoom(args, user) {
-        if (user.isModerator) {
-            this.plugins.join.joinRoom({ room: args[0] }, user)
+        if (!user.isModerator) {
+            return
+        }
+
+        let room = args[0]
+
+        if (!isNaN(room)) {
+            this.plugins.join.joinRoom({ room: room }, user)
+            return
+        }
+
+        room = Object.values(this.rooms).find(r => r.name == room.toLowerCase())
+
+        if (room) {
+            this.plugins.join.joinRoom({ room: room.id }, user)
         }
     }
 
