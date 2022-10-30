@@ -92,10 +92,12 @@ export default class GameAuth extends GamePlugin {
         user.authenticated = true
 
         // Send response
-        user.send('game_auth', { success: true })
+        let response = { success: true }
         if (token) {
-            user.send('auth_token', { token: token })
+            response.token = token
         }
+
+        user.send('game_auth', response)
     }
 
     async genAuthToken(user) {
