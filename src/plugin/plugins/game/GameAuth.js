@@ -25,30 +25,23 @@ export default class GameAuth extends GamePlugin {
             return
         }
 
-        // Already authenticated
         if (user.authenticated) {
             return
         }
 
-        let userData = await user.db.getUserByUsername(args.username)
-        if (!userData) {
+        let load = await user.load(args.username)
+        if (!load) {
             return user.close()
         }
 
-        user.data = userData
-
-        // Full server
-        if (this.handler.population > this.handler.maxUsers && !user.isModerator) {
+        if (this.handler.population >= this.handler.maxUsers && !user.isModerator) {
             return user.close()
         }
 
-        // Check banned
-        let activeBan = await user.db.getActiveBan(user.data.id)
-        if (activeBan || user.data.permaBan) {
+        if (user.ban || user.permaBan) {
             return user.close()
         }
 
-        // Confirm key length
         if (args.key.length != 64) {
             return user.close()
         }
@@ -64,19 +57,14 @@ export default class GameAuth extends GamePlugin {
 
         // Verify JWT
         try {
-            decoded = jwt.verify(user.data.loginKey, this.config.crypto.secret)
+            decoded = jwt.verify(user.loginKey, this.config.crypto.secret)
         } catch (err) {
             return user.close()
         }
 
         // Verify hash
-        let address = user.socket.handshake.address
-        let userAgent = user.socket.request.headers['user-agent']
-
-        let digest = crypto.createHash('sha256').update(`${user.data.username}${args.key}${address}${userAgent}`).digest('hex')
-        let match = await bcrypt.compare(digest, decoded.hash)
-
-        if (!match) {
+        let hash = user.createLoginHash(args.key)
+        if (decoded.hash != hash) {
             return user.close()
         }
 
@@ -94,29 +82,22 @@ export default class GameAuth extends GamePlugin {
         }
 
         // Disconnect if already logged in
-        if (user.data.id in this.usersById) {
-            this.usersById[user.data.id].close()
+        if (user.id in this.usersById) {
+            this.usersById[user.id].close()
         }
 
         // Success
-        this.usersById[user.data.id] = user
-
-        await user.setBuddies(await user.db.getBuddies(user.data.id))
-        await user.setIgnores(await user.db.getIgnores(user.data.id))
-        user.setInventory(await user.db.getInventory(user.data.id))
-        user.setIglooInventory(await user.db.getIglooInventory(user.data.id))
-        user.setFurnitureInventory(await user.db.getFurnitureInventory(user.data.id))
+        this.usersById[user.id] = user
 
         user.authenticated = true
 
         // Send response
-        user.send('game_auth', { success: true })
+        let response = { success: true }
         if (token) {
-            user.send('auth_token', { token: token })
+            response.token = token
         }
 
-        // Update world population
-        await this.handler.updateWorldPopulation()
+        user.send('game_auth', response)
     }
 
     async genAuthToken(user) {

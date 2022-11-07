@@ -11,7 +11,6 @@ export default class Join extends GamePlugin {
         super(handler)
 
         this.events = {
-            'load_player': this.loadPlayer,
             'join_server': this.joinServer,
             'join_room': this.joinRoom,
             'join_igloo': this.joinIgloo
@@ -20,32 +19,33 @@ export default class Join extends GamePlugin {
 
     // Events
 
-    loadPlayer(args, user) {
-        user.room = this.getRandomSpawn()
-
+    async joinServer(args, user) {
         user.send('load_player', {
-            user: user.string,
-            room: user.room.id,
-
-            buddies: user.buddy.list,
-            ignores: user.ignore.list,
-            inventory: user.inventory.list,
-            igloos: user.iglooInventory.list,
-            furniture: user.furnitureInventory.list
+            user: user,
+            rank: user.rank,
+            coins: user.coins,
+            buddies: user.buddies,
+            ignores: user.ignores,
+            inventory: user.inventory,
+            igloos: user.igloos,
+            furniture: user.furniture
         })
-    }
 
-    joinServer(args, user) {
         // Update token on database now that user has fully connected
         if (user.token.oldSelector) {
-            this.db.authTokens.destroy({ where: { userId: user.data.id, selector: user.token.oldSelector } })
+            this.db.authTokens.destroy({ where: { userId: user.id, selector: user.token.oldSelector } })
         }
 
         if (user.token.selector && user.token.validatorHash) {
-            this.db.authTokens.create({ userId: user.data.id, selector: user.token.selector, validator: user.token.validatorHash })
+            this.db.authTokens.create({ userId: user.id, selector: user.token.selector, validator: user.token.validatorHash })
         }
 
-        user.room.add(user)
+        let spawn = this.getSpawn()
+        user.joinRoom(spawn)
+
+        user.joinedServer = true
+
+        await this.handler.updateWorldPopulation()
     }
 
     joinRoom(args, user) {
@@ -60,7 +60,13 @@ export default class Join extends GamePlugin {
 
     // Functions
 
-    getRandomSpawn() {
+    getSpawn() {
+        let preferredSpawn = this.config.game.preferredSpawn
+
+        if (preferredSpawn && !this.rooms[preferredSpawn].isFull) {
+            return this.rooms[preferredSpawn]
+        }
+
         let spawns = Object.values(this.rooms).filter(room => room.spawn && !room.isFull)
 
         // All spawns full
@@ -77,19 +83,19 @@ export default class Join extends GamePlugin {
         }
 
         // Ensures igloos are above all default rooms
-        let internalId = id + this.config.game.iglooIdOffset
+        let iglooId = id + this.config.game.iglooIdOffset
 
-        if (!(internalId in this.rooms)) {
+        if (!(iglooId in this.rooms)) {
             let igloo = await this.db.getIgloo(id)
 
             if (!igloo) {
                 return null
             }
 
-            this.rooms[internalId] = new Igloo(igloo, this.db, this.config.game.iglooIdOffset)
+            this.rooms[iglooId] = new Igloo(igloo, this.db, this.config.game.iglooIdOffset)
         }
 
-        return this.rooms[internalId]
+        return this.rooms[iglooId]
     }
 
 }

@@ -15,11 +15,11 @@ export default class BaseTable {
     }
 
     get playingUsers() {
-        return this.users.slice(0, 2).map(user => user.data.username)
+        return this.users.slice(0, 2).map(user => user.username)
     }
 
     isPlayingUser(user) {
-        return this.playingUsers.includes(user.data.username)
+        return this.playingUsers.includes(user.username)
     }
 
     add(user) {
@@ -33,7 +33,7 @@ export default class BaseTable {
 
     remove(user) {
         if (this.started && this.isPlayingUser(user)) {
-            this.reset(user.data.username)
+            this.reset(user.username)
 
         } else {
             this.users = this.users.filter(u => u != user)

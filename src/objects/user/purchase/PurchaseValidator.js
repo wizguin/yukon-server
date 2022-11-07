@@ -16,7 +16,7 @@ export default class PurchaseValidator {
     }
 
     igloo(id) {
-        return this.validate(id, 'igloos', this.user.iglooInventory)
+        return this.validate(id, 'igloos', this.user.igloos)
     }
 
     furniture(id) {
@@ -39,7 +39,7 @@ export default class PurchaseValidator {
         if (!item) {
             return false
 
-        } else if (item.cost > this.user.data.coins) {
+        } else if (item.cost > this.user.coins) {
             this.user.send('error', { error: 'You need more coins.' })
             return false
 

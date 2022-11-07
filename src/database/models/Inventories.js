@@ -1,7 +1,7 @@
-import Sequelize from 'sequelize'
+import BaseModel from '../BaseModel'
 
 
-export default class Inventories extends Sequelize.Model {
+export default class Inventories extends BaseModel {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -19,6 +19,12 @@ export default class Inventories extends Sequelize.Model {
             },
             { sequelize, timestamps: false, tableName: 'inventories' }
         )
+    }
+
+    static associate({ users }) {
+        this.belongsTo(users, {
+            foreignKey: 'userId'
+        })
     }
 
 }

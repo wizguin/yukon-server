@@ -1,7 +1,9 @@
+import BaseModel from '../BaseModel'
+
 import Sequelize from 'sequelize'
 
 
-export default class AuthTokens extends Sequelize.Model {
+export default class AuthTokens extends BaseModel {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -28,6 +30,12 @@ export default class AuthTokens extends Sequelize.Model {
             },
             { sequelize, timestamps: false, tableName: 'auth_tokens' }
         )
+    }
+
+    static associate({ users }) {
+        this.belongsTo(users, {
+            foreignKey: 'userId'
+        })
     }
 
 }

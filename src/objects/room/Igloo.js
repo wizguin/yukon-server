@@ -12,18 +12,6 @@ export default class Igloo extends Room {
         this.isIgloo = true
     }
 
-    get string() {
-        return {
-            igloo: this.userId,
-            users: this.strings,
-            type: this.type,
-            flooring: this.flooring,
-            music: this.music,
-            location: this.location,
-            furniture: this.furniture
-        }
-    }
-
     get id() {
         return this.userId + this.iglooIdOffset
     }
@@ -31,8 +19,8 @@ export default class Igloo extends Room {
     add(user) {
         this.users[user.socket.id] = user
 
-        user.send('join_igloo', this.string)
-        this.send(user, 'add_player', { user: user.string })
+        user.send('join_igloo', this)
+        this.send(user, 'add_player', { user: user })
     }
 
     refresh(user) {
@@ -41,7 +29,7 @@ export default class Igloo extends Room {
             u.y = 0
             u.frame = 1
         }
-        this.send(user, 'join_igloo', this.string, [])
+        this.send(user, 'join_igloo', this, [])
     }
 
     update(query) {
@@ -51,6 +39,18 @@ export default class Igloo extends Room {
     async clearFurniture() {
         await this.db.furnitures.destroy({ where: { userId: this.userId } })
         this.furniture = []
+    }
+
+    toJSON() {
+        return {
+            igloo: this.userId,
+            users: this.userValues,
+            type: this.type,
+            flooring: this.flooring,
+            music: this.music,
+            location: this.location,
+            furniture: this.furniture
+        }
     }
 
 }

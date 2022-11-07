@@ -9,13 +9,13 @@ export default class Ignore extends GamePlugin {
         super(handler)
 
         this.events = {
-            'ignore_add': this.addIgnore,
-            'ignore_remove': this.removeIgnore
+            'ignore_add': this.ignoreAdd,
+            'ignore_remove': this.ignoreRemove
         }
     }
 
-    addIgnore(args, user) {
-        if (!hasProps(args, 'id', 'username')) {
+    async ignoreAdd(args, user) {
+        if (!hasProps(args, 'id')) {
             return
         }
 
@@ -23,46 +23,46 @@ export default class Ignore extends GamePlugin {
             return
         }
 
-        if (user.data.id == args.id) {
+        if (user.id == args.id) {
             return
         }
 
-        if (user.buddy.includes(args.id)) {
+        if (user.buddies.includes(args.id)) {
             return
         }
 
-        if (user.ignore.includes(args.id)) {
+        if (user.ignores.includes(args.id)) {
             return
         }
-
-        // Remove any existing requests
-        user.buddy.requests = user.buddy.requests.filter(item => item != args.id)
 
         let ignore = this.usersById[args.id]
+        let username
+
         if (ignore) {
-            ignore.buddy.requests = ignore.buddy.requests.filter(item => item != user.data.id)
+            username = ignore.username
+            ignore.clearBuddyRequest(user.id)
+
+        } else {
+            username = await this.db.getUsername(args.id)
         }
 
-        this.db.ignores.create({
-            userId: user.data.id,
-            ignoreId: args.id
-
-        }).then(() => {
-            user.ignore.addIgnore(args.id, args.username)
-
-        }).catch(() => {
-            // Failed to find ignoreId in database
-        })
-    }
-
-    removeIgnore(args, user) {
-        if (!user.ignore.includes(args.id)) {
+        if (!username) {
             return
         }
 
-        user.ignore.removeIgnore(args.id)
+        user.clearBuddyRequest(args.id)
 
-        this.db.ignores.destroy({ where: { userId: user.data.id, ignoreId: args.id } })
+        user.ignores.add(args.id)
+        user.send('ignore_add', { id: args.id, username: username })
+    }
+
+    ignoreRemove(args, user) {
+        if (!user.ignores.includes(args.id)) {
+            return
+        }
+
+        user.ignores.remove(args.id)
+        user.send('ignore_remove', { id: args.id })
     }
 
 }

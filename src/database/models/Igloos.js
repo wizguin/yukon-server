@@ -1,7 +1,7 @@
-import Sequelize from 'sequelize'
+import BaseModel from '../BaseModel'
 
 
-export default class Igloos extends Sequelize.Model {
+export default class Igloos extends BaseModel {
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -34,6 +34,12 @@ export default class Igloos extends Sequelize.Model {
             },
             { sequelize, timestamps: false, tableName: 'igloos' }
         )
+    }
+
+    static associate({ users }) {
+        this.belongsTo(users, {
+            foreignKey: 'userId'
+        })
     }
 
 }

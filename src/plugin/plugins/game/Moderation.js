@@ -24,7 +24,7 @@ export default class Moderation extends GamePlugin {
 
         let recipient = this.usersById[args.id]
 
-        if (recipient && recipient.data.rank < user.data.rank) {
+        if (recipient && recipient.rank < user.rank) {
             recipient.close()
         }
     }
@@ -42,7 +42,7 @@ export default class Moderation extends GamePlugin {
 
         let recipientRank = await this.getRecipientRank(recipient, args.id)
 
-        if (recipientRank < user.data.rank) {
+        if (recipientRank < user.rank) {
             await this.applyBan(user, args.id)
 
             recipient.close()
@@ -63,7 +63,7 @@ export default class Moderation extends GamePlugin {
 
     async getRecipientRank(recipient, id) {
         return (recipient)
-            ? recipient.data.rank
+            ? recipient.rank
             : (await this.db.getUserById(id)).rank
     }
 

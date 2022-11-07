@@ -19,6 +19,7 @@ export default class Chat extends GamePlugin {
             'af': this.addFurniture,
             'ac': this.addCoins,
             'jr': this.joinRoom,
+            'id': this.id,
             'users': this.userPopulation
         }
 
@@ -54,7 +55,7 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_message', { id: user.data.id, message: args.message }, [user], true)
+        user.room.send(user, 'send_message', { id: user.id, message: args.message }, [user], true)
     }
 
     sendSafe(args, user) {
@@ -66,7 +67,7 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_safe', { id: user.data.id, safe: args.safe }, [user], true)
+        user.room.send(user, 'send_safe', { id: user.id, safe: args.safe }, [user], true)
     }
 
     sendEmote(args, user) {
@@ -78,7 +79,7 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_emote', { id: user.data.id, emote: args.emote }, [user], true)
+        user.room.send(user, 'send_emote', { id: user.id, emote: args.emote }, [user], true)
     }
 
     // Commands
@@ -122,9 +123,26 @@ export default class Chat extends GamePlugin {
     }
 
     joinRoom(args, user) {
-        if (user.isModerator) {
-            this.plugins.join.joinRoom({ room: args[0] }, user)
+        if (!user.isModerator) {
+            return
         }
+
+        let room = args[0]
+
+        if (!isNaN(room)) {
+            this.plugins.join.joinRoom({ room: room }, user)
+            return
+        }
+
+        room = Object.values(this.rooms).find(r => r.name == room.toLowerCase())
+
+        if (room) {
+            this.plugins.join.joinRoom({ room: room.id }, user)
+        }
+    }
+
+    id(args, user) {
+        user.send('error', { error: `Your ID: ${user.id}` })
     }
 
     userPopulation(args, user) {

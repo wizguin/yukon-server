@@ -23,15 +23,16 @@ export default class Get extends GamePlugin {
         }
 
         if (args.id in this.usersById) {
-            return user.send('get_player', { penguin: this.usersById[args.id].string })
+            return user.send('get_player', { penguin: this.usersById[args.id].anonymous })
         }
 
-        let userData = await this.db.getUserById(args.id)
+        if (!user.buddies.includes(args.id)) {
+            return
+        }
 
-        if (userData) {
-            let { banned, coins, loginKey, password, rank, permaBan, ...penguin } = userData.dataValues
-
-            user.send('get_player', { penguin: penguin })
+        let u = await this.db.getUserById(args.id)
+        if (u) {
+            user.send('get_player', { penguin: u.anonymous })
         }
     }
 

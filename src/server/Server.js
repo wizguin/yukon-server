@@ -1,6 +1,7 @@
-import RateLimiterFlexible from 'rate-limiter-flexible'
+import getSocketAddress from '@objects/user/getSocketAddress'
+import UserFactory from '@objects/user/UserFactory'
 
-import User from '@objects/user/User'
+import RateLimiterFlexible from 'rate-limiter-flexible'
 
 
 export default class Server {
@@ -20,18 +21,21 @@ export default class Server {
             path: '/'
         })
 
-        this.addressLimiter = new RateLimiterFlexible.RateLimiterMemory({
-            points: config.rateLimit.addressEventsPerSecond,
-            duration: 1
-        })
-
-        this.userLimiter = new RateLimiterFlexible.RateLimiterMemory({
-            points: config.rateLimit.userEventsPerSecond,
-            duration: 1
-        })
+        if (config.rateLimit.enabled) {
+            this.connectionLimiter = this.createLimiter(config.rateLimit.addressConnectsPerSecond)
+            this.addressLimiter = this.createLimiter(config.rateLimit.addressEventsPerSecond)
+            this.userLimiter = this.createLimiter(config.rateLimit.userEventsPerSecond)
+        }
 
         this.server = io.listen(config.worlds[id].port)
-        this.server.on('connection', this.connectionMade.bind(this))
+        this.server.on('connection', this.onConnection.bind(this))
+    }
+
+    createLimiter(points, duration = 1) {
+        return new RateLimiterFlexible.RateLimiterMemory({
+            points: points,
+            duration: duration
+        })
     }
 
     createIo(config, options) {
@@ -58,23 +62,44 @@ export default class Server {
         return require('https').createServer(loaded)
     }
 
-    connectionMade(socket) {
-        let user = new User(socket, this.handler)
-        user.address = this.getSocketAddress(socket)
+    onConnection(socket) {
+        if (!this.config.rateLimit.enabled) {
+            this.initUser(socket)
+            return
+        }
+
+        let address = getSocketAddress(socket, this.config)
+
+        this.connectionLimiter.consume(address)
+            .then(() => {
+                this.initUser(socket)
+            })
+            .catch(() => {
+                socket.disconnect(true)
+            })
+    }
+
+    initUser(socket) {
+        let user = UserFactory(this, socket)
 
         this.users[socket.id] = user
 
         console.log(`[${this.id}] Connection from: ${socket.id} ${user.address}`)
 
-        socket.on('message', (message) => this.messageReceived(message, user))
-        socket.on('disconnect', () => this.connectionLost(user))
+        socket.on('message', (message) => this.onMessage(message, user))
+        socket.on('disconnect', () => this.onDisconnect(user))
     }
 
-    messageReceived(message, user) {
+    onMessage(message, user) {
+        if (!this.config.rateLimit.enabled) {
+            this.handler.handle(message, user)
+            return
+        }
+
         this.addressLimiter.consume(user.address)
             .then(() => {
 
-                let id = this.getUserId(user)
+                let id = user.getId()
 
                 this.userLimiter.consume(id)
                     .then(() => {
@@ -90,30 +115,9 @@ export default class Server {
             })
     }
 
-    connectionLost(user) {
+    onDisconnect(user) {
         console.log(`[${this.id}] Disconnect from: ${user.socket.id} ${user.address}`)
         this.handler.close(user)
-    }
-
-    getSocketAddress(socket) {
-        let headers = socket.handshake.headers
-        let ipAddressHeader = this.config.rateLimit.ipAddressHeader
-
-        if (ipAddressHeader && headers[ipAddressHeader]) {
-            return headers[ipAddressHeader]
-        }
-
-        if (headers['x-forwarded-for']) {
-            return headers['x-forwarded-for'].split(',')[0]
-        }
-
-        return socket.handshake.address
-    }
-
-    getUserId(user) {
-        return (user.data && user.data.id)
-            ? user.data.id
-            : user.socket.id
     }
 
 }

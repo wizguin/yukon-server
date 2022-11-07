@@ -20,61 +20,82 @@ export default class Buddy extends GamePlugin {
     buddyRequest(args, user) {
         let recipient = this.usersById[args.id]
 
-        // Send request to recipient if they are online
-        if (recipient) {
-            recipient.buddy.addRequest(user.data.id, user.data.username)
+        if (!recipient) {
+            return
         }
+
+        if (recipient.id == user.id) {
+            return
+        }
+
+        if (recipient.buddyRequests.includes(user.id)) {
+            return
+        }
+
+        if (recipient.buddies.includes(user.id)) {
+            return
+        }
+
+        if (recipient.ignores.includes(user.id)) {
+            return
+        }
+
+        recipient.buddyRequests.push(user.id)
+        recipient.send('buddy_request', { id: user.id, username: user.username })
     }
 
-    buddyAccept(args, user) {
-        if (!hasProps(args, 'id', 'username')) {
+    async buddyAccept(args, user) {
+        if (!hasProps(args, 'id')) {
             return
         }
 
-        if (!(user.buddy.requests.includes(args.id))) {
+        if (!(user.buddyRequests.includes(args.id))) {
             return
         }
 
-        // Remove request
-        user.buddy.requests = user.buddy.requests.filter(item => item != args.id)
+        if (user.buddies.includes(args.id)) {
+            return
+        }
 
-        // Add to recipient buddy list
-        user.buddy.addBuddy(args.id, args.username)
+        user.clearBuddyRequest(args.id)
 
-        // Add to requester buddy list
         let requester = this.usersById[args.id]
+        let username
+
         if (requester) {
-            requester.buddy.addBuddy(user.data.id, user.data.username, true)
+            username = requester.username
+            requester.addBuddy(user.id, user.username, true)
+
+        } else {
+            username = await this.db.getUsername(args.id)
+            this.db.buddies.create({ userId: args.id, buddyId: user.id })
         }
 
-        // Db queries
-        this.db.buddies.create({ userId: user.data.id, buddyId: args.id })
-        this.db.buddies.create({ userId: args.id, buddyId: user.data.id })
+        user.addBuddy(args.id, username)
     }
 
     buddyReject(args, user) {
-        // Remove request
-        user.buddy.requests = user.buddy.requests.filter(item => item != args.id)
+        user.buddyRequests = user.buddyRequests.filter(item => item != args.id)
     }
 
     buddyRemove(args, user) {
-        if (!user.buddy.includes(args.id)) {
+        if (!user.buddies.includes(args.id)) {
             return
         }
 
-        user.buddy.removeBuddy(args.id)
+        user.removeBuddy(args.id)
 
         let buddy = this.usersById[args.id]
-        if (buddy) {
-            buddy.buddy.removeBuddy(user.data.id)
-        }
 
-        this.db.buddies.destroy({ where: { userId: user.data.id, buddyId: args.id } })
-        this.db.buddies.destroy({ where: { userId: args.id, buddyId: user.data.id } })
+        if (buddy) {
+            buddy.removeBuddy(user.id)
+        } else {
+            this.db.buddies.destroy({ where: { userId: args.id, buddyId: user.id } })
+        }
     }
 
     buddyFind(args, user) {
-        if (!user.buddy.includes(args.id) || !(args.id in this.usersById)) {
+        if (!user.buddies.includes(args.id) || !(args.id in this.usersById)) {
             return
         }
 

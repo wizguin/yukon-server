@@ -1,7 +1,11 @@
+import BaseModel from '../BaseModel'
+
 import Sequelize from 'sequelize'
 
 
-export default class Bans extends Sequelize.Model {
+export default class Bans extends BaseModel {
+
+    protectedAttributes = ['id', 'moderatorId', 'message']
 
     static init(sequelize, DataTypes) {
         return super.init(
@@ -36,6 +40,12 @@ export default class Bans extends Sequelize.Model {
             },
             { sequelize, timestamps: false, tableName: 'bans' }
         )
+    }
+
+    static associate({ users }) {
+        this.belongsTo(users, {
+            foreignKey: 'userId'
+        })
     }
 
 }

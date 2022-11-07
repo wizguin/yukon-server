@@ -23,7 +23,7 @@ export default class FourTable extends BaseTable {
         let turn = this.users.indexOf(user) + 1
 
         user.send('join_game', { turn: turn })
-        this.send('update_game', { username: user.data.username, turn: turn })
+        this.send('update_game', { username: user.username, turn: turn })
 
         if (this.users.length == 2) {
             this.started = true
