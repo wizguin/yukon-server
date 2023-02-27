@@ -22,6 +22,22 @@ export default class BaseTable {
         return this.playingUsers.includes(user.username)
     }
 
+    joinGame(args, user) {
+        if (this.started) {
+            return
+        }
+
+        let turn = this.users.indexOf(user) + 1
+
+        user.send('join_game', { turn: turn })
+        this.send('update_game', { username: user.username, turn: turn })
+
+        if (this.users.length == 2) {
+            this.started = true
+            this.send('start_game')
+        }
+    }
+
     add(user) {
         this.users.push(user)
 
