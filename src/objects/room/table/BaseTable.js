@@ -27,7 +27,7 @@ export default class BaseTable {
 
         let seat = this.users.length
 
-        user.send('join_table', { table: this.id, seat: seat })
+        user.send('join_table', { table: this.id, seat: seat, game: this.game })
         user.room.send(user, 'update_table', { table: this.id, seat: seat }, [])
     }
 
