@@ -22,6 +22,10 @@ export default class BaseTable {
         return this.playingUsers.includes(user.username)
     }
 
+    getGame(args, user) {
+        user.send('get_game', { users: this.playingUsers, map: this.map })
+    }
+
     joinGame(args, user) {
         if (this.started) {
             return
