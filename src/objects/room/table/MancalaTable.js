@@ -19,7 +19,7 @@ export default class MancalaTable extends BaseTable {
 
         let hole = args.hole
 
-        if (!this.isValidMove(hole)) {
+        if (!this.isValidMove(user, hole)) {
             return
         }
 
@@ -35,8 +35,13 @@ export default class MancalaTable extends BaseTable {
         }
     }
 
-    isValidMove(hole) {
+    isValidMove(user, hole) {
         if (this.map[hole] <= 0) {
+            return false
+        }
+
+        let turn = this.users.indexOf(user) + 1
+        if (turn != this.currentTurn) {
             return false
         }
 
