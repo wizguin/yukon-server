@@ -134,4 +134,13 @@ export default class MancalaTable extends BaseTable {
         }, 0)
     }
 
+    toJSON() {
+        return {
+            users: this.playingUsers,
+            map: this.map,
+            started: this.started,
+            currentTurn: this.currentTurn
+        }
+    }
+
 }
