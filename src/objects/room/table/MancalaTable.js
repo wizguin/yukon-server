@@ -27,7 +27,7 @@ export default class MancalaTable extends BaseTable {
         this.send('send_move', { turn: this.currentTurn, hole: hole, move: move })
 
         if (this.isGameOver()) {
-            // reset table here
+            this.sendGameOver()
         }
 
         if (move !== 'free') {
@@ -118,6 +118,17 @@ export default class MancalaTable extends BaseTable {
         if (player1Sum === 0 || player2Sum === 0) {
             return true
         }
+    }
+
+    sendGameOver() {
+        // Sums including mancalas
+        let player1Sum = this.sum(this.map.slice(0, 7))
+        let player2Sum = this.sum(this.map.slice(7, 14))
+
+        this.users[0].updateCoins(player1Sum, true)
+        this.users[1].updateCoins(player2Sum, true)
+
+        this.reset()
     }
 
     isTurn1Side(hole) {
