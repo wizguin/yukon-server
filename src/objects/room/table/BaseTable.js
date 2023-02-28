@@ -23,7 +23,7 @@ export default class BaseTable {
     }
 
     getGame(args, user) {
-        user.send('get_game', { users: this.playingUsers, map: this.map })
+        user.send('get_game', this)
     }
 
     joinGame(args, user) {
@@ -81,6 +81,13 @@ export default class BaseTable {
     send(action, args = {}) {
         for (let user of this.users) {
             user.send(action, args)
+        }
+    }
+
+    toJSON() {
+        return {
+            users: this.playingUsers,
+            map: this.map
         }
     }
 
