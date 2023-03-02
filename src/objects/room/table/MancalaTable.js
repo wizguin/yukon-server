@@ -28,6 +28,7 @@ export default class MancalaTable extends BaseTable {
 
         if (this.isGameOver()) {
             this.sendGameOver()
+            return
         }
 
         if (move !== 'free') {
