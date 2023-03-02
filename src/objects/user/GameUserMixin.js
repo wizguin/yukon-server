@@ -112,7 +112,7 @@ const GameUserMixin = {
         }
 
         if (gameOver) {
-            this.send('game_over', { coins: coins })
+            this.send('game_over', { coins: coins || this.coins })
         }
     },
 
