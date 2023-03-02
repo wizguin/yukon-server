@@ -71,7 +71,7 @@ export default class BaseTable {
         if (quittingUser) {
             this.send('close_game', { username: quittingUser })
         } else {
-            this.send('close_game')
+            this.send('close_game', { gameOver: true })
         }
 
         this.init()
