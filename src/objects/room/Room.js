@@ -6,6 +6,7 @@ export default class Room {
         this.users = {}
 
         this.tables = {}
+        this.waddles = {}
     }
 
     get userValues() {

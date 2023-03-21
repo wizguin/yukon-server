@@ -3,6 +3,7 @@ import BaseHandler from './BaseHandler'
 import OpenIgloos from '@objects/room/OpenIgloos'
 import Room from '@objects/room/Room'
 import TableFactory from '@objects/room/table/TableFactory'
+import Waddle from '@objects/room/waddle/Waddle'
 
 import data from '@data/data'
 
@@ -24,6 +25,7 @@ export default class GameHandler extends BaseHandler {
 
         this.rooms = this.setRooms()
         this.setTables()
+        this.setWaddles()
 
         this.openIgloos = new OpenIgloos()
 
@@ -47,6 +49,12 @@ export default class GameHandler extends BaseHandler {
             let room = this.rooms[table.roomId]
 
             room.tables[table.id] = TableFactory.createTable(table, room)
+        }
+    }
+
+    setWaddles() {
+        for (let waddle of data.waddles) {
+            this.rooms[waddle.roomId].waddles[waddle.id] = new Waddle(waddle)
         }
     }
 
