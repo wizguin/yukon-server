@@ -22,5 +22,29 @@
         "roomId": 230,
         "seats": 2,
         "game": "sled"
+    },
+    {
+        "id": 200,
+        "roomId": 320,
+        "seats": 2,
+        "game": "card"
+    },
+    {
+        "id": 201,
+        "roomId": 320,
+        "seats": 2,
+        "game": "card"
+    },
+    {
+        "id": 202,
+        "roomId": 320,
+        "seats": 2,
+        "game": "card"
+    },
+    {
+        "id": 203,
+        "roomId": 320,
+        "seats": 2,
+        "game": "card"
     }
 ]
