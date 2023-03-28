@@ -4,6 +4,7 @@ import pick from '@utils/pick'
 import { isInRange } from '@utils/validation'
 
 import BuddyCollection from '@database/collections/BuddyCollection'
+import CardCollection from '@database/collections/CardCollection'
 import FurnitureCollection from '@database/collections/FurnitureCollection'
 import IglooCollection from '@database/collections/IglooCollection'
 import IgnoreCollection from '@database/collections/IgnoreCollection'
@@ -169,6 +170,11 @@ const GameUserMixin = {
                     model: this.db.furnitureInventories,
                     as: 'furniture',
                     separate: true
+                },
+                {
+                    model: this.db.cards,
+                    as: 'cards',
+                    separate: true
                 }
             ]
 
@@ -178,6 +184,7 @@ const GameUserMixin = {
             result.inventory = new InventoryCollection(this, result.inventory)
             result.igloos = new IglooCollection(this, result.igloos)
             result.furniture = new FurnitureCollection(this, result.furniture)
+            result.cards = new CardCollection(this, result.cards)
 
             this.setPermissions()
 

@@ -133,6 +133,10 @@ export default class Users extends BaseModel {
             foreignKey: 'userId',
             as: 'furniture'
         })
+        this.hasMany(db.cards, {
+            foreignKey: 'userId',
+            as: 'cards'
+        })
     }
 
     get anonymous() {
