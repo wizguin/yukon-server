@@ -2,11 +2,13 @@ export default class CardPlayer {
 
     constructor(user) {
         this.user = user
+        this.opponent
 
         this.cards = user.crumbs.cards
 
         this.deck = []
         this.dealt = []
+        this.pick
 
         this.dealtSize = 5
 
@@ -22,6 +24,10 @@ export default class CardPlayer {
         let deck = [1, 2, 3, 5, 19]
 
         this.deck = deck
+    }
+
+    isInDealt(card) {
+        return this.dealt.includes(card)
     }
 
     dealCards() {
@@ -45,6 +51,10 @@ export default class CardPlayer {
         this.deck.splice(randomIndex, 1)
 
         return randomCard
+    }
+
+    send(action, args = {}) {
+        this.user.send(action, args)
     }
 
 }
