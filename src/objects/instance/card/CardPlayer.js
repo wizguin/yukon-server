@@ -53,6 +53,18 @@ export default class CardPlayer {
         return randomCard
     }
 
+    pickCard(card) {
+        this.pick = this.cards[card]
+
+        this.opponent.send('pick_card', { card: this.dealt.indexOf(card) })
+        delete this.dealt[card]
+    }
+
+    revealCards() {
+        this.send('reveal_card', { card: this.opponent.pick })
+        this.opponent.send('reveal_card', { card: this.pick })
+    }
+
     send(action, args = {}) {
         this.user.send(action, args)
     }

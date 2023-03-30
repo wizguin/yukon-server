@@ -62,25 +62,14 @@ export default class CardInstance extends BaseInstance {
             return
         }
 
-        me.pick = user.crumbs.cards[args.card]
-
-        me.opponent.send('pick_card', { card: me.dealt.indexOf(args.card) })
-        delete me.dealt[args.card]
+        me.pickCard(args.card)
 
         if (!me.opponent.pick) {
             return
         }
 
-        user.send('reveal_card', { card: me.opponent.pick })
-        me.opponent.send('reveal_card', { card: me.pick })
-
-        let winner = this.getRoundWinner()
-
-        user.send('judge', { winner: winner })
-        me.opponent.send('judge', { winner: winner })
-
-        user.pick = null
-        me.opponent.pick = null
+        me.revealCards()
+        this.judgeRound(me)
     }
 
     start() {
@@ -94,6 +83,16 @@ export default class CardInstance extends BaseInstance {
         this.send('start_game', { users: users })
 
         super.start()
+    }
+
+    judgeRound(me) {
+        let winner = this.getRoundWinner()
+
+        me.send('judge', { winner: winner })
+        me.opponent.send('judge', { winner: winner })
+
+        me.pick = null
+        me.opponent.pick = null
     }
 
     getRoundWinner() {
