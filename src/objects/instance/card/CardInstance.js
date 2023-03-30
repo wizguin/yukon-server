@@ -12,6 +12,8 @@ export default class CardInstance extends BaseInstance {
 
         this.ninjas = {}
 
+        this.rules = { f: 's', w: 'f', s: 'w'}
+
         this.handleSendDeal = this.handleSendDeal.bind(this)
         this.handlePickCard = this.handlePickCard.bind(this)
     }
@@ -71,6 +73,14 @@ export default class CardInstance extends BaseInstance {
 
         user.send('reveal_card', { card: me.opponent.pick })
         me.opponent.send('reveal_card', { card: me.pick })
+
+        let winner = this.getRoundWinner()
+
+        user.send('judge', { winner: winner })
+        me.opponent.send('judge', { winner: winner })
+
+        user.pick = null
+        me.opponent.pick = null
     }
 
     start() {
@@ -84,6 +94,44 @@ export default class CardInstance extends BaseInstance {
         this.send('start_game', { users: users })
 
         super.start()
+    }
+
+    getRoundWinner() {
+        let first = this.getPick(0)
+        let second = this.getPick(1)
+
+        return this.getWinningSeat(first, second)
+    }
+
+    getWinningSeat(first, second) {
+        if (first.element != second.element) {
+            return this.compareElements(first, second)
+        }
+
+        if (first.value > second.value) {
+            return 0
+        }
+
+        if (second.value > first.value) {
+            return 1
+        }
+
+        return -1
+    }
+
+    compareElements(first, second) {
+        if (this.rules[first.element] == second.element) {
+            return 0
+        }
+
+        return 1
+    }
+
+    getPick(seat) {
+        let user = this.users[seat]
+        let ninja = this.ninjas[user.id]
+
+        return ninja.pick
     }
 
     getOpponent(user) {
