@@ -2,6 +2,7 @@ export default class CardPlayer {
 
     constructor(user) {
         this.user = user
+
         this.opponent
 
         this.cards = user.crumbs.cards
@@ -15,13 +16,9 @@ export default class CardPlayer {
         this.setDeck()
     }
 
-    get dealtObjects() {
-        return this.dealt.map(id => this.cards[id])
-    }
-
     setDeck() {
         //temp
-        let deck = [1, 2, 3, 5, 19]
+        let deck = [1, 2, 3, 19, 19, 90, 90]
 
         this.deck = deck
     }
@@ -31,6 +28,7 @@ export default class CardPlayer {
     }
 
     dealCards() {
+        let currentDealt = []
         let dealNumber = this.dealtSize - this.dealt.length
 
         if (this.deck.length < 1) {
@@ -38,10 +36,13 @@ export default class CardPlayer {
         }
 
         for (let i = 0; i < dealNumber; i++) {
-            this.dealt.push(this.dealCard())
+            let deal = this.dealCard()
+
+            currentDealt.push(this.cards[deal])
+            this.dealt.push(deal)
         }
 
-        return this.dealtObjects
+        return currentDealt
     }
 
     dealCard() {
