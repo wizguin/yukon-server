@@ -57,7 +57,8 @@ export default class CardPlayer {
         this.pick = this.cards[card]
 
         this.opponent.send('pick_card', { card: this.dealt.indexOf(card) })
-        delete this.dealt[card]
+
+        this.dealt.splice(this.dealt.indexOf(card), 1)
     }
 
     revealCards() {
