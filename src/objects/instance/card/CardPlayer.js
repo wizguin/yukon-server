@@ -11,6 +11,12 @@ export default class CardPlayer {
         this.dealt = []
         this.pick
 
+        this.wins = {
+            f: [],
+            w: [],
+            s: []
+        }
+
         this.dealtSize = 5
 
         this.setDeck()
