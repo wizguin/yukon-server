@@ -45,11 +45,8 @@ export default class Waddle {
     }
 
     reset() {
-        for (let [seat, user] of this.users.entries()) {
-            if (user) {
-                this.users[seat] = null
-                user.room.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: null }, [])
-            }
+        for (let user of this.users.filter(Boolean)) {
+            this.remove(user)
         }
     }
 

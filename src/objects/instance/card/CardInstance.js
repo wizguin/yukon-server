@@ -20,6 +20,7 @@ export default class CardInstance extends BaseInstance {
 
         this.handleSendDeal = this.handleSendDeal.bind(this)
         this.handlePickCard = this.handlePickCard.bind(this)
+        this.handleLeaveGame = this.handleLeaveGame.bind(this)
     }
 
     init() {
@@ -39,6 +40,7 @@ export default class CardInstance extends BaseInstance {
     addListeners(user) {
         user.events.on('send_deal', this.handleSendDeal)
         user.events.on('pick_card', this.handlePickCard)
+        user.events.on('leave_game', this.handleLeaveGame)
 
         super.addListeners(user)
     }
@@ -46,6 +48,7 @@ export default class CardInstance extends BaseInstance {
     removeListeners(user) {
         user.events.off('send_deal', this.handleSendDeal)
         user.events.off('pick_card', this.handlePickCard)
+        user.events.off('leave_game', this.handleLeaveGame)
 
         super.removeListeners(user)
     }
@@ -72,6 +75,12 @@ export default class CardInstance extends BaseInstance {
         this.judgeRound(me)
     }
 
+    handleLeaveGame(args, user) {
+        this.remove(user)
+
+        this.send('close_game', { username: user.username })
+    }
+
     start() {
         let users = this.users.filter(Boolean).map(user => {
             return {
@@ -88,9 +97,9 @@ export default class CardInstance extends BaseInstance {
     judgeRound(me) {
         let winner = this.getRoundWinner()
 
-        if (winner > -1) this.checkWin(winner)
-
         this.send('judge', { winner: winner })
+
+        if (winner > -1) this.checkWin(winner)
 
         me.pick = null
         me.opponent.pick = null
@@ -129,6 +138,8 @@ export default class CardInstance extends BaseInstance {
 
         if (winningCards) {
             this.send('winner', { winner: winSeat, cards: winningCards.map(card => card.card_id) })
+
+            this.users.forEach(user => this.remove(user))
         }
     }
 
