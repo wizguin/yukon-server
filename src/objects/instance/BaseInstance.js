@@ -53,12 +53,6 @@ export default class BaseInstance {
 
         // Remove from ready
         this.ready = this.ready.filter(u => u != user)
-
-        user.minigameRoom = null
-
-        if (!this.started) {
-            this.checkStart()
-        }
     }
 
     getSeat(user) {
