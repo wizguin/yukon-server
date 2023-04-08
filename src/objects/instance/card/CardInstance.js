@@ -85,7 +85,8 @@ export default class CardInstance extends BaseInstance {
         let users = this.users.filter(Boolean).map(user => {
             return {
                 username: user.username,
-                color: user.color
+                color: user.color,
+                ninjaRank: user.ninjaRank
             }
         })
 
