@@ -14,6 +14,8 @@ export default class BaseInstance {
             this.addListeners(user)
 
             user.joinRoom(user.handler.rooms[this.id])
+
+            user.minigameRoom = this
         }
     }
 
@@ -35,7 +37,7 @@ export default class BaseInstance {
 
     checkStart() {
         // Compare with non null values in case user disconnects
-        if (this.ready.length == this.users.filter(Boolean).length) {
+        if (this.ready.length == this.users.length) {
             this.start()
         }
     }
@@ -48,11 +50,15 @@ export default class BaseInstance {
         this.removeListeners(user)
 
         // Remove from users
-        let seat = this.users.indexOf(user)
+        let seat = this.getSeat(user)
         this.users[seat] = null
 
         // Remove from ready
         this.ready = this.ready.filter(u => u != user)
+
+        user.minigameRoom = null
+
+        this.send('close_game', { username: user.username })
     }
 
     getSeat(user) {

@@ -77,12 +77,10 @@ export default class CardInstance extends BaseInstance {
 
     handleLeaveGame(args, user) {
         this.remove(user)
-
-        this.send('close_game', { username: user.username })
     }
 
     start() {
-        let users = this.users.filter(Boolean).map(user => {
+        let users = this.users.map(user => {
             return {
                 username: user.username,
                 color: user.color,
