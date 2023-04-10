@@ -57,8 +57,6 @@ export default class BaseInstance {
         this.ready = this.ready.filter(u => u != user)
 
         user.minigameRoom = null
-
-        this.send('close_game', { username: user.username })
     }
 
     getSeat(user) {

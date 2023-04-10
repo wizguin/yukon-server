@@ -138,7 +138,7 @@ export default class CardInstance extends BaseInstance {
         if (winningCards) {
             this.send('winner', { winner: winSeat, cards: winningCards.map(card => card.card_id) })
 
-            this.users.forEach(user => this.remove(user))
+            this.users.forEach(user => super.remove(user))
         }
     }
 
@@ -184,6 +184,16 @@ export default class CardInstance extends BaseInstance {
         }
 
         return false
+    }
+
+    remove(user) {
+        super.remove(user)
+
+        this.closeGame(user)
+    }
+
+    closeGame(user) {
+        this.send('close_game', { username: user.username })
     }
 
     getPick(seat) {
