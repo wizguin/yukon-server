@@ -18,6 +18,13 @@ export default class CardInstance extends BaseInstance {
             s: 'w'
         }
 
+        this.rankSpeed = 1
+
+        // xpPercentageIncrease(0) = 60
+        this.xpPercentageStart = 60
+
+        this.awards = [4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 104]
+
         this.handleSendDeal = this.handleSendDeal.bind(this)
         this.handlePickCard = this.handlePickCard.bind(this)
         this.handleLeaveGame = this.handleLeaveGame.bind(this)
@@ -131,11 +138,15 @@ export default class CardInstance extends BaseInstance {
         let winner = this.getNinja(winSeat)
         let winCard = winner.pick
 
+        let loser = this.getNinja(this.getOppositeSeat(winSeat))
+
         winner.wins[winCard.element].push(winCard)
 
         let winningCards = this.getWinningCards(winner)
 
         if (winningCards) {
+            this.updateNinja(winner, loser)
+
             this.send('winner', { winner: winSeat, cards: winningCards.map(card => card.card_id) })
 
             this.users.forEach(user => super.remove(user))
@@ -184,6 +195,55 @@ export default class CardInstance extends BaseInstance {
         }
 
         return false
+    }
+
+    updateNinja(winner, loser) {
+        this.updateProgress(winner.user, true)
+        this.updateProgress(loser.user, false)
+    }
+
+    updateProgress(user, won) {
+        if (this.checkNoBeltWin(user, won)) {
+            user.update({ ninjaProgress: 100 })
+
+        } else if (user.ninjaRank < 9) {
+            let speed = won ? this.rankSpeed : this.rankSpeed * 0.5
+
+            let increase = this.xpPercentageIncrease(user.ninjaRank) * speed
+
+            user.update({ ninjaProgress: user.ninjaProgress + increase })
+        }
+
+        if (user.ninjaProgress >= 100) this.rankUp(user)
+    }
+
+    checkNoBeltWin(user, won) {
+        return user.ninjaRank == 0 && won
+    }
+
+    xpPercentageIncrease(rank) {
+        return Math.floor(this.xpPercentageStart / (rank + 1))
+    }
+
+    rankUp(user) {
+        let rank = user.ninjaRank + 1
+
+        if (rank > this.awards.length) return
+
+        this.addAward(user, rank)
+
+        user.update({ ninjaRank: rank })
+        user.update({ ninjaProgress: 0 })
+
+        user.send('award', { rank: user.ninjaRank })
+    }
+
+    addAward(user, rank) {
+        let award = this.awards[rank - 1]
+
+        if (user.inventory.includes(award)) return
+
+        user.inventory.add(award)
     }
 
     remove(user) {
