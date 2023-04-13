@@ -40,7 +40,7 @@ export default class CardInstance extends BaseInstance {
         for (let user of this.users) {
             let opponent = this.getOpponent(user)
 
-            this.ninjas[user.id].opponent = this.ninjas[opponent.id]
+            if (opponent) this.ninjas[user.id].opponent = this.ninjas[opponent.id]
         }
     }
 

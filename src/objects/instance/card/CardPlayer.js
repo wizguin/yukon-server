@@ -3,7 +3,7 @@ import { cards } from '@data/data'
 
 export default class CardPlayer {
 
-    constructor(user) {
+    constructor(user = null) {
         this.user = user
 
         this.opponent
@@ -23,10 +23,8 @@ export default class CardPlayer {
         this.setDeck()
     }
 
-    setDeck() {
-        //temp
-        let deck = [1, 2, 3, 19, 19, 90, 90]
-
+    // temp
+    setDeck(deck = [1, 2, 3, 19, 19, 90, 90]) {
         this.deck = deck
     }
 
@@ -75,7 +73,9 @@ export default class CardPlayer {
     }
 
     send(action, args = {}) {
-        this.user.send(action, args)
+        if (this.user) {
+            this.user.send(action, args)
+        }
     }
 
 }
