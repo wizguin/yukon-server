@@ -28,6 +28,7 @@ export default class CardMatchmaker {
 
         if (!matchesLength) return
 
+        this.sort(values)
         let matches = values.filter((p, i) => i < matchesLength)
 
         for (let i = 0; i < matchesLength; i += this.maxPlayers) {
@@ -87,6 +88,10 @@ export default class CardMatchmaker {
 
     includes(user) {
         return user.id in this.players
+    }
+
+    sort(values) {
+        values.sort((a, b) => a.user.ninjaRank - b.user.ninjaRank)
     }
 
 }
