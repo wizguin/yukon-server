@@ -1,3 +1,4 @@
+import CardInstance from '@objects/instance/card/CardInstance'
 import MatchmakerPlayer from './MatchmakerPlayer'
 
 
@@ -45,6 +46,8 @@ export default class CardMatchmaker {
 
             return
         }
+
+        this.onMatch(matched)
     }
 
     onTick(matched) {
@@ -53,6 +56,17 @@ export default class CardMatchmaker {
         for (let player of matched) {
             player.send('tick_matchmaking', { tick: player.tick, users: users })
         }
+    }
+
+    onMatch(matched) {
+        for (let player of matched) {
+            this.remove(player.user)
+        }
+
+        let users = matched.map(player => player.user)
+        let instance = new CardInstance({ users: users })
+
+        instance.init()
     }
 
     decreaseTick(matched) {
