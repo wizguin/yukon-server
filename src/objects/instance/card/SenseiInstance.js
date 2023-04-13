@@ -13,7 +13,8 @@ export default class SenseiInstance extends CardInstance {
         this.senseiData = {
             username: 'Sensei',
             color: 14,
-            ninjaRank: 10
+            ninjaRank: 10,
+            sensei: true
         }
 
         this.sensei
