@@ -1,11 +1,12 @@
+import { cards } from '@data/data'
+
+
 export default class CardPlayer {
 
     constructor(user) {
         this.user = user
 
         this.opponent
-
-        this.cards = user.crumbs.cards
 
         this.deck = []
         this.dealt = []
@@ -44,7 +45,7 @@ export default class CardPlayer {
         for (let i = 0; i < dealNumber; i++) {
             let deal = this.dealCard()
 
-            currentDealt.push(this.cards[deal])
+            currentDealt.push(cards[deal])
             this.dealt.push(deal)
         }
 
@@ -61,7 +62,7 @@ export default class CardPlayer {
     }
 
     pickCard(card) {
-        this.pick = this.cards[card]
+        this.pick = cards[card]
 
         this.opponent.send('pick_card', { card: this.dealt.indexOf(card) })
 
