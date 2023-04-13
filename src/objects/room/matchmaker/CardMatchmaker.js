@@ -8,4 +8,18 @@ export default class CardMatchmaker {
         this.users = []
     }
 
+    add(user) {
+        this.users.push(user)
+
+        user.send('join_matchmaking')
+    }
+
+    remove(user) {
+        this.users = this.users.filter(u => u != user)
+    }
+
+    includes(user) {
+        return this.users.includes(user)
+    }
+
 }
