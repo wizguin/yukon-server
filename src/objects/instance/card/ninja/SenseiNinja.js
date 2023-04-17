@@ -55,7 +55,7 @@ export default class SenseiNinja extends Ninja {
 
         if (first.element != second.element) return this.compareElements(first, second)
 
-        return parseInt(first.value) > parseInt(second.value)
+        return first.value > second.value
     }
 
     compareElements(first, second) {
