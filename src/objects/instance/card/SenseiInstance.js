@@ -1,6 +1,6 @@
 import CardInstance from './CardInstance'
 
-import CardPlayer from './CardPlayer'
+import SenseiNinja from './ninja/SenseiNinja'
 
 
 export default class SenseiInstance extends CardInstance {
@@ -21,6 +21,16 @@ export default class SenseiInstance extends CardInstance {
         this.me
     }
 
+    init() {
+        super.init()
+
+        this.sensei = new SenseiNinja()
+        this.me = this.ninjas[this.user.id]
+
+        this.sensei.opponent = this.me
+        this.me.opponent = this.sensei
+    }
+
     start() {
         let users = [
             this.senseiData,
@@ -36,45 +46,46 @@ export default class SenseiInstance extends CardInstance {
         this.started = true
     }
 
-    init() {
-        super.init()
-
-        this.sensei = new CardPlayer()
-
-        // temp
-        this.sensei.setDeck(Array(10).fill(1))
-
-        this.me = this.ninjas[this.user.id]
-
-        this.sensei.opponent = this.me
-        this.me.opponent = this.sensei
-    }
-
     handleStartGame() {
         this.start()
     }
 
     handleSendDeal(args, user) {
-        super.handleSendDeal(args, user)
+        let cards = this.me.dealCards()
 
-        let cards = this.sensei.dealCards()
+        let canBeatSensei = user.ninjaRank >= this.awards.length - 1
+        let senseiCards = this.sensei.dealCards(cards, canBeatSensei)
 
-        user.send('send_opponent_deal', { deal: cards.length })
+        user.send('send_deal', { cards: cards })
+        user.send('send_opponent_deal', { deal: senseiCards.length })
     }
 
     handlePickCard(args, user) {
-        // temp
-        this.sensei.pickCard(1)
+        if (!this.me.isInDealt(args.card) || this.me.pick) return
 
-        super.handlePickCard(args, user)
+        this.me.pickCard(args.card)
+        this.sensei.pickCard(args.card)
+
+        this.me.revealCards()
+        this.judgeRound(this.me)
+    }
+
+    updateProgress(user, won) {
+        if (!user) return
+
+        if (this.checkBlackBeltWin(user, won)) {
+            user.update({ ninjaProgress: 100 })
+        }
+
+        super.updateProgress(user, won)
+    }
+
+    checkBlackBeltWin(user, won) {
+        return user.ninjaRank == 9 && won
     }
 
     getNinja(seat) {
         return [this.sensei, this.me][seat]
-    }
-
-    send(action, args = {}) {
-        this.user.send(action, args)
     }
 
 }

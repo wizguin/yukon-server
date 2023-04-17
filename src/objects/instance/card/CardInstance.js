@@ -1,6 +1,6 @@
 import BaseInstance from '../BaseInstance'
 
-import CardPlayer from './CardPlayer'
+import Ninja from './ninja/Ninja'
 
 
 export default class CardInstance extends BaseInstance {
@@ -34,7 +34,7 @@ export default class CardInstance extends BaseInstance {
         super.init()
 
         for (let user of this.users) {
-            this.ninjas[user.id] = new CardPlayer(user)
+            this.ninjas[user.id] = new Ninja(user)
         }
 
         for (let user of this.users) {
