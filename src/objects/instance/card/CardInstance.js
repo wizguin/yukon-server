@@ -189,9 +189,9 @@ export default class CardInstance extends BaseInstance {
         let product = this.product(cards)
 
         for (let combo of product) {
-            let colors = combo.map(card => card.color)
+            let colors = new Set(combo.map(card => card.color))
 
-            if (colors.length == 3) return combo
+            if (colors.size == 3) return combo
         }
 
         return false
