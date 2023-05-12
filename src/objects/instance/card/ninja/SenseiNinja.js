@@ -1,5 +1,8 @@
 import Ninja from './Ninja'
 
+import Card from './Card'
+import Rules from '../Rules'
+
 import { cards } from '@data/data'
 
 
@@ -7,12 +10,6 @@ export default class SenseiNinja extends Ninja {
 
     constructor() {
         super()
-
-        this.rules = {
-            f: 's',
-            w: 'f',
-            s: 'w'
-        }
 
         this.moves = {}
     }
@@ -24,8 +21,14 @@ export default class SenseiNinja extends Ninja {
         for (let i = 0; i < dealNumber; i++) {
             let deal = canBeatSensei ? this.dealRandomCard() : this.dealWinCard(opponentCards[i])
 
-            currentDealt.push(cards[deal])
-            this.dealt.push(deal)
+            //deal = 85
+            //deal = 73
+            deal = 71
+
+            let card = new Card(deal)
+
+            currentDealt.push(card)
+            this.dealt.push(card)
 
             this.addToMoves(opponentCards[i].card_id, deal)
         }
@@ -59,16 +62,16 @@ export default class SenseiNinja extends Ninja {
     }
 
     compareElements(first, second) {
-        return this.rules[first.element] == second.element
+        return Rules.elements[first.element] == second.element
     }
 
     pickCard(opponentCard) {
         let card = this.removeFromMoves(opponentCard)
-        this.pick = cards[card]
+        this.pick = this.getPick(card)
 
-        this.opponent.send('pick_card', { card: this.dealt.indexOf(card) })
+        this.opponent.send('pick_card', { card: this.dealt.indexOf(this.pick) })
 
-        this.dealt.splice(this.dealt.indexOf(card), 1)
+        this.dealt.splice(this.dealt.indexOf(this.pick), 1)
     }
 
     addToMoves(opponentCard, deal) {

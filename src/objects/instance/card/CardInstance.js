@@ -1,6 +1,8 @@
 import BaseInstance from '../BaseInstance'
 
+import Power from './Power'
 import Ninja from './ninja/Ninja'
+import Rules from './Rules'
 
 
 export default class CardInstance extends BaseInstance {
@@ -12,16 +14,12 @@ export default class CardInstance extends BaseInstance {
 
         this.ninjas = {}
 
-        this.rules = {
-            f: 's',
-            w: 'f',
-            s: 'w'
-        }
-
-        this.rankSpeed = 1
+        this.powers = []
 
         // xpPercentageIncrease(0) = 60
         this.xpPercentageStart = 60
+
+        this.rankSpeed = 1
 
         this.awards = [4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 104]
 
@@ -115,7 +113,108 @@ export default class CardInstance extends BaseInstance {
         let first = this.getPick(0)
         let second = this.getPick(1)
 
-        return this.getWinningSeat(first, second)
+        this.checkPowers(first, second)
+
+        this.powers = []
+
+        let winner = this.getWinningSeat(first, second)
+
+        this.checkPowersOnPlayed()
+        if (winner > -1) this.checkPowerOnScored(winner)
+
+        return winner
+    }
+
+    checkPowers(first, second) {
+        for (let power of this.powers) {
+            let id = power.id
+
+            if (id == 1) this.reverseCardValues(first, second)
+
+            // +2 to self
+            if (id == 2) {
+                let target = power.seat == 0 ? first : second
+                target.value += 2
+            }
+
+            // -2 from opponent
+            if (id == 3) {
+                let target = power.seat == 0 ? second : first
+                target.value -= 2
+            }
+        }
+    }
+
+    reverseCardValues(first, second) {
+        let swap = first.value
+
+        first.value = second.value
+        second.value = swap
+    }
+
+    checkPowersOnPlayed() {
+        this.checkPowerOnPlayed(0)
+        this.checkPowerOnPlayed(1)
+    }
+
+    checkPowerOnPlayed(seat) {
+        let card = this.getPick(seat)
+
+        if (!this.hasPower(card)) return
+
+        if (!Rules.onPlayed.includes(card.power_id)) return
+
+        if (!Rules.currentRound.includes(card.power_id)) {
+            console.log('played', card.name, 'add to powers next round')
+            this.addPower(seat, card)
+            return
+        }
+
+        this.replaceCards(card)
+
+        console.log('played', card.name, 'replacing opponent card')
+    }
+
+    checkPowerOnScored(seat) {
+        let card = this.getPick(seat)
+
+        if (!this.hasPower(card)) return
+
+        if (Rules.onPlayed.includes(card.power_id)) return
+
+        if (!Rules.currentRound.includes(card.power_id)) {
+            console.log('scored', card.name, 'add to powers next round')
+            this.addPower(seat, card)
+            return
+        }
+
+        this.discardCard(card)
+
+        console.log('scored', card.name, 'discarding opponent card')
+    }
+
+    hasPower(card) {
+        return card.power_id > 0
+    }
+
+    addPower(seat, card) {
+        if (card.power_id == 1) {
+            let hasReverse = this.powers.some(power => power.id == 1)
+
+            if (hasReverse) return
+        }
+
+        console.log('successfully added power', card.name)
+
+        this.powers.push(new Power(seat, card))
+    }
+
+    replaceCards() {
+
+    }
+
+    discardCard() {
+
     }
 
     getWinningSeat(first, second) {
@@ -129,7 +228,7 @@ export default class CardInstance extends BaseInstance {
     }
 
     compareElements(first, second) {
-        if (this.rules[first.element] == second.element) return 0
+        if (Rules.elements[first.element] == second.element) return 0
 
         return 1
     }
@@ -145,11 +244,11 @@ export default class CardInstance extends BaseInstance {
         let winningCards = this.getWinningCards(winner)
 
         if (winningCards) {
-            this.updateNinja(winner, loser)
+            // this.updateNinja(winner, loser)
 
-            this.send('winner', { winner: winSeat, cards: winningCards.map(card => card.card_id) })
+            // this.send('winner', { winner: winSeat, cards: winningCards.map(card => card.card_id) })
 
-            this.users.forEach(user => super.remove(user))
+            // this.users.forEach(user => super.remove(user))
         }
     }
 

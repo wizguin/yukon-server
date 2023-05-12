@@ -1,3 +1,5 @@
+import Card from './Card'
+
 import { cards } from '@data/data'
 
 
@@ -23,13 +25,13 @@ export default class Ninja {
         this.setDeck()
     }
 
-    // temp
-    setDeck(deck = [1, 2, 3, 19, 19, 90, 90]) {
+    //setDeck(deck = Object.values(cards).filter(c => c.power_id > 0).map(c => c.card_id)) {
+    setDeck(deck = [78, 78, 71, 71, 77, 77]) {
         this.deck = deck
     }
 
     isInDealt(card) {
-        return this.dealt.includes(card)
+        return this.dealt.some(dealt => dealt.card_id == card)
     }
 
     dealCards() {
@@ -43,8 +45,10 @@ export default class Ninja {
         for (let i = 0; i < dealNumber; i++) {
             let deal = this.dealCard()
 
-            currentDealt.push(cards[deal])
-            this.dealt.push(deal)
+            let card = new Card(deal)
+
+            currentDealt.push(card)
+            this.dealt.push(card)
         }
 
         return currentDealt
@@ -60,11 +64,15 @@ export default class Ninja {
     }
 
     pickCard(card) {
-        this.pick = cards[card]
+        this.pick = this.getPick(card)
 
-        this.opponent.send('pick_card', { card: this.dealt.indexOf(card) })
+        this.opponent.send('pick_card', { card: this.dealt.indexOf(this.pick) })
 
-        this.dealt.splice(this.dealt.indexOf(card), 1)
+        this.dealt.splice(this.dealt.indexOf(this.pick), 1)
+    }
+
+    getPick(id) {
+        return this.dealt.find(card => card.card_id == id)
     }
 
     revealCards() {
