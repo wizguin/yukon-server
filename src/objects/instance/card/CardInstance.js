@@ -113,19 +113,17 @@ export default class CardInstance extends BaseInstance {
         let first = this.getPick(0)
         let second = this.getPick(1)
 
-        this.checkPowers(first, second)
+        this.applyPowers(first, second)
 
         this.powers = []
 
-        let winner = this.getWinningSeat(first, second)
-
         this.checkPowersOnPlayed()
-        if (winner > -1) this.checkPowerOnScored(winner)
+        this.checkPowerOnScored(first, second)
 
-        return winner
+        return this.getWinningSeat(first, second)
     }
 
-    checkPowers(first, second) {
+    applyPowers(first, second) {
         for (let power of this.powers) {
             let id = power.id
 
@@ -158,43 +156,41 @@ export default class CardInstance extends BaseInstance {
     }
 
     checkPowerOnPlayed(seat) {
-        let card = this.getPick(seat)
-
-        if (!this.hasPower(card)) return
-
-        if (!Rules.onPlayed.includes(card.power_id)) return
-
-        if (!Rules.currentRound.includes(card.power_id)) {
-            console.log('played', card.name, 'add to powers next round')
-            this.addPower(seat, card)
-            return
-        }
-
-        this.replaceCards(card)
-
-        console.log('played', card.name, 'replacing opponent card')
+        this.checkPower(seat, true)
     }
 
-    checkPowerOnScored(seat) {
+    checkPowerOnScored(first, second) {
+        let winSeat = this.getWinningSeat(first, second)
+
+        if (winSeat > -1) this.checkPower(winSeat, false)
+    }
+
+    checkPower(seat, onPlayed) {
         let card = this.getPick(seat)
 
         if (!this.hasPower(card)) return
 
-        if (Rules.onPlayed.includes(card.power_id)) return
+        if (onPlayed && !this.isOnPlayed(card)) return
+        if (!onPlayed && this.isOnPlayed(card)) return
 
         if (!Rules.currentRound.includes(card.power_id)) {
-            console.log('scored', card.name, 'add to powers next round')
             this.addPower(seat, card)
             return
         }
 
-        this.discardCard(card)
-
-        console.log('scored', card.name, 'discarding opponent card')
+        if (onPlayed) {
+            this.replaceCards(card)
+        } else {
+            this.discardCard(card)
+        }
     }
 
     hasPower(card) {
         return card.power_id > 0
+    }
+
+    isOnPlayed(card) {
+        return Rules.onPlayed.includes(card.power_id)
     }
 
     addPower(seat, card) {
@@ -209,8 +205,19 @@ export default class CardInstance extends BaseInstance {
         this.powers.push(new Power(seat, card))
     }
 
-    replaceCards() {
+    replaceCards(card) {
+        let first = this.getPick(0)
+        let second = this.getPick(1)
 
+        let [original, replace] = Rules.replacements[card.power_id]
+
+        if (first.element == original) {
+            first.element = replace
+        }
+
+        if (second.element == original) {
+            second.element = replace
+        }
     }
 
     discardCard() {
