@@ -181,7 +181,7 @@ export default class CardInstance extends BaseInstance {
         if (onPlayed) {
             this.replaceCards(card)
         } else {
-            this.discardCard(card)
+            this.discardCards(card, seat)
         }
     }
 
@@ -200,8 +200,6 @@ export default class CardInstance extends BaseInstance {
             if (hasReverse) return
         }
 
-        console.log('successfully added power', card.name)
-
         this.powers.push(new Power(seat, card))
     }
 
@@ -211,17 +209,32 @@ export default class CardInstance extends BaseInstance {
 
         let [original, replace] = Rules.replacements[card.power_id]
 
-        if (first.element == original) {
-            first.element = replace
-        }
+        if (first.element == original) first.element = replace
 
-        if (second.element == original) {
-            second.element = replace
-        }
+        if (second.element == original) second.element = replace
     }
 
-    discardCard() {
+    discardCards(card, seat) {
+        let opponent = this.getNinja(seat).opponent
 
+        if (card.power_id in Rules.discardElements) this.discardElements(card, opponent)
+
+        if (card.power_id in Rules.discardColors) this.discardColors(card, opponent)
+    }
+
+    discardElements(card, opponent) {
+        let element = Rules.discardElements[card.power_id]
+
+        if (opponent.wins[element].length) opponent.wins[element].pop()
+    }
+
+    discardColors(card, opponent) {
+        // let color = Rules.discardColors[card.power_id]
+        // let wins = opponent.wins
+
+        // for (let element in wins) {
+        //     let index = wins[element].findIndex(win => win.color == color)
+        // }
     }
 
     getWinningSeat(first, second) {
@@ -246,7 +259,7 @@ export default class CardInstance extends BaseInstance {
 
         let loser = this.getNinja(this.getOppositeSeat(winSeat))
 
-        winner.wins[winCard.element].push(winCard)
+        winner.wins[winCard.originalElement].push(winCard)
 
         let winningCards = this.getWinningCards(winner)
 
