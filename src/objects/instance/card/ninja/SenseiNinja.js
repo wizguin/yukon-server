@@ -53,9 +53,6 @@ export default class SenseiNinja extends Ninja {
     }
 
     beatsCard(first, second) {
-        // temp
-        if (first.power_id != '0') return false
-
         if (first.element != second.element) return this.compareElements(first, second)
 
         return first.value > second.value

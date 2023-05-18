@@ -30,17 +30,21 @@ export default class Ninja {
         this.deck = deck
     }
 
+    filterDeckRegularCards() {
+        this.deck = this.deck.filter(card => cards[card].power_id == 0)
+    }
+
     isInDealt(card) {
         return this.dealt.some(dealt => dealt.card_id == card)
     }
 
-    dealCards() {
+    dealCards(dealPowers = true) {
+        if (this.deck.length < 1) this.setDeck()
+
+        if (!dealPowers) this.filterDeckRegularCards()
+
         let currentDealt = []
         let dealNumber = this.dealtSize - this.dealt.length
-
-        if (this.deck.length < 1) {
-            this.setDeck()
-        }
 
         for (let i = 0; i < dealNumber; i++) {
             let deal = this.dealCard()
