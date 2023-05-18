@@ -38,6 +38,16 @@ export default class Ninja {
         return this.dealt.some(dealt => dealt.card_id == card)
     }
 
+    hasPlayableCards(element) {
+        let filtered = this.getLimitedDealt(element)
+
+        return Boolean(filtered.length)
+    }
+
+    getLimitedDealt(element) {
+        return this.dealt.filter(dealt => dealt.element != element)
+    }
+
     dealCards(dealPowers = true) {
         if (this.deck.length < 1) this.setDeck()
 
