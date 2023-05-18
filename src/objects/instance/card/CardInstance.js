@@ -229,12 +229,17 @@ export default class CardInstance extends BaseInstance {
     }
 
     discardColors(card, opponent) {
-        // let color = Rules.discardColors[card.power_id]
-        // let wins = opponent.wins
+        let color = Rules.discardColors[card.power_id]
+        let wins = opponent.wins
 
-        // for (let element in wins) {
-        //     let index = wins[element].findIndex(win => win.color == color)
-        // }
+        for (let element in wins) {
+            let index = wins[element].findIndex(win => win.color == color)
+
+            if (index > -1) {
+                wins[element].splice(index, 1)
+                return
+            }
+        }
     }
 
     getWinningSeat(first, second) {
