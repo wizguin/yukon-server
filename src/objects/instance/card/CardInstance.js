@@ -98,35 +98,6 @@ export default class CardInstance extends BaseInstance {
         super.start()
     }
 
-    checkPlayable() {
-        let ninjas = [this.getNinja(0), this.getNinja(1)]
-
-        for (let ninja of ninjas) {
-            if (this.hasPlayableCards(ninja)) continue
-
-            let winSeat = ninjas.indexOf(ninja.opponent)
-
-            this.updateNinja(ninja.opponent, ninja)
-            this.sendWin(winSeat)
-
-            return
-        }
-    }
-
-    hasPlayableCards(ninja) {
-        let limiters = this.powers.filter(power => power.id in Rules.limiters)
-
-        for (let limiter of limiters) {
-            let element = Rules.limiters[limiter.id]
-
-            let target = this.getNinja(this.getOppositeSeat(limiter.seat))
-
-            if (target == ninja) return ninja.hasPlayableCards(element)
-        }
-
-        return true
-    }
-
     judgeRound(me) {
         let winner = this.getRoundWinner()
 
@@ -349,6 +320,35 @@ export default class CardInstance extends BaseInstance {
         }
 
         return false
+    }
+
+    checkPlayable() {
+        let ninjas = [this.getNinja(0), this.getNinja(1)]
+
+        for (let ninja of ninjas) {
+            if (this.hasPlayableCards(ninja)) continue
+
+            let winSeat = ninjas.indexOf(ninja.opponent)
+
+            this.updateNinja(ninja.opponent, ninja)
+            this.sendWin(winSeat)
+
+            return
+        }
+    }
+
+    hasPlayableCards(ninja) {
+        let limiters = this.powers.filter(power => power.id in Rules.limiters)
+
+        for (let limiter of limiters) {
+            let element = Rules.limiters[limiter.id]
+
+            let target = this.getNinja(this.getOppositeSeat(limiter.seat))
+
+            if (target == ninja) return ninja.hasPlayableCards(element)
+        }
+
+        return true
     }
 
     updateNinja(winner, loser) {
