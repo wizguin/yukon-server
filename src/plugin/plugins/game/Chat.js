@@ -14,14 +14,14 @@ export default class Chat extends GamePlugin {
             'send_emote': this.sendEmote
         }
 
-        this.commands = {
+        this.commands = Object.create({
             'ai': this.addItem,
             'af': this.addFurniture,
             'ac': this.addCoins,
             'jr': this.joinRoom,
             'id': this.id,
             'users': this.userPopulation
-        }
+        })
 
         this.bindCommands()
 
@@ -92,6 +92,7 @@ export default class Chat extends GamePlugin {
 
     processCommand(message, user) {
         message = message.substring(1)
+        if (message === '__proto__') return
 
         let args = message.split(' ')
         let command = args.shift().toLowerCase()
