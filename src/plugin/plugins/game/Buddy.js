@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import { hasProps } from '@utils/validation'
+import { hasProps, isNumber } from '@utils/validation'
 
 
 export default class Buddy extends GamePlugin {
@@ -18,6 +18,10 @@ export default class Buddy extends GamePlugin {
     }
 
     buddyRequest(args, user) {
+        if (!isNumber(args.id)) {
+            return
+        }
+
         let recipient = this.usersById[args.id]
 
         if (!recipient) {
@@ -49,6 +53,10 @@ export default class Buddy extends GamePlugin {
             return
         }
 
+        if (!isNumber(args.id)) {
+            return
+        }
+
         if (!(user.buddyRequests.includes(args.id))) {
             return
         }
@@ -75,10 +83,18 @@ export default class Buddy extends GamePlugin {
     }
 
     buddyReject(args, user) {
+        if (!isNumber(args.id)) {
+            return
+        }
+
         user.buddyRequests = user.buddyRequests.filter(item => item != args.id)
     }
 
     buddyRemove(args, user) {
+        if (!isNumber(args.id)) {
+            return
+        }
+
         if (!user.buddies.includes(args.id)) {
             return
         }
@@ -95,6 +111,10 @@ export default class Buddy extends GamePlugin {
     }
 
     buddyFind(args, user) {
+        if (!isNumber(args.id)) {
+            return
+        }
+        
         if (!user.buddies.includes(args.id) || !(args.id in this.usersById)) {
             return
         }
