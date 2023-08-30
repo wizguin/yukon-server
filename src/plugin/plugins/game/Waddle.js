@@ -26,7 +26,15 @@ export default class Waddle extends GamePlugin {
     joinWaddle(args, user) {
         let waddle = user.room.waddles[args.waddle]
 
-        if (waddle && waddle.notFull && !user.waddle) {
+        if (!waddle) {
+            return
+        }
+
+        if (waddle.game === 'card' && !user.inventory.includes(821)) {
+            return
+        }
+
+        if (waddle.notFull && !user.waddle) {
             waddle.add(user)
         }
     }
