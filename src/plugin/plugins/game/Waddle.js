@@ -15,7 +15,7 @@ export default class Waddle extends GamePlugin {
 
     getWaddles(args, user) {
         let waddles = Object.fromEntries(Object.values(user.room.waddles).map(waddle => {
-            let users = waddle.users.map(user => user ? user.data.username : null)
+            let users = waddle.users.map(user => user ? user.username : null)
 
             return [waddle.id, users]
         }))
