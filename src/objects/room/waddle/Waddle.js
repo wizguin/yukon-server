@@ -24,7 +24,7 @@ export default class Waddle {
             return this.start()
         }
 
-        user.send('join_waddle', { waddle: this.id, seat: seat })
+        user.send('join_waddle', { waddle: this.id, seat: seat, game: this.game })
         user.room.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: user.username }, [])
     }
 
