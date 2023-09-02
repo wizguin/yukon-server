@@ -27,6 +27,7 @@ const GameUserMixin = {
         this.token = {}
 
         this.room
+        this.waddle
         this.minigameRoom
 
         this.x
@@ -49,7 +50,7 @@ const GameUserMixin = {
     },
 
     joinRoom(room, x = 0, y = 0) {
-        if (!room || room === this.room || this.minigameRoom) {
+        if (!room || room === this.room || this.minigameRoom || this.waddle) {
             return
         }
 
