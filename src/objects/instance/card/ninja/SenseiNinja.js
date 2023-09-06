@@ -21,10 +21,6 @@ export default class SenseiNinja extends Ninja {
         for (let i = 0; i < dealNumber; i++) {
             let deal = canBeatSensei ? this.dealRandomCard() : this.dealWinCard(opponentCards[i])
 
-            //deal = 85
-            //deal = 73
-            deal = 71
-
             let card = new Card(deal)
 
             currentDealt.push(card)
