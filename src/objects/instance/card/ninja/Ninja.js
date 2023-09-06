@@ -49,8 +49,6 @@ export default class Ninja {
     }
 
     dealCards(dealPowers = true) {
-        if (this.deck.length < 1) this.setDeck()
-
         if (!dealPowers) this.filterDeckRegularCards()
 
         let currentDealt = []
@@ -69,6 +67,8 @@ export default class Ninja {
     }
 
     dealCard() {
+        if (this.deck.length < 1) this.setDeck()
+
         let randomIndex = Math.floor(Math.random() * this.deck.length)
         let randomCard = this.deck[randomIndex]
 
