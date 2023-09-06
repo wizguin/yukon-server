@@ -22,12 +22,12 @@ export default class Ninja {
 
         this.dealtSize = 5
 
-        this.setDeck()
+        if (user) this.setDeck()
     }
 
-    //setDeck(deck = Object.values(cards).filter(c => c.power_id > 0).map(c => c.card_id)) {
-    setDeck(deck = [78, 78, 71, 71, 77, 77]) {
-        this.deck = deck
+    setDeck() {
+        // Shallow copy
+        this.deck = Array.from(this.user.cards.deck)
     }
 
     filterDeckRegularCards() {
