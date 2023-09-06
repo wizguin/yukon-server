@@ -5,6 +5,8 @@ export default class CardCollection extends Collection {
 
     constructor(user, models) {
         super(user, models, 'cards', 'cardId')
+
+        this.starterDeckId = 821
     }
 
     // Owned cards * their quantities
@@ -17,6 +19,13 @@ export default class CardCollection extends Collection {
         })
 
         return deck
+    }
+
+    get hasCards() {
+        const hasStarterDeck = this.user.inventory.includes(this.starterDeckId)
+        const hasCards = Object.keys(this.collection).length > 0
+
+        return hasStarterDeck && hasCards
     }
 
     getQuantity(card) {

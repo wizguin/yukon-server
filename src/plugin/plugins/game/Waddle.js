@@ -30,10 +30,6 @@ export default class Waddle extends GamePlugin {
             return
         }
 
-        if (waddle.game === 'card' && !user.inventory.includes(821)) {
-            return
-        }
-
         if (waddle.notFull && !user.waddle) {
             waddle.add(user)
         }

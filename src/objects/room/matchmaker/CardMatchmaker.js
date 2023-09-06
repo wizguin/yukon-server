@@ -77,6 +77,10 @@ export default class CardMatchmaker {
     }
 
     add(user) {
+        if (!user.cards.hasCards) {
+            return
+        }
+
         this.players[user.id] = new MatchmakerPlayer(user, this.matchEvery)
 
         user.send('join_matchmaking')

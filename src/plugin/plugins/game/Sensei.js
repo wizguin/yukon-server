@@ -20,6 +20,10 @@ export default class Sensei extends GamePlugin {
             return
         }
 
+        if (!user.cards.hasCards) {
+            return
+        }
+
         let instance = new SenseiInstance(user)
 
         instance.init()

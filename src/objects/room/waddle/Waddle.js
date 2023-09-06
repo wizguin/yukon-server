@@ -14,6 +14,10 @@ export default class Waddle {
     }
 
     add(user) {
+        if (this.game === 'card' && !user.cards.hasCards) {
+            return
+        }
+
         let seat = this.users.indexOf(null)
         this.users[seat] = user
 
