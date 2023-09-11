@@ -173,7 +173,7 @@ export default class CardInstance extends BaseInstance {
         if (onPlayed && !this.isOnPlayed(card)) return
         if (!onPlayed && this.isOnPlayed(card)) return
 
-        if (!Rules.currentRound.includes(card.power_id)) {
+        if (!Rules.currentRound.includes(card.powerId)) {
             this.addPower(seat, card)
             return
         }
@@ -186,15 +186,15 @@ export default class CardInstance extends BaseInstance {
     }
 
     hasPower(card) {
-        return card.power_id > 0
+        return card.powerId > 0
     }
 
     isOnPlayed(card) {
-        return Rules.onPlayed.includes(card.power_id)
+        return Rules.onPlayed.includes(card.powerId)
     }
 
     addPower(seat, card) {
-        if (card.power_id == 1) {
+        if (card.powerId == 1) {
             let hasReverse = this.powers.some(power => power.id == 1)
 
             if (hasReverse) return
@@ -207,7 +207,7 @@ export default class CardInstance extends BaseInstance {
         let first = this.getPick(0)
         let second = this.getPick(1)
 
-        let [original, replace] = Rules.replacements[card.power_id]
+        let [original, replace] = Rules.replacements[card.powerId]
 
         if (first.element == original) first.element = replace
 
@@ -217,19 +217,19 @@ export default class CardInstance extends BaseInstance {
     discardCards(card, seat) {
         let opponent = this.getNinja(seat).opponent
 
-        if (card.power_id in Rules.discardElements) this.discardElements(card, opponent)
+        if (card.powerId in Rules.discardElements) this.discardElements(card, opponent)
 
-        if (card.power_id in Rules.discardColors) this.discardColors(card, opponent)
+        if (card.powerId in Rules.discardColors) this.discardColors(card, opponent)
     }
 
     discardElements(card, opponent) {
-        let element = Rules.discardElements[card.power_id]
+        let element = Rules.discardElements[card.powerId]
 
         if (opponent.wins[element].length) opponent.wins[element].pop()
     }
 
     discardColors(card, opponent) {
-        let color = Rules.discardColors[card.power_id]
+        let color = Rules.discardColors[card.powerId]
         let wins = opponent.wins
 
         for (let element in wins) {
@@ -278,7 +278,7 @@ export default class CardInstance extends BaseInstance {
     }
 
     sendWin(winSeat, winningCards = []) {
-        this.send('winner', { winner: winSeat, cards: winningCards.map(card => card.card_id) })
+        this.send('winner', { winner: winSeat, cards: winningCards.map(card => card.id) })
 
         this.users.forEach(user => super.remove(user))
     }

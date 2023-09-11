@@ -31,11 +31,11 @@ export default class Ninja {
     }
 
     filterDeckRegularCards() {
-        this.deck = this.deck.filter(card => cards[card].power_id == 0)
+        this.deck = this.deck.filter(card => cards[card].powerId == 0)
     }
 
     isInDealt(card) {
-        return this.dealt.some(dealt => dealt.card_id == card)
+        return this.dealt.some(dealt => dealt.id == card)
     }
 
     hasPlayableCards(element) {
@@ -86,7 +86,7 @@ export default class Ninja {
     }
 
     getPick(id) {
-        return this.dealt.find(card => card.card_id == id)
+        return this.dealt.find(card => card.id == id)
     }
 
     revealCards() {

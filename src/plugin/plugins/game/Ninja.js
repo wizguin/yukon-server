@@ -12,9 +12,7 @@ export default class Sensei extends GamePlugin {
     }
 
     getNinja(args, user) {
-        let cards = user.cards.toJSON().map(card => this.crumbs.cards[card])
-
-        user.send('get_ninja', { rank: user.ninjaRank, progress: user.ninjaProgress, cards: cards })
+        user.send('get_ninja', { rank: user.ninjaRank, progress: user.ninjaProgress, cards: user.cards })
     }
 
 }

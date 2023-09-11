@@ -1,5 +1,7 @@
 import Collection from '../Collection'
 
+import { cards } from '@data/data'
+
 
 export default class CardCollection extends Collection {
 
@@ -38,6 +40,22 @@ export default class CardCollection extends Collection {
 
         } else {
             super.add({ userId: this.user.id, cardId: card, quantity: 1, memberQuantity: 0 })
+        }
+    }
+
+    toJSON() {
+        return Object.keys(this.collection).map(cardId => this.cardToJSON(cardId))
+    }
+
+    cardToJSON(cardId) {
+        const card = cards[cardId]
+
+        return {
+            id: parseInt(cardId),
+            powerId: card.powerId,
+            element: card.element,
+            color: card.color,
+            value: card.value
         }
     }
 

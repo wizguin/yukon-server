@@ -24,12 +24,12 @@ export default class Sensei extends GamePlugin {
         const deck = data.decks[this.starterDeckId]
 
         for (const card of deck) {
-            if (data.cards[card].power_id === 0) {
+            if (data.cards[card].powerId === 0) {
                 user.cards.add(card)
             }
         }
 
-        const powerCards = deck.filter(card => data.cards[card].power_id > 0)
+        const powerCards = deck.filter(card => data.cards[card].powerId > 0)
 
         const randomPowerCard = powerCards[Math.floor(Math.random() * powerCards.length)]
 

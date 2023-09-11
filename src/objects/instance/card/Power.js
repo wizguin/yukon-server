@@ -4,7 +4,7 @@ export default class Power {
         this.seat = seat
         this.card = card
 
-        this.id = card.power_id
+        this.id = card.powerId
     }
 
 }

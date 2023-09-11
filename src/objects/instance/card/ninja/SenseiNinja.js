@@ -26,7 +26,7 @@ export default class SenseiNinja extends Ninja {
             currentDealt.push(card)
             this.dealt.push(card)
 
-            this.addToMoves(opponentCards[i].card_id, deal)
+            this.addToMoves(opponentCards[i].id, deal)
         }
 
         return currentDealt
