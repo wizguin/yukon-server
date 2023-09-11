@@ -12,6 +12,7 @@ import InventoryCollection from '@database/collections/InventoryCollection'
 
 import PurchaseValidator from './purchase/PurchaseValidator'
 
+import EventEmitter from 'events'
 import { Op } from 'sequelize'
 
 
@@ -37,6 +38,13 @@ const GameUserMixin = {
         this.buddyRequests = []
 
         this.validatePurchase = new PurchaseValidator(this)
+
+        // Used for dynamic/temporary events
+        this.events = new EventEmitter({ captureRejections: true })
+
+        this.events.on('error', (error) => {
+            this.handler.error(error)
+        })
     },
 
     setItem(slot, item) {
