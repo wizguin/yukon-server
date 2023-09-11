@@ -22,6 +22,9 @@ export default class Ninja {
 
         this.dealtSize = 5
 
+        // Player has already dealt this turn
+        this.hasDealt = false
+
         if (user) this.setDeck()
     }
 
@@ -49,6 +52,8 @@ export default class Ninja {
     }
 
     dealCards(dealPowers = true) {
+        this.hasDealt = true
+
         if (!dealPowers) this.filterDeckRegularCards()
 
         let currentDealt = []
@@ -92,6 +97,11 @@ export default class Ninja {
     revealCards() {
         this.send('reveal_card', { card: this.opponent.pick })
         this.opponent.send('reveal_card', { card: this.pick })
+    }
+
+    resetTurn() {
+        this.pick = null
+        this.hasDealt = false
     }
 
     send(action, args = {}) {

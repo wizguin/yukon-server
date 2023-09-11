@@ -51,6 +51,8 @@ export default class SenseiInstance extends CardInstance {
     }
 
     handleSendDeal(args, user) {
+        if (this.me.hasDealt) return
+
         let canBeatSensei = user.ninjaRank >= this.awards.length - 1
 
         let cards = this.me.dealCards(canBeatSensei)

@@ -61,6 +61,8 @@ export default class CardInstance extends BaseInstance {
     handleSendDeal(args, user) {
         let me = this.ninjas[user.id]
 
+        if (me.hasDealt) return
+
         let cards = me.dealCards()
 
         user.send('send_deal', { cards: cards })
@@ -105,8 +107,8 @@ export default class CardInstance extends BaseInstance {
 
         if (winner > -1) this.checkWin(winner)
 
-        me.pick = null
-        me.opponent.pick = null
+        me.resetTurn()
+        me.opponent.resetTurn()
     }
 
     getRoundWinner() {
