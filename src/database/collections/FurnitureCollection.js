@@ -24,7 +24,7 @@ export default class FurnitureCollection extends Collection {
                 return false
             }
 
-            this.collection[item].increment({ quantity: 1 })
+            this.collection[item].update({ quantity: quantity + 1 })
 
         } else {
             // New item
