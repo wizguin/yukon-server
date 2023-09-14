@@ -34,14 +34,12 @@ export default class CardCollection extends Collection {
         return this.collection[card].quantity
     }
 
-    add(card) {
+    add(card, quantity = 1) {
         if (this.includes(card)) {
-            const quantity = this.getQuantity(card)
-
-            this.collection[card].update({ quantity: quantity + 1 })
+            this.collection[card].update({ quantity: this.getQuantity(card) + quantity })
 
         } else {
-            super.add({ userId: this.user.id, cardId: card, quantity: 1, memberQuantity: 0 })
+            super.add({ userId: this.user.id, cardId: card, quantity: quantity, memberQuantity: 0 })
         }
     }
 
