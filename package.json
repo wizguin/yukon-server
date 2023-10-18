@@ -24,29 +24,28 @@
   },
   "homepage": "https://github.com/wizguin/yukon-server#readme",
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.20.2",
-    "@babel/node": "^7.20.2",
-    "@babel/preset-env": "^7.20.2",
-    "babel-plugin-module-resolver": "^4.1.0",
-    "babel-watch": "^7.7.0",
-    "eslint": "^8.26.0",
-    "rimraf": "^3.0.2"
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.2",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "babel-watch": "^7.8.1",
+    "eslint": "^8.51.0",
+    "rimraf": "^5.0.5"
   },
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "fastest-validator": "^1.15.0",
-    "fs": "0.0.2",
-    "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.3.3",
-    "pm2": "^5.2.2",
-    "rate-limiter-flexible": "^2.4.1",
+    "bcrypt": "^5.1.1",
+    "fastest-validator": "^1.17.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.6.2",
+    "pm2": "^5.3.0",
+    "rate-limiter-flexible": "^3.0.1",
     "sequelize": "^5.22.5",
-    "socket.io": "^4.5.3",
-    "uuid": "^8.3.2"
+    "socket.io": "^4.7.2",
+    "uuid": "^9.0.1"
   },
   "optionalDependencies": {
-    "bufferutil": "^4.0.7",
-    "utf-8-validate": "^5.0.10"
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^6.0.3"
   }
 }
