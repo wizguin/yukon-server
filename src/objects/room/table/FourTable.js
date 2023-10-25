@@ -11,26 +11,6 @@ export default class FourTable extends BaseTable {
         this.map = Array.from({ length: 7 }, () => Array(6).fill(0))
     }
 
-    getGame(args, user) {
-        user.send('get_game', { users: this.playingUsers, map: this.map })
-    }
-
-    joinGame(args, user) {
-        if (this.started) {
-            return
-        }
-
-        let turn = this.users.indexOf(user) + 1
-
-        user.send('join_game', { turn: turn })
-        this.send('update_game', { username: user.username, turn: turn })
-
-        if (this.users.length == 2) {
-            this.started = true
-            this.send('start_game')
-        }
-    }
-
     sendMove(args, user) {
         if (!this.started) {
             return

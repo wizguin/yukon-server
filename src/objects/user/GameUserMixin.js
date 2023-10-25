@@ -4,6 +4,7 @@ import pick from '@utils/pick'
 import { isInRange } from '@utils/validation'
 
 import BuddyCollection from '@database/collections/BuddyCollection'
+import CardCollection from '@database/collections/CardCollection'
 import FurnitureCollection from '@database/collections/FurnitureCollection'
 import IglooCollection from '@database/collections/IglooCollection'
 import IgnoreCollection from '@database/collections/IgnoreCollection'
@@ -11,6 +12,7 @@ import InventoryCollection from '@database/collections/InventoryCollection'
 
 import PurchaseValidator from './purchase/PurchaseValidator'
 
+import EventEmitter from 'events'
 import { Op } from 'sequelize'
 
 
@@ -26,6 +28,7 @@ const GameUserMixin = {
         this.token = {}
 
         this.room
+        this.waddle
         this.minigameRoom
 
         this.x
@@ -35,6 +38,13 @@ const GameUserMixin = {
         this.buddyRequests = []
 
         this.validatePurchase = new PurchaseValidator(this)
+
+        // Used for dynamic/temporary events
+        this.events = new EventEmitter({ captureRejections: true })
+
+        this.events.on('error', (error) => {
+            this.handler.error(error)
+        })
     },
 
     setItem(slot, item) {
@@ -48,7 +58,7 @@ const GameUserMixin = {
     },
 
     joinRoom(room, x = 0, y = 0) {
-        if (!room || room === this.room || this.minigameRoom) {
+        if (!room || room === this.room || this.minigameRoom || this.waddle) {
             return
         }
 
@@ -112,7 +122,7 @@ const GameUserMixin = {
         }
 
         if (gameOver) {
-            this.send('game_over', { coins: coins })
+            this.send('game_over', { coins: coins || this.coins })
         }
     },
 
@@ -169,6 +179,11 @@ const GameUserMixin = {
                     model: this.db.furnitureInventories,
                     as: 'furniture',
                     separate: true
+                },
+                {
+                    model: this.db.cards,
+                    as: 'cards',
+                    separate: true
                 }
             ]
 
@@ -178,6 +193,7 @@ const GameUserMixin = {
             result.inventory = new InventoryCollection(this, result.inventory)
             result.igloos = new IglooCollection(this, result.igloos)
             result.furniture = new FurnitureCollection(this, result.furniture)
+            result.cards = new CardCollection(this, result.cards)
 
             this.setPermissions()
 

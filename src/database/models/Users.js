@@ -92,6 +92,16 @@ export default class Users extends BaseModel {
                     type: DataTypes.INTEGER(11),
                     allowNull: false,
                     defaultValue: 0
+                },
+                ninjaRank: {
+                    type: DataTypes.INTEGER(1),
+                    allowNull: false,
+                    defaultValue: 0
+                },
+                ninjaProgress: {
+                    type: DataTypes.INTEGER(3),
+                    allowNull: false,
+                    defaultValue: 0
                 }
             },
             { sequelize, timestamps: false, tableName: 'users' }
@@ -132,6 +142,10 @@ export default class Users extends BaseModel {
         this.hasMany(db.furnitureInventories, {
             foreignKey: 'userId',
             as: 'furniture'
+        })
+        this.hasMany(db.cards, {
+            foreignKey: 'userId',
+            as: 'cards'
         })
     }
 
