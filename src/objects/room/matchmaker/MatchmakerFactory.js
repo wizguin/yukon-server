@@ -1,7 +1,7 @@
 import CardMatchmaker from './CardMatchmaker'
 
 
-export default class TableFactory {
+export default class MatchmakerFactory {
 
     static types = {
         'card': CardMatchmaker
