@@ -6,6 +6,11 @@ export default class BaseInstance {
         // Don't start until all users are ready
         this.ready = []
 
+        // Game room ID
+        this.id = null
+
+        this.started = false
+
         this.handleStartGame = this.handleStartGame.bind(this)
     }
 
