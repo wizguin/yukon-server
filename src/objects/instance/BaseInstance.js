@@ -12,6 +12,7 @@ export default class BaseInstance {
         this.started = false
 
         this.handleStartGame = this.handleStartGame.bind(this)
+        this.handleLeaveGame = this.handleLeaveGame.bind(this)
     }
 
     init() {
@@ -26,10 +27,12 @@ export default class BaseInstance {
 
     addListeners(user) {
         user.events.on('start_game', this.handleStartGame)
+        user.events.on('leave_game', this.handleLeaveGame)
     }
 
     removeListeners(user) {
         user.events.off('start_game', this.handleStartGame)
+        user.events.off('leave_game', this.handleLeaveGame)
     }
 
     handleStartGame(args, user) {
@@ -38,6 +41,10 @@ export default class BaseInstance {
 
             this.checkStart()
         }
+    }
+
+    handleLeaveGame(args, user) {
+        this.remove(user)
     }
 
     checkStart() {
