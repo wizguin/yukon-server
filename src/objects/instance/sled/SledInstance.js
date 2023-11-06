@@ -1,5 +1,7 @@
 import BaseInstance from '../BaseInstance'
 
+import { hasProps, isInRange } from '@utils/validation'
+
 
 export default class SledInstance extends BaseInstance {
 
@@ -37,7 +39,15 @@ export default class SledInstance extends BaseInstance {
 
     // Uncomment event in addListeners when updating all minigame events to new system
     sendMove(args, user) {
-        this.send('send_move', { id: args.id, x: args.x, y: args.y }, user)
+        if (!hasProps(args, 'move')) {
+            return
+        }
+
+        if (!isInRange(args.move, 1, 4)) {
+            return
+        }
+
+        this.send('send_move', { id: this.getSeat(user), move: args.move }, user)
     }
 
 }
