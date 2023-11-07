@@ -9,17 +9,15 @@ export default class SledInstance extends BaseInstance {
         super(waddle)
 
         this.id = 999
+
+        this.coins = [20, 10, 5, 5]
     }
 
     addListeners(user) {
-        //user.events.on('send_move', this.handleSendMove)
-
         super.addListeners(user)
     }
 
     removeListeners(user) {
-        //user.events.off('send_move', this.handleSendMove)
-
         super.removeListeners(user)
     }
 
@@ -43,11 +41,20 @@ export default class SledInstance extends BaseInstance {
             return
         }
 
-        if (!isInRange(args.move, 1, 4)) {
+        if (!isInRange(args.move, 1, 5)) {
             return
         }
 
+        if (args.move === 5) {
+            return this.sendGameOver(user)
+        }
+
         this.send('send_move', { id: this.getSeat(user), move: args.move }, user)
+    }
+
+    sendGameOver(user) {
+        this.remove(user)
+        user.updateCoins(this.coins.shift(), true)
     }
 
 }
