@@ -35,7 +35,6 @@ export default class SledInstance extends BaseInstance {
         super.start()
     }
 
-    // Uncomment event in addListeners when updating all minigame events to new system
     sendMove(args, user) {
         if (!hasProps(args, 'move')) {
             return
