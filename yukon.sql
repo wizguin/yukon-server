@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2022 at 02:18 PM
+-- Generation Time: Oct 18, 2023 at 04:53 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -79,6 +79,25 @@ CREATE TABLE `buddies` (
 --   `userId`
 --       `users` -> `id`
 --   `buddyId`
+--       `users` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cards`
+--
+
+CREATE TABLE `cards` (
+  `userId` int(11) NOT NULL,
+  `cardId` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `memberQuantity` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned Card-Jitsu cards';
+
+--
+-- RELATIONSHIPS FOR TABLE `cards`:
+--   `userId`
 --       `users` -> `id`
 --
 
@@ -220,7 +239,9 @@ CREATE TABLE `users` (
   `feet` int(11) NOT NULL DEFAULT 0,
   `color` int(11) NOT NULL DEFAULT 1,
   `photo` int(11) NOT NULL DEFAULT 0,
-  `flag` int(11) NOT NULL DEFAULT 0
+  `flag` int(11) NOT NULL DEFAULT 0,
+  `ninjaRank` tinyint(1) NOT NULL DEFAULT 0,
+  `ninjaProgress` tinyint(3) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Users';
 
 --
@@ -284,6 +305,12 @@ ALTER TABLE `bans`
 ALTER TABLE `buddies`
   ADD PRIMARY KEY (`userId`,`buddyId`) USING BTREE,
   ADD KEY `buddies_ibfk_2` (`buddyId`);
+
+--
+-- Indexes for table `cards`
+--
+ALTER TABLE `cards`
+  ADD PRIMARY KEY (`userId`,`cardId`);
 
 --
 -- Indexes for table `furnitures`
@@ -381,6 +408,12 @@ ALTER TABLE `bans`
 ALTER TABLE `buddies`
   ADD CONSTRAINT `buddies_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `buddies_ibfk_2` FOREIGN KEY (`buddyId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cards`
+--
+ALTER TABLE `cards`
+  ADD CONSTRAINT `cards_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `furnitures`

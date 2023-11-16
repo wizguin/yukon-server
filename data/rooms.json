@@ -96,6 +96,14 @@
         "spawn": 0
     },
     {
+        "id": 320,
+        "name": "dojo",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
         "id": 321,
         "name": "dojoext",
         "member": 0,
@@ -234,6 +242,22 @@
     {
         "id": 916,
         "name": "sub",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 951,
+        "name": "sensei",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 998,
+        "name": "card",
         "member": 0,
         "maxUsers": 80,
         "game": 1,

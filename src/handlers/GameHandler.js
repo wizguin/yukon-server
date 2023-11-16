@@ -1,8 +1,10 @@
 import BaseHandler from './BaseHandler'
 
+import MatchmakerFactory from '@objects/room/matchmaker/MatchmakerFactory'
 import OpenIgloos from '@objects/room/OpenIgloos'
 import Room from '@objects/room/Room'
 import TableFactory from '@objects/room/table/TableFactory'
+import Waddle from '@objects/room/waddle/Waddle'
 
 import data from '@data/data'
 
@@ -16,14 +18,18 @@ export default class GameHandler extends BaseHandler {
             items: data.items,
             igloos: data.igloos,
             furnitures: data.furnitures,
-            floorings: data.floorings
+            floorings: data.floorings,
+            cards: data.cards
         }
 
         this.usersById = {}
         this.maxUsers = config.worlds[id].maxUsers
 
         this.rooms = this.setRooms()
+
         this.setTables()
+        this.setWaddles()
+        this.setMatchmakers()
 
         this.openIgloos = new OpenIgloos()
 
@@ -50,6 +56,20 @@ export default class GameHandler extends BaseHandler {
         }
     }
 
+    setWaddles() {
+        for (let waddle of data.waddles) {
+            this.rooms[waddle.roomId].waddles[waddle.id] = new Waddle(waddle)
+        }
+    }
+
+    setMatchmakers() {
+        for (let id in data.matchmakers) {
+            let room = this.rooms[id]
+
+            room.matchmaker = MatchmakerFactory.createMatchmaker(data.matchmakers[id], room)
+        }
+    }
+
     handleGuard(message, user) {
         return !user.authenticated && message.action != 'game_auth'
     }
@@ -70,6 +90,10 @@ export default class GameHandler extends BaseHandler {
 
             if (user.buddies) {
                 user.buddies.sendOffline()
+            }
+
+            if (user.waddle) {
+                user.waddle.remove(user)
             }
 
             if (user.minigameRoom) {

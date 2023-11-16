@@ -38,6 +38,10 @@ export default class BaseHandler {
 
             this.events.emit(message.action, message.args, user)
 
+            if (user.events) {
+                user.events.emit(message.action, message.args, user)
+            }
+
         } catch(error) {
             this.error(error)
         }

@@ -6,6 +6,7 @@ export default class Room {
         this.users = {}
 
         this.tables = {}
+        this.waddles = {}
     }
 
     get userValues() {
@@ -30,6 +31,10 @@ export default class Room {
     remove(user) {
         if (!this.game) {
             this.send(user, 'remove_player', { user: user.id })
+        }
+
+        if (this.matchmaker && this.matchmaker.includes(user)) {
+            this.matchmaker.remove(user)
         }
 
         delete this.users[user.socket.id]

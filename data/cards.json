@@ -1,0 +1,4074 @@
+{
+    "1": {
+        "name": "CART SURFER",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 3
+    },
+    "2": {
+        "name": "COFFEE SHOP",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 2
+    },
+    "3": {
+        "name": "ASTRO-BARRIER",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 8
+    },
+    "4": {
+        "name": "HOT CHOCOLATE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 3
+    },
+    "5": {
+        "name": "LANDING PAD",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "6": {
+        "name": "PIZZA CHEF",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 6
+    },
+    "7": {
+        "name": "PAINT BY LETTERS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 2
+    },
+    "8": {
+        "name": "MINE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 7
+    },
+    "9": {
+        "name": "CONSTRUCTION WORKER",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 2
+    },
+    "10": {
+        "name": "JET PACK ADVENTURE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 5
+    },
+    "11": {
+        "name": "GIFT SHOP",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 3
+    },
+    "12": {
+        "name": "HIKING IN THE FOREST",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 2
+    },
+    "13": {
+        "name": "RESCUE SQUAD",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 5
+    },
+    "14": {
+        "name": "PET SHOP",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 3
+    },
+    "15": {
+        "name": "SKI VILLAGE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 4
+    },
+    "16": {
+        "name": "ICE HOCKEY",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 8
+    },
+    "17": {
+        "name": "SKI HILL",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 2
+    },
+    "18": {
+        "name": "SNOWBALL FIGHT",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 6
+    },
+    "19": {
+        "name": "SNOW FORTS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 2
+    },
+    "20": {
+        "name": "SOCCER",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 7
+    },
+    "21": {
+        "name": "BEACH",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 3
+    },
+    "22": {
+        "name": "FOOTBALL",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 5
+    },
+    "23": {
+        "name": "BASEBALL",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "24": {
+        "name": "EMERALD PRINCESS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 8
+    },
+    "25": {
+        "name": "BEAN COUNTERS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 3
+    },
+    "26": {
+        "name": "MANHOLE COVER",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 4
+    },
+    "27": {
+        "name": "NEWSPAPER ARCHIVES",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 6
+    },
+    "28": {
+        "name": "UNDERGROUND POOL",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 2
+    },
+    "29": {
+        "name": "SCUBA DIVING",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 7
+    },
+    "30": {
+        "name": "ICE FISHING",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 2
+    },
+    "31": {
+        "name": "CASE OF THE MISSING COINS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 2
+    },
+    "32": {
+        "name": "CRATES AND BOXES",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 5
+    },
+    "33": {
+        "name": "ANVIL SMITH",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 4
+    },
+    "34": {
+        "name": "HALLOWEEN",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 6
+    },
+    "35": {
+        "name": "KNIGHT",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 3
+    },
+    "36": {
+        "name": "BLACK PUFFLE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 5
+    },
+    "37": {
+        "name": "MEDIEVAL PARTY",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 4
+    },
+    "38": {
+        "name": "BLUE PUFFLE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 2
+    },
+    "39": {
+        "name": "PINK PUFFLE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 5
+    },
+    "40": {
+        "name": "GREEN PUFFLE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 4
+    },
+    "41": {
+        "name": "PUFFLE FURNITURE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 6
+    },
+    "42": {
+        "name": "PURPLE PUFFLE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 3
+    },
+    "43": {
+        "name": "RED PUFFLE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 5
+    },
+    "44": {
+        "name": "YELLOW PUFFLE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 4
+    },
+    "45": {
+        "name": "SUMMER PARTY",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 2
+    },
+    "46": {
+        "name": "GRAY FISH",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 4
+    },
+    "47": {
+        "name": "O BERRY",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 6
+    },
+    "48": {
+        "name": "LIFE RING",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 3
+    },
+    "49": {
+        "name": "JOLLY ROGER FLAG",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 5
+    },
+    "50": {
+        "name": "COINS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 5
+    },
+    "51": {
+        "name": "GARY THE GADGET GUY",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 6
+    },
+    "52": {
+        "name": "BUOYS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 5
+    },
+    "53": {
+        "name": "YARR",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 4
+    },
+    "54": {
+        "name": "KLUTZY",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 8
+    },
+    "55": {
+        "name": "HERBERT P. BEAR",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 3
+    },
+    "56": {
+        "name": "HOT SAUCE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 7
+    },
+    "57": {
+        "name": "SNOW CASTLE",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 6
+    },
+    "58": {
+        "name": "AUNT ARCTIC",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 7
+    },
+    "59": {
+        "name": "CHRISTMAS CAROLS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "60": {
+        "name": "BETA PARTY",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 8
+    },
+    "61": {
+        "name": "HIDDEN ITEMS",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 6
+    },
+    "62": {
+        "name": "SECRET AGENT",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 3
+    },
+    "63": {
+        "name": "SNOW SHOVEL",
+        "setId": 1,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 5
+    },
+    "64": {
+        "name": "THE MIGRATOR",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 6
+    },
+    "65": {
+        "name": "CAPTAIN ROCKHOPPER",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 5
+    },
+    "66": {
+        "name": "ICE CREAM",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 4
+    },
+    "67": {
+        "name": "MULLET",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 8
+    },
+    "68": {
+        "name": "UNDERGROUND FLOOD",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 3
+    },
+    "69": {
+        "name": "FLUFFY THE FISH",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "70": {
+        "name": "SHARK",
+        "setId": 1,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 7
+    },
+    "71": {
+        "name": "FLOORING UPGRADE",
+        "setId": 1,
+        "powerId": 13,
+        "element": "f",
+        "color": "r",
+        "value": 9
+    },
+    "72": {
+        "name": "GADGET ROOM",
+        "setId": 1,
+        "powerId": 16,
+        "element": "f",
+        "color": "b",
+        "value": 9
+    },
+    "73": {
+        "name": "JACKHAMMER",
+        "setId": 1,
+        "powerId": 1,
+        "element": "f",
+        "color": "y",
+        "value": 10
+    },
+    "74": {
+        "name": "JET PACK",
+        "setId": 1,
+        "powerId": 4,
+        "element": "f",
+        "color": "o",
+        "value": 10
+    },
+    "75": {
+        "name": "THIN ICE",
+        "setId": 1,
+        "powerId": 7,
+        "element": "f",
+        "color": "p",
+        "value": 11
+    },
+    "76": {
+        "name": "NIGHT VISION GOGGLES",
+        "setId": 1,
+        "powerId": 10,
+        "element": "f",
+        "color": "g",
+        "value": 11
+    },
+    "77": {
+        "name": "MIGHTY PLUNGER",
+        "setId": 1,
+        "powerId": 2,
+        "element": "f",
+        "color": "r",
+        "value": 12
+    },
+    "78": {
+        "name": "DRAGON",
+        "setId": 1,
+        "powerId": 3,
+        "element": "f",
+        "color": "b",
+        "value": 12
+    },
+    "79": {
+        "name": "SPACE ADVENTURE",
+        "setId": 1,
+        "powerId": 15,
+        "element": "s",
+        "color": "r",
+        "value": 9
+    },
+    "80": {
+        "name": "TOUR GUIDE",
+        "setId": 1,
+        "powerId": 18,
+        "element": "s",
+        "color": "b",
+        "value": 9
+    },
+    "81": {
+        "name": "SLED RACING",
+        "setId": 1,
+        "powerId": 1,
+        "element": "s",
+        "color": "g",
+        "value": 10
+    },
+    "82": {
+        "name": "PUFFLE ROUND-UP",
+        "setId": 1,
+        "powerId": 5,
+        "element": "s",
+        "color": "g",
+        "value": 10
+    },
+    "83": {
+        "name": "AC3000",
+        "setId": 1,
+        "powerId": 9,
+        "element": "s",
+        "color": "p",
+        "value": 11
+    },
+    "84": {
+        "name": "SNOW GLOBE IGLOO",
+        "setId": 1,
+        "powerId": 12,
+        "element": "s",
+        "color": "y",
+        "value": 11
+    },
+    "85": {
+        "name": "SHADOW GUY & GAMMA GAL",
+        "setId": 1,
+        "powerId": 2,
+        "element": "s",
+        "color": "o",
+        "value": 12
+    },
+    "86": {
+        "name": "AVALANCHE",
+        "setId": 1,
+        "powerId": 3,
+        "element": "s",
+        "color": "o",
+        "value": 12
+    },
+    "87": {
+        "name": "WATER PARTY",
+        "setId": 1,
+        "powerId": 14,
+        "element": "w",
+        "color": "r",
+        "value": 9
+    },
+    "88": {
+        "name": "CATCHIN' WAVES",
+        "setId": 1,
+        "powerId": 17,
+        "element": "w",
+        "color": "b",
+        "value": 9
+    },
+    "89": {
+        "name": "FIREFIGHTER",
+        "setId": 1,
+        "powerId": 1,
+        "element": "w",
+        "color": "y",
+        "value": 10
+    },
+    "90": {
+        "name": "AQUA GRABBER",
+        "setId": 1,
+        "powerId": 6,
+        "element": "w",
+        "color": "o",
+        "value": 10
+    },
+    "91": {
+        "name": "OCTOPUS",
+        "setId": 1,
+        "powerId": 8,
+        "element": "w",
+        "color": "p",
+        "value": 11
+    },
+    "92": {
+        "name": "CACTUS",
+        "setId": 1,
+        "powerId": 11,
+        "element": "w",
+        "color": "g",
+        "value": 11
+    },
+    "93": {
+        "name": "TIPPING THE ICEBERG",
+        "setId": 1,
+        "powerId": 2,
+        "element": "w",
+        "color": "p",
+        "value": 12
+    },
+    "94": {
+        "name": "NINJA",
+        "setId": 1,
+        "powerId": 3,
+        "element": "w",
+        "color": "y",
+        "value": 12
+    },
+    "95": {
+        "name": "WHITE PUFFLE",
+        "setId": 2,
+        "powerId": 10,
+        "element": "s",
+        "color": "b",
+        "value": 12
+    },
+    "96": {
+        "name": "Yarr",
+        "setId": 2,
+        "powerId": 4,
+        "element": "f",
+        "color": "r",
+        "value": 11
+    },
+    "97": {
+        "name": "KEEPER OF THE BOILER ROOM",
+        "setId": 2,
+        "powerId": 9,
+        "element": "w",
+        "color": "g",
+        "value": 11
+    },
+    "98": {
+        "name": "BLAST",
+        "setId": 2,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 8
+    },
+    "99": {
+        "name": "FLARE",
+        "setId": 2,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "100": {
+        "name": "CHIRP",
+        "setId": 2,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 6
+    },
+    "101": {
+        "name": "POP",
+        "setId": 2,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 5
+    },
+    "102": {
+        "name": "LOOP",
+        "setId": 2,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "103": {
+        "name": "FLIT",
+        "setId": 2,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "104": {
+        "name": "BOUNCER",
+        "setId": 2,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 5
+    },
+    "105": {
+        "name": "ED MCCOOL AND DESTRUCTO",
+        "setId": 2,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 4
+    },
+    "106": {
+        "name": "NIBLET",
+        "setId": 2,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "107": {
+        "name": "SNOWY NIGHT",
+        "setId": 2,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 3
+    },
+    "108": {
+        "name": "PUFFLES ON THE LOOSE",
+        "setId": 2,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 4
+    },
+    "109": {
+        "name": "CADENCE AND THE KEEPER",
+        "setId": 2,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "110": {
+        "name": "GOLDEN PUFFLE",
+        "setId": 2,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 2
+    },
+    "111": {
+        "name": "METEOR PUFFLE",
+        "setId": 2,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 5
+    },
+    "112": {
+        "name": "RAINBOW PUFFLE",
+        "setId": 2,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 4
+    },
+    "113": {
+        "name": "ABOMINABLE SNOW PUFFLE ",
+        "setId": 2,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 3
+    },
+    "201": {
+        "name": "Club Penguin Times",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 2
+    },
+    "202": {
+        "name": "Can of Worms",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 3
+    },
+    "203": {
+        "name": "Winter Fiesta Party",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "204": {
+        "name": "Invisible Ninja Suit",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 5
+    },
+    "205": {
+        "name": "Penguin Mail",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 6
+    },
+    "206": {
+        "name": "Bumble Bee",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 6
+    },
+    "207": {
+        "name": "Pizzatron 3000",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "208": {
+        "name": "Card-Jitsu",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 8
+    },
+    "209": {
+        "name": "Adopt-A-Puffle",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 4
+    },
+    "210": {
+        "name": "Rock & Roll Suit",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "211": {
+        "name": "Construction",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "212": {
+        "name": "Hidden Pins",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "213": {
+        "name": "Treasure Hunt Game",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 7
+    },
+    "214": {
+        "name": "DJ3K",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 8
+    },
+    "215": {
+        "name": "Surf Boards",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "216": {
+        "name": "Beach Chair Chilling",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "217": {
+        "name": "Telescope",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "218": {
+        "name": "Fish Costume",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "219": {
+        "name": "Crow's Nest",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 5
+    },
+    "220": {
+        "name": "The Cove",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 6
+    },
+    "221": {
+        "name": "Captain's Quarters",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 6
+    },
+    "222": {
+        "name": "Iceberg",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "223": {
+        "name": "The Lounge",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 3
+    },
+    "224": {
+        "name": "Rockhopper's Key",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 4
+    },
+    "225": {
+        "name": "Penguins That Time Forgot",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 5
+    },
+    "226": {
+        "name": "Team Blue Rally",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 6
+    },
+    "227": {
+        "name": "Jet Pack Adventure",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 7
+    },
+    "228": {
+        "name": "Ruby and the Ruby",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 2
+    },
+    "229": {
+        "name": "Snowball Fight",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 3
+    },
+    "230": {
+        "name": "Snowball Press",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "231": {
+        "name": "Music Jam",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 6
+    },
+    "232": {
+        "name": "Puffle Chew-Chew",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 7
+    },
+    "233": {
+        "name": "Fairy Fables",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "234": {
+        "name": "Jelly Fish",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 3
+    },
+    "235": {
+        "name": "Pirate",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "236": {
+        "name": "Fish Bait",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 5
+    },
+    "237": {
+        "name": "Hydro Hopper",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "238": {
+        "name": "Puffle O's",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "239": {
+        "name": "Fall Fair Games",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "240": {
+        "name": "Thinga-ma-jig 3000",
+        "setId": 3,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 5
+    },
+    "241": {
+        "name": "Rad Scientist",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 3
+    },
+    "242": {
+        "name": "Quip and Qua",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 5
+    },
+    "243": {
+        "name": "Twee",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 6
+    },
+    "244": {
+        "name": "Coins For Change",
+        "setId": 3,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 8
+    },
+    "245": {
+        "name": "Surfing with the Sharks",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 5
+    },
+    "246": {
+        "name": "Dance Contest",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 6
+    },
+    "247": {
+        "name": "Purple Octopus",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 7
+    },
+    "248": {
+        "name": "Giant Squid",
+        "setId": 3,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "249": {
+        "name": "Penguin Band",
+        "setId": 3,
+        "powerId": 16,
+        "element": "f",
+        "color": "b",
+        "value": 9
+    },
+    "250": {
+        "name": "Dojo Sketch",
+        "setId": 3,
+        "powerId": 13,
+        "element": "f",
+        "color": "y",
+        "value": 10
+    },
+    "251": {
+        "name": "Flare Flinger 3000",
+        "setId": 3,
+        "powerId": 7,
+        "element": "f",
+        "color": "p",
+        "value": 11
+    },
+    "252": {
+        "name": "Herbert & Klutzy",
+        "setId": 3,
+        "powerId": 11,
+        "element": "f",
+        "color": "r",
+        "value": 12
+    },
+    "253": {
+        "name": "Coffee Delivery Truck",
+        "setId": 3,
+        "powerId": 15,
+        "element": "s",
+        "color": "o",
+        "value": 9
+    },
+    "254": {
+        "name": "Anniversary Party",
+        "setId": 3,
+        "powerId": 18,
+        "element": "s",
+        "color": "b",
+        "value": 10
+    },
+    "255": {
+        "name": "Halloween Party",
+        "setId": 3,
+        "powerId": 5,
+        "element": "s",
+        "color": "y",
+        "value": 11
+    },
+    "256": {
+        "name": "Sensei",
+        "setId": 3,
+        "powerId": 12,
+        "element": "s",
+        "color": "p",
+        "value": 12
+    },
+    "257": {
+        "name": "Jackhammers",
+        "setId": 3,
+        "powerId": 8,
+        "element": "w",
+        "color": "p",
+        "value": 9
+    },
+    "258": {
+        "name": "Quest for the Golden Puffle",
+        "setId": 3,
+        "powerId": 14,
+        "element": "w",
+        "color": "y",
+        "value": 10
+    },
+    "259": {
+        "name": "Storm",
+        "setId": 3,
+        "powerId": 6,
+        "element": "w",
+        "color": "o",
+        "value": 11
+    },
+    "260": {
+        "name": "Rockhopper",
+        "setId": 3,
+        "powerId": 17,
+        "element": "w",
+        "color": "b",
+        "value": 12
+    },
+    "301": {
+        "name": "Camera",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 2
+    },
+    "302": {
+        "name": "Wigs",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 3
+    },
+    "303": {
+        "name": "Pizza Parlor",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 4
+    },
+    "304": {
+        "name": "Coffee Machine",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 5
+    },
+    "305": {
+        "name": "Costume Trunk",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 6
+    },
+    "306": {
+        "name": "Pet Shop Staff",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 6
+    },
+    "307": {
+        "name": "Stompin' Bob",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "308": {
+        "name": "G Billy",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 8
+    },
+    "309": {
+        "name": "Outdoor Igloo",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 4
+    },
+    "310": {
+        "name": "Ticket Booth",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "311": {
+        "name": "Ridge Run",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "312": {
+        "name": "Clock Tower",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "313": {
+        "name": "White Puffles",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 7
+    },
+    "314": {
+        "name": "Dojo Courtyard",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 8
+    },
+    "315": {
+        "name": "Rocking Horse",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "316": {
+        "name": "Penguin Style",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "317": {
+        "name": "Stage Director",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 4
+    },
+    "318": {
+        "name": "Conductor",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "319": {
+        "name": "Beacon",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 5
+    },
+    "320": {
+        "name": "Discovering The Underground",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 6
+    },
+    "321": {
+        "name": "Franky",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 6
+    },
+    "322": {
+        "name": "Petey K.",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "323": {
+        "name": "Boombox",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 3
+    },
+    "324": {
+        "name": "Mild Mannered Reporter",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 4
+    },
+    "325": {
+        "name": "The Twelfth Fish",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 5
+    },
+    "326": {
+        "name": "April Fool's Day Party",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 6
+    },
+    "327": {
+        "name": "Plasma Glow Wave",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 7
+    },
+    "328": {
+        "name": "Cowbell",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 2
+    },
+    "329": {
+        "name": "O Berry Bush",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 3
+    },
+    "330": {
+        "name": "Chester The Time Traveler",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 3
+    },
+    "331": {
+        "name": 101,
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 5
+    },
+    "332": {
+        "name": "Color Vote",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 6
+    },
+    "333": {
+        "name": "Christmas Party",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 7
+    },
+    "334": {
+        "name": "Viking Opera",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "335": {
+        "name": "Water Balloons",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 3
+    },
+    "336": {
+        "name": "Tuba",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "337": {
+        "name": "Rockhopper's Plants",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 5
+    },
+    "338": {
+        "name": "Adventure Party",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "339": {
+        "name": "Penguin Play Awards",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "340": {
+        "name": "All-Access Pass",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "341": {
+        "name": "Cadence's Autograph",
+        "setId": 4,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 5
+    },
+    "342": {
+        "name": "Treasure Book",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 5
+    },
+    "343": {
+        "name": "Black Hoodie",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 6
+    },
+    "344": {
+        "name": "Propellor Cap",
+        "setId": 4,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 8
+    },
+    "345": {
+        "name": "Dessert Pizza",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 5
+    },
+    "346": {
+        "name": "Black Electric Guitar",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 6
+    },
+    "347": {
+        "name": "Mastering The Elements",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 7
+    },
+    "348": {
+        "name": "Elite Penguin Force",
+        "setId": 4,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "349": {
+        "name": "Switchbox 3000",
+        "setId": 4,
+        "powerId": 7,
+        "element": "f",
+        "color": "b",
+        "value": 11
+    },
+    "350": {
+        "name": "Medieval Party",
+        "setId": 4,
+        "powerId": 8,
+        "element": "f",
+        "color": "y",
+        "value": 10
+    },
+    "351": {
+        "name": "Cadence",
+        "setId": 4,
+        "powerId": 3,
+        "element": "f",
+        "color": "r",
+        "value": 11
+    },
+    "352": {
+        "name": "Cloud Wave",
+        "setId": 4,
+        "powerId": 9,
+        "element": "f",
+        "color": "o",
+        "value": 12
+    },
+    "353": {
+        "name": "Ghost Sheet",
+        "setId": 4,
+        "powerId": 3,
+        "element": "s",
+        "color": "r",
+        "value": 12
+    },
+    "354": {
+        "name": "Cart Surfer",
+        "setId": 4,
+        "powerId": 12,
+        "element": "s",
+        "color": "g",
+        "value": 10
+    },
+    "355": {
+        "name": "Keytar",
+        "setId": 4,
+        "powerId": 11,
+        "element": "s",
+        "color": "p",
+        "value": 9
+    },
+    "356": {
+        "name": "X-treme Jetpack",
+        "setId": 4,
+        "powerId": 2,
+        "element": "s",
+        "color": "y",
+        "value": 9
+    },
+    "357": {
+        "name": "Box Dimension",
+        "setId": 4,
+        "powerId": 2,
+        "element": "w",
+        "color": "b",
+        "value": 9
+    },
+    "358": {
+        "name": "Gold Viking Helmet",
+        "setId": 4,
+        "powerId": 10,
+        "element": "w",
+        "color": "p",
+        "value": 10
+    },
+    "359": {
+        "name": "Gary The Gadget Guy",
+        "setId": 4,
+        "powerId": 2,
+        "element": "w",
+        "color": "o",
+        "value": 11
+    },
+    "360": {
+        "name": "Rockhopper's Cannon",
+        "setId": 4,
+        "powerId": 3,
+        "element": "w",
+        "color": "g",
+        "value": 12
+    },
+    "401": {
+        "name": "Multi-Player",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 2
+    },
+    "402": {
+        "name": "Fire Battle",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 3
+    },
+    "403": {
+        "name": "Fired Up",
+        "setId": 5,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 4
+    },
+    "404": {
+        "name": "Goldsmith",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "405": {
+        "name": "Scroll",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 3
+    },
+    "406": {
+        "name": "Volcano",
+        "setId": 5,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "407": {
+        "name": "Ready For Battle",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 2
+    },
+    "408": {
+        "name": "Flying Flippers Emporium",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 3
+    },
+    "409": {
+        "name": "Duel",
+        "setId": 5,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 4
+    },
+    "410": {
+        "name": "Concentrate",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 2
+    },
+    "411": {
+        "name": "Interior Construction",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 3
+    },
+    "412": {
+        "name": "Elements Hideout",
+        "setId": 5,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 4
+    },
+    "413": {
+        "name": "Scavenger Hunt",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 5
+    },
+    "414": {
+        "name": "Fire Wheel",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 6
+    },
+    "415": {
+        "name": "Amulet Construction",
+        "setId": 5,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "416": {
+        "name": "Fire Dance",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 6
+    },
+    "417": {
+        "name": "Sketched Action",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 5
+    },
+    "418": {
+        "name": "Fire Guardian",
+        "setId": 5,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 6
+    },
+    "419": {
+        "name": "Hot Sauce Reserve",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 5
+    },
+    "420": {
+        "name": "Sketched: Volcano",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 6
+    },
+    "421": {
+        "name": "Orange Sky",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 7
+    },
+    "422": {
+        "name": "Sketched: Enter",
+        "setId": 5,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "423": {
+        "name": "Amulet",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 9
+    },
+    "424": {
+        "name": "A New Journey",
+        "setId": 5,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 7
+    },
+    "425": {
+        "name": "Fire Door & Key",
+        "setId": 5,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 8
+    },
+    "426": {
+        "name": "Sensei Fire",
+        "setId": 5,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 9
+    },
+    "427": {
+        "name": "Fire Ninja",
+        "setId": 5,
+        "powerId": 4,
+        "element": "f",
+        "color": "r",
+        "value": 12
+    },
+    "501": {
+        "name": "Monkey King",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 2
+    },
+    "502": {
+        "name": "Jet Pack Pilot",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 3
+    },
+    "503": {
+        "name": "Fairy Princess",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "504": {
+        "name": "Puffle Grooming",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 5
+    },
+    "505": {
+        "name": "Halloween Costumes",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 6
+    },
+    "506": {
+        "name": "Costume Show",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 6
+    },
+    "507": {
+        "name": "Soccer Match",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "508": {
+        "name": "Bean Counters",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 2
+    },
+    "509": {
+        "name": "Earth Day Recycling",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 3
+    },
+    "510": {
+        "name": "Penguin Play Awards",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "511": {
+        "name": "Goal!",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 5
+    },
+    "512": {
+        "name": "Bamboo Forest Sketch",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 6
+    },
+    "513": {
+        "name": "The Mine Cave is Safe!",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 6
+    },
+    "514": {
+        "name": "Mine Cave Construction",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "515": {
+        "name": "Guardian Dog",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 4
+    },
+    "516": {
+        "name": "The Fair",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "517": {
+        "name": "Hockey Gear",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "518": {
+        "name": "Puffle Show",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "519": {
+        "name": "Holiday Gifts",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 7
+    },
+    "520": {
+        "name": "Holiday Activities",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 8
+    },
+    "521": {
+        "name": "Stadium",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 4
+    },
+    "522": {
+        "name": "Igloo Items",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "523": {
+        "name": "Music Jam",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "524": {
+        "name": "Elite Penguin Sketch",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "525": {
+        "name": "Festival of Flight",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "526": {
+        "name": "Test Glider",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "527": {
+        "name": "Puffle Paddle",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "528": {
+        "name": "Fancy Formal Wear",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "529": {
+        "name": "The Docks",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 5
+    },
+    "530": {
+        "name": "Orange Puffle",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 6
+    },
+    "531": {
+        "name": "Community Tree",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 6
+    },
+    "532": {
+        "name": "Community Garden",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "533": {
+        "name": "Island Adventure Party",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "534": {
+        "name": "Shops in Igloos",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "535": {
+        "name": "Seafarer's Gown",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "536": {
+        "name": "Music Jam Dancers",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "537": {
+        "name": "Music Jam Rock Stage",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 5
+    },
+    "538": {
+        "name": "Music Jam Pop Stage",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 6
+    },
+    "539": {
+        "name": "Underwater Adventure",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 6
+    },
+    "540": {
+        "name": "Norman Swarm",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "541": {
+        "name": "Puffle Rescuer",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "542": {
+        "name": "Everyday Phoning Facility",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "543": {
+        "name": "Jet Packs",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 3
+    },
+    "544": {
+        "name": "Pumpkin Igloo",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 4
+    },
+    "545": {
+        "name": "Treasure Hunt Adventure",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 5
+    },
+    "546": {
+        "name": "Destroyed PSA HQ",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 6
+    },
+    "547": {
+        "name": "Captains",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 7
+    },
+    "548": {
+        "name": "April Fools",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 7
+    },
+    "549": {
+        "name": "The Great Snow Maze",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 2
+    },
+    "550": {
+        "name": "Jacques Hammer",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 3
+    },
+    "551": {
+        "name": "Throne of April Fools",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "552": {
+        "name": "The Test",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 7
+    },
+    "553": {
+        "name": "Cloud Maker 3000",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "554": {
+        "name": "Super Exclusives",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 3
+    },
+    "555": {
+        "name": "Rockslide at the Mine",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "556": {
+        "name": "Mer-penguins",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 5
+    },
+    "557": {
+        "name": "Puffer Fish",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "558": {
+        "name": "Garden Hose",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "559": {
+        "name": "Fixing the Mine Shack",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "560": {
+        "name": "Puffle Circus",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "561": {
+        "name": "Puffle Play Sketch",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 5
+    },
+    "562": {
+        "name": "Dragon Statue",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "563": {
+        "name": "Popcorn Party",
+        "setId": 6,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 5
+    },
+    "564": {
+        "name": "White Puffle Room",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 3
+    },
+    "565": {
+        "name": "Green Puffle Sketch",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 5
+    },
+    "566": {
+        "name": "Fishbowl Igloo",
+        "setId": 6,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 6
+    },
+    "567": {
+        "name": "Ship Battle Adventure",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 5
+    },
+    "568": {
+        "name": "Elite Penguin Force",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 6
+    },
+    "569": {
+        "name": "Rockhopper's Notice Board",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 7
+    },
+    "570": {
+        "name": "Squid Lid",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "571": {
+        "name": "Hidden Lake",
+        "setId": 6,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "572": {
+        "name": "Orange Puffle Wagon",
+        "setId": 6,
+        "powerId": 16,
+        "element": "f",
+        "color": "b",
+        "value": 9
+    },
+    "573": {
+        "name": "Haunted House",
+        "setId": 6,
+        "powerId": 13,
+        "element": "f",
+        "color": "y",
+        "value": 10
+    },
+    "574": {
+        "name": "Fire Dragon",
+        "setId": 6,
+        "powerId": 7,
+        "element": "f",
+        "color": "p",
+        "value": 11
+    },
+    "575": {
+        "name": "Puffle Rescue: Underground",
+        "setId": 6,
+        "powerId": 11,
+        "element": "f",
+        "color": "r",
+        "value": 12
+    },
+    "576": {
+        "name": "Double Necked Guitar",
+        "setId": 6,
+        "powerId": 15,
+        "element": "s",
+        "color": "o",
+        "value": 9
+    },
+    "577": {
+        "name": "Puffle Rescue: Ice Floes",
+        "setId": 6,
+        "powerId": 18,
+        "element": "s",
+        "color": "b",
+        "value": 10
+    },
+    "578": {
+        "name": "Spy Phone",
+        "setId": 6,
+        "powerId": 12,
+        "element": "s",
+        "color": "y",
+        "value": 11
+    },
+    "579": {
+        "name": "Dance Contest",
+        "setId": 6,
+        "powerId": 5,
+        "element": "s",
+        "color": "p",
+        "value": 12
+    },
+    "580": {
+        "name": "Crab Costume",
+        "setId": 6,
+        "powerId": 8,
+        "element": "w",
+        "color": "p",
+        "value": 9
+    },
+    "581": {
+        "name": "Puffle Washer",
+        "setId": 6,
+        "powerId": 14,
+        "element": "w",
+        "color": "y",
+        "value": 10
+    },
+    "582": {
+        "name": "Green Jackhammer",
+        "setId": 6,
+        "powerId": 6,
+        "element": "w",
+        "color": "o",
+        "value": 11
+    },
+    "583": {
+        "name": "The Veggie Villain",
+        "setId": 6,
+        "powerId": 17,
+        "element": "w",
+        "color": "b",
+        "value": 12
+    },
+    "584": {
+        "name": "Island Lifter 3000",
+        "setId": 6,
+        "powerId": 16,
+        "element": "f",
+        "color": "b",
+        "value": 9
+    },
+    "585": {
+        "name": "Flare",
+        "setId": 6,
+        "powerId": 13,
+        "element": "f",
+        "color": "y",
+        "value": 10
+    },
+    "586": {
+        "name": "Popcorn Device",
+        "setId": 6,
+        "powerId": 7,
+        "element": "f",
+        "color": "p",
+        "value": 11
+    },
+    "587": {
+        "name": "Field-Ops",
+        "setId": 6,
+        "powerId": 11,
+        "element": "f",
+        "color": "r",
+        "value": 12
+    },
+    "588": {
+        "name": "Recipe for Disaster",
+        "setId": 6,
+        "powerId": 15,
+        "element": "s",
+        "color": "o",
+        "value": 9
+    },
+    "589": {
+        "name": "Elite Agent",
+        "setId": 6,
+        "powerId": 18,
+        "element": "s",
+        "color": "b",
+        "value": 10
+    },
+    "590": {
+        "name": "Aunt Arctic Sketch",
+        "setId": 6,
+        "powerId": 12,
+        "element": "s",
+        "color": "y",
+        "value": 11
+    },
+    "591": {
+        "name": "Yeti Cave",
+        "setId": 6,
+        "powerId": 5,
+        "element": "s",
+        "color": "p",
+        "value": 12
+    },
+    "592": {
+        "name": "Shocktopus",
+        "setId": 6,
+        "powerId": 8,
+        "element": "w",
+        "color": "p",
+        "value": 9
+    },
+    "593": {
+        "name": "Puffle Rescue: Underwater",
+        "setId": 6,
+        "powerId": 14,
+        "element": "w",
+        "color": "y",
+        "value": 10
+    },
+    "594": {
+        "name": "Hidden Lake Lock",
+        "setId": 6,
+        "powerId": 6,
+        "element": "w",
+        "color": "o",
+        "value": 11
+    },
+    "595": {
+        "name": "Knight's Quest",
+        "setId": 6,
+        "powerId": 17,
+        "element": "w",
+        "color": "b",
+        "value": 12
+    },
+    "601": {
+        "name": "Spooky Igloo Contest",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 2
+    },
+    "602": {
+        "name": "Halloween Countdown!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 3
+    },
+    "603": {
+        "name": "Stormy Skies",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "604": {
+        "name": 5,
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 5
+    },
+    "605": {
+        "name": 5,
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 6
+    },
+    "606": {
+        "name": 5,
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 6
+    },
+    "607": {
+        "name": "Snowball Fight!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "608": {
+        "name": "Find Four",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 2
+    },
+    "609": {
+        "name": "Cozy Ski Lodge",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 3
+    },
+    "610": {
+        "name": "Holiday Decorations!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "611": {
+        "name": "Book Room Adventures",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 5
+    },
+    "612": {
+        "name": "Halloween Forest",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 6
+    },
+    "613": {
+        "name": "Brown Puffle Rocket",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 6
+    },
+    "614": {
+        "name": "Fun at the Fair!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "615": {
+        "name": "Ski Hill Challenge",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 4
+    },
+    "616": {
+        "name": "Holiday Party Skating",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "617": {
+        "name": "Treasure!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "618": {
+        "name": "Lumberjack Look",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "619": {
+        "name": "Pink Sparkle Snowshoes",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 7
+    },
+    "620": {
+        "name": "Holiday Tree 2010",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 8
+    },
+    "621": {
+        "name": "Fill the Lighthouse!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 4
+    },
+    "622": {
+        "name": "Wilderness Machine",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "623": {
+        "name": "Expedition Boat",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "624": {
+        "name": "Wilderness Expedition Cave",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "625": {
+        "name": "Water Party Prep",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "626": {
+        "name": "Water Dance",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "627": {
+        "name": "Stamp Collectors",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "628": {
+        "name": "Explore the Wilderness",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "629": {
+        "name": "Coins for Change 2010!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 5
+    },
+    "630": {
+        "name": "Penguin Colors",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 6
+    },
+    "631": {
+        "name": "Fairy Fables",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 6
+    },
+    "632": {
+        "name": "Penguins That Time Forgot",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "633": {
+        "name": "EPF Sketch",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "634": {
+        "name": "Cove Stories",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "635": {
+        "name": "Orange Circus Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "636": {
+        "name": "Hydro Hopper",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "637": {
+        "name": "Igloo Party!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 5
+    },
+    "638": {
+        "name": "Life Underwater",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 6
+    },
+    "639": {
+        "name": "Herbert's Monologue",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 6
+    },
+    "640": {
+        "name": "Enemy Bots",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "641": {
+        "name": "Paint By Letters",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "642": {
+        "name": "Secret Agent",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "643": {
+        "name": "Fireworks",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 3
+    },
+    "644": {
+        "name": "EPF Tech Agent",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 4
+    },
+    "645": {
+        "name": "Popcorn Explosion",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 5
+    },
+    "646": {
+        "name": "Walk Your Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 6
+    },
+    "647": {
+        "name": "Sumo Smash",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 7
+    },
+    "648": {
+        "name": "inventive Brown Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 7
+    },
+    "649": {
+        "name": "Holiday Party Tree",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 2
+    },
+    "650": {
+        "name": "EPF Enemies",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 3
+    },
+    "651": {
+        "name": "Tall Tree Maze",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "652": {
+        "name": "Sled 'n Slide",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 7
+    },
+    "653": {
+        "name": "Underwater at the Stage",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "654": {
+        "name": "Wilderness Expedition Travel",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 3
+    },
+    "655": {
+        "name": "Catch the Mullet!",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "656": {
+        "name": "Great Puffle Circus",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 5
+    },
+    "657": {
+        "name": "Intense Black Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "658": {
+        "name": "Brown Puffle Storyboard",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "659": {
+        "name": "Java Jump",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 7
+    },
+    "660": {
+        "name": "Master the Elements",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "661": {
+        "name": "Fairy Fables Stage",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 5
+    },
+    "662": {
+        "name": "Creative Puffles",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "663": {
+        "name": "Goofy Green Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 5
+    },
+    "664": {
+        "name": "EPF Test Room",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 3
+    },
+    "665": {
+        "name": "Snowball Battle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 5
+    },
+    "666": {
+        "name": "Fabulous Purple Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 6
+    },
+    "667": {
+        "name": "Water Party Sketch",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 5
+    },
+    "668": {
+        "name": "Zany Orange Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 6
+    },
+    "669": {
+        "name": "Sporty Pink Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 7
+    },
+    "670": {
+        "name": "Wii Game Day \"Goal!\"",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "671": {
+        "name": "Epic White Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "672": {
+        "name": "Awesome Blue Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 9
+    },
+    "673": {
+        "name": "\"Feed a Puffle\"",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 9
+    },
+    "674": {
+        "name": "Ninja Battle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 2
+    },
+    "675": {
+        "name": "The Mystery of Sensei",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 4
+    },
+    "676": {
+        "name": "Master the Elements",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 5
+    },
+    "677": {
+        "name": "Brown Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 6
+    },
+    "678": {
+        "name": "Fire Wave",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "y",
+        "value": 6
+    },
+    "679": {
+        "name": "Black Puffles in Cart Surfer",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "680": {
+        "name": "Mountain Expedition",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 4
+    },
+    "681": {
+        "name": "Climbing the Mountain",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "682": {
+        "name": "Top of Toughest Mountain",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 5
+    },
+    "683": {
+        "name": "Cart Surfer Stamps",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "684": {
+        "name": "Stamp Book",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 7
+    },
+    "685": {
+        "name": "Stormy Sky ",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 8
+    },
+    "686": {
+        "name": "Water Wave Sketches",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 4
+    },
+    "687": {
+        "name": "Storm Baffles Gary",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 4
+    },
+    "688": {
+        "name": "Water Ninja",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "689": {
+        "name": "The First Rainstorm",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "690": {
+        "name": "Ninja Face-off",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "691": {
+        "name": "Earning the Water Suit",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 5
+    },
+    "692": {
+        "name": "Water Pumping Gadget",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 6
+    },
+    "693": {
+        "name": "Preparing the Water Dojo",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 6
+    },
+    "694": {
+        "name": "Gate to the Water Dojo",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "695": {
+        "name": "Water Suit",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "696": {
+        "name": "Sign From The Elements",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "697": {
+        "name": "Sensei - Master of Water",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "r",
+        "value": 4
+    },
+    "698": {
+        "name": "Water Ninja Poster Sketch",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "y",
+        "value": 4
+    },
+    "699": {
+        "name": "Water Ninja Sketch",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "o",
+        "value": 5
+    },
+    "700": {
+        "name": "Water Beats Fire Sketch",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "p",
+        "value": 3
+    },
+    "701": {
+        "name": "Blast",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 8
+    },
+    "702": {
+        "name": "Flare",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "703": {
+        "name": "Chirp",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 6
+    },
+    "704": {
+        "name": "Pop",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 5
+    },
+    "705": {
+        "name": "Loop",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "o",
+        "value": 7
+    },
+    "706": {
+        "name": "Flit",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 6
+    },
+    "707": {
+        "name": "Bouncer",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 5
+    },
+    "708": {
+        "name": "Ed McCool and Destructo",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "b",
+        "value": 4
+    },
+    "709": {
+        "name": "Niblet",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 2
+    },
+    "710": {
+        "name": "Snowy Night",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 3
+    },
+    "711": {
+        "name": "Puffles on the Loose",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "g",
+        "value": 4
+    },
+    "712": {
+        "name": "Cadence and the Keeper",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "g",
+        "value": 3
+    },
+    "713": {
+        "name": "Golden puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 2
+    },
+    "714": {
+        "name": "Meteor puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 5
+    },
+    "715": {
+        "name": "Rainbow puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "w",
+        "color": "p",
+        "value": 4
+    },
+    "716": {
+        "name": "Abominable snow puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "o",
+        "value": 3
+    },
+    "717": {
+        "name": "Black Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 5
+    },
+    "718": {
+        "name": "Blue Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 2
+    },
+    "719": {
+        "name": "Pink Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "b",
+        "value": 5
+    },
+    "720": {
+        "name": "Green Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 4
+    },
+    "721": {
+        "name": "Purple Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "p",
+        "value": 3
+    },
+    "722": {
+        "name": "Red Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "r",
+        "value": 5
+    },
+    "723": {
+        "name": "Yellow Puffle",
+        "setId": 7,
+        "powerId": 0,
+        "element": "s",
+        "color": "y",
+        "value": 4
+    },
+    "724": {
+        "name": "Puffle Round Up",
+        "setId": 7,
+        "powerId": 5,
+        "element": "s",
+        "color": "g",
+        "value": 10
+    },
+    "725": {
+        "name": "Fire Ninja Force",
+        "setId": 7,
+        "powerId": 11,
+        "element": "f",
+        "color": "r",
+        "value": 12
+    },
+    "726": {
+        "name": "Halloween Swamp",
+        "setId": 7,
+        "powerId": 15,
+        "element": "s",
+        "color": "o",
+        "value": 9
+    },
+    "727": {
+        "name": "Prepare for Pumpkins",
+        "setId": 7,
+        "powerId": 17,
+        "element": "s",
+        "color": "b",
+        "value": 10
+    },
+    "728": {
+        "name": "Finding Rockhopper",
+        "setId": 7,
+        "powerId": 12,
+        "element": "s",
+        "color": "y",
+        "value": 11
+    },
+    "729": {
+        "name": "Elite Puffle: Flare",
+        "setId": 7,
+        "powerId": 5,
+        "element": "s",
+        "color": "p",
+        "value": 12
+    },
+    "730": {
+        "name": "Giant Pearl",
+        "setId": 7,
+        "powerId": 8,
+        "element": "w",
+        "color": "p",
+        "value": 9
+    },
+    "731": {
+        "name": "Water Stamps",
+        "setId": 7,
+        "powerId": 14,
+        "element": "w",
+        "color": "y",
+        "value": 10
+    },
+    "732": {
+        "name": "EPF Agents",
+        "setId": 7,
+        "powerId": 6,
+        "element": "w",
+        "color": "o",
+        "value": 11
+    },
+    "733": {
+        "name": "Puffle Rescue",
+        "setId": 7,
+        "powerId": 17,
+        "element": "w",
+        "color": "b",
+        "value": 12
+    },
+    "734": {
+        "name": "Fire Dojo Challenge",
+        "setId": 7,
+        "powerId": 16,
+        "element": "f",
+        "color": "b",
+        "value": 9
+    },
+    "735": {
+        "name": "System Defender",
+        "setId": 7,
+        "powerId": 13,
+        "element": "f",
+        "color": "y",
+        "value": 10
+    },
+    "736": {
+        "name": "Adventurous Red Puffle",
+        "setId": 7,
+        "powerId": 7,
+        "element": "f",
+        "color": "p",
+        "value": 11
+    },
+    "737": {
+        "name": "G and the Machine",
+        "setId": 7,
+        "powerId": 11,
+        "element": "f",
+        "color": "r",
+        "value": 12
+    },
+    "738": {
+        "name": "Enemies of the System",
+        "setId": 7,
+        "powerId": 15,
+        "element": "s",
+        "color": "o",
+        "value": 9
+    },
+    "739": {
+        "name": "Holiday Dojo Lights",
+        "setId": 7,
+        "powerId": 18,
+        "element": "s",
+        "color": "b",
+        "value": 10
+    },
+    "740": {
+        "name": "Wii Rollin' Riot",
+        "setId": 7,
+        "powerId": 12,
+        "element": "s",
+        "color": "y",
+        "value": 11
+    },
+    "741": {
+        "name": "EPF Under Attack",
+        "setId": 7,
+        "powerId": 5,
+        "element": "s",
+        "color": "p",
+        "value": 12
+    },
+    "742": {
+        "name": "Elite Comm Class Agents",
+        "setId": 7,
+        "powerId": 8,
+        "element": "w",
+        "color": "p",
+        "value": 9
+    },
+    "743": {
+        "name": "Brown Puffle Cliff",
+        "setId": 7,
+        "powerId": 14,
+        "element": "w",
+        "color": "y",
+        "value": 10
+    },
+    "744": {
+        "name": "Coins for Change Goal!",
+        "setId": 7,
+        "powerId": 6,
+        "element": "w",
+        "color": "o",
+        "value": 11
+    },
+    "745": {
+        "name": "Sensei Water Battle ",
+        "setId": 7,
+        "powerId": 14,
+        "element": "w",
+        "color": "b",
+        "value": 9
+    },
+    "746": {
+        "name": "Green Puffles in Jet Pack Adve",
+        "setId": 7,
+        "powerId": 13,
+        "element": "f",
+        "color": "y",
+        "value": 10
+    },
+    "747": {
+        "name": "Water Dojo",
+        "setId": 7,
+        "powerId": 7,
+        "element": "w",
+        "color": "p",
+        "value": 11
+    },
+    "748": {
+        "name": "White Puffle",
+        "setId": 7,
+        "powerId": 10,
+        "element": "s",
+        "color": "b",
+        "value": 12
+    },
+    "749": {
+        "name": "Yarr",
+        "setId": 7,
+        "powerId": 4,
+        "element": "f",
+        "color": "r",
+        "value": 11
+    },
+    "750": {
+        "name": "Keeper of the Boiler Room",
+        "setId": 7,
+        "powerId": 9,
+        "element": "w",
+        "color": "g",
+        "value": 11
+    },
+    "801": {
+        "name": "Mobile Fire 1",
+        "setId": 8,
+        "powerId": 0,
+        "element": "f",
+        "color": "r",
+        "value": 6
+    },
+    "802": {
+        "name": "Mobile Snow 1",
+        "setId": 8,
+        "powerId": 0,
+        "element": "s",
+        "color": "g",
+        "value": 7
+    },
+    "803": {
+        "name": "Mobile Water 1",
+        "setId": 8,
+        "powerId": 0,
+        "element": "w",
+        "color": "b",
+        "value": 8
+    },
+    "804": {
+        "name": "Mobile Fire Power Card 1",
+        "setId": 8,
+        "powerId": 2,
+        "element": "f",
+        "color": "p",
+        "value": 11
+    }
+}
