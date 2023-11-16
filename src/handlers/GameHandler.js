@@ -75,39 +75,44 @@ export default class GameHandler extends BaseHandler {
     }
 
     close(user) {
-        if (!user) {
-            return
-        }
+        try {
+            if (!user) {
+                return
+            }
 
-        if (!user.authenticated) {
-            return this.closeAndUpdatePopulation(user)
-        }
+            if (!user.authenticated) {
+                return this.closeAndUpdatePopulation(user)
+            }
 
-        if (user.room) {
-            user.room.remove(user)
-        }
+            if (user.room) {
+                user.room.remove(user)
+            }
 
-        if (user.buddies) {
-            user.buddies.sendOffline()
-        }
+            if (user.buddies) {
+                user.buddies.sendOffline()
+            }
 
-        if (user.waddle) {
-            user.waddle.remove(user)
-        }
+            if (user.waddle) {
+                user.waddle.remove(user)
+            }
 
-        if (user.minigameRoom) {
-            user.minigameRoom.remove(user)
-        }
+            if (user.minigameRoom) {
+                user.minigameRoom.remove(user)
+            }
 
-        if (user.id && user.id in this.usersById) {
-            delete this.usersById[user.id]
-        }
+            if (user.id && user.id in this.usersById) {
+                delete this.usersById[user.id]
+            }
 
-        if (user.id) {
-            this.openIgloos.remove(user)
-        }
+            if (user.id) {
+                this.openIgloos.remove(user)
+            }
 
-        this.closeAndUpdatePopulation(user)
+            this.closeAndUpdatePopulation(user)
+        }
+        catch (error) {
+            this.error(error)
+        }
     }
 
     get joined() {

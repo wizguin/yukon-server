@@ -49,6 +49,10 @@ export default class Join extends GamePlugin {
     }
 
     joinRoom(args, user) {
+        if (!isNumber(args.room)) {
+            return
+        }
+
         user.joinRoom(this.rooms[args.room], args.x, args.y)
     }
 
