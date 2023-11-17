@@ -129,8 +129,12 @@ export default class Chat extends GamePlugin {
 
         let room = args[0]
 
+        if (!room) {
+            return
+        }
+
         if (!isNaN(room)) {
-            this.plugins.join.joinRoom({ room: room }, user)
+            this.plugins.join.joinRoom({ room: parseInt(room) }, user)
             return
         }
 
