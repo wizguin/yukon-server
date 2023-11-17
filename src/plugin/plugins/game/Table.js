@@ -1,5 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import { isNumber } from '@utils/validation'
 
 export default class Table extends GamePlugin {
 
@@ -24,6 +25,10 @@ export default class Table extends GamePlugin {
     }
 
     joinTable(args, user) {
+        if (!isNumber(args.table)) {
+            return
+        }
+
         let table = user.room.tables[args.table]
 
         user.joinTable(table)
