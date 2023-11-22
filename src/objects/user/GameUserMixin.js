@@ -9,6 +9,7 @@ import FurnitureCollection from '@database/collections/FurnitureCollection'
 import IglooCollection from '@database/collections/IglooCollection'
 import IgnoreCollection from '@database/collections/IgnoreCollection'
 import InventoryCollection from '@database/collections/InventoryCollection'
+import PostcardCollection from '@database/collections/PostcardCollection'
 
 import PurchaseValidator from './purchase/PurchaseValidator'
 
@@ -184,6 +185,16 @@ const GameUserMixin = {
                     model: this.db.cards,
                     as: 'cards',
                     separate: true
+                },
+                {
+                    model: this.db.postcards,
+                    as: 'postcards',
+                    include: {
+                        model: this.db.users,
+                        as: 'user',
+                        attributes: ['username']
+                    },
+                    separate: true
                 }
             ]
 
@@ -194,6 +205,7 @@ const GameUserMixin = {
             result.igloos = new IglooCollection(this, result.igloos)
             result.furniture = new FurnitureCollection(this, result.furniture)
             result.cards = new CardCollection(this, result.cards)
+            result.postcards = new PostcardCollection(this, result.postcards)
 
             this.setPermissions()
 
