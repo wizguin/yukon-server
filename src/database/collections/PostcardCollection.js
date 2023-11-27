@@ -11,6 +11,12 @@ export default class PostcardCollection extends Collection {
 
     }
 
+    readMail() {
+        for (const postcard in this.collection) {
+            this.collection[postcard].update({ hasRead: true })
+        }
+    }
+
     toJSON() {
         return Object.values(this.collection)
     }
