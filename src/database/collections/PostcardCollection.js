@@ -12,8 +12,12 @@ export default class PostcardCollection extends Collection {
     }
 
     readMail() {
-        for (const postcard in this.collection) {
-            this.collection[postcard].update({ hasRead: true })
+        for (const key in this.collection) {
+            const postcard = this.collection[key]
+
+            if (!postcard.hasRead) {
+                postcard.update({ hasRead: true })
+            }
         }
     }
 
