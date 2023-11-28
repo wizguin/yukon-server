@@ -7,12 +7,22 @@ export default class PostcardCollection extends Collection {
         super(user, models, 'postcards', 'id')
     }
 
-    add(senderId, postcardId) {
-        super.add({
-            userId: this.user.id,
-            senderId: senderId,
-            postcardId: postcardId
-        })
+    async add(senderId, postcardId) {
+        try {
+            const model = await this.model.create({
+                userId: this.user.id,
+                senderId: senderId,
+                postcardId: postcardId
+            })
+
+            this.collection[model[this.indexKey]] = model
+
+            return model
+
+        } catch (error) {
+            this.handler.error(error)
+        }
+
     }
 
     readMail() {
