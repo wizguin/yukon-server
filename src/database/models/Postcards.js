@@ -42,7 +42,7 @@ export default class Postcards extends BaseModel {
                     allowNull: false,
                     defaultValue: 0
                 },
-                sender: {
+                senderName: {
                     type: DataTypes.VIRTUAL,
                     get() {
                         return this.user?.username
@@ -66,7 +66,8 @@ export default class Postcards extends BaseModel {
 
     toJSON() {
         return pick(this,
-            'sender',
+            'senderId',
+            'senderName',
             'postcardId',
             'sendDate',
             'details',
