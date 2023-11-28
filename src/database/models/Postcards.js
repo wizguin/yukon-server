@@ -35,7 +35,8 @@ export default class Postcards extends BaseModel {
                 },
                 details: {
                     type: DataTypes.STRING(255),
-                    allowNull: true
+                    allowNull: true,
+                    defaultValue: null
                 },
                 hasRead: {
                     type: DataTypes.BOOLEAN,

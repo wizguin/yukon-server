@@ -13,6 +13,10 @@ export default class Collection {
         this.collect(models)
     }
 
+    get count() {
+        return Object.keys(this.collection).length
+    }
+
     collect(models) {
         for (let model of models) {
             this.collection[model[this.indexKey]] = model

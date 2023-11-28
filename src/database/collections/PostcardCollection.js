@@ -7,8 +7,12 @@ export default class PostcardCollection extends Collection {
         super(user, models, 'postcards', 'id')
     }
 
-    add(id) {
-
+    add(senderId, postcardId) {
+        super.add({
+            userId: this.user.id,
+            senderId: senderId,
+            postcardId: postcardId
+        })
     }
 
     readMail() {
