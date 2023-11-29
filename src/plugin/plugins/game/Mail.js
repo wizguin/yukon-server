@@ -45,7 +45,7 @@ export default class Mail extends GamePlugin {
         user.postcards.readMail()
     }
 
-    async sendMailOnline(user, recipient, postcardId) {
+    sendMailOnline(user, recipient, postcardId) {
         // Ignored
         if (recipient.ignores.includes(user.id)) {
             return this.sendMailResponse(user, this.responses.Success)
@@ -57,10 +57,17 @@ export default class Mail extends GamePlugin {
         }
 
         // Add postcard
-        const postcard = await recipient.postcards.add(user.id, postcardId)
+        const postcard = recipient.postcards.add(user.id, postcardId)
         if (!postcard) return
 
-        recipient.send('receive_mail', postcard)
+        recipient.send('receive_mail', {
+            senderId: user.id,
+            senderName: user.username,
+            postcardId, postcardId,
+            sendDate: new Date().toISOString(),
+            details: null,
+            hasRead: false
+        })
 
         this.removeCoins(user)
     }
