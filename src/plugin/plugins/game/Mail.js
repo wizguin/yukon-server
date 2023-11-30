@@ -10,7 +10,9 @@ export default class Mail extends GamePlugin {
 
         this.events = {
             'send_mail': this.sendMail,
-            'read_mail': this.readMail
+            'read_mail': this.readMail,
+            'delete_mail': this.deleteMail,
+            'delete_mail_from': this.deleteMailFrom
         }
 
         this.postcardCost = 10
@@ -43,6 +45,20 @@ export default class Mail extends GamePlugin {
 
     readMail(args, user) {
         user.postcards.readMail()
+    }
+
+    deleteMail(args, user) {
+        if (!hasProps(args, 'id')) return
+        if (!isNumber(args.id)) return
+
+        user.postcards.remove(args.id)
+    }
+
+    deleteMailFrom(args, user) {
+        if (!hasProps(args, 'senderId')) return
+        if (!isNumber(args.senderId)) return
+
+        user.postcards.removeFrom(args.senderId)
     }
 
     async sendMailOnline(user, recipient, postcardId) {

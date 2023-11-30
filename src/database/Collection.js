@@ -35,9 +35,11 @@ export default class Collection {
     }
 
     remove(key) {
-        this.collection[key].destroy()
+        if (this.includes(key)) {
+            this.collection[key].destroy()
 
-        delete this.collection[key]
+            delete this.collection[key]
+        }
     }
 
     includes(key) {

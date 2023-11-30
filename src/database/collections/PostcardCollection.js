@@ -33,6 +33,18 @@ export default class PostcardCollection extends Collection {
 
     }
 
+    async removeFrom(senderId) {
+        // Delete query
+        await this.model.destroy({ where: { userId: this.user.id, senderId: senderId } })
+
+        // Clear from collection
+        for (const key in this.collection) {
+            if (this.collection[key].senderId === senderId) {
+                delete this.collection[key]
+            }
+        }
+    }
+
     readMail() {
         for (const key in this.collection) {
             const postcard = this.collection[key]
