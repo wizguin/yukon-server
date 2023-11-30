@@ -15,6 +15,14 @@ export default class PostcardCollection extends Collection {
                 postcardId: postcardId
             })
 
+            await model.reload({
+                include: {
+                    model: this.db.users,
+                    as: 'user',
+                    attributes: ['username']
+                }
+            })
+
             this.collection[model[this.indexKey]] = model
 
             return model
