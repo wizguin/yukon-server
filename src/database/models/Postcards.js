@@ -67,6 +67,7 @@ export default class Postcards extends BaseModel {
 
     toJSON() {
         return pick(this,
+            'id',
             'senderId',
             'senderName',
             'postcardId',
