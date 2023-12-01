@@ -19,9 +19,9 @@ export default class Mail extends GamePlugin {
         this.maxPostcards = 100
 
         this.responses = {
-            FullInbox: 0,
-            Success: 1,
-            InsufficientCoins: 2
+            InsufficientCoins: 0,
+            FullInbox: 1,
+            Success: 2
         }
     }
 
@@ -92,7 +92,7 @@ export default class Mail extends GamePlugin {
 
         // Full inbox
         if (await this.db.getPostcardsCount(recipientId) >= this.maxPostcards) {
-            return
+            return this.sendMailResponse(user, this.responses.FullInbox)
         }
 
         // Add postcard
