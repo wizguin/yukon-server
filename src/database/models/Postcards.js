@@ -5,6 +5,8 @@ import pick from '@utils/pick'
 import Sequelize from 'sequelize'
 
 
+const systemName = 'sys'
+
 export default class Postcards extends BaseModel {
 
     static init(sequelize, DataTypes) {
@@ -22,7 +24,7 @@ export default class Postcards extends BaseModel {
                 },
                 senderId: {
                     type: DataTypes.INTEGER(11),
-                    allowNull: false
+                    allowNull: true
                 },
                 postcardId: {
                     type: DataTypes.INTEGER(11),
@@ -66,15 +68,18 @@ export default class Postcards extends BaseModel {
     }
 
     toJSON() {
-        return pick(this,
+        const postcard = pick(this,
             'id',
             'senderId',
-            'senderName',
             'postcardId',
             'sendDate',
             'details',
             'hasRead'
         )
+
+        postcard.senderName = this.senderId !== null ? this.senderName : systemName
+
+        return postcard
     }
 
 }
