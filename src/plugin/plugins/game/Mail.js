@@ -56,7 +56,8 @@ export default class Mail extends GamePlugin {
 
     deleteMailFrom(args, user) {
         if (!hasProps(args, 'senderId')) return
-        if (!isNumber(args.senderId)) return
+        // null for system mail
+        if (!isNumber(args.senderId) && args.senderId !== null) return
 
         user.postcards.removeFrom(args.senderId)
     }
