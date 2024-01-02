@@ -127,6 +127,12 @@ const GameUserMixin = {
         }
     },
 
+    async addSystemMail(postcardId) {
+        const postcard = await this.postcards.add(null, postcardId)
+
+        if (postcard) this.send('receive_mail', postcard)
+    },
+
     async load(username) {
         return await this.reload({
             where: {
