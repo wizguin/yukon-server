@@ -21,7 +21,8 @@ export default class CardInstance extends BaseInstance {
 
         this.rankSpeed = 1
 
-        this.awards = [4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 104]
+        this.itemAwards = [4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 104]
+        this.postcardAwards = { 1: 177, 5: 178, 9: 179 }
 
         this.handleSendDeal = this.handleSendDeal.bind(this)
         this.handlePickCard = this.handlePickCard.bind(this)
@@ -382,9 +383,9 @@ export default class CardInstance extends BaseInstance {
     rankUp(user) {
         let rank = user.ninjaRank + 1
 
-        if (rank > this.awards.length) return
+        if (rank > this.itemAwards.length) return
 
-        this.addAward(user, rank)
+        this.addAwards(user, rank)
 
         user.update({ ninjaRank: rank })
         user.update({ ninjaProgress: 0 })
@@ -392,12 +393,16 @@ export default class CardInstance extends BaseInstance {
         user.send('award', { rank: user.ninjaRank })
     }
 
-    addAward(user, rank) {
-        let award = this.awards[rank - 1]
+    addAwards(user, rank) {
+        let item = this.itemAwards[rank - 1]
 
-        if (user.inventory.includes(award)) return
+        if (!(user.inventory.includes(item))) {
+            user.inventory.add(item)
+        }
 
-        user.inventory.add(award)
+        if (rank in this.postcardAwards) {
+            user.addSystemMail(this.postcardAwards[rank])
+        }
     }
 
     remove(user) {
