@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.1.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Oct 18, 2023 at 04:53 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 7.4.27
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -34,12 +25,6 @@ CREATE TABLE `auth_tokens` (
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Authentication tokens for saved logins';
 
---
--- RELATIONSHIPS FOR TABLE `auth_tokens`:
---   `userId`
---       `users` -> `id`
---
-
 -- --------------------------------------------------------
 
 --
@@ -55,14 +40,6 @@ CREATE TABLE `bans` (
   `message` varchar(60) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User ban records';
 
---
--- RELATIONSHIPS FOR TABLE `bans`:
---   `userId`
---       `users` -> `id`
---   `moderatorId`
---       `users` -> `id`
---
-
 -- --------------------------------------------------------
 
 --
@@ -73,14 +50,6 @@ CREATE TABLE `buddies` (
   `userId` int(11) NOT NULL,
   `buddyId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User buddies';
-
---
--- RELATIONSHIPS FOR TABLE `buddies`:
---   `userId`
---       `users` -> `id`
---   `buddyId`
---       `users` -> `id`
---
 
 -- --------------------------------------------------------
 
@@ -94,12 +63,6 @@ CREATE TABLE `cards` (
   `quantity` int(11) NOT NULL DEFAULT 1,
   `memberQuantity` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned Card-Jitsu cards';
-
---
--- RELATIONSHIPS FOR TABLE `cards`:
---   `userId`
---       `users` -> `id`
---
 
 -- --------------------------------------------------------
 
@@ -117,12 +80,6 @@ CREATE TABLE `furnitures` (
   `frame` smallint(6) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Furniture placed inside igloos';
 
---
--- RELATIONSHIPS FOR TABLE `furnitures`:
---   `userId`
---       `users` -> `id`
---
-
 -- --------------------------------------------------------
 
 --
@@ -134,12 +91,6 @@ CREATE TABLE `furniture_inventories` (
   `itemId` int(11) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned furniture';
-
---
--- RELATIONSHIPS FOR TABLE `furniture_inventories`:
---   `userId`
---       `users` -> `id`
---
 
 -- --------------------------------------------------------
 
@@ -156,12 +107,6 @@ CREATE TABLE `igloos` (
   `locked` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User igloo settings';
 
---
--- RELATIONSHIPS FOR TABLE `igloos`:
---   `userId`
---       `users` -> `id`
---
-
 -- --------------------------------------------------------
 
 --
@@ -172,12 +117,6 @@ CREATE TABLE `igloo_inventories` (
   `userId` int(11) NOT NULL,
   `iglooId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned igloos';
-
---
--- RELATIONSHIPS FOR TABLE `igloo_inventories`:
---   `userId`
---       `users` -> `id`
---
 
 -- --------------------------------------------------------
 
@@ -190,14 +129,6 @@ CREATE TABLE `ignores` (
   `ignoreId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User ignores';
 
---
--- RELATIONSHIPS FOR TABLE `ignores`:
---   `userId`
---       `users` -> `id`
---   `ignoreId`
---       `users` -> `id`
---
-
 -- --------------------------------------------------------
 
 --
@@ -209,11 +140,21 @@ CREATE TABLE `inventories` (
   `itemId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned clothing';
 
+-- --------------------------------------------------------
+
 --
--- RELATIONSHIPS FOR TABLE `inventories`:
---   `userId`
---       `users` -> `id`
+-- Table structure for table `postcards`
 --
+
+CREATE TABLE `postcards` (
+  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `senderId` int(11) DEFAULT NULL,
+  `postcardId` int(11) NOT NULL,
+  `sendDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `details` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  `hasRead` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='User postcards';
 
 -- --------------------------------------------------------
 
@@ -245,16 +186,13 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Users';
 
 --
--- RELATIONSHIPS FOR TABLE `users`:
---
-
---
 -- Triggers `users`
 --
 DELIMITER $$
 CREATE TRIGGER `trigger_users_insert` AFTER INSERT ON `users` FOR EACH ROW BEGIN
     INSERT INTO igloos (userId) VALUES (NEW.id);
     INSERT INTO inventories (userId, itemId) VALUES (NEW.id, NEW.color);
+    INSERT INTO postcards (userId, postcardId) VALUES (NEW.id, 125);
 END
 $$
 DELIMITER ;
@@ -269,10 +207,6 @@ CREATE TABLE `worlds` (
   `id` varchar(100) NOT NULL,
   `population` smallint(3) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Server populations';
-
---
--- RELATIONSHIPS FOR TABLE `worlds`:
---
 
 --
 -- Dumping data for table `worlds`
@@ -351,6 +285,14 @@ ALTER TABLE `inventories`
   ADD PRIMARY KEY (`userId`,`itemId`) USING BTREE;
 
 --
+-- Indexes for table `postcards`
+--
+ALTER TABLE `postcards`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userId` (`userId`),
+  ADD KEY `senderId` (`senderId`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -377,6 +319,12 @@ ALTER TABLE `bans`
 -- AUTO_INCREMENT for table `furnitures`
 --
 ALTER TABLE `furnitures`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `postcards`
+--
+ALTER TABLE `postcards`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -451,6 +399,13 @@ ALTER TABLE `ignores`
 --
 ALTER TABLE `inventories`
   ADD CONSTRAINT `inventories_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `postcards`
+--
+ALTER TABLE `postcards`
+  ADD CONSTRAINT `postcards_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `postcards_ibfk_2` FOREIGN KEY (`senderId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

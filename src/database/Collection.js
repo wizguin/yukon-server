@@ -13,6 +13,10 @@ export default class Collection {
         this.collect(models)
     }
 
+    get count() {
+        return Object.keys(this.collection).length
+    }
+
     collect(models) {
         for (let model of models) {
             this.collection[model[this.indexKey]] = model
@@ -31,9 +35,11 @@ export default class Collection {
     }
 
     remove(key) {
-        this.collection[key].destroy()
+        if (this.includes(key)) {
+            this.collection[key].destroy()
 
-        delete this.collection[key]
+            delete this.collection[key]
+        }
     }
 
     includes(key) {

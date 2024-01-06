@@ -127,6 +127,18 @@ export default class Database {
         return await this.getCrumb('worlds')
     }
 
+    async getIgnored(userId, ignoreId) {
+        return await this.findOne('ignores', {
+            where: { userId: userId, ignoreId: ignoreId }
+        })
+    }
+
+    async getPostcardsCount(userId) {
+        return await this.postcards.count({
+            where: { userId: userId }
+        })
+    }
+
     /*========== Helper functions ==========*/
 
     findOne(table, options = {}, emptyReturn = null, callback = null) {
