@@ -1,5 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import { isNumber } from '@utils/validation'
 
 export default class Item extends GamePlugin {
 
@@ -16,6 +17,10 @@ export default class Item extends GamePlugin {
     }
 
     updatePlayer(args, user) {
+        if (!isNumber(args.item)) {
+            return
+        }
+
         let item = this.items[args.item]
 
         if (!item || item.type == 10 || !user.inventory.includes(args.item)) {
