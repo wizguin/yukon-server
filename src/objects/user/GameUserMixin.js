@@ -9,6 +9,7 @@ import FurnitureCollection from '@database/collections/FurnitureCollection'
 import IglooCollection from '@database/collections/IglooCollection'
 import IgnoreCollection from '@database/collections/IgnoreCollection'
 import InventoryCollection from '@database/collections/InventoryCollection'
+import PetCollection from '@database/collections/PetCollection'
 import PostcardCollection from '@database/collections/PostcardCollection'
 
 import PurchaseValidator from './purchase/PurchaseValidator'
@@ -200,6 +201,11 @@ const GameUserMixin = {
                         as: 'user',
                         attributes: ['username']
                     },
+                    separate: true
+                },
+                {
+                    model: this.db.pets,
+                    as: 'pets',
                     separate: true
                 }
             ]
