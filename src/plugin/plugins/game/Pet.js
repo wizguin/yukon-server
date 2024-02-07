@@ -16,14 +16,11 @@ export default class Pet extends GamePlugin {
         user.pets.add(args.petId, args.name)
     }
 
-    getPets(args, user) {
+    async getPets(args, user) {
         const owner = this.usersById[args.userId]
+        const pets = owner ? owner.pets : await this.db.getPets(args.userId)
 
-        if (owner) {
-            user.send('get_pets', { pets: owner.pets })
-        } else {
-
-        }
+        user.send('get_pets', { pets: pets })
     }
 
 }
