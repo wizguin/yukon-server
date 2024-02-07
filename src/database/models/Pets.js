@@ -1,5 +1,7 @@
 import BaseModel from '../BaseModel'
 
+import pick from '@utils/pick'
+
 import Sequelize from 'sequelize'
 
 

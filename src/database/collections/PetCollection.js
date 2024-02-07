@@ -11,4 +11,8 @@ export default class PetCollection extends Collection {
         super.add({ userId: this.user.id, petId: petId, name: name })
     }
 
+    toJSON() {
+        return Object.values(this.collection)
+    }
+
 }
