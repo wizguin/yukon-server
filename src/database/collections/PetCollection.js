@@ -8,7 +8,7 @@ export default class PetCollection extends Collection {
     }
 
     add(petId, name) {
-        super.add({ petId: petId, name: name })
+        super.add({ userId: this.user.id, petId: petId, name: name })
     }
 
 }

@@ -218,6 +218,7 @@ const GameUserMixin = {
             result.furniture = new FurnitureCollection(this, result.furniture)
             result.cards = new CardCollection(this, result.cards)
             result.postcards = new PostcardCollection(this, result.postcards)
+            result.pets = new PetCollection(this, result.pets)
 
             this.setPermissions()
 
