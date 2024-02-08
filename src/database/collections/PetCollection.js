@@ -6,6 +6,7 @@ export default class PetCollection extends Collection {
     constructor(user, models) {
         super(user, models, 'pets', 'id')
 
+        this.feedPostcard = 110
         this.adoptPostcard = 111
 
         // 30 minutes
@@ -20,7 +21,7 @@ export default class PetCollection extends Collection {
             const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
 
             this.addModel(model)
-            this.user.addSystemMail(111, name)
+            this.user.addSystemMail(this.adoptPostcard, name)
 
         } catch (error) {
             this.handler.error(error)
@@ -34,6 +35,11 @@ export default class PetCollection extends Collection {
             pet.energy = this.getNewStat(pet.energy)
             pet.health = this.getNewStat(pet.health)
             pet.rest = this.getNewStat(pet.rest)
+
+            if (pet.energy < 10 && !pet.feedPostcardSent) {
+                this.user.addSystemMail(this.feedPostcard, pet.name)
+                pet.feedPostcardSent = true
+            }
 
             updates.push({
                 id: pet.id,

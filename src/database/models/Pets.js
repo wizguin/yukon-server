@@ -7,6 +7,9 @@ import Sequelize from 'sequelize'
 
 export default class Pets extends BaseModel {
 
+    // Only send once per pet per session
+    feedPostcardSent = false
+
     static init(sequelize, DataTypes) {
         return super.init(
             {
