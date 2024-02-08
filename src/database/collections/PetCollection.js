@@ -13,8 +13,7 @@ export default class PetCollection extends Collection {
         try {
             const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
 
-            this.collection[model[this.indexKey]] = model
-
+            this.addModel(model)
             this.user.addSystemMail(111)
 
         } catch (error) {

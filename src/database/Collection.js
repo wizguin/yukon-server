@@ -19,19 +19,23 @@ export default class Collection {
 
     collect(models) {
         for (let model of models) {
-            this.collection[model[this.indexKey]] = model
+            this.addModel(model)
         }
     }
 
     add(record) {
         this.model.create(record)
             .then((model) => {
-                this.collection[model[this.indexKey]] = model
+                this.addModel(model)
 
             })
             .catch((error) => {
                 this.handler.error(error)
             })
+    }
+
+    addModel(model) {
+        this.collection[model[this.indexKey]] = model
     }
 
     remove(key) {

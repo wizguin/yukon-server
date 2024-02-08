@@ -23,7 +23,7 @@ export default class PostcardCollection extends Collection {
                 }
             })
 
-            this.collection[model[this.indexKey]] = model
+            this.addModel(model)
 
             return model
 
