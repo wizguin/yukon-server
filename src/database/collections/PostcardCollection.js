@@ -7,12 +7,13 @@ export default class PostcardCollection extends Collection {
         super(user, models, 'postcards', 'id')
     }
 
-    async add(senderId, postcardId) {
+    async add(senderId, postcardId, details = null) {
         try {
             const model = await this.model.create({
                 userId: this.user.id,
                 senderId: senderId,
-                postcardId: postcardId
+                postcardId: postcardId,
+                details: details
             })
 
             await model.reload({

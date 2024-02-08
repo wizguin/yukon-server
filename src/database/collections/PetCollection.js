@@ -14,7 +14,7 @@ export default class PetCollection extends Collection {
             const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
 
             this.addModel(model)
-            this.user.addSystemMail(111)
+            this.user.addSystemMail(111, name)
 
         } catch (error) {
             this.handler.error(error)
