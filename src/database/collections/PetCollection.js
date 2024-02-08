@@ -1,5 +1,7 @@
 import Collection from '../Collection'
 
+import { pets } from '@data/data'
+
 
 export default class PetCollection extends Collection {
 
@@ -36,6 +38,15 @@ export default class PetCollection extends Collection {
             pet.health = this.getNewStat(pet.health)
             pet.rest = this.getNewStat(pet.rest)
 
+            // Pet ran away
+            if (pet.dead) {
+                this.user.addSystemMail(pets[pet.petId].ranPostcard, pet.name)
+                this.remove(pet.id)
+
+                continue
+            }
+
+            // Pet hungry
             if (pet.energy < 10 && !pet.feedPostcardSent) {
                 this.user.addSystemMail(this.feedPostcard, pet.name)
                 pet.feedPostcardSent = true

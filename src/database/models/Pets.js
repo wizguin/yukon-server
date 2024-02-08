@@ -50,6 +50,12 @@ export default class Pets extends BaseModel {
                     type: DataTypes.INTEGER(3),
                     allowNull: false,
                     defaultValue: 100
+                },
+                dead: {
+                    type: DataTypes.VIRTUAL,
+                    get() {
+                        return this.energy === 0 && this.health === 0 && this.rest === 0
+                    }
                 }
             },
             { sequelize, timestamps: false, tableName: 'pets' }
