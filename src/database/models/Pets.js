@@ -7,6 +7,9 @@ import Sequelize from 'sequelize'
 
 export default class Pets extends BaseModel {
 
+    x = 0
+    y = 0
+
     // Only send once per pet per session
     feedPostcardSent = false
 
@@ -75,7 +78,9 @@ export default class Pets extends BaseModel {
             'name',
             'energy',
             'health',
-            'rest'
+            'rest',
+            'x',
+            'y'
         )
     }
 
