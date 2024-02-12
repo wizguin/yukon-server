@@ -54,7 +54,7 @@ export default class Pets extends BaseModel {
                 dead: {
                     type: DataTypes.VIRTUAL,
                     get() {
-                        return this.energy === 0 && this.health === 0 && this.rest === 0
+                        return this.energy === 0 || this.health === 0 || this.rest === 0
                     }
                 }
             },
