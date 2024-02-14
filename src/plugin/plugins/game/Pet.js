@@ -8,7 +8,8 @@ export default class Pet extends GamePlugin {
 
         this.events = {
             'adopt_pet': this.adoptPet,
-            'get_pets': this.getPets
+            'get_pets': this.getPets,
+            'pet_move': this.petMove
         }
     }
 
@@ -21,6 +22,17 @@ export default class Pet extends GamePlugin {
         const pets = owner ? owner.pets : await this.db.getPets(args.userId)
 
         user.send('get_pets', { pets: pets })
+    }
+
+    petMove(args, user) {
+        if (user.pets.includes(args.id)) {
+            const pet = user.pets.get(args.id)
+
+            pet.x = args.x
+            pet.y = args.y
+
+            user.room.send(user, 'pet_move', args)
+        }
     }
 
 }
