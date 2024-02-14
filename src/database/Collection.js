@@ -50,6 +50,10 @@ export default class Collection {
         return key in this.collection
     }
 
+    get(key) {
+        return this.includes(key) ? this.collection[key] : null
+    }
+
     toJSON() {
         return Object.keys(this.collection).map(key => parseInt(key))
     }
