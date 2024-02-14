@@ -9,7 +9,8 @@ export default class Pet extends GamePlugin {
         this.events = {
             'adopt_pet': this.adoptPet,
             'get_pets': this.getPets,
-            'pet_move': this.petMove
+            'pet_move': this.petMove,
+            'pet_play': this.petPlay
         }
     }
 
@@ -33,6 +34,16 @@ export default class Pet extends GamePlugin {
 
             user.room.send(user, 'pet_move', args)
         }
+    }
+
+    petPlay(args, user) {
+        if (!user.pets.includes(args.id)) {
+            return
+        }
+
+        const pet = user.pets.get(args.id)
+
+        user.room.send(user, 'pet_play', { id: args.id, energy: pet.energy, health: pet.health, rest: pet.rest }, [])
     }
 
 }
