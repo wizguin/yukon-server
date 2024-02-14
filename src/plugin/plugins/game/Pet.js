@@ -43,7 +43,15 @@ export default class Pet extends GamePlugin {
 
         const pet = user.pets.get(args.id)
 
-        user.room.send(user, 'pet_play', { id: args.id, energy: pet.energy, health: pet.health, rest: pet.rest }, [])
+        // Angry
+        if (pet.rest < 20 || pet.happiness < 10) {
+            return
+        }
+
+        // Different rest levels play different animation
+        const playType = pet.rest > 80 ? 1 : pet.rest > 60 ? 2 : 0
+
+        user.room.send(user, 'pet_play', { id: args.id, energy: pet.energy, health: pet.health, rest: pet.rest, playType: playType }, [])
     }
 
 }
