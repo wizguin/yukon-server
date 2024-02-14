@@ -54,6 +54,14 @@ export default class Pets extends BaseModel {
                     allowNull: false,
                     defaultValue: 100
                 },
+                happiness: {
+                    type: DataTypes.VIRTUAL,
+                    get() {
+                        const statTotal = this.energy + this.health + this.rest
+
+                        return Math.round((statTotal / 300) * 100)
+                    }
+                },
                 dead: {
                     type: DataTypes.VIRTUAL,
                     get() {
