@@ -49,6 +49,10 @@ const GameUserMixin = {
         })
     },
 
+    inOwnIgloo() {
+        return this.room?.isIgloo && this.room?.userId === this.id
+    },
+
     setItem(slot, item) {
         if (this[slot] == item) {
             return

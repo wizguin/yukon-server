@@ -1,6 +1,6 @@
 import Collection from '../Collection'
 
-import { pets } from '@data/data'
+import { clamp } from '@utils/math'
 
 
 export default class PetCollection extends Collection {
@@ -52,12 +52,18 @@ export default class PetCollection extends Collection {
                 pet.feedPostcardSent = true
             }
 
-            updates.push({
+            const update = {
                 id: pet.id,
                 energy: pet.energy,
                 health: pet.health,
                 rest: pet.rest
-            })
+            }
+
+            updates.push(update)
+
+            if (this.user.inOwnIgloo()) {
+                this.user.room.send(this.user, 'update_pet', update, [])
+            }
         }
 
         if (updates.length) {
@@ -67,7 +73,7 @@ export default class PetCollection extends Collection {
     }
 
     getNewStat(stat) {
-        return Math.max(0, stat - this.statLoss)
+        return clamp(stat - this.statLoss, 0, 100)
     }
 
     stopPetUpdate() {
