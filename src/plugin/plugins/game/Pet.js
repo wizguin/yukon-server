@@ -12,7 +12,12 @@ export default class Pet extends GamePlugin {
             'adopt_pet': this.adoptPet,
             'get_pets': this.getPets,
             'pet_move': this.petMove,
-            'pet_play': this.petPlay
+            'pet_play': this.petPlay,
+            'pet_rest': this.petRest,
+            'pet_feed': this.petFeed,
+            'pet_bath': this.petBath,
+            'pet_gum': this.petGum,
+            'pet_cookie': this.petCookie
         }
     }
 
@@ -55,6 +60,46 @@ export default class Pet extends GamePlugin {
         const playType = pet.rest > 80 ? 1 : pet.rest > 60 ? 2 : 0
 
         user.room.send(user, 'pet_play', { id: args.id, energy: pet.energy, health: pet.health, rest: pet.rest, playType: playType }, [])
+    }
+
+    petRest(args, user) {
+        this.sendInteraction(user, args.id, 'pet_rest', {
+            rest: between(15, 40)
+        })
+    }
+
+    petFeed(args, user) {
+        this.sendInteraction(user, args.id, 'pet_feed', {
+            energy: between(15, 40)
+        })
+    }
+
+    petBath(args, user) {
+        this.sendInteraction(user, args.id, 'pet_bath', {
+            health: between(15, 40),
+            rest: between(5, 15)
+        })
+    }
+
+    petGum(args, user) {
+        this.sendInteraction(user, args.id, 'pet_gum', {
+            energy: between(15, 40)
+        })
+    }
+
+    petCookie(args, user) {
+        this.sendInteraction(user, args.id, 'pet_cookie', {
+            energy: between(15, 40)
+        })
+    }
+
+    sendInteraction(user, petId, action, updates) {
+        if (!user.pets.includes(petId)) return
+        const pet = user.pets.get(petId)
+
+        pet.updateStats(updates)
+
+        user.room.send(user, action, { id: petId, energy: pet.energy, health: pet.health, rest: pet.rest }, [])
     }
 
 }
