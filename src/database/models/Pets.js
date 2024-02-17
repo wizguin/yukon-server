@@ -1,5 +1,6 @@
 import BaseModel from '../BaseModel'
 
+import { clamp } from '@utils/math'
 import pick from '@utils/pick'
 
 import Sequelize from 'sequelize'
@@ -77,6 +78,15 @@ export default class Pets extends BaseModel {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })
+    }
+
+    updateStats(updates) {
+        // Apply current  stats
+        for (const stat in updates) {
+            updates[stat] = clamp(this[stat] + updates[stat], 0, 100)
+        }
+
+        this.update(updates)
     }
 
     toJSON() {
