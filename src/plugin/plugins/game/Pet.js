@@ -1,5 +1,7 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import { between } from '@utils/math'
+
 
 export default class Pet extends GamePlugin {
 
@@ -37,16 +39,17 @@ export default class Pet extends GamePlugin {
     }
 
     petPlay(args, user) {
-        if (!user.pets.includes(args.id)) {
-            return
-        }
-
+        if (!user.pets.includes(args.id)) return
         const pet = user.pets.get(args.id)
 
         // Angry
-        if (pet.rest < 20 || pet.happiness < 10) {
-            return
-        }
+        if (pet.rest < 20 || pet.happiness < 10) return
+
+        pet.updateStats({
+            energy: -between(10, 25),
+            health: 10,
+            rest: -between(10, 25)
+        })
 
         // Different rest levels play different animation
         const playType = pet.rest > 80 ? 1 : pet.rest > 60 ? 2 : 0
