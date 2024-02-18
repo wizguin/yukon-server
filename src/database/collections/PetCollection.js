@@ -2,6 +2,8 @@ import Collection from '../Collection'
 
 import { clamp } from '@utils/math'
 
+import { pets } from '@data/data'
+
 
 export default class PetCollection extends Collection {
 
@@ -11,11 +13,14 @@ export default class PetCollection extends Collection {
         this.feedPostcard = 110
         this.adoptPostcard = 111
 
-        // 30 minutes
-        const updatePetsInterval = 30 * 60000
+        // 3.6 minutes
+        const updatePetsInterval = 3.6 * 60000
 
-        this.statLoss = 4
+        this.statLoss = 1
         this.petUpdate = setInterval(() => this.updatePets(), updatePetsInterval)
+
+        // First pet update happens immediately
+        this.updatePets()
     }
 
     async add(petId, name) {
@@ -38,19 +43,9 @@ export default class PetCollection extends Collection {
             pet.health = this.getNewStat(pet.health)
             pet.rest = this.getNewStat(pet.rest)
 
-            // Pet ran away
-            if (pet.dead) {
-                this.user.addSystemMail(pets[pet.petId].ranPostcard, pet.name)
-                this.remove(pet.id)
+            if (this.checkPetRunAway(pet)) continue
 
-                continue
-            }
-
-            // Pet hungry
-            if (pet.energy < 10 && !pet.feedPostcardSent) {
-                this.user.addSystemMail(this.feedPostcard, pet.name)
-                pet.feedPostcardSent = true
-            }
+            this.checkPetHungry(pet)
 
             const update = {
                 id: pet.id,
@@ -69,6 +64,27 @@ export default class PetCollection extends Collection {
         if (updates.length) {
             // Bulk update
             this.model.bulkCreate(updates, { updateOnDuplicate: ['energy', 'health', 'rest'] })
+        }
+    }
+
+    checkPetRunAway(pet) {
+        // Can't run away whilst owner is in their igloo
+        // todo check walking
+        if (this.user.inOwnIgloo()) return false
+
+        if (pet.dead) {
+            this.user.addSystemMail(pets[pet.petId].ranPostcard, pet.name)
+            this.remove(pet.id)
+        }
+
+        return pet.dead
+    }
+
+    checkPetHungry(pet) {
+        if (!this.user.inOwnIgloo() && pet.energy < 10 && !pet.feedPostcardSent) {
+            this.user.addSystemMail(this.feedPostcard, pet.name)
+
+            pet.feedPostcardSent = true
         }
     }
 
