@@ -1,7 +1,8 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import { between } from '@utils/math'
 
+// Frames allowed to be sent in pet_frame
+const allowedFrames = [26, 32, 33]
 
 export default class Pet extends GamePlugin {
 
@@ -17,7 +18,8 @@ export default class Pet extends GamePlugin {
             'pet_feed': this.petFeed,
             'pet_bath': this.petBath,
             'pet_gum': this.petGum,
-            'pet_cookie': this.petCookie
+            'pet_cookie': this.petCookie,
+            'pet_frame': this.petFrame
         }
     }
 
@@ -91,6 +93,13 @@ export default class Pet extends GamePlugin {
         this.sendInteraction(user, args.id, 'pet_cookie', {
             energy: between(15, 40)
         })
+    }
+
+    petFrame(args, user) {
+        if (!user.pets.includes(args.id)) return
+        if (!allowedFrames.includes(args.frame)) return
+
+        user.room.send(user, 'pet_frame', { id: args.id, frame: args.frame }, [])
     }
 
     sendInteraction(user, petId, action, updates) {
