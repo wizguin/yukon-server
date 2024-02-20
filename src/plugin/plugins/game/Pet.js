@@ -53,9 +53,9 @@ export default class Pet extends GamePlugin {
         if (pet.rest < 20 || pet.happiness < 10) return
 
         pet.updateStats({
-            energy: -between(10, 25),
-            health: 10,
-            rest: -between(10, 25)
+            energy: -10,
+            health: 100,
+            rest: -10
         })
 
         // Different rest levels play different animation
@@ -66,32 +66,34 @@ export default class Pet extends GamePlugin {
 
     petRest(args, user) {
         this.sendInteraction(user, args.id, 'pet_rest', {
-            rest: between(15, 40)
+            energy: -10,
+            rest: 100,
         })
     }
 
     petFeed(args, user) {
         this.sendInteraction(user, args.id, 'pet_feed', {
-            energy: between(15, 40)
+            energy: 100
         })
     }
 
     petBath(args, user) {
         this.sendInteraction(user, args.id, 'pet_bath', {
-            health: between(15, 40),
-            rest: between(5, 15)
+            energy: -20,
+            health: 100,
+            rest: 100,
         })
     }
 
     petGum(args, user) {
         this.sendInteraction(user, args.id, 'pet_gum', {
-            energy: between(15, 40)
+            health: -10
         })
     }
 
     petCookie(args, user) {
         this.sendInteraction(user, args.id, 'pet_cookie', {
-            energy: between(15, 40)
+            health: -10
         })
     }
 
