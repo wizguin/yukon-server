@@ -112,6 +112,10 @@ export default class GameHandler extends BaseHandler {
                 user.pets.stopPetUpdate()
             }
 
+            if (user.walkingPet) {
+                user.setItem('hand', 0)
+            }
+
             this.closeAndUpdatePopulation(user)
         }
         catch (error) {
