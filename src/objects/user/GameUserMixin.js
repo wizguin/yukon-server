@@ -142,6 +142,7 @@ const GameUserMixin = {
 
     startWalkingPet(petId) {
         if (!this.pets.includes(petId)) return
+        if (this.walkingPet) this.stopWalkingPet()
 
         const pet = this.pets.get(petId)
 
@@ -152,6 +153,15 @@ const GameUserMixin = {
 
         this.room.send(this, 'pet_start_walk', { userId: this.id, petId: pet.id }, [])
         this.setItem('hand', pet.petId + 750)
+    },
+
+    stopWalkingPet() {
+        if (this.walkingPet) {
+            this.room.send(this, 'pet_stop_walk', { userId: this.id, petId: this.walkingPet.id }, [])
+
+            this.walkingPet.walking = false
+            this.walkingPet = null
+        }
     },
 
     async load(username) {
