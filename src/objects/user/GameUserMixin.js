@@ -39,6 +39,8 @@ const GameUserMixin = {
 
         this.buddyRequests = []
 
+        this.walkingPet = null
+
         this.validatePurchase = new PurchaseValidator(this)
 
         // Used for dynamic/temporary events
@@ -136,6 +138,20 @@ const GameUserMixin = {
         const postcard = await this.postcards.add(null, postcardId, details)
 
         if (postcard) this.send('receive_mail', postcard)
+    },
+
+    startWalkingPet(petId) {
+        if (!this.pets.includes(petId)) return
+
+        const pet = this.pets.get(petId)
+
+        if (pet.rest < 20 || pet.energy < 40) return
+
+        pet.walking = true
+        this.walkingPet = pet
+
+        this.room.send(this, 'pet_start_walk', { userId: this.id, petId: pet.id }, [])
+        this.setItem('hand', pet.petId + 750)
     },
 
     async load(username) {

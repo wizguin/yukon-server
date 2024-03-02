@@ -14,6 +14,8 @@ export default class Pets extends BaseModel {
     // Only send once per pet per session
     feedPostcardSent = false
 
+    walking = false
+
     static init(sequelize, DataTypes) {
         return super.init(
             {
@@ -98,7 +100,8 @@ export default class Pets extends BaseModel {
             'health',
             'rest',
             'x',
-            'y'
+            'y',
+            'walking'
         )
     }
 

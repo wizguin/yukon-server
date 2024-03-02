@@ -19,7 +19,8 @@ export default class Pet extends GamePlugin {
             'pet_bath': this.petBath,
             'pet_gum': this.petGum,
             'pet_cookie': this.petCookie,
-            'pet_frame': this.petFrame
+            'pet_frame': this.petFrame,
+            'pet_start_walk': this.petStartWalk
         }
     }
 
@@ -102,6 +103,10 @@ export default class Pet extends GamePlugin {
         if (!allowedFrames.includes(args.frame)) return
 
         user.room.send(user, 'pet_frame', { id: args.id, frame: args.frame }, [])
+    }
+
+    petStartWalk(args, user) {
+        user.startWalkingPet(args.id)
     }
 
     sendInteraction(user, petId, action, updates) {
