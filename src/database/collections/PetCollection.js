@@ -39,9 +39,12 @@ export default class PetCollection extends Collection {
         const updates = []
 
         for (const pet of Object.values(this.collection)) {
-            pet.energy = this.getNewStat(pet.energy)
-            pet.health = this.getNewStat(pet.health)
-            pet.rest = this.getNewStat(pet.rest)
+            // Prevent walking pets from running away
+            const minStat = pet.walking ? 10 : 0
+
+            pet.energy = this.getNewStat(pet.energy, minStat)
+            pet.health = this.getNewStat(pet.health, minStat)
+            pet.rest = this.getNewStat(pet.rest, minStat)
 
             if (this.checkPetRunAway(pet)) continue
 
@@ -88,8 +91,8 @@ export default class PetCollection extends Collection {
         }
     }
 
-    getNewStat(stat) {
-        return clamp(stat - this.statLoss, 0, 100)
+    getNewStat(stat, min = 0) {
+        return clamp(stat - this.statLoss, min, 100)
     }
 
     stopPetUpdate() {
