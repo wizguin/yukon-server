@@ -61,7 +61,10 @@ const GameUserMixin = {
         }
 
         this.update({ [slot]: item })
+        this.sendUpdatePlayer(slot, item)
+    },
 
+    sendUpdatePlayer(slot, item) {
         this.room.send(this, 'update_player', { id: this.id, item: item, slot: slot }, [])
     },
 
@@ -140,7 +143,7 @@ const GameUserMixin = {
         if (postcard) this.send('receive_mail', postcard)
     },
 
-    startWalkingPet(petId) {
+    async startWalkingPet(petId) {
         if (!this.pets.includes(petId)) return
         if (this.walkingPet) this.stopWalkingPet()
 
@@ -152,7 +155,15 @@ const GameUserMixin = {
         this.walkingPet = pet
 
         this.room.send(this, 'pet_start_walk', { userId: this.id, petId: pet.id }, [])
-        this.setItem('hand', pet.petId + 750)
+
+        // Remove current hand item
+        await this.update({ hand: 0 })
+
+        // Set hand item to pet without updating database
+        const petItemId = pet.petId + 750
+
+        this.hand = petItemId
+        this.sendUpdatePlayer('hand', petItemId)
     },
 
     stopWalkingPet() {
