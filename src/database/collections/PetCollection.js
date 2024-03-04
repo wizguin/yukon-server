@@ -43,7 +43,7 @@ export default class PetCollection extends Collection {
     updatePets() {
         const updates = []
 
-        for (const pet of Object.values(this.collection)) {
+        for (const pet of this.values) {
             // Prevent walking pets from running away
             const minStat = pet.walking ? 10 : 0
 
@@ -102,10 +102,6 @@ export default class PetCollection extends Collection {
 
     stopPetUpdate() {
         clearInterval(this.petUpdate)
-    }
-
-    toJSON() {
-        return Object.values(this.collection)
     }
 
 }

@@ -32,7 +32,7 @@ export default class Pet extends GamePlugin {
         const owner = this.usersById[args.userId]
         const pets = owner ? owner.pets : await this.db.getPets(args.userId)
 
-        user.send('get_pets', { pets: pets })
+        user.send('get_pets', { pets: pets.values })
     }
 
     petMove(args, user) {
