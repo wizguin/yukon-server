@@ -13,6 +13,14 @@ export default class Collection {
         this.collect(models)
     }
 
+    get keys() {
+        return Object.keys(this.collection)
+    }
+
+    get values() {
+        return Object.values(this.collection)
+    }
+
     get count() {
         return Object.keys(this.collection).length
     }
