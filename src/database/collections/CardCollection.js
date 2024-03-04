@@ -15,7 +15,7 @@ export default class CardCollection extends Collection {
     get deck() {
         let deck = []
 
-        Object.keys(this.collection).forEach(card => {
+        this.keys.forEach(card => {
             const quantity = this.getQuantity(card)
             deck.push(...Array(quantity).fill(card))
         })
@@ -25,7 +25,7 @@ export default class CardCollection extends Collection {
 
     get hasCards() {
         const hasStarterDeck = this.user.inventory.includes(this.starterDeckId)
-        const hasCards = Object.keys(this.collection).length > 0
+        const hasCards = this.keys.length > 0
 
         return hasStarterDeck && hasCards
     }
@@ -44,7 +44,7 @@ export default class CardCollection extends Collection {
     }
 
     toJSON() {
-        return Object.keys(this.collection).map(cardId => this.cardToJSON(cardId))
+        return this.keys.map(cardId => this.cardToJSON(cardId))
     }
 
     cardToJSON(cardId) {

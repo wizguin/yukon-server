@@ -22,7 +22,7 @@ export default class Collection {
     }
 
     get count() {
-        return Object.keys(this.collection).length
+        return this.keys.length
     }
 
     collect(models) {
@@ -63,7 +63,7 @@ export default class Collection {
     }
 
     toJSON() {
-        return Object.keys(this.collection).map(key => parseInt(key))
+        return this.keys.map(key => parseInt(key))
     }
 
 }

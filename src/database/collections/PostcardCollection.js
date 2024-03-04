@@ -57,7 +57,7 @@ export default class PostcardCollection extends Collection {
     }
 
     toJSON() {
-        return Object.values(this.collection)
+        return this.values
     }
 
 }
