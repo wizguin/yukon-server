@@ -12,6 +12,7 @@ export default class PetCollection extends Collection {
 
         this.feedPostcard = 110
         this.adoptPostcard = 111
+        this.maxPets = 18
 
         // 3.6 minutes
         const updatePetsInterval = 3.6 * 60000
@@ -24,6 +25,10 @@ export default class PetCollection extends Collection {
     }
 
     async add(petId, name) {
+        if (this.count >= this.maxPets) {
+            return
+        }
+
         try {
             const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
 
