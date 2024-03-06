@@ -31,6 +31,13 @@ export default class PetCollection extends Collection {
 
         try {
             if (!(petId in pets)) return
+
+            const pet = pets[petId]
+
+            if (this.user.coins < pet.cost) {
+                this.user.send('error', { error: 'You need more coins.' })
+                return
+            }
             const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
 
             this.addModel(model)
