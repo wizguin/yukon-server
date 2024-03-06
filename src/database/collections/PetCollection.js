@@ -41,6 +41,7 @@ export default class PetCollection extends Collection {
             const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
 
             this.addModel(model)
+            this.user.updateCoins(-pet.cost)
             this.user.addSystemMail(this.adoptPostcard, name)
 
         } catch (error) {
