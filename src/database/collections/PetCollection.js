@@ -38,10 +38,13 @@ export default class PetCollection extends Collection {
                 this.user.send('error', { error: 'You need more coins.' })
                 return
             }
+
             const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
 
             this.addModel(model)
+
             this.user.updateCoins(-pet.cost)
+            this.user.send('adopt_pet', { id: model.id, coins: this.user.coins })
             this.user.addSystemMail(this.adoptPostcard, name)
 
         } catch (error) {
