@@ -1,5 +1,7 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import { hasProps, isNumber, isInRange } from '@utils/validation'
+
 
 // Frames allowed to be sent in pet_frame
 const allowedFrames = [26, 32, 33]
@@ -29,6 +31,9 @@ export default class Pet extends GamePlugin {
     }
 
     async getPets(args, user) {
+        if (!hasProps(args, 'userId')) return
+        if (!isNumber(args.userId)) return
+
         const owner = this.usersById[args.userId]
         const pets = owner ? owner.pets : await this.db.getPets(args.userId)
 
@@ -36,6 +41,10 @@ export default class Pet extends GamePlugin {
     }
 
     petMove(args, user) {
+        if (!hasProps(args, 'x', 'y')) return
+        if (!isInRange(args.x, 0, 1520)) return
+        if (!isInRange(args.y, 0, 960)) return
+
         if (user.pets.includes(args.id)) {
             const pet = user.pets.get(args.id)
 
