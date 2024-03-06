@@ -30,6 +30,7 @@ export default class PetCollection extends Collection {
         }
 
         try {
+            if (!(petId in pets)) return
             const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
 
             this.addModel(model)
