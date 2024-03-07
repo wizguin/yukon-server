@@ -37,9 +37,9 @@ export default class Pet extends GamePlugin {
         if (!isNumber(args.userId)) return
 
         const owner = this.usersById[args.userId]
-        const pets = owner ? owner.pets : await this.db.getPets(args.userId)
+        const pets = owner ? owner.pets.values : await this.db.getPets(args.userId)
 
-        user.send('get_pets', { pets: pets.values })
+        user.send('get_pets', { pets: pets })
     }
 
     petMove(args, user) {
