@@ -1,6 +1,7 @@
 import Collection from '../Collection'
 
 import { clamp } from '@utils/math'
+import { isLength, isString } from '@utils/validation'
 
 import { pets } from '@data/data'
 
@@ -13,6 +14,7 @@ export default class PetCollection extends Collection {
         this.feedPostcard = 110
         this.adoptPostcard = 111
         this.maxPets = 18
+        this.nameRegex = /[^a-z]/i
 
         // 3.6 minutes
         const updatePetsInterval = 3.6 * 60000
@@ -31,6 +33,11 @@ export default class PetCollection extends Collection {
 
         try {
             if (!(petId in pets)) return
+
+            if (!isString(name) || !isLength(name, 1, 12) || this.nameRegex.test(name)) {
+                this.user.send('error', { error: 'Sorry, this name is not available. Please try again' })
+                return
+            }
 
             const pet = pets[petId]
 
