@@ -14,7 +14,7 @@ export default class PetCollection extends Collection {
         this.feedPostcard = 110
         this.adoptPostcard = 111
         this.maxPets = 18
-        this.nameRegex = /[^a-z]/i
+        this.nameRegex = /[^a-z ]/i
 
         // 3.6 minutes
         const updatePetsInterval = 3.6 * 60000
