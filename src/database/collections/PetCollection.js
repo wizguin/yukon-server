@@ -96,7 +96,6 @@ export default class PetCollection extends Collection {
 
     checkPetRunAway(pet) {
         // Can't run away whilst owner is in their igloo
-        // todo check walking
         if (this.user.inOwnIgloo()) return false
 
         if (pet.dead) {
