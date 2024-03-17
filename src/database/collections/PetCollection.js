@@ -26,27 +26,27 @@ export default class PetCollection extends Collection {
         this.updatePets()
     }
 
-    async add(petId, name) {
+    async add(typeId, name) {
         if (this.count >= this.maxPets) {
             return
         }
 
         try {
-            if (!(petId in pets)) return
+            if (!(typeId in pets)) return
 
             if (!isString(name) || !isLength(name, 1, 12) || this.nameRegex.test(name)) {
                 this.user.send('error', { error: 'Sorry, this name is not available. Please try again' })
                 return
             }
 
-            const pet = pets[petId]
+            const pet = pets[typeId]
 
             if (this.user.coins < pet.cost) {
                 this.user.send('error', { error: 'You need more coins.' })
                 return
             }
 
-            const model = await this.model.create({ userId: this.user.id, petId: petId, name: name })
+            const model = await this.model.create({ userId: this.user.id, typeId: typeId, name: name })
 
             this.addModel(model)
 
@@ -100,7 +100,7 @@ export default class PetCollection extends Collection {
         if (this.user.inOwnIgloo()) return false
 
         if (pet.dead) {
-            this.user.addSystemMail(pets[pet.petId].ranPostcard, pet.name)
+            this.user.addSystemMail(pets[pet.typeId].ranPostcard, pet.name)
             this.remove(pet.id)
         }
 

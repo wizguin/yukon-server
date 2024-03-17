@@ -29,7 +29,7 @@ export default class Pets extends BaseModel {
                     type: DataTypes.INTEGER(11),
                     allowNull: false
                 },
-                petId: {
+                typeId: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false
                 },
@@ -94,7 +94,7 @@ export default class Pets extends BaseModel {
     toJSON() {
         return pick(this,
             'id',
-            'petId',
+            'typeId',
             'name',
             'energy',
             'health',

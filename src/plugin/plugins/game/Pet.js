@@ -27,9 +27,9 @@ export default class Pet extends GamePlugin {
     }
 
     adoptPet(args, user) {
-        if (!hasProps(args, 'petId', 'name')) return
+        if (!hasProps(args, 'typeId', 'name')) return
 
-        user.pets.add(args.petId, args.name)
+        user.pets.add(args.typeId, args.name)
     }
 
     async getPets(args, user) {

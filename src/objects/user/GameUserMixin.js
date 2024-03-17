@@ -160,7 +160,7 @@ const GameUserMixin = {
         await this.update({ hand: 0 })
 
         // Set hand item to pet without updating database
-        const petItemId = pet.petId + 750
+        const petItemId = pet.typeId + 750
 
         this.hand = petItemId
         this.sendUpdatePlayer('hand', petItemId)
