@@ -82,16 +82,17 @@ export default class PetCollection extends Collection {
             }
 
             updates.push(update)
-
-            if (this.user.inOwnIgloo()) {
-                this.user.room.send(this.user, 'update_pet', update, [])
-            }
         }
 
-        if (updates.length) {
-            // Bulk update
-            this.model.bulkCreate(updates, { updateOnDuplicate: ['energy', 'health', 'rest'] })
+        // No updates
+        if (!updates.length) return
+
+        if (this.user.inOwnIgloo()) {
+            this.user.room.send(this.user, 'update_pets', { updates: updates }, [])
         }
+
+        // Bulk update
+        this.model.bulkCreate(updates, { updateOnDuplicate: ['energy', 'health', 'rest'] })
     }
 
     checkPetRunAway(pet) {
