@@ -141,6 +141,8 @@ const GameUserMixin = {
         const postcard = await this.postcards.add(null, postcardId, details)
 
         if (postcard) this.send('receive_mail', postcard)
+
+        return postcard
     },
 
     async startWalkingPet(petId) {

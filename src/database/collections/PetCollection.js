@@ -107,11 +107,11 @@ export default class PetCollection extends Collection {
         return pet.dead
     }
 
-    checkPetHungry(pet) {
-        if (!this.user.inOwnIgloo() && pet.energy < 10 && !pet.feedPostcardSent) {
-            this.user.addSystemMail(this.feedPostcard, pet.name)
+    async checkPetHungry(pet) {
+        if (!this.user.inOwnIgloo() && pet.energy < 10 && !pet.feedPostcardId) {
+            const postcard = await this.user.addSystemMail(this.feedPostcard, pet.name)
 
-            pet.feedPostcardSent = true
+            pet.update({ feedPostcardId: postcard.id })
         }
     }
 
