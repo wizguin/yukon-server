@@ -10,7 +10,7 @@ import { pets } from '@data/data'
 const feedPostcard = 110
 const adoptPostcard = 111
 const maxPets = 18
-const nameRegex = /[^a-z ]/i
+const invalidNameRegex = /[^a-z ]/i
 
 // 3.6 minutes
 const updatePetsInterval = 3.6 * 60000
@@ -26,25 +26,23 @@ export default class PetCollection extends Collection {
     }
 
     async add(typeId, name) {
-        if (this.count >= maxPets) {
+        if (this.count >= maxPets || !(typeId in pets)) {
+            return
+        }
+
+        if (!this.checkName(name)) {
+            this.user.send('error', { error: 'Sorry, this name is not available. Please try again' })
+            return
+        }
+
+        const pet = pets[typeId]
+
+        if (this.user.coins < pet.cost) {
+            this.user.send('error', { error: 'You need more coins.' })
             return
         }
 
         try {
-            if (!(typeId in pets)) return
-
-            if (!isString(name) || !isLength(name, 1, 12) || nameRegex.test(name)) {
-                this.user.send('error', { error: 'Sorry, this name is not available. Please try again' })
-                return
-            }
-
-            const pet = pets[typeId]
-
-            if (this.user.coins < pet.cost) {
-                this.user.send('error', { error: 'You need more coins.' })
-                return
-            }
-
             const model = await this.model.create({ userId: this.user.id, typeId: typeId, name: name })
 
             this.addModel(model)
@@ -125,6 +123,10 @@ export default class PetCollection extends Collection {
 
         // Bulk update
         this.model.bulkCreate(updates, { updateOnDuplicate: ['energy', 'health', 'rest'] })
+    }
+
+    checkName(name) {
+        return isString(name) && isLength(name, 1, 12) && !invalidNameRegex.test(name)
     }
 
     getNewStat(stat, min = 0) {
