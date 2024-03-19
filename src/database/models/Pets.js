@@ -13,6 +13,20 @@ export default class Pets extends BaseModel {
 
     walking = false
 
+    get hungry() {
+        return this.energy < 10
+    }
+
+    get dead() {
+        return this.energy === 0 || this.health === 0 || this.rest === 0
+    }
+
+    get happiness() {
+        const statTotal = this.energy + this.health + this.rest
+
+        return Math.round((statTotal / 300) * 100)
+    }
+
     static init(sequelize, DataTypes) {
         return super.init(
             {
@@ -58,20 +72,6 @@ export default class Pets extends BaseModel {
                     type: DataTypes.INTEGER(11),
                     allowNull: true,
                     defaultValue: null
-                },
-                happiness: {
-                    type: DataTypes.VIRTUAL,
-                    get() {
-                        const statTotal = this.energy + this.health + this.rest
-
-                        return Math.round((statTotal / 300) * 100)
-                    }
-                },
-                dead: {
-                    type: DataTypes.VIRTUAL,
-                    get() {
-                        return this.energy === 0 || this.health === 0 || this.rest === 0
-                    }
                 }
             },
             { sequelize, timestamps: false, tableName: 'pets' }

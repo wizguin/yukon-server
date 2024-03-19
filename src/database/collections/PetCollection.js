@@ -1,4 +1,5 @@
 import Collection from '../Collection'
+import Pets from '@database/models/Pets'
 
 import { clamp } from '@utils/math'
 import { isLength, isString } from '@utils/validation'
@@ -12,7 +13,7 @@ const maxPets = 18
 const nameRegex = /[^a-z ]/i
 
 // 3.6 minutes
-const updatePetsInterval = 1
+const updatePetsInterval = 3.6 * 60000
 const statLoss = 1
 
 export default class PetCollection extends Collection {
@@ -21,6 +22,7 @@ export default class PetCollection extends Collection {
         super(user, models, 'pets', 'id')
 
         // First update happens immediately
+        this.petUpdate = setTimeout(() => this.updatePets(), 1)
     }
 
     async add(typeId, name) {
@@ -49,50 +51,48 @@ export default class PetCollection extends Collection {
 
             this.user.updateCoins(-pet.cost)
             this.user.send('adopt_pet', { id: model.id, coins: this.user.coins })
-            this.user.addSystemMail(this.adoptPostcard, name)
+            this.user.addSystemMail(adoptPostcard, name)
 
         } catch (error) {
             this.handler.error(error)
         }
     }
 
-    updatePets() {
+    async updatePets() {
         const updates = []
 
         for (const pet of this.values) {
-            // Prevent walking pets from running away
-            const minStat = pet.walking ? 10 : 0
+            this.decreaseStats(pet)
 
-            pet.energy = this.getNewStat(pet.energy, minStat)
-            pet.health = this.getNewStat(pet.health, minStat)
-            pet.rest = this.getNewStat(pet.rest, minStat)
+            if (this.checkRunAway(pet)) continue
+            await this.checkHungry(pet)
 
-            if (this.checkPetRunAway(pet)) continue
-
-            this.checkPetHungry(pet)
-
-            const update = {
+            updates.push({
                 id: pet.id,
                 energy: pet.energy,
                 health: pet.health,
                 rest: pet.rest
-            }
-
-            updates.push(update)
+            })
         }
 
-        // No updates
-        if (!updates.length) return
-
-        if (this.user.inOwnIgloo()) {
-            this.user.room.send(this.user, 'update_pets', { updates: updates }, [])
+        if (updates.length) {
+            this.sendUpdates(updates)
         }
 
-        // Bulk update
-        this.model.bulkCreate(updates, { updateOnDuplicate: ['energy', 'health', 'rest'] })
+        // Schedule next update
+        this.petUpdate = setTimeout(() => this.updatePets(), updatePetsInterval)
     }
 
-    checkPetRunAway(pet) {
+    decreaseStats(pet) {
+        // Prevent walking pets from running away
+        const minStat = pet.walking ? 10 : 0
+
+        pet.energy = this.getNewStat(pet.energy, minStat)
+        pet.health = this.getNewStat(pet.health, minStat)
+        pet.rest = this.getNewStat(pet.rest, minStat)
+    }
+
+    checkRunAway(pet) {
         // Can't run away whilst owner is in their igloo
         if (this.user.inOwnIgloo()) return false
 
@@ -104,12 +104,27 @@ export default class PetCollection extends Collection {
         return pet.dead
     }
 
-    async checkPetHungry(pet) {
-        if (!this.user.inOwnIgloo() && pet.energy < 10 && !pet.feedPostcardId) {
-            const postcard = await this.user.addSystemMail(this.feedPostcard, pet.name)
+    /**
+     * Sends a postcard if the pet is hungry and one is not already associated.
+     * Deleted postcards won't be resent until relogin.
+     *
+     * @param {Pets} pet - The pet instance to check
+     */
+    async checkHungry(pet) {
+        if (!this.user.inOwnIgloo() && pet.hungry && !pet.feedPostcardId) {
+            const postcard = await this.user.addSystemMail(feedPostcard, pet.name)
 
             pet.update({ feedPostcardId: postcard.id })
         }
+    }
+
+    sendUpdates(updates) {
+        if (this.user.inOwnIgloo()) {
+            this.user.room.send(this.user, 'update_pets', { updates: updates }, [])
+        }
+
+        // Bulk update
+        this.model.bulkCreate(updates, { updateOnDuplicate: ['energy', 'health', 'rest'] })
     }
 
     getNewStat(stat, min = 0) {
@@ -117,7 +132,7 @@ export default class PetCollection extends Collection {
     }
 
     stopPetUpdate() {
-        clearInterval(this.petUpdate)
+        clearTimeout(this.petUpdate)
     }
 
 }
