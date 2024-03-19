@@ -31,7 +31,7 @@ export default class Postcards extends BaseModel {
                     allowNull: false
                 },
                 sendDate: {
-                    type: Sequelize.DATE,
+                    type: Sequelize.DATE(3),
                     allowNull: false,
                     defaultValue: DataTypes.NOW
                 },

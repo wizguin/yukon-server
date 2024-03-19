@@ -151,7 +151,7 @@ CREATE TABLE `postcards` (
   `userId` int(11) NOT NULL,
   `senderId` int(11) DEFAULT NULL,
   `postcardId` int(11) NOT NULL,
-  `sendDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `sendDate` timestamp(3) NOT NULL DEFAULT current_timestamp(3),
   `details` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `hasRead` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='User postcards';
