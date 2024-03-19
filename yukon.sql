@@ -2,21 +2,11 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `yukon`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `auth_tokens`
---
 
 CREATE TABLE `auth_tokens` (
   `userId` int(11) NOT NULL,
@@ -24,12 +14,6 @@ CREATE TABLE `auth_tokens` (
   `validator` char(60) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Authentication tokens for saved logins';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `bans`
---
 
 CREATE TABLE `bans` (
   `id` int(11) NOT NULL,
@@ -40,22 +24,10 @@ CREATE TABLE `bans` (
   `message` varchar(60) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User ban records';
 
--- --------------------------------------------------------
-
---
--- Table structure for table `buddies`
---
-
 CREATE TABLE `buddies` (
   `userId` int(11) NOT NULL,
   `buddyId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User buddies';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cards`
---
 
 CREATE TABLE `cards` (
   `userId` int(11) NOT NULL,
@@ -63,12 +35,6 @@ CREATE TABLE `cards` (
   `quantity` int(11) NOT NULL DEFAULT 1,
   `memberQuantity` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned Card-Jitsu cards';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `furnitures`
---
 
 CREATE TABLE `furnitures` (
   `id` int(11) NOT NULL,
@@ -80,23 +46,11 @@ CREATE TABLE `furnitures` (
   `frame` smallint(6) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Furniture placed inside igloos';
 
--- --------------------------------------------------------
-
---
--- Table structure for table `furniture_inventories`
---
-
 CREATE TABLE `furniture_inventories` (
   `userId` int(11) NOT NULL,
   `itemId` int(11) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned furniture';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `igloos`
---
 
 CREATE TABLE `igloos` (
   `userId` int(11) NOT NULL,
@@ -107,44 +61,32 @@ CREATE TABLE `igloos` (
   `locked` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User igloo settings';
 
--- --------------------------------------------------------
-
---
--- Table structure for table `igloo_inventories`
---
-
 CREATE TABLE `igloo_inventories` (
   `userId` int(11) NOT NULL,
   `iglooId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned igloos';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ignores`
---
 
 CREATE TABLE `ignores` (
   `userId` int(11) NOT NULL,
   `ignoreId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User ignores';
 
--- --------------------------------------------------------
-
---
--- Table structure for table `inventories`
---
-
 CREATE TABLE `inventories` (
   `userId` int(11) NOT NULL,
   `itemId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User owned clothing';
 
--- --------------------------------------------------------
-
---
--- Table structure for table `postcards`
---
+CREATE TABLE `pets` (
+  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `typeId` int(11) NOT NULL,
+  `name` varchar(12) NOT NULL,
+  `adoptionDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `energy` tinyint(3) NOT NULL DEFAULT 100,
+  `health` tinyint(3) NOT NULL DEFAULT 100,
+  `rest` tinyint(3) NOT NULL DEFAULT 100,
+  `feedPostcardId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='User pets';
 
 CREATE TABLE `postcards` (
   `id` int(11) NOT NULL,
@@ -155,12 +97,6 @@ CREATE TABLE `postcards` (
   `details` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `hasRead` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='User postcards';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -184,10 +120,6 @@ CREATE TABLE `users` (
   `ninjaRank` tinyint(1) NOT NULL DEFAULT 0,
   `ninjaProgress` tinyint(3) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Users';
-
---
--- Triggers `users`
---
 DELIMITER $$
 CREATE TRIGGER `trigger_users_insert` AFTER INSERT ON `users` FOR EACH ROW BEGIN
     INSERT INTO igloos (userId) VALUES (NEW.id);
@@ -197,212 +129,121 @@ END
 $$
 DELIMITER ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `worlds`
---
-
 CREATE TABLE `worlds` (
   `id` varchar(100) NOT NULL,
   `population` smallint(3) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Server populations';
 
---
--- Dumping data for table `worlds`
---
-
 INSERT INTO `worlds` (`id`, `population`) VALUES
 ('Blizzard', 0);
 
---
--- Indexes for dumped tables
---
 
---
--- Indexes for table `auth_tokens`
---
 ALTER TABLE `auth_tokens`
   ADD PRIMARY KEY (`userId`,`selector`) USING BTREE;
 
---
--- Indexes for table `bans`
---
 ALTER TABLE `bans`
   ADD PRIMARY KEY (`id`),
   ADD KEY `userId` (`userId`),
   ADD KEY `moderatorId` (`moderatorId`);
 
---
--- Indexes for table `buddies`
---
 ALTER TABLE `buddies`
   ADD PRIMARY KEY (`userId`,`buddyId`) USING BTREE,
   ADD KEY `buddies_ibfk_2` (`buddyId`);
 
---
--- Indexes for table `cards`
---
 ALTER TABLE `cards`
   ADD PRIMARY KEY (`userId`,`cardId`);
 
---
--- Indexes for table `furnitures`
---
 ALTER TABLE `furnitures`
   ADD PRIMARY KEY (`id`),
   ADD KEY `userId` (`userId`) USING BTREE;
 
---
--- Indexes for table `furniture_inventories`
---
 ALTER TABLE `furniture_inventories`
   ADD PRIMARY KEY (`userId`,`itemId`) USING BTREE;
 
---
--- Indexes for table `igloos`
---
 ALTER TABLE `igloos`
   ADD PRIMARY KEY (`userId`);
 
---
--- Indexes for table `igloo_inventories`
---
 ALTER TABLE `igloo_inventories`
   ADD PRIMARY KEY (`userId`,`iglooId`) USING BTREE;
 
---
--- Indexes for table `ignores`
---
 ALTER TABLE `ignores`
   ADD PRIMARY KEY (`userId`,`ignoreId`) USING BTREE,
   ADD KEY `ignores_ibfk_2` (`ignoreId`);
 
---
--- Indexes for table `inventories`
---
 ALTER TABLE `inventories`
   ADD PRIMARY KEY (`userId`,`itemId`) USING BTREE;
 
---
--- Indexes for table `postcards`
---
+ALTER TABLE `pets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userId` (`userId`),
+  ADD KEY `feedPostcardId` (`feedPostcardId`) USING BTREE;
+
 ALTER TABLE `postcards`
   ADD PRIMARY KEY (`id`),
   ADD KEY `userId` (`userId`),
   ADD KEY `senderId` (`senderId`);
 
---
--- Indexes for table `users`
---
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`) USING BTREE;
 
---
--- Indexes for table `worlds`
---
 ALTER TABLE `worlds`
   ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
 
---
--- AUTO_INCREMENT for table `bans`
---
 ALTER TABLE `bans`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `furnitures`
---
 ALTER TABLE `furnitures`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `postcards`
---
+ALTER TABLE `pets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `postcards`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `users`
---
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- Constraints for dumped tables
---
 
---
--- Constraints for table `auth_tokens`
---
 ALTER TABLE `auth_tokens`
   ADD CONSTRAINT `auth_tokens_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `bans`
---
 ALTER TABLE `bans`
   ADD CONSTRAINT `bans_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `bans_ibfk_2` FOREIGN KEY (`moderatorId`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
---
--- Constraints for table `buddies`
---
 ALTER TABLE `buddies`
   ADD CONSTRAINT `buddies_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `buddies_ibfk_2` FOREIGN KEY (`buddyId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `cards`
---
 ALTER TABLE `cards`
   ADD CONSTRAINT `cards_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `furnitures`
---
 ALTER TABLE `furnitures`
   ADD CONSTRAINT `furnitures_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `furniture_inventories`
---
 ALTER TABLE `furniture_inventories`
   ADD CONSTRAINT `furniture_inventories_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `igloos`
---
 ALTER TABLE `igloos`
   ADD CONSTRAINT `igloos_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `igloo_inventories`
---
 ALTER TABLE `igloo_inventories`
   ADD CONSTRAINT `igloo_inventories_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `ignores`
---
 ALTER TABLE `ignores`
   ADD CONSTRAINT `ignores_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ignores_ibfk_2` FOREIGN KEY (`ignoreId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `inventories`
---
 ALTER TABLE `inventories`
   ADD CONSTRAINT `inventories_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `postcards`
---
+ALTER TABLE `pets`
+  ADD CONSTRAINT `pets_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pets_ibfk_2` FOREIGN KEY (`feedPostcardId`) REFERENCES `postcards` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
 ALTER TABLE `postcards`
   ADD CONSTRAINT `postcards_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `postcards_ibfk_2` FOREIGN KEY (`senderId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
