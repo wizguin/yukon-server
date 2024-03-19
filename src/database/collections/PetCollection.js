@@ -6,35 +6,32 @@ import { isLength, isString } from '@utils/validation'
 import { pets } from '@data/data'
 
 
+const feedPostcard = 110
+const adoptPostcard = 111
+const maxPets = 18
+const nameRegex = /[^a-z ]/i
+
+// 3.6 minutes
+const updatePetsInterval = 1
+const statLoss = 1
+
 export default class PetCollection extends Collection {
 
     constructor(user, models) {
         super(user, models, 'pets', 'id')
 
-        this.feedPostcard = 110
-        this.adoptPostcard = 111
-        this.maxPets = 18
-        this.nameRegex = /[^a-z ]/i
-
-        // 3.6 minutes
-        const updatePetsInterval = 3.6 * 60000
-
-        this.statLoss = 1
-        this.petUpdate = setInterval(() => this.updatePets(), updatePetsInterval)
-
-        // First pet update happens immediately
-        this.updatePets()
+        // First update happens immediately
     }
 
     async add(typeId, name) {
-        if (this.count >= this.maxPets) {
+        if (this.count >= maxPets) {
             return
         }
 
         try {
             if (!(typeId in pets)) return
 
-            if (!isString(name) || !isLength(name, 1, 12) || this.nameRegex.test(name)) {
+            if (!isString(name) || !isLength(name, 1, 12) || nameRegex.test(name)) {
                 this.user.send('error', { error: 'Sorry, this name is not available. Please try again' })
                 return
             }
@@ -116,7 +113,7 @@ export default class PetCollection extends Collection {
     }
 
     getNewStat(stat, min = 0) {
-        return clamp(stat - this.statLoss, min, 100)
+        return clamp(stat - statLoss, min, 100)
     }
 
     stopPetUpdate() {
