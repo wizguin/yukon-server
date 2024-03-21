@@ -65,12 +65,7 @@ export default class PetCollection extends Collection {
             if (this.checkRunAway(pet)) continue
             await this.checkHungry(pet)
 
-            updates.push({
-                id: pet.id,
-                energy: pet.energy,
-                health: pet.health,
-                rest: pet.rest
-            })
+            updates.push(pet.dataValues)
         }
 
         if (updates.length) {
