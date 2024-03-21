@@ -123,6 +123,12 @@ export default class Database {
         })
     }
 
+    async getPets(userId) {
+        return await this.findAll('pets', {
+            where: { userId: userId }
+        })
+    }
+
     async getWorldPopulations() {
         return await this.getCrumb('worlds')
     }

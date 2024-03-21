@@ -29,7 +29,8 @@ export default class Join extends GamePlugin {
             inventory: user.inventory,
             igloos: user.igloos,
             furniture: user.furniture,
-            postcards: user.postcards
+            postcards: user.postcards,
+            pets: user.pets
         })
 
         // Update token on database now that user has fully connected

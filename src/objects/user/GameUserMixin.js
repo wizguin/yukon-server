@@ -9,6 +9,7 @@ import FurnitureCollection from '@database/collections/FurnitureCollection'
 import IglooCollection from '@database/collections/IglooCollection'
 import IgnoreCollection from '@database/collections/IgnoreCollection'
 import InventoryCollection from '@database/collections/InventoryCollection'
+import PetCollection from '@database/collections/PetCollection'
 import PostcardCollection from '@database/collections/PostcardCollection'
 
 import PurchaseValidator from './purchase/PurchaseValidator'
@@ -38,6 +39,8 @@ const GameUserMixin = {
 
         this.buddyRequests = []
 
+        this.walkingPet = null
+
         this.validatePurchase = new PurchaseValidator(this)
 
         // Used for dynamic/temporary events
@@ -48,13 +51,20 @@ const GameUserMixin = {
         })
     },
 
+    inOwnIgloo() {
+        return this.room?.isIgloo && this.room?.userId === this.id
+    },
+
     setItem(slot, item) {
         if (this[slot] == item) {
             return
         }
 
         this.update({ [slot]: item })
+        this.sendUpdatePlayer(slot, item)
+    },
 
+    sendUpdatePlayer(slot, item) {
         this.room.send(this, 'update_player', { id: this.id, item: item, slot: slot }, [])
     },
 
@@ -127,10 +137,44 @@ const GameUserMixin = {
         }
     },
 
-    async addSystemMail(postcardId) {
-        const postcard = await this.postcards.add(null, postcardId)
+    async addSystemMail(postcardId, details = null) {
+        const postcard = await this.postcards.add(null, postcardId, details)
 
         if (postcard) this.send('receive_mail', postcard)
+
+        return postcard
+    },
+
+    async startWalkingPet(petId) {
+        if (!this.pets.includes(petId)) return
+        if (this.walkingPet) this.stopWalkingPet()
+
+        const pet = this.pets.get(petId)
+
+        if (pet.rest < 20 || pet.energy < 40) return
+
+        pet.walking = true
+        this.walkingPet = pet
+
+        this.room.send(this, 'pet_start_walk', { userId: this.id, petId: pet.id }, [])
+
+        // Remove current hand item
+        await this.update({ hand: 0 })
+
+        // Set hand item to pet without updating database
+        const petItemId = pet.typeId + 750
+
+        this.hand = petItemId
+        this.sendUpdatePlayer('hand', petItemId)
+    },
+
+    stopWalkingPet() {
+        if (this.walkingPet) {
+            this.room.send(this, 'pet_stop_walk', { userId: this.id, petId: this.walkingPet.id }, [])
+
+            this.walkingPet.walking = false
+            this.walkingPet = null
+        }
     },
 
     async load(username) {
@@ -201,6 +245,11 @@ const GameUserMixin = {
                         attributes: ['username']
                     },
                     separate: true
+                },
+                {
+                    model: this.db.pets,
+                    as: 'pets',
+                    separate: true
                 }
             ]
 
@@ -212,6 +261,7 @@ const GameUserMixin = {
             result.furniture = new FurnitureCollection(this, result.furniture)
             result.cards = new CardCollection(this, result.cards)
             result.postcards = new PostcardCollection(this, result.postcards)
+            result.pets = new PetCollection(this, result.pets)
 
             this.setPermissions()
 

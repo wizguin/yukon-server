@@ -1,0 +1,62 @@
+{
+    "0": {
+        "name": "Blue",
+        "cost": 800,
+        "member": 0,
+        "ranPostcard": 100
+    },
+    "1": {
+        "name": "Pink",
+        "cost": 800,
+        "member": 1,
+        "ranPostcard": 101
+    },
+    "2": {
+        "name": "Black",
+        "cost": 800,
+        "member": 1,
+        "ranPostcard": 102
+    },
+    "3": {
+        "name": "Green",
+        "cost": 800,
+        "member": 1,
+        "ranPostcard": 103
+    },
+    "4": {
+        "name": "Purple",
+        "cost": 800,
+        "member": 1,
+        "ranPostcard": 104
+    },
+    "5": {
+        "name": "Red",
+        "cost": 800,
+        "member": 0,
+        "ranPostcard": 105
+    },
+    "6": {
+        "name": "Yellow",
+        "cost": 800,
+        "member": 1,
+        "ranPostcard": 106
+    },
+    "7": {
+        "name": "White",
+        "cost": 800,
+        "member": 1,
+        "ranPostcard": 169
+    },
+    "8": {
+        "name": "Orange",
+        "cost": 800,
+        "member": 1,
+        "ranPostcard": 109
+    },
+    "9": {
+        "name": "Brown",
+        "cost": 800,
+        "member": 1,
+        "ranPostcard": 185
+    }
+}

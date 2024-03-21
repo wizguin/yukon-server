@@ -16,24 +16,28 @@ export default class Item extends GamePlugin {
     }
 
     updatePlayer(args, user) {
-        let item = this.items[args.item]
+        const item = this.items[args.item]
 
-        if (!item || item.type == 10 || !user.inventory.includes(args.item)) {
+        if (!item || item.type === 10 || !user.inventory.includes(args.item)) {
             return
         }
 
-        let slot = this.db.slots[item.type - 1]
+        const slot = this.db.slots[item.type - 1]
+        if (slot === 'hand') {
+            user.stopWalkingPet()
+        }
+
         user.setItem(slot, args.item)
     }
 
     addItem(args, user) {
-        let item = user.validatePurchase.item(args.item)
+        const item = user.validatePurchase.item(args.item)
 
         if (!item) {
             return
         }
 
-        let slot = this.db.slots[item.type - 1]
+        const slot = this.db.slots[item.type - 1]
         user.inventory.add(args.item)
 
         user.updateCoins(-item.cost)
@@ -43,6 +47,10 @@ export default class Item extends GamePlugin {
     removeItem(args, user) {
         if (!this.db.slots.includes(args.type)) {
             return
+        }
+
+        if (args.type === 'hand') {
+            user.stopWalkingPet()
         }
 
         user.setItem(args.type, 0)

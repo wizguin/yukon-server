@@ -1,6 +1,6 @@
 {
   "name": "yukon-server",
-  "version": "1.8.0-beta",
+  "version": "1.9.0-beta",
   "description": "A server for https://github.com/wizguin/yukon",
   "scripts": {
     "dev": "babel-watch ./src/World.js Login Blizzard",
@@ -24,24 +24,24 @@
   },
   "homepage": "https://github.com/wizguin/yukon-server#readme",
   "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.2",
-    "@babel/node": "^7.22.19",
-    "@babel/preset-env": "^7.23.2",
+    "@babel/cli": "^7.24.1",
+    "@babel/core": "^7.24.3",
+    "@babel/node": "^7.23.9",
+    "@babel/preset-env": "^7.24.3",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-watch": "^7.8.1",
-    "eslint": "^8.51.0",
+    "eslint": "^8.57.0",
     "rimraf": "^5.0.5"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "fastest-validator": "^1.17.0",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.6.2",
-    "pm2": "^5.3.0",
-    "rate-limiter-flexible": "^3.0.1",
+    "mysql2": "^3.9.2",
+    "pm2": "^5.3.1",
+    "rate-limiter-flexible": "^3.0.6",
     "sequelize": "^5.22.5",
-    "socket.io": "^4.7.2",
+    "socket.io": "^4.7.5",
     "uuid": "^9.0.1"
   },
   "optionalDependencies": {

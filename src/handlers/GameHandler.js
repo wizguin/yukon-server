@@ -108,6 +108,10 @@ export default class GameHandler extends BaseHandler {
                 this.openIgloos.remove(user)
             }
 
+            if (user.pets) {
+                user.pets.stopPetUpdate()
+            }
+
             this.closeAndUpdatePopulation(user)
         }
         catch (error) {
