@@ -11,7 +11,8 @@ export default class Chat extends GamePlugin {
         this.events = {
             'send_message': this.sendMessage,
             'send_safe': this.sendSafe,
-            'send_emote': this.sendEmote
+            'send_emote': this.sendEmote,
+            'send_tour': this.sendTour
         }
 
         this.commands = {
@@ -80,6 +81,22 @@ export default class Chat extends GamePlugin {
         }
 
         user.room.send(user, 'send_emote', { id: user.id, emote: args.emote }, [user], true)
+    }
+
+    sendTour(args, user) {
+        if (!hasProps(args, 'roomId')) {
+            return
+        }
+
+        if (!isNumber(args.roomId)) {
+            return
+        }
+
+        if (args.roomId !== user.room.id) {
+            return
+        }
+
+        user.room.send(user, 'send_tour', { id: user.id, roomId: args.roomId }, [user], true)
     }
 
     // Commands
