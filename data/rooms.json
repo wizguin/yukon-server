@@ -56,6 +56,14 @@
         "spawn": 1
     },
     {
+        "id": 210,
+        "name": "sport",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
         "id": 220,
         "name": "lodge",
         "member": 0,
@@ -138,6 +146,14 @@
     {
         "id": 802,
         "name": "rink",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 803,
+        "name": "agent",
         "member": 0,
         "maxUsers": 80,
         "game": 0,
