@@ -1,6 +1,11 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 
+const tourItem = 428
+const tourPostcard = 126
+const agentItem = 800
+const agentPostcard = 127
+
 export default class Item extends GamePlugin {
 
     constructor(handler) {
@@ -39,6 +44,14 @@ export default class Item extends GamePlugin {
 
         const slot = this.db.slots[item.type - 1]
         user.inventory.add(args.item)
+
+        if (args.item === tourItem) {
+            user.addSystemMail(tourPostcard)
+        }
+
+        if (args.item === agentItem) {
+            user.addSystemMail(agentPostcard)
+        }
 
         user.updateCoins(-item.cost)
         user.send('add_item', { item: args.item, name: item.name, slot: slot, coins: user.coins })

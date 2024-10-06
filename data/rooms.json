@@ -56,6 +56,14 @@
         "spawn": 1
     },
     {
+        "id": 210,
+        "name": "sport",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
         "id": 220,
         "name": "lodge",
         "member": 0,
@@ -144,6 +152,14 @@
         "spawn": 0
     },
     {
+        "id": 803,
+        "name": "agent",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
         "id": 805,
         "name": "berg",
         "member": 0,
@@ -224,8 +240,32 @@
         "spawn": 0
     },
     {
+        "id": 907,
+        "name": "mission1",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 908,
+        "name": "mission2",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
         "id": 909,
         "name": "thinice",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 911,
+        "name": "mission3",
         "member": 0,
         "maxUsers": 80,
         "game": 1,
@@ -240,8 +280,72 @@
         "spawn": 0
     },
     {
+        "id": 913,
+        "name": "mission4",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 914,
+        "name": "mission5",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 915,
+        "name": "mission6",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
         "id": 916,
         "name": "sub",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 920,
+        "name": "mission7",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 921,
+        "name": "mission8",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 922,
+        "name": "mission9",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 923,
+        "name": "mission10",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 927,
+        "name": "mission11",
         "member": 0,
         "maxUsers": 80,
         "game": 1,
