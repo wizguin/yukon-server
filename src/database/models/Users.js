@@ -43,6 +43,11 @@ export default class Users extends BaseModel {
                     allowNull: false,
                     defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
                 },
+                lastLogin: {
+                    type: Sequelize.DATE,
+                    allowNull: true,
+                    defaultValue: null
+                },
                 coins: {
                     type: DataTypes.INTEGER(11),
                     allowNull: false,
