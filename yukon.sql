@@ -107,6 +107,7 @@ CREATE TABLE `users` (
   `rank` tinyint(1) NOT NULL DEFAULT 1,
   `permaBan` tinyint(1) NOT NULL DEFAULT 0,
   `joinTime` timestamp NOT NULL DEFAULT current_timestamp(),
+  `lastLogin` timestamp NULL DEFAULT NULL,
   `coins` int(11) NOT NULL DEFAULT 500,
   `head` int(11) NOT NULL DEFAULT 0,
   `face` int(11) NOT NULL DEFAULT 0,
