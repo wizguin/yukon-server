@@ -120,6 +120,14 @@
         "spawn": 0
     },
     {
+        "id": 330,
+        "name": "pizza",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
         "id": 400,
         "name": "beach",
         "member": 0,
@@ -154,6 +162,14 @@
     {
         "id": 803,
         "name": "agent",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 0,
+        "spawn": 0
+    },
+    {
+        "id": 804,
+        "name": "boiler",
         "member": 0,
         "maxUsers": 80,
         "game": 0,
@@ -258,6 +274,14 @@
     {
         "id": 909,
         "name": "thinice",
+        "member": 0,
+        "maxUsers": 80,
+        "game": 1,
+        "spawn": 0
+    },
+    {
+        "id": 910,
+        "name": "pizzatron",
         "member": 0,
         "maxUsers": 80,
         "game": 1,
