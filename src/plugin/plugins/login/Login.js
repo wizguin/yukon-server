@@ -1,6 +1,6 @@
 import Plugin from '@plugin/Plugin'
 
-import { hasProps, isString } from '@utils/validation'
+import { hasProps, isLength, isString } from '@utils/validation'
 
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
@@ -39,6 +39,13 @@ export default class Login extends Plugin {
     // Events
 
     async login(args, user) {
+        if (user.loginSent) {
+            return user.close()
+        }
+
+        // Only handle login once
+        user.loginSent = true
+
         let check = this.check({ username: args.username, password: args.password })
 
         if (check != true) {
@@ -57,8 +64,14 @@ export default class Login extends Plugin {
     }
 
     async tokenLogin(args, user) {
-        user.send('login', await this.compareTokens(args, user))
+        if (user.loginSent) {
+            return user.close()
+        }
 
+        // Only handle login once
+        user.loginSent = true
+
+        user.send('login', await this.compareTokens(args, user))
         user.close()
     }
 
@@ -121,7 +134,7 @@ export default class Login extends Plugin {
             return this.responses.wrongPassword
         }
 
-        if (!isString(args.token)) {
+        if (!isLength(args.username, 4, 12) || !isString(args.token)) {
             return this.responses.wrongPassword
         }
 

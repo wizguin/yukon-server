@@ -16,6 +16,7 @@ export default {
 
         this.address = getSocketAddress(socket, this.config)
 
+        this.loginSent = false
         this.isModerator = false
     },
 

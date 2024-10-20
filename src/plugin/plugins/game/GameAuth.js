@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import { hasProps } from '@utils/validation'
+import { hasProps, isLength } from '@utils/validation'
 
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
@@ -21,12 +21,19 @@ export default class GameAuth extends GamePlugin {
     // Events
 
     async gameAuth(args, user) {
-        if (!hasProps(args, 'username', 'key')) {
-            return
+        if (user.gameAuthSent || user.authenticated) {
+            return user.close()
         }
 
-        if (user.authenticated) {
-            return
+        // Only handle game_auth once
+        user.gameAuthSent = true
+
+        if (!hasProps(args, 'username', 'key')) {
+            return user.close()
+        }
+
+        if (!isLength(args.username, 4, 12) || !isLength(args.key, 64, 64)) {
+            return user.close()
         }
 
         let load = await user.load(args.username)
@@ -39,10 +46,6 @@ export default class GameAuth extends GamePlugin {
         }
 
         if (user.ban || user.permaBan) {
-            return user.close()
-        }
-
-        if (args.key.length != 64) {
             return user.close()
         }
 

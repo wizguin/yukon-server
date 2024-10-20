@@ -25,6 +25,7 @@ const GameUserMixin = {
 
         this.crumbs = this.handler.crumbs
 
+        this.gameAuthSent = false
         this.authenticated = false
         this.joinedServer = false
         this.token = {}
