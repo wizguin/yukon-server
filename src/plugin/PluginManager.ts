@@ -16,14 +16,14 @@ export default class PluginManager {
 
     loadPlugins(handler) {
         let plugins = fs.readdirSync(this.dir).filter(file => {
-            return path.extname(file) == '.js'
+            return path.extname(file) == '.ts'
         })
 
         for (let plugin of plugins) {
             let pluginImport = require(path.join(this.dir, plugin)).default
             let pluginObject = new pluginImport(handler)
 
-            this.plugins[plugin.replace('.js', '').toLowerCase()] = pluginObject
+            this.plugins[plugin.replace('.ts', '').toLowerCase()] = pluginObject
 
             this.loadEvents(pluginObject)
         }
