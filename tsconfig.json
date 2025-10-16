@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "es2023",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "removeComments": true,
+        "skipLibCheck": true,
+        "strict": true,
+
+        "outDir": "dist",
+
+        "paths": {
+            "@data/*": ["./data/*"],
+            "@database/*": ["./src/database/*"],
+            "@objects/*": ["./src/objects/*"],
+            "@plugin/*": ["./src/plugin/*"],
+            "@utils/*": ["./src/utils/*"]
+        }
+    },
+    "include": ["src"]
+}

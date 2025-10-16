@@ -3,8 +3,8 @@
   "version": "1.11.0-beta",
   "description": "A server for https://github.com/wizguin/yukon",
   "scripts": {
-    "dev": "babel-watch ./src/World.js Login Blizzard",
-    "build": "rimraf dist && babel src -d dist --copy-files",
+    "dev": "nodemon ./src/World.ts Login Blizzard",
+    "build": "rimraf dist && tsc && tsc-alias",
     "start": "pm2 start ecosystem.config.js",
     "stop": "pm2 stop ecosystem.config.js",
     "restart": "pm2 restart ecosystem.config.js",
@@ -24,13 +24,14 @@
   },
   "homepage": "https://github.com/wizguin/yukon-server#readme",
   "devDependencies": {
-    "@babel/cli": "^7.28.3",
-    "@babel/core": "^7.28.3",
-    "@babel/node": "^7.28.0",
-    "@babel/preset-env": "^7.28.3",
-    "babel-plugin-module-resolver": "^5.0.2",
-    "babel-watch": "^7.8.1",
-    "rimraf": "^6.0.1"
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^24.7.2",
+    "nodemon": "^3.1.10",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

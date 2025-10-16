@@ -1,0 +1,10 @@
+{
+    "watch": [
+        "./src",
+        "./config",
+        "./data"
+    ],
+    "execMap": {
+        "ts": "ts-node --transpile-only -r tsconfig-paths/register"
+    }
+}
