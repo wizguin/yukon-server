@@ -1,18 +1,28 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+import type User from '@objects/user/User'
+
+import Sequelize from 'sequelize'
+
 
 export default class Ignores extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare userId: number
+    declare ignoreId: number
+
+    declare user: User
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 ignoreId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 }
@@ -21,7 +31,7 @@ export default class Ignores extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

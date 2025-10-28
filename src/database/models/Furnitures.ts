@@ -1,39 +1,51 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+
+import Sequelize from 'sequelize'
+
 
 export default class Furnitures extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare id: number
+    declare userId: number
+    declare furnitureId: number
+    declare x: number
+    declare y: number
+    declare rotation: number
+    declare frame: number
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 id: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true,
                     autoIncrement: true
                 },
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 furnitureId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 x: {
-                    type: DataTypes.INTEGER(6),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 y: {
-                    type: DataTypes.INTEGER(6),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 rotation: {
-                    type: DataTypes.INTEGER(6),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 frame: {
-                    type: DataTypes.INTEGER(6),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 }
             },
@@ -41,7 +53,7 @@ export default class Furnitures extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

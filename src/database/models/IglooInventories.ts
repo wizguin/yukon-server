@@ -1,18 +1,25 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+
+import Sequelize from 'sequelize'
+
 
 export default class IglooInventories extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare userId: number
+    declare iglooId: number
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 iglooId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 }
@@ -21,7 +28,7 @@ export default class IglooInventories extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

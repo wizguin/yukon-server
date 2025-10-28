@@ -1,5 +1,7 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+import type Users from './Users'
 import pick from '@utils/pick'
 
 import Sequelize from 'sequelize'
@@ -9,46 +11,57 @@ const systemName = 'sys'
 
 export default class Postcards extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare id: number
+    declare userId: number
+    declare senderId: number
+    declare postcardId: number
+    declare sendDate: number
+    declare details: string
+    declare hasRead: boolean
+    declare senderName: string
+
+    declare user: Users
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 id: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true,
                     autoIncrement: true
                 },
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 senderId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: true
                 },
                 postcardId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 sendDate: {
                     type: Sequelize.DATE(3),
                     allowNull: false,
-                    defaultValue: DataTypes.NOW
+                    defaultValue: Sequelize.NOW
                 },
                 details: {
-                    type: DataTypes.STRING(255),
+                    type: Sequelize.STRING(255),
                     allowNull: true,
                     defaultValue: null
                 },
                 hasRead: {
-                    type: DataTypes.BOOLEAN,
+                    type: Sequelize.BOOLEAN,
                     allowNull: false,
                     defaultValue: 0
                 },
                 senderName: {
-                    type: DataTypes.VIRTUAL,
+                    type: Sequelize.VIRTUAL,
                     get() {
-                        return this.user?.username
+                        return (this as Postcards).user?.username
                     }
                 }
             },
@@ -56,7 +69,7 @@ export default class Postcards extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

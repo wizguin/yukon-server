@@ -1,27 +1,36 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+
+import Sequelize from 'sequelize'
+
 
 export default class Cards extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare userId: number
+    declare cardId: number
+    declare quantity: number
+    declare memberQuantity: number
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 cardId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 quantity: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                 },
                 memberQuantity: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                 }
             },
@@ -29,7 +38,7 @@ export default class Cards extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

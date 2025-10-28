@@ -1,42 +1,85 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
 import pick from '@utils/pick'
+
+import type Bans from './Bans'
+import type AuthTokens from './AuthTokens'
+import type Buddies from './Buddies'
+import type Ignores from './Ignores'
+import type Inventories from './Inventories'
+import type IglooInventories from './IglooInventories'
+import type FurnitureInventories from './FurnitureInventories'
+import type Cards from './Cards'
+import type Postcards from './Postcards'
+import type Pets from './Pets'
 
 import Sequelize from 'sequelize'
 
 
 export default class Users extends BaseModel {
 
-    static init(sequelize, DataTypes) {
-        return super.init(
+    declare id: number
+    declare username: string
+    declare password: string
+    declare loginKey: string | null
+    declare rank: number
+    declare permaBan: boolean
+    declare joinTime: number
+    declare coins: number
+    declare head: number
+    declare face: number
+    declare neck: number
+    declare body: number
+    declare hand: number
+    declare feet: number
+    declare color: number
+    declare photo: number
+    declare flag: number
+    declare ninjaRank: number
+    declare ninjaProgress: number
+
+    declare authToken: AuthTokens
+    declare ban: Bans
+    declare buddies: Buddies[]
+    declare ignores: Ignores[]
+    declare inventory: Inventories[]
+    declare igloos: IglooInventories[]
+    declare furniture: FurnitureInventories[]
+    declare cards: Cards[]
+    declare postcards: Postcards[]
+    declare pets: Pets[]
+
+    static initModel(sequelize: Sequelize.Sequelize) {
+        return Users.init(
             {
                 id: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true,
                     autoIncrement: true
                 },
                 username: {
-                    type: DataTypes.STRING(12),
+                    type: Sequelize.STRING(12),
                     allowNull: false
                 },
                 password: {
-                    type: DataTypes.STRING(60),
+                    type: Sequelize.STRING(60),
                     allowNull: false
                 },
                 loginKey: {
-                    type: DataTypes.TEXT,
+                    type: Sequelize.TEXT,
                     allowNull: true
                 },
                 rank: {
-                    type: DataTypes.INTEGER(1),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 1
                 },
                 permaBan: {
-                    type: DataTypes.BOOLEAN,
+                    type: Sequelize.BOOLEAN,
                     allowNull: false,
-                    defaultValue: 0
+                    defaultValue: false
                 },
                 joinTime: {
                     type: Sequelize.DATE,
@@ -44,62 +87,62 @@ export default class Users extends BaseModel {
                     defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
                 },
                 coins: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 500
                 },
                 head: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 face: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 neck: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 body: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 hand: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 feet: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 color: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 1
                 },
                 photo: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 flag: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 ninjaRank: {
-                    type: DataTypes.INTEGER(1),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 },
                 ninjaProgress: {
-                    type: DataTypes.INTEGER(3),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 0
                 }
@@ -108,7 +151,7 @@ export default class Users extends BaseModel {
         )
     }
 
-    static associate(db) {
+    static associate(db: Database) {
         this.hasOne(db.authTokens, {
             foreignKey: 'userId',
             as: 'authToken'

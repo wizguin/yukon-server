@@ -1,34 +1,45 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+
+import Sequelize from 'sequelize'
+
 
 export default class Igloos extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare userId: number
+    declare type: number
+    declare flooring: number
+    declare music: number
+    declare location: number
+    declare locked: boolean
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 type: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 flooring: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 music: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 location: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 locked: {
-                    type: DataTypes.BOOLEAN,
+                    type: Sequelize.BOOLEAN,
                     allowNull: false
                 }
             },
@@ -36,7 +47,7 @@ export default class Igloos extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

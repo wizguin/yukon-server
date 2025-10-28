@@ -1,18 +1,28 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+import type Users from './Users'
+
+import Sequelize from 'sequelize'
+
 
 export default class Buddies extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare userId: number
+    declare buddyId: number
+
+    declare user: Users
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 buddyId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 }
@@ -21,7 +31,7 @@ export default class Buddies extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

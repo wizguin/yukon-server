@@ -1,12 +1,23 @@
 import BaseModel from '../BaseModel'
 
 import { clamp } from '@utils/math'
+import type Database from '@database/Database'
 import pick from '@utils/pick'
 
 import Sequelize from 'sequelize'
 
 
 export default class Pets extends BaseModel {
+
+    declare id: number
+    declare userId: number
+    declare typeId: number
+    declare name: string
+    declare adoptionDate: number
+    declare energy: number
+    declare health: number
+    declare rest: number
+    declare feedPostcardId: number
 
     x = 0
     y = 0
@@ -27,49 +38,49 @@ export default class Pets extends BaseModel {
         return Math.round((statTotal / 300) * 100)
     }
 
-    static init(sequelize, DataTypes) {
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 id: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true,
                     autoIncrement: true
                 },
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 typeId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false
                 },
                 name: {
-                    type: DataTypes.STRING(12),
+                    type: Sequelize.STRING(12),
                     allowNull: false,
                 },
                 adoptionDate: {
                     type: Sequelize.DATE,
                     allowNull: false,
-                    defaultValue: DataTypes.NOW
+                    defaultValue: Sequelize.NOW
                 },
                 energy: {
-                    type: DataTypes.INTEGER(3),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 100
                 },
                 health: {
-                    type: DataTypes.INTEGER(3),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 100
                 },
                 rest: {
-                    type: DataTypes.INTEGER(3),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     defaultValue: 100
                 },
                 feedPostcardId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: true,
                     defaultValue: null
                 }
@@ -78,15 +89,16 @@ export default class Pets extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })
     }
 
-    updateStats(updates) {
+    updateStats(updates: any) {
         // Apply current  stats
         for (const stat in updates) {
+            // @ts-expect-error temp
             updates[stat] = clamp(this[stat] + updates[stat], 0, 100)
         }
 

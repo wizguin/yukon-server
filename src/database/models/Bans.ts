@@ -1,5 +1,7 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+
 import Sequelize from 'sequelize'
 
 
@@ -7,17 +9,24 @@ export default class Bans extends BaseModel {
 
     protectedAttributes = ['id', 'moderatorId', 'message']
 
-    static init(sequelize, DataTypes) {
+    declare id: number
+    declare userId: number
+    declare issued: number
+    declare expires: number
+    declare moderatorId: number
+    declare message: string
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 id: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true,
                     autoIncrement: true
                 },
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                 },
                 issued: {
@@ -30,11 +39,11 @@ export default class Bans extends BaseModel {
                     allowNull: false
                 },
                 moderatorId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: true
                 },
                 message: {
-                    type: DataTypes.STRING(60),
+                    type: Sequelize.STRING(60),
                     allowNull: true
                 }
             },
@@ -42,7 +51,7 @@ export default class Bans extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

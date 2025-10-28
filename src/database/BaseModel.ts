@@ -1,14 +1,14 @@
-import Sequelize from 'sequelize'
+import { Model } from 'sequelize'
 
 
-export default class BaseModel extends Sequelize.Model {
+export default abstract class BaseModel extends Model {
 
-    protectedAttributes = []
+    protectedAttributes: string[] = []
 
     toJSON() {
-        let attributes = this.get()
+        const attributes = this.get()
 
-        for (let attribute of this.protectedAttributes) {
+        for (const attribute of this.protectedAttributes) {
             delete attributes[attribute]
         }
 

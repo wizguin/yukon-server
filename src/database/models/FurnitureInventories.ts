@@ -1,23 +1,31 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+
+import Sequelize from 'sequelize'
+
 
 export default class FurnitureInventories extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare userId: number
+    declare itemId: number
+    declare quantity: number
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 itemId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 quantity: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                 }
             },
@@ -25,7 +33,7 @@ export default class FurnitureInventories extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })

@@ -1,25 +1,32 @@
 import BaseModel from '../BaseModel'
 
+import type Database from '@database/Database'
+
 import Sequelize from 'sequelize'
 
 
 export default class AuthTokens extends BaseModel {
 
-    static init(sequelize, DataTypes) {
+    declare userId: number
+    declare selector: string
+    declare validator: string
+    declare timestamp: number
+
+    static initModel(sequelize: Sequelize.Sequelize) {
         return super.init(
             {
                 userId: {
-                    type: DataTypes.INTEGER(11),
+                    type: Sequelize.INTEGER,
                     allowNull: false,
                     primaryKey: true
                 },
                 selector: {
-                    type: DataTypes.STRING(36),
+                    type: Sequelize.STRING(36),
                     allowNull: false,
                     primaryKey: true
                 },
                 validator: {
-                    type: DataTypes.STRING(60),
+                    type: Sequelize.STRING(60),
                     allowNull: false
                 },
                 timestamp: {
@@ -32,7 +39,7 @@ export default class AuthTokens extends BaseModel {
         )
     }
 
-    static associate({ users }) {
+    static associate({ users }: Database) {
         this.belongsTo(users, {
             foreignKey: 'userId'
         })
