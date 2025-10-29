@@ -1,23 +1,28 @@
 import Collection from '../Collection'
 
+import type GameUser from '@objects/user/GameUser'
+
 
 export default class BuddyCollection extends Collection {
 
-    constructor(user, models) {
+    usersById: Record<number, GameUser>
+
+    constructor(user: GameUser, models: any[]) {
         super(user, models, 'buddies', 'buddyId')
 
+        // @ts-expect-error temp
         this.usersById = this.handler.usersById
     }
 
-    add(id) {
+    add(id: number) {
         super.add({ userId: this.user.id, buddyId: id })
     }
 
-    isOnline(id) {
+    isOnline(id: any) {
         return id in this.usersById
     }
 
-    sendOnline(id) {
+    sendOnline(id: any) {
         let user = this.usersById[id]
 
         user.send('buddy_online', { id: this.user.id })
@@ -26,6 +31,7 @@ export default class BuddyCollection extends Collection {
     sendOffline() {
         for (let buddy in this.collection) {
             if (this.isOnline(buddy)) {
+                // @ts-expect-error temp
                 let user = this.usersById[buddy]
 
                 user.send('buddy_offline', { id: this.user.id })

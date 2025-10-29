@@ -1,13 +1,15 @@
 import Collection from '../Collection'
 
+import type GameUser from '@objects/user/GameUser'
+
 
 export default class IgnoreCollection extends Collection {
 
-    constructor(user, models) {
+    constructor(user: GameUser, models: any[]) {
         super(user, models, 'ignores', 'ignoreId')
     }
 
-    add(id) {
+    add(id: number) {
         super.add({ userId: this.user.id, ignoreId: id })
     }
 

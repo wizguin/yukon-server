@@ -1,19 +1,21 @@
 import Collection from '../Collection'
 
+import type GameUser from '@objects/user/GameUser'
+
 import { cards } from '@data/data'
 
 
 export default class CardCollection extends Collection {
 
-    constructor(user, models) {
-        super(user, models, 'cards', 'cardId')
+    starterDeckId = 821
 
-        this.starterDeckId = 821
+    constructor(user: GameUser, models: any[]) {
+        super(user, models, 'cards', 'cardId')
     }
 
     // Owned cards * their quantities
     get deck() {
-        let deck = []
+        let deck: any[] = []
 
         this.keys.forEach(card => {
             const quantity = this.getQuantity(card)
@@ -30,11 +32,11 @@ export default class CardCollection extends Collection {
         return hasStarterDeck && hasCards
     }
 
-    getQuantity(card) {
+    getQuantity(card: any) {
         return this.collection[card].quantity
     }
 
-    add(card, quantity = 1) {
+    add(card: number, quantity = 1) {
         if (this.includes(card)) {
             this.collection[card].update({ quantity: this.getQuantity(card) + quantity })
 
@@ -47,7 +49,7 @@ export default class CardCollection extends Collection {
         return this.keys.map(cardId => this.cardToJSON(cardId))
     }
 
-    cardToJSON(cardId) {
+    cardToJSON(cardId: string) {
         const card = cards[cardId]
 
         return {

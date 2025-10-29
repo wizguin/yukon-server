@@ -1,13 +1,16 @@
 import Collection from '../Collection'
 
+import type GameUser from '@objects/user/GameUser'
+
 
 export default class PostcardCollection extends Collection {
 
-    constructor(user, models) {
+    constructor(user: GameUser, models: any[]) {
         super(user, models, 'postcards', 'id')
     }
 
-    async add(senderId, postcardId, details = null) {
+    // @ts-expect-error temp
+    async add(senderId: number, postcardId: number, details: any = null) {
         try {
             const model = await this.model.create({
                 userId: this.user.id,
@@ -29,12 +32,14 @@ export default class PostcardCollection extends Collection {
             return model
 
         } catch (error) {
-            this.handler.error(error)
+            if (error instanceof Error) {
+                this.handler.error(error)
+            }
         }
 
     }
 
-    async removeFrom(senderId) {
+    async removeFrom(senderId: number) {
         // Delete query
         await this.model.destroy({ where: { userId: this.user.id, senderId: senderId } })
 

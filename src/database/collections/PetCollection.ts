@@ -1,4 +1,6 @@
 import Collection from '../Collection'
+
+import type GameUser from '@objects/user/GameUser'
 import Pets from '@database/models/Pets'
 
 import { clamp } from '@utils/math'
@@ -18,14 +20,17 @@ const statLoss = 1
 
 export default class PetCollection extends Collection {
 
-    constructor(user, models) {
+    petUpdate: NodeJS.Timeout
+
+    constructor(user: GameUser, models: any[]) {
         super(user, models, 'pets', 'id')
 
         // First update happens immediately
         this.petUpdate = setTimeout(() => this.updatePets(), 1)
     }
 
-    async add(typeId, name) {
+    // @ts-expect-error temp
+    async add(typeId: number, name: string) {
         if (this.count >= maxPets || !(typeId in pets)) {
             return
         }
@@ -52,7 +57,9 @@ export default class PetCollection extends Collection {
             this.user.addSystemMail(adoptPostcard, name)
 
         } catch (error) {
-            this.handler.error(error)
+            if (error instanceof Error) {
+                this.handler.error(error)
+            }
         }
     }
 
@@ -76,7 +83,7 @@ export default class PetCollection extends Collection {
         this.petUpdate = setTimeout(() => this.updatePets(), updatePetsInterval)
     }
 
-    decreaseStats(pet) {
+    decreaseStats(pet: Pets) {
         // Prevent walking pets from running away
         const minStat = pet.walking ? 10 : 0
 
@@ -85,7 +92,7 @@ export default class PetCollection extends Collection {
         pet.rest = this.getNewStat(pet.rest, minStat)
     }
 
-    checkRunAway(pet) {
+    checkRunAway(pet: Pets) {
         // Can't run away whilst owner is in their igloo
         if (this.user.inOwnIgloo()) return false
 
@@ -103,7 +110,7 @@ export default class PetCollection extends Collection {
      *
      * @param {Pets} pet - The pet instance to check
      */
-    async checkHungry(pet) {
+    async checkHungry(pet: Pets) {
         if (!this.user.inOwnIgloo() && pet.hungry && !pet.feedPostcardId) {
             const postcard = await this.user.addSystemMail(feedPostcard, pet.name)
 
@@ -111,8 +118,8 @@ export default class PetCollection extends Collection {
         }
     }
 
-    sendUpdates(updates) {
-        if (this.user.inOwnIgloo()) {
+    sendUpdates(updates: any) {
+        if (this.user.inOwnIgloo() && this.user.room) {
             this.user.room.send(this.user, 'update_pets', { updates: updates }, [])
         }
 
@@ -120,11 +127,11 @@ export default class PetCollection extends Collection {
         this.model.bulkCreate(updates, { updateOnDuplicate: ['energy', 'health', 'rest'] })
     }
 
-    checkName(name) {
+    checkName(name: string) {
         return isString(name) && isLength(name, 1, 12) && !invalidNameRegex.test(name)
     }
 
-    getNewStat(stat, min = 0) {
+    getNewStat(stat: number, min = 0) {
         return clamp(stat - statLoss, min, 100)
     }
 

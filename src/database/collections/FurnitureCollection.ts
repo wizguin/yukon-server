@@ -1,21 +1,24 @@
 import Collection from '../Collection'
 
+import type GameUser from '@objects/user/GameUser'
+
 
 export default class FurnitureCollection extends Collection {
 
-    constructor(user, models) {
+    constructor(user: GameUser, models: any[]) {
         super(user, models, 'furnitureInventories', 'itemId')
     }
 
     get furnitures() {
+        // @ts-expect-error temp
         return this.handler.crumbs.furnitures
     }
 
-    getQuantity(item) {
+    getQuantity(item: any) {
         return this.collection[item].quantity
     }
 
-    add(item) {
+    add(item: number) {
         if (this.includes(item)) {
             let quantity = this.getQuantity(item)
 
@@ -38,6 +41,7 @@ export default class FurnitureCollection extends Collection {
         let furniture = {}
 
         for (let f in this.collection) {
+            // @ts-expect-error temp
             furniture[f] = this.collection[f].quantity
         }
 
