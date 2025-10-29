@@ -1,11 +1,52 @@
+import type { Config } from '../config/config'
+
+import type AuthTokens from './models/AuthTokens'
+import type Bans from './models/Bans'
+import type Buddies from './models/Buddies'
+import type Cards from './models/Cards'
+import type FurnitureInventories from './models/FurnitureInventories'
+import type Furnitures from './models/Furnitures'
+import type IglooInventories from './models/IglooInventories'
+import type Igloos from './models/Igloos'
+import type Ignores from './models/Ignores'
+import type Inventories from './models/Inventories'
+import type Pets from './models/Pets'
+import type Postcards from './models/Postcards'
+import type Users from './models/Users'
+import type Worlds from './models/Worlds'
+
 import fs from 'fs'
 import path from 'path'
-import Sequelize from 'sequelize'
+import { FindOptions, Sequelize } from 'sequelize'
 
+
+type FindCallback = ((result: any) => any) | null
 
 export default class Database {
 
-    constructor(config) {
+    sequelize: Sequelize
+    slots: string[]
+    dir: string
+
+    usernameRegex: RegExp
+    selectorRegex: RegExp
+
+    authTokens!: typeof AuthTokens
+    bans!: typeof Bans
+    buddies!: typeof Buddies
+    cards!: typeof Cards
+    furnitureInventories!: typeof FurnitureInventories
+    furnitures!: typeof Furnitures
+    iglooInventories!: typeof IglooInventories
+    igloos!: typeof Igloos
+    ignores!: typeof Ignores
+    inventories!: typeof Inventories
+    pets!: typeof Pets
+    postcards!: typeof Postcards
+    users!: typeof Users
+    worlds!: typeof Worlds
+
+    constructor(config: Config['database']) {
         this.sequelize = new Sequelize(
             config.database,
             config.user,
@@ -40,14 +81,15 @@ export default class Database {
     }
 
     loadModels() {
-        let models = []
+        let models: any[] = []
 
         fs.readdirSync(this.dir).forEach(model => {
             let modelImport = require(path.join(this.dir, model)).default
-            let modelObject = modelImport.init(this.sequelize, Sequelize)
+            let modelObject = modelImport.initModel(this.sequelize, Sequelize)
 
             let name = model.charAt(0).toLowerCase() + model.slice(1, -3)
 
+            // @ts-expect-error temp
             this[name] = modelObject
 
             models.push(modelObject)
@@ -56,7 +98,7 @@ export default class Database {
         return models
     }
 
-    loadAssociations(models) {
+    loadAssociations(models: any[]) {
         for (let model of models) {
             if (model.associate) {
                 model.associate(this)
@@ -64,7 +106,7 @@ export default class Database {
         }
     }
 
-    async getUserByUsername(username) {
+    async getUserByUsername(username: string) {
         if (this.usernameRegex.test(username)) {
             return null
         }
@@ -74,13 +116,13 @@ export default class Database {
         })
     }
 
-    async getUserById(userId) {
+    async getUserById(userId: number) {
         return await this.findOne('users', {
             where: { id: userId }
         })
     }
 
-    async getUsername(userId) {
+    async getUsername(userId: number) {
         return await this.findOne('users', {
             where: { id: userId },
             attributes: ['username'],
@@ -91,13 +133,13 @@ export default class Database {
         })
     }
 
-    async getBanCount(userId) {
+    async getBanCount(userId: number) {
         return await this.bans.count({
             where: { userId: userId }
         })
     }
 
-    async getIgloo(userId) {
+    async getIgloo(userId: number) {
         return await this.findOne('igloos', {
             where: { userId: userId },
             raw: true
@@ -109,17 +151,17 @@ export default class Database {
         })
     }
 
-    async getFurnitures(userId) {
+    async getFurnitures(userId: number) {
         return await this.findAll('furnitures', {
             where: { userId: userId },
             raw: true
 
         }, [], (result) => {
-            return result.map(({ id, userId, ...furniture }) => furniture)
+            return result.map(({ id, userId, ...furniture }: any) => furniture)
         })
     }
 
-    async getPets(userId) {
+    async getPets(userId: number) {
         return await this.findAll('pets', {
             where: { userId: userId }
         })
@@ -129,13 +171,13 @@ export default class Database {
         return await this.getCrumb('worlds')
     }
 
-    async getIgnored(userId, ignoreId) {
+    async getIgnored(userId: number, ignoreId: number) {
         return await this.findOne('ignores', {
             where: { userId: userId, ignoreId: ignoreId }
         })
     }
 
-    async getPostcardsCount(userId) {
+    async getPostcardsCount(userId: number) {
         return await this.postcards.count({
             where: { userId: userId }
         })
@@ -143,16 +185,17 @@ export default class Database {
 
     /*========== Helper functions ==========*/
 
-    findOne(table, options = {}, emptyReturn = null, callback = null) {
+    findOne(table: string, options: FindOptions = {}, emptyReturn: any = null, callback: FindCallback = null) {
         return this.find('findOne', table, options, emptyReturn, callback)
     }
 
-    findAll(table, options = {}, emptyReturn = null, callback = null) {
+    findAll(table: string, options: FindOptions = {}, emptyReturn: any = null, callback: FindCallback = null) {
         return this.find('findAll', table, options, emptyReturn, callback)
     }
 
-    find(find, table, options, emptyReturn, callback) {
-        return this[table][find](options).then((result) => {
+    find(find: string, table: string, options: FindOptions, emptyReturn: any = null, callback: FindCallback = null) {
+        // @ts-expect-error temp
+        return this[table][find](options).then((result: any) => {
 
             if (callback && result) {
                 return callback(result)
@@ -164,7 +207,7 @@ export default class Database {
         })
     }
 
-    async getCrumb(table) {
+    async getCrumb(table: string) {
         return await this.findAll(table, {
             raw: true
 
@@ -173,7 +216,7 @@ export default class Database {
         })
     }
 
-    arrayToObject(array, key, value = null) {
+    arrayToObject(array: any[], key: string, value: string | null = null) {
         return array.reduce((obj, item) => {
             // If a value is passed in then the key will be mapped to item[value]
             let result = (value) ? item[value] : item
