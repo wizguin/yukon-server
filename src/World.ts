@@ -4,20 +4,23 @@ import LoginHandler from './handlers/LoginHandler'
 import Server from './server/Server'
 
 import config from '../config/config.json'
+import type { Config } from './config/config'
+
+const conf = config as Config
 
 
 class World extends Server {
 
-    constructor(id) {
-        console.log(`[${id}] Starting world ${id} on port ${config.worlds[id].port}`)
+    constructor(id: string) {
+        console.log(`[${id}] Starting world ${id} on port ${conf.worlds[id].port}`)
 
         let users = {}
-        let db = new Database(config.database)
+        let db = new Database(conf.database)
 
-        let handler = (id == 'Login') ? LoginHandler : GameHandler
-        handler = new handler(id, users, db, config)
+        let handlerClass = id === 'Login' ? LoginHandler : GameHandler
+        let handler = new handlerClass(id, users, db, conf)
 
-        super(id, users, db, handler, config)
+        super(id, users, db, handler, conf)
     }
 
 }
