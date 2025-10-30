@@ -1,9 +1,17 @@
+import type GameUser from '@objects/user/GameUser'
 import InstanceFactory from '@objects/instance/InstanceFactory'
 
 
 export default class Waddle {
 
-    constructor(data) {
+    users: (GameUser | null)[]
+
+    id!: number
+    roomId!: number
+    seats!: number
+    game!: string
+
+    constructor(data: any) {
         Object.assign(this, data)
 
         this.users = new Array(data.seats).fill(null)
@@ -13,7 +21,7 @@ export default class Waddle {
         return this.users.includes(null)
     }
 
-    add(user) {
+    add(user: GameUser) {
         if (this.game === 'card' && !user.cards.hasCards) {
             return
         }
@@ -29,16 +37,16 @@ export default class Waddle {
         }
 
         user.send('join_waddle', { waddle: this.id, seat: seat, game: this.game })
-        user.room.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: user.username }, [])
+        user.room?.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: user.username }, [])
     }
 
-    remove(user) {
+    remove(user: GameUser) {
         let seat = this.users.indexOf(user)
         this.users[seat] = null
 
         user.waddle = null
 
-        user.room.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: null }, [])
+        user.room?.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: null }, [])
     }
 
     start() {
@@ -50,7 +58,9 @@ export default class Waddle {
 
     reset() {
         for (let user of this.users.filter(Boolean)) {
-            this.remove(user)
+            if (user) {
+                this.remove(user)
+            }
         }
     }
 
