@@ -1,20 +1,25 @@
+import type { Config } from '../config/config'
+import type Database from '@database/Database'
+import type GameUser from '@objects/user/GameUser'
+import type { Message } from '../server/Server'
 import PluginManager from '@plugin/PluginManager'
+import type User from '@objects/user/User'
 
 import EventEmitter from 'events'
 
 
 export default class BaseHandler {
 
-    constructor(id, users, db, config) {
-        this.id = id
-        this.users = users
-        this.db = db
-        this.config = config
+    logging = true
+    plugins!: PluginManager
+    events: EventEmitter
 
-        this.logging = true
-
-        this.plugins
-
+    constructor(
+        public id: string,
+        public users: Record<string, User | GameUser>,
+        public db: Database,
+        public config: Config
+    ) {
         this.events = new EventEmitter({ captureRejections: true })
 
         this.events.on('error', (error) => {
@@ -26,7 +31,7 @@ export default class BaseHandler {
         this.plugins = new PluginManager(this, pluginsDir)
     }
 
-    handle(message, user) {
+    handle(message: Message, user: User | GameUser) {
         try {
             if (this.logging) {
                 console.log(`[${this.id}] Received: ${message.action} ${JSON.stringify(message.args)}`)
@@ -47,19 +52,21 @@ export default class BaseHandler {
             }
 
         } catch(error) {
-            this.error(error)
+            if (error instanceof Error) {
+                this.error(error)
+            }
         }
     }
 
-    handleGuard(message, user) {
+    handleGuard(message: Message, user: User | GameUser) {
         return false
     }
 
-    setCooldown({ action }, user) {
+    setCooldown({ action }: Message, user: User | GameUser) {
         user.cooldowns[action] = Date.now()
     }
 
-    isOnCooldown({ action }, user) {
+    isOnCooldown({ action }: Message, user: User | GameUser) {
         if (!(action in this.config.cooldowns)) {
             return false
         }
@@ -74,11 +81,11 @@ export default class BaseHandler {
         return Date.now() - lastUsed < cooldown
     }
 
-    close(user) {
+    close(user: User | GameUser) {
         delete this.users[user.socket.id]
     }
 
-    error(error) {
+    error(error: Error) {
         console.error(`[${this.id}] ERROR: ${error.stack}`)
     }
 

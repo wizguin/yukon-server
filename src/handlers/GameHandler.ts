@@ -6,12 +6,28 @@ import Room from '@objects/room/Room'
 import TableFactory from '@objects/room/table/TableFactory'
 import Waddle from '@objects/room/waddle/Waddle'
 
+import type { Config } from '../config/config'
+import type Database from '@database/Database'
+import type GameUser from '@objects/user/GameUser'
+import type { Message } from '../server/Server'
+
 import data from '@data/data'
 
 
 export default class GameHandler extends BaseHandler {
 
-    constructor(id, users, db, config) {
+    crumbs: any
+    usersById: Record<string, GameUser> = {}
+    maxUsers: number
+    rooms: Record<string, Room>
+    openIgloos: OpenIgloos
+
+    constructor(
+        public id: string,
+        public users: Record<string, GameUser>,
+        public db: Database,
+        public config: Config
+    ) {
         super(id, users, db, config)
 
         this.crumbs = {
@@ -22,8 +38,7 @@ export default class GameHandler extends BaseHandler {
             cards: data.cards
         }
 
-        this.usersById = {}
-        this.maxUsers = config.worlds[id].maxUsers
+        this.maxUsers = config.worlds[id].maxUsers || 300
 
         this.rooms = this.setRooms()
 
@@ -42,6 +57,7 @@ export default class GameHandler extends BaseHandler {
         let rooms = {}
 
         for (let room of data.rooms) {
+            // @ts-expect-error temp
             rooms[room.id] = new Room(room)
         }
 
@@ -70,11 +86,11 @@ export default class GameHandler extends BaseHandler {
         }
     }
 
-    handleGuard(message, user) {
+    handleGuard(message: Message, user: GameUser) {
         return !user.authenticated && message.action != 'game_auth'
     }
 
-    close(user) {
+    close(user: GameUser) {
         try {
             if (!user) {
                 return
@@ -115,7 +131,9 @@ export default class GameHandler extends BaseHandler {
             this.closeAndUpdatePopulation(user)
         }
         catch (error) {
-            this.error(error)
+            if (error instanceof Error) {
+                this.error(error)
+            }
         }
     }
 
@@ -127,7 +145,7 @@ export default class GameHandler extends BaseHandler {
         return this.joined.length
     }
 
-    closeAndUpdatePopulation(user) {
+    closeAndUpdatePopulation(user: GameUser) {
         super.close(user)
 
         this.updateWorldPopulation()
