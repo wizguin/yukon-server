@@ -1,29 +1,53 @@
 import Room from './Room'
 
+import Database from '@database/Database'
+import type GameUser from '@objects/user/GameUser'
+
+
+interface Furniture {
+    furnitureId: number
+    x: number
+    y: number
+    rotation: number
+    frame: number
+}
 
 export default class Igloo extends Room {
 
-    constructor(data, db, iglooIdOffset) {
+    isIgloo = true
+
+    userId: number
+    type: number
+    flooring: number
+    music: number
+    location: number
+    furniture: Furniture[]
+
+    constructor(
+        data: any,
+        private db: Database,
+        private iglooIdOffset: number
+    ) {
         super(data)
 
-        this.db = db
-        this.iglooIdOffset = iglooIdOffset
+        this.userId = data.userId
+        this.type = data.type
+        this.flooring = data.flooring
+        this.music = data.music
+        this.location = data.location
+        this.furniture = data.furniture
 
-        this.isIgloo = true
+        this.id = data.userId + this.iglooIdOffset
     }
 
-    get id() {
-        return this.userId + this.iglooIdOffset
-    }
-
-    add(user) {
+    add(user: GameUser) {
         this.users[user.socket.id] = user
 
         user.send('join_igloo', this)
         this.send(user, 'add_player', { user: user })
     }
 
-    refresh(user) {
+    refresh(user: GameUser) {
         for (let u of this.userValues) {
             u.x = 0
             u.y = 0
@@ -32,8 +56,8 @@ export default class Igloo extends Room {
         this.send(user, 'join_igloo', this, [])
     }
 
-    update(query) {
-        this.db.igloos.update(query, { where: { userId: this.userId }})
+    update(query: any) {
+        this.db.igloos.update(query, { where: { userId: this.userId } })
     }
 
     async clearFurniture() {
