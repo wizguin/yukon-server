@@ -1,18 +1,21 @@
 import CardInstance from '@objects/instance/card/CardInstance'
+import type GameUser from '@objects/user/GameUser'
 import MatchmakerPlayer from './MatchmakerPlayer'
+import type Room from '../Room'
 
+
+const maxPlayers = 2
+const matchEvery = 10
 
 export default class CardMatchmaker {
 
-    constructor(matchmaker, room) {
+    room: Room
+    players: Record<number, MatchmakerPlayer> = {}
+
+    constructor(matchmaker: any, room: Room) {
         Object.assign(this, matchmaker)
 
         this.room = room
-
-        this.maxPlayers = 2
-        this.matchEvery = 10
-
-        this.players = {}
 
         this.start()
     }
@@ -24,21 +27,21 @@ export default class CardMatchmaker {
     tick() {
         let values = Object.values(this.players)
 
-        let matchesLength = values.length - values.length % this.maxPlayers
+        let matchesLength = values.length - values.length % maxPlayers
 
         if (!matchesLength) return
 
         this.sort(values)
         let matches = values.filter((p, i) => i < matchesLength)
 
-        for (let i = 0; i < matchesLength; i += this.maxPlayers) {
-            let matched = matches.slice(i, i + this.maxPlayers)
+        for (let i = 0; i < matchesLength; i += maxPlayers) {
+            let matched = matches.slice(i, i + maxPlayers)
 
             this.updateMatched(matched)
         }
     }
 
-    updateMatched(matched) {
+    updateMatched(matched: MatchmakerPlayer[]) {
         let ready = matched.some(player => player.tick == -1)
 
         if (!ready) {
@@ -51,7 +54,7 @@ export default class CardMatchmaker {
         this.onMatch(matched)
     }
 
-    onTick(matched) {
+    onTick(matched: MatchmakerPlayer[]) {
         let users = matched.map(player => player.user.username)
 
         for (let player of matched) {
@@ -59,7 +62,7 @@ export default class CardMatchmaker {
         }
     }
 
-    onMatch(matched) {
+    onMatch(matched: MatchmakerPlayer[]) {
         for (let player of matched) {
             this.remove(player.user)
         }
@@ -70,31 +73,31 @@ export default class CardMatchmaker {
         instance.init()
     }
 
-    decreaseTick(matched) {
+    decreaseTick(matched: MatchmakerPlayer[]) {
         for (let player of matched) {
             player.tick -= 1
         }
     }
 
-    add(user) {
+    add(user: GameUser) {
         if (!user.cards.hasCards) {
             return
         }
 
-        this.players[user.id] = new MatchmakerPlayer(user, this.matchEvery)
+        this.players[user.id] = new MatchmakerPlayer(user, matchEvery)
 
         user.send('join_matchmaking')
     }
 
-    remove(user) {
+    remove(user: GameUser) {
         delete this.players[user.id]
     }
 
-    includes(user) {
+    includes(user: GameUser) {
         return user.id in this.players
     }
 
-    sort(values) {
+    sort(values: MatchmakerPlayer[]) {
         values.sort((a, b) => a.user.ninjaRank - b.user.ninjaRank)
     }
 

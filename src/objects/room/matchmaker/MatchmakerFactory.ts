@@ -1,5 +1,8 @@
 import CardMatchmaker from './CardMatchmaker'
+import type Room from '../Room'
 
+
+type MatchmakerType = keyof typeof MatchmakerFactory.types
 
 export default class MatchmakerFactory {
 
@@ -7,8 +10,8 @@ export default class MatchmakerFactory {
         'card': CardMatchmaker
     }
 
-    static createMatchmaker(matchmaker, room) {
-        return new this.types[matchmaker.game](matchmaker, room)
+    static createMatchmaker(matchmaker: any, room: Room) {
+        return new this.types[matchmaker.game as MatchmakerType](matchmaker, room)
     }
 
 }
