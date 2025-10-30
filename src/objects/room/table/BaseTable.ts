@@ -1,9 +1,19 @@
+import GameUser from '@objects/user/GameUser'
+import type Room from '../Room'
+
 export default class BaseTable {
 
-    constructor(table, room) {
-        Object.assign(this, table)
+    users: GameUser[] = []
+    started = false
+    currentTurn = 1
 
-        this.room = room
+    id!: number
+    roomId!: number
+    game!: string
+    map: any[] = []
+
+    constructor(table: any, private room: Room) {
+        Object.assign(this, table)
 
         this.init()
     }
@@ -18,15 +28,15 @@ export default class BaseTable {
         return this.users.slice(0, 2).map(user => user.username)
     }
 
-    isPlayingUser(user) {
+    isPlayingUser(user: GameUser) {
         return this.playingUsers.includes(user.username)
     }
 
-    getGame(args, user) {
+    getGame(args: any, user: GameUser) {
         user.send('get_game', this)
     }
 
-    joinGame(args, user) {
+    joinGame(args: any, user: GameUser) {
         if (this.started) {
             return
         }
@@ -42,16 +52,16 @@ export default class BaseTable {
         }
     }
 
-    add(user) {
+    add(user: GameUser) {
         this.users.push(user)
 
         let seat = this.users.length
 
         user.send('join_table', { table: this.id, seat: seat, game: this.game })
-        user.room.send(user, 'update_table', { table: this.id, seat: seat }, [])
+        user.room?.send(user, 'update_table', { table: this.id, seat: seat }, [])
     }
 
-    remove(user) {
+    remove(user: GameUser) {
         if (this.started && this.isPlayingUser(user)) {
             this.reset(user.username)
 
@@ -59,11 +69,11 @@ export default class BaseTable {
             this.users = this.users.filter(u => u != user)
 
             user.minigameRoom = null
-            user.room.send(user, 'update_table', { table: this.id, seat: this.users.length }, [])
+            user.room?.send(user, 'update_table', { table: this.id, seat: this.users.length }, [])
         }
     }
 
-    reset(quittingUser = null) {
+    reset(quittingUser: string | null = null) {
         for (let user of this.users) {
             user.minigameRoom = null
         }
@@ -78,7 +88,7 @@ export default class BaseTable {
         this.room.send(null, 'update_table', { table: this.id, seat: this.users.length })
     }
 
-    send(action, args = {}) {
+    send(action: string, args = {}) {
         for (let user of this.users) {
             user.send(action, args)
         }

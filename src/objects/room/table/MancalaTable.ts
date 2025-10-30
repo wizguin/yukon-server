@@ -1,5 +1,7 @@
 import BaseTable from './BaseTable'
 
+import type GameUser from '@objects/user/GameUser'
+
 
 export default class MancalaTable extends BaseTable {
 
@@ -12,7 +14,7 @@ export default class MancalaTable extends BaseTable {
         ]
     }
 
-    sendMove(args, user) {
+    sendMove(args: any, user: GameUser) {
         if (!this.started) {
             return
         }
@@ -36,7 +38,7 @@ export default class MancalaTable extends BaseTable {
         }
     }
 
-    isValidMove(user, hole) {
+    isValidMove(user: GameUser, hole: number) {
         if (this.map[hole] <= 0) {
             return false
         }
@@ -57,7 +59,7 @@ export default class MancalaTable extends BaseTable {
         return false
     }
 
-    makeMove(hole) {
+    makeMove(hole: number) {
         let stones = this.map[hole]
 
         this.map[hole] = 0
@@ -72,7 +74,7 @@ export default class MancalaTable extends BaseTable {
         return this.checkLastHole(hole)
     }
 
-    getNextHole(hole) {
+    getNextHole(hole: number) {
         hole++
         let opponentMancala = (this.currentTurn === 1) ? 13 : 6
 
@@ -87,7 +89,7 @@ export default class MancalaTable extends BaseTable {
         return hole
     }
 
-    checkLastHole(hole) {
+    checkLastHole(hole: number) {
         // Capture
         let oppositeHole = 12 - hole
         let myMancala = (this.currentTurn === 1) ? 6 : 13
@@ -132,15 +134,15 @@ export default class MancalaTable extends BaseTable {
         this.reset()
     }
 
-    isTurn1Side(hole) {
+    isTurn1Side(hole: number) {
         return hole >= 0 && hole <= 5
     }
 
-    isTurn2Side(hole) {
+    isTurn2Side(hole: number) {
         return hole >= 7 && hole <= 12
     }
 
-    sum(array) {
+    sum(array: number[]) {
         return array.reduce((previousValue, currentValue) => {
             return previousValue + currentValue
         }, 0)

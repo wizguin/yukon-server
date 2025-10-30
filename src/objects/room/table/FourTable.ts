@@ -1,5 +1,6 @@
 import BaseTable from './BaseTable'
 
+import type GameUser from '@objects/user/GameUser'
 import { isNumber } from '@utils/validation'
 
 
@@ -11,7 +12,7 @@ export default class FourTable extends BaseTable {
         this.map = Array.from({ length: 7 }, () => Array(6).fill(0))
     }
 
-    sendMove(args, user) {
+    sendMove(args: any, user: GameUser) {
         if (!this.started) {
             return
         }
@@ -44,7 +45,7 @@ export default class FourTable extends BaseTable {
         this.currentTurn = (this.currentTurn === 1) ? 2 : 1
     }
 
-    isValidMove(user, col) {
+    isValidMove(user: GameUser, col: number) {
         if (!isNumber(col)) {
             return false
         }
@@ -62,14 +63,14 @@ export default class FourTable extends BaseTable {
         return true
     }
 
-    makeMove(col) {
+    makeMove(col: number) {
         let row = this.map[col].lastIndexOf(0)
         this.map[col][row] = this.currentTurn
 
         return [col, row]
     }
 
-    isWin(col, row) {
+    isWin(col: number, row: number) {
         for (let [deltaRow, deltaCol] of [[1, 0], [0, 1], [1, 1], [1, -1]]) {
             let streak = 1
 
