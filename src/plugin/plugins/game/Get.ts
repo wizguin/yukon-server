@@ -1,11 +1,15 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { hasProps, isNumber } from '@utils/validation'
 
 
 export default class Get extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -13,7 +17,7 @@ export default class Get extends GamePlugin {
         }
     }
 
-    async getPlayer(args, user) {
+    async getPlayer(args: Args, user: GameUser) {
         if (!hasProps(args, 'id')) {
             return
         }

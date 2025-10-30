@@ -1,22 +1,26 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import SenseiInstance from '@objects/instance/card/SenseiInstance'
 
 
 export default class Sensei extends GamePlugin {
 
-    constructor(handler) {
+    senseiRoom = 951
+
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
             'join_sensei': this.joinSensei
         }
-
-        this.senseiRoom = 951
     }
 
-    joinSensei(args, user) {
-        if (user.room.id != this.senseiRoom) {
+    joinSensei(args: Args, user: GameUser) {
+        if (user.room?.id != this.senseiRoom) {
             return
         }
 

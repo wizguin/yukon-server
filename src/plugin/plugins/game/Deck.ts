@@ -1,22 +1,28 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import data from '@data/data'
 
 
 export default class Sensei extends GamePlugin {
 
-    constructor(handler) {
+    starterDeckId = 821
+    starterDeck: any
+
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
             'add_starter_deck': this.addStarterDeck
         }
 
-        this.starterDeckId = 821
         this.starterDeck = this.crumbs.items[this.starterDeckId]
     }
 
-    addStarterDeck(args, user) {
+    addStarterDeck(args: Args, user: GameUser) {
         if (user.inventory.includes(this.starterDeckId)) {
             return
         }
@@ -29,7 +35,7 @@ export default class Sensei extends GamePlugin {
             }
         }
 
-        const powerCards = deck.filter(card => data.cards[card].powerId > 0)
+        const powerCards = deck.filter((card: string) => data.cards[card].powerId > 0)
 
         const randomPowerCard = powerCards[Math.floor(Math.random() * powerCards.length)]
 

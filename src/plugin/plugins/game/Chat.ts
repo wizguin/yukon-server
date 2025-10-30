@@ -1,11 +1,21 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { hasProps, isNumber, isString, isLength } from '@utils/validation'
 
 
+type CommandHandler = (args: string[], user: GameUser) => void
+
 export default class Chat extends GamePlugin {
 
-    constructor(handler) {
+    commands: Record<string, CommandHandler>
+    messageRegex: RegExp
+    maxMessageLength: number
+
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -33,7 +43,7 @@ export default class Chat extends GamePlugin {
 
     // Events
 
-    sendMessage(args, user) {
+    sendMessage(args: Args, user: GameUser) {
         if (!hasProps(args, 'message')) {
             return
         }
@@ -57,10 +67,12 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_message', { id: user.id, message: args.message }, [user], true)
+        if (user.room) {
+            user.room.send(user, 'send_message', { id: user.id, message: args.message }, [user], true)
+        }
     }
 
-    sendSafe(args, user) {
+    sendSafe(args: Args, user: GameUser) {
         if (!hasProps(args, 'safe')) {
             return
         }
@@ -69,10 +81,12 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_safe', { id: user.id, safe: args.safe }, [user], true)
+        if (user.room) {
+            user.room.send(user, 'send_safe', { id: user.id, safe: args.safe }, [user], true)
+        }
     }
 
-    sendEmote(args, user) {
+    sendEmote(args: Args, user: GameUser) {
         if (!hasProps(args, 'emote')) {
             return
         }
@@ -81,10 +95,12 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_emote', { id: user.id, emote: args.emote }, [user], true)
+        if (user.room) {
+            user.room.send(user, 'send_emote', { id: user.id, emote: args.emote }, [user], true)
+        }
     }
 
-    sendJoke(args, user) {
+    sendJoke(args: Args, user: GameUser) {
         if (!hasProps(args, 'joke')) {
             return
         }
@@ -93,10 +109,12 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'send_joke', { id: user.id, joke: args.joke }, [user], true)
+        if (user.room) {
+            user.room.send(user, 'send_joke', { id: user.id, joke: args.joke }, [user], true)
+        }
     }
 
-    sendTour(args, user) {
+    sendTour(args: Args, user: GameUser) {
         if (!hasProps(args, 'roomId')) {
             return
         }
@@ -105,11 +123,13 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        if (args.roomId !== user.room.id) {
+        if (args.roomId !== user.room?.id) {
             return
         }
 
-        user.room.send(user, 'send_tour', { id: user.id, roomId: args.roomId }, [user], true)
+        if (user.room) {
+            user.room.send(user, 'send_tour', { id: user.id, roomId: args.roomId }, [user], true)
+        }
     }
 
     // Commands
@@ -120,13 +140,13 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    processCommand(message, user) {
+    processCommand(message: string, user: GameUser) {
         message = message.substring(1)
 
         let args = message.split(' ')
-        let command = args.shift().toLowerCase()
+        let command = args.shift()?.toLowerCase()
 
-        if (command in this.commands) {
+        if (command && command in this.commands) {
             this.commands[command](args, user)
             return true
         }
@@ -134,25 +154,27 @@ export default class Chat extends GamePlugin {
         return false
     }
 
-    addItem(args, user) {
+    addItem(args: Args, user: GameUser) {
         if (user.isModerator) {
+            // @ts-expect-error temp
             this.plugins.item.addItem({ item: args[0] }, user)
         }
     }
 
-    addFurniture(args, user) {
+    addFurniture(args: Args, user: GameUser) {
         if (user.isModerator) {
+            // @ts-expect-error temp
             this.plugins.igloo.addFurniture({ furniture: args[0] }, user)
         }
     }
 
-    addCoins(args, user) {
+    addCoins(args: Args, user: GameUser) {
         if (user.isModerator) {
             user.updateCoins(args[0], true)
         }
     }
 
-    joinRoom(args, user) {
+    joinRoom(args: Args, user: GameUser) {
         if (!user.isModerator) {
             return
         }
@@ -164,6 +186,7 @@ export default class Chat extends GamePlugin {
         }
 
         if (!isNaN(room)) {
+            // @ts-expect-error temp
             this.plugins.join.joinRoom({ room: parseInt(room) }, user)
             return
         }
@@ -171,15 +194,17 @@ export default class Chat extends GamePlugin {
         room = Object.values(this.rooms).find(r => r.name == room.toLowerCase())
 
         if (room) {
+            // @ts-expect-error temp
             this.plugins.join.joinRoom({ room: room.id }, user)
         }
     }
 
-    id(args, user) {
+    id(args: Args, user: GameUser) {
         user.send('error', { error: `Your ID: ${user.id}` })
     }
 
-    userPopulation(args, user) {
+    userPopulation(args: Args, user: GameUser) {
+        // @ts-expect-error temp
         user.send('error', { error: `Users online: ${this.handler.population}` })
     }
 

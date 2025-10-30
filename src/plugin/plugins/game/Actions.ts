@@ -1,11 +1,15 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { hasProps, isInRange } from '@utils/validation'
 
 
 export default class Actions extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -15,7 +19,7 @@ export default class Actions extends GamePlugin {
         }
     }
 
-    sendPosition(args, user) {
+    sendPosition(args: Args, user: GameUser) {
         if (!hasProps(args, 'x', 'y')) {
             return
         }
@@ -32,10 +36,12 @@ export default class Actions extends GamePlugin {
         user.y = args.y
         user.frame = 1
 
-        user.room.send(user, 'send_position', { id: user.id, x: args.x, y: args.y })
+        if (user.room) {
+            user.room.send(user, 'send_position', { id: user.id, x: args.x, y: args.y })
+        }
     }
 
-    sendFrame(args, user) {
+    sendFrame(args: Args, user: GameUser) {
         if (!hasProps(args, 'frame')) {
             return
         }
@@ -50,10 +56,12 @@ export default class Actions extends GamePlugin {
             user.frame = 1
         }
 
-        user.room.send(user, 'send_frame', { id: user.id, frame: args.frame, set: args.set })
+        if (user.room) {
+            user.room.send(user, 'send_frame', { id: user.id, frame: args.frame, set: args.set })
+        }
     }
 
-    snowball(args, user) {
+    snowball(args: Args, user: GameUser) {
         if (!hasProps(args, 'x', 'y')) {
             return
         }
@@ -66,7 +74,9 @@ export default class Actions extends GamePlugin {
             return
         }
 
-        user.room.send(user, 'snowball', { id: user.id, x: args.x, y: args.y })
+        if (user.room) {
+            user.room.send(user, 'snowball', { id: user.id, x: args.x, y: args.y })
+        }
     }
 
 }

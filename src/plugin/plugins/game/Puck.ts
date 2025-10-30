@@ -1,32 +1,35 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { hasProps, isNumber } from '@utils/validation'
 
 
 export default class Puck extends GamePlugin {
 
-    constructor(handler) {
+    rinkRoomId = 802
+    puckX = 0
+    puckY = 0
+
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
             'get_puck': this.getPuck,
             'move_puck': this.movePuck
         }
-
-        this.rinkRoomId = 802
-
-        this.puckX = 0
-        this.puckY = 0
     }
 
-    getPuck(args, user) {
-        if (user.room.id !== this.rinkRoomId) return
+    getPuck(args: Args, user: GameUser) {
+        if (user.room?.id !== this.rinkRoomId) return
 
         user.send('get_puck', { x: this.puckX, y: this.puckY })
     }
 
-    movePuck(args, user) {
-        if (user.room.id !== this.rinkRoomId) return
+    movePuck(args: Args, user: GameUser) {
+        if (user.room?.id !== this.rinkRoomId) return
 
         if (!hasProps(args, 'x', 'y', 'speedX', 'speedY')) return
 

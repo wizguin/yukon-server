@@ -1,5 +1,9 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { hasProps, isLength } from '@utils/validation'
 
 import bcrypt from 'bcrypt'
@@ -8,9 +12,13 @@ import jwt from 'jsonwebtoken'
 import { v4 as uuid } from 'uuid'
 
 
+interface LoginKeyPayload extends jwt.JwtPayload {
+    hash: string
+}
+
 export default class GameAuth extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -20,7 +28,7 @@ export default class GameAuth extends GamePlugin {
 
     // Events
 
-    async gameAuth(args, user) {
+    async gameAuth(args: Args, user: GameUser) {
         if (user.gameAuthSent || user.authenticated) {
             return user.close()
         }
@@ -41,6 +49,7 @@ export default class GameAuth extends GamePlugin {
             return user.close()
         }
 
+        // @ts-expect-error temp
         if (this.handler.population >= this.handler.maxUsers && !user.isModerator) {
             return user.close()
         }
@@ -54,13 +63,17 @@ export default class GameAuth extends GamePlugin {
 
     // Functions
 
-    async compareLoginKey(args, user) {
-        let decoded
+    async compareLoginKey(args: Args, user: GameUser) {
+        let decoded: LoginKeyPayload
         let token
+
+        if (!user.loginKey) {
+            return user.close()
+        }
 
         // Verify JWT
         try {
-            decoded = jwt.verify(user.loginKey, this.config.crypto.secret)
+            decoded = jwt.verify(user.loginKey, this.config.crypto.secret) as LoginKeyPayload
         } catch (err) {
             return user.close()
         }
@@ -95,7 +108,7 @@ export default class GameAuth extends GamePlugin {
         user.authenticated = true
 
         // Send response
-        let response = { success: true }
+        let response: { success: boolean, token?: string } = { success: true }
         if (token) {
             response.token = token
         }
@@ -103,7 +116,7 @@ export default class GameAuth extends GamePlugin {
         user.send('game_auth', response)
     }
 
-    async genAuthToken(user) {
+    async genAuthToken(user: GameUser) {
         let selector = uuid()
         let validator = crypto.randomBytes(32).toString('hex')
         let validatorHash = await bcrypt.hash(validator, this.config.crypto.rounds)

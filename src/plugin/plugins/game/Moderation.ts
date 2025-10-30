@@ -1,9 +1,13 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 
 export default class Moderation extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -13,11 +17,11 @@ export default class Moderation extends GamePlugin {
         }
     }
 
-    mutePlayer(args, user) {
+    mutePlayer(args: Args, user: GameUser) {
 
     }
 
-    kickPlayer(args, user) {
+    kickPlayer(args: Args, user: GameUser) {
         if (!user.isModerator) {
             return
         }
@@ -29,7 +33,7 @@ export default class Moderation extends GamePlugin {
         }
     }
 
-    async banPlayer(args, user) {
+    async banPlayer(args: Args, user: GameUser) {
         if (!user.isModerator) {
             return
         }
@@ -49,7 +53,7 @@ export default class Moderation extends GamePlugin {
         }
     }
 
-    async applyBan(moderator, id, hours = 24, message = '') {
+    async applyBan(moderator: GameUser, id: number, hours = 24, message = '') {
         let expires = Date.now() + (hours * 60 * 60 * 1000)
 
         let banCount = await this.db.getBanCount(id)
@@ -61,7 +65,7 @@ export default class Moderation extends GamePlugin {
         this.db.bans.create({ userId: id, expires: expires, moderatorId: moderator.data.id, message: message })
     }
 
-    async getRecipientRank(recipient, id) {
+    async getRecipientRank(recipient: GameUser, id: number) {
         return (recipient)
             ? recipient.rank
             : (await this.db.getUserById(id)).rank

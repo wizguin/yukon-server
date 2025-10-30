@@ -1,10 +1,14 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { isNumber } from '@utils/validation'
 
 export default class Table extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -14,7 +18,11 @@ export default class Table extends GamePlugin {
         }
     }
 
-    getTables(args, user) {
+    getTables(args: Args, user: GameUser) {
+        if (!user.room) {
+            return
+        }
+
         let tables = Object.fromEntries(Object.values(user.room.tables).map(table => {
             let users = table.users.map(user => user.username)
 
@@ -24,8 +32,12 @@ export default class Table extends GamePlugin {
         user.send('get_tables', { tables: tables })
     }
 
-    joinTable(args, user) {
+    joinTable(args: Args, user: GameUser) {
         if (!isNumber(args.table)) {
+            return
+        }
+
+        if (!user.room) {
             return
         }
 
@@ -34,7 +46,7 @@ export default class Table extends GamePlugin {
         user.joinTable(table)
     }
 
-    leaveTable(args, user) {
+    leaveTable(args: Args, user: GameUser) {
         if (user.minigameRoom) {
             user.minigameRoom.remove(user)
         }

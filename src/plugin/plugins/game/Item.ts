@@ -1,5 +1,8 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
 
 const tourItem = 428
 const tourPostcard = 126
@@ -8,7 +11,9 @@ const agentPostcard = 127
 
 export default class Item extends GamePlugin {
 
-    constructor(handler) {
+    items: Record<string, any>
+
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -20,7 +25,7 @@ export default class Item extends GamePlugin {
         this.items = this.crumbs.items
     }
 
-    updatePlayer(args, user) {
+    updatePlayer(args: Args, user: GameUser) {
         const item = this.items[args.item]
 
         if (!item || item.type === 10 || !user.inventory.includes(args.item)) {
@@ -35,7 +40,7 @@ export default class Item extends GamePlugin {
         user.setItem(slot, args.item)
     }
 
-    addItem(args, user) {
+    addItem(args: Args, user: GameUser) {
         const item = user.validatePurchase.item(args.item)
 
         if (!item) {
@@ -57,7 +62,7 @@ export default class Item extends GamePlugin {
         user.send('add_item', { item: args.item, name: item.name, slot: slot, coins: user.coins })
     }
 
-    removeItem(args, user) {
+    removeItem(args: Args, user: GameUser) {
         if (!this.db.slots.includes(args.type)) {
             return
         }

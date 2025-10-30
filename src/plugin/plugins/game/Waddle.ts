@@ -1,9 +1,13 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 
 export default class Waddle extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -13,7 +17,11 @@ export default class Waddle extends GamePlugin {
         }
     }
 
-    getWaddles(args, user) {
+    getWaddles(args: Args, user: GameUser) {
+        if (!user.room) {
+            return
+        }
+
         let waddles = Object.fromEntries(Object.values(user.room.waddles).map(waddle => {
             let users = waddle.users.map(user => user ? user.username : null)
 
@@ -23,7 +31,11 @@ export default class Waddle extends GamePlugin {
         user.send('get_waddles', { waddles: waddles })
     }
 
-    joinWaddle(args, user) {
+    joinWaddle(args: Args, user: GameUser) {
+        if (!user.room) {
+            return
+        }
+
         let waddle = user.room.waddles[args.waddle]
 
         if (!waddle) {
@@ -35,7 +47,7 @@ export default class Waddle extends GamePlugin {
         }
     }
 
-    leaveWaddle(args, user) {
+    leaveWaddle(args: Args, user: GameUser) {
         if (user.waddle) {
             user.waddle.remove(user)
         }

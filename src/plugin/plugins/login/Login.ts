@@ -1,16 +1,37 @@
 import Plugin from '@plugin/Plugin'
 
+import type { Args } from '../../../server/Server'
+import type LoginHandler from '../../../handlers/LoginHandler'
+import type User from '@objects/user/User'
+
 import { hasProps, isLength, isString } from '@utils/validation'
 
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
-import Validator from 'fastest-validator'
+import Validator, { type AsyncCheckFunction, type SyncCheckFunction } from 'fastest-validator'
 
+
+const responses = {
+    notFound: {
+        success: false,
+        message: 'Penguin not found. Try Again?'
+    },
+    wrongPassword: {
+        success: false,
+        message: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE'
+    },
+    permaBan: {
+        success: false,
+        message: 'Banned:\nYou are banned forever'
+    }
+}
 
 export default class Login extends Plugin {
 
-    constructor(handler) {
+    check: AsyncCheckFunction | SyncCheckFunction
+
+    constructor(handler: LoginHandler) {
         super(handler)
 
         this.events = {
@@ -19,26 +40,11 @@ export default class Login extends Plugin {
         }
 
         this.check = this.createValidator()
-
-        this.responses = {
-            notFound: {
-                success: false,
-                message: 'Penguin not found. Try Again?'
-            },
-            wrongPassword: {
-                success: false,
-                message: 'Incorrect password. NOTE: Passwords are CaSe SeNsiTIVE'
-            },
-            permaBan: {
-                success: false,
-                message: 'Banned:\nYou are banned forever'
-            }
-        }
     }
 
     // Events
 
-    async login(args, user) {
+    async login(args: Args, user: User) {
         if (user.loginSent) {
             return user.close()
         }
@@ -52,6 +58,7 @@ export default class Login extends Plugin {
             // Invalid data input
             user.send('login', {
                 success: false,
+                // @ts-expect-error temp
                 message: check[0].message
             })
 
@@ -63,7 +70,7 @@ export default class Login extends Plugin {
         user.close()
     }
 
-    async tokenLogin(args, user) {
+    async tokenLogin(args: Args, user: User) {
         if (user.loginSent) {
             return user.close()
         }
@@ -110,15 +117,15 @@ export default class Login extends Plugin {
         return validator.compile(schema)
     }
 
-    async comparePasswords(args, user) {
+    async comparePasswords(args: Args, user: User) {
         let load = await user.load(args.username)
         if (!load) {
-            return this.responses.notFound
+            return responses.notFound
         }
 
         let match = await bcrypt.compare(args.password, user.password)
         if (!match) {
-            return this.responses.wrongPassword
+            return responses.wrongPassword
         }
 
         let banned = this.checkBanned(user)
@@ -129,32 +136,32 @@ export default class Login extends Plugin {
         return await this.onLoginSuccess(user)
     }
 
-    async compareTokens(args, user) {
+    async compareTokens(args: Args, user: User) {
         if (!hasProps(args, 'username', 'token')) {
-            return this.responses.wrongPassword
+            return responses.wrongPassword
         }
 
         if (!isLength(args.username, 4, 12) || !isString(args.token)) {
-            return this.responses.wrongPassword
+            return responses.wrongPassword
         }
 
         let split = args.token.split(':')
         if (split.length != 2) {
-            return this.responses.wrongPassword
+            return responses.wrongPassword
         }
 
         let load = await user.load(args.username, split[0])
         if (!load) {
-            return this.responses.notFound
+            return responses.notFound
         }
 
         if (!user.authToken) {
-            return this.responses.wrongPassword
+            return responses.wrongPassword
         }
 
         let match = await bcrypt.compare(split[1], user.authToken.validator)
         if (!match) {
-            return this.responses.wrongPassword
+            return responses.wrongPassword
         }
 
         let banned = this.checkBanned(user)
@@ -165,9 +172,9 @@ export default class Login extends Plugin {
         return await this.onLoginSuccess(user)
     }
 
-    checkBanned(user) {
+    checkBanned(user: User) {
         if (user.permaBan) {
-            return this.responses.permaBan
+            return responses.permaBan
         }
 
         if (!user.ban) {
@@ -181,7 +188,7 @@ export default class Login extends Plugin {
         }
     }
 
-    async onLoginSuccess(user) {
+    async onLoginSuccess(user: User) {
         // Generate random key, used by client for authentication
         let randomKey = crypto.randomBytes(32).toString('hex')
         // Generate new login key, used to validate user on game server
@@ -200,7 +207,7 @@ export default class Login extends Plugin {
         }
     }
 
-    async genLoginKey(user, randomKey) {
+    async genLoginKey(user: User, randomKey: string) {
         let hash = user.createLoginHash(randomKey)
 
         return jwt.sign({
@@ -208,12 +215,12 @@ export default class Login extends Plugin {
         }, this.config.crypto.secret, { expiresIn: this.config.crypto.loginKeyExpiry })
     }
 
-    async getWorldPopulations(isModerator) {
+    async getWorldPopulations(isModerator: boolean) {
         let pops = await this.db.getWorldPopulations()
-        let populations = {}
+        let populations: Record<string, number> = {}
 
         for (let world of Object.keys(pops)) {
-            let maxUsers = this.config.worlds[world].maxUsers
+            let maxUsers = this.config.worlds[world].maxUsers || 300
             let population = pops[world].population
 
             if (population >= maxUsers) {

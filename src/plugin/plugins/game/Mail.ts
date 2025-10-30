@@ -1,11 +1,23 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { hasProps, isNumber } from '@utils/validation'
 
 
 export default class Mail extends GamePlugin {
 
-    constructor(handler) {
+    postcardCost = 10
+    maxPostcards = 100
+    responses = {
+        InsufficientCoins: 0,
+        FullInbox: 1,
+        Success: 2
+    }
+
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -14,18 +26,9 @@ export default class Mail extends GamePlugin {
             'delete_mail': this.deleteMail,
             'delete_mail_from': this.deleteMailFrom
         }
-
-        this.postcardCost = 10
-        this.maxPostcards = 100
-
-        this.responses = {
-            InsufficientCoins: 0,
-            FullInbox: 1,
-            Success: 2
-        }
     }
 
-    sendMail(args, user) {
+    sendMail(args: Args, user: GameUser) {
         if (!hasProps(args, 'recipient', 'postcardId')) return
         if (!isNumber(args.recipient) || !isNumber(args.postcardId)) return
 
@@ -43,18 +46,18 @@ export default class Mail extends GamePlugin {
         }
     }
 
-    readMail(args, user) {
+    readMail(args: Args, user: GameUser) {
         user.postcards.readMail()
     }
 
-    deleteMail(args, user) {
+    deleteMail(args: Args, user: GameUser) {
         if (!hasProps(args, 'id')) return
         if (!isNumber(args.id)) return
 
         user.postcards.remove(args.id)
     }
 
-    deleteMailFrom(args, user) {
+    deleteMailFrom(args: Args, user: GameUser) {
         if (!hasProps(args, 'senderId')) return
         // null for system mail
         if (!isNumber(args.senderId) && args.senderId !== null) return
@@ -62,7 +65,7 @@ export default class Mail extends GamePlugin {
         user.postcards.removeFrom(args.senderId)
     }
 
-    async sendMailOnline(user, recipient, postcardId) {
+    async sendMailOnline(user: GameUser, recipient: GameUser, postcardId: number) {
         // Ignored
         if (recipient.ignores.includes(user.id)) {
             return this.sendMailResponse(user, this.responses.Success)
@@ -82,7 +85,7 @@ export default class Mail extends GamePlugin {
         this.removeCoins(user)
     }
 
-    async sendMailOffline(user, recipientId, postcardId) {
+    async sendMailOffline(user: GameUser, recipientId: number, postcardId: number) {
         const recipient = await this.db.getUserById(recipientId)
         if (!recipient) return
 
@@ -106,7 +109,7 @@ export default class Mail extends GamePlugin {
         this.removeCoins(user)
     }
 
-    removeCoins(user) {
+    removeCoins(user: GameUser) {
         user.updateCoins(-this.postcardCost)
         this.sendMailResponse(user, this.responses.Success)
     }
@@ -114,7 +117,7 @@ export default class Mail extends GamePlugin {
     /**
      * Send response to the sending user.
      */
-    sendMailResponse(user, response) {
+    sendMailResponse(user: GameUser, response: number) {
         user.send('send_mail', { coins: user.coins, response: response })
     }
 

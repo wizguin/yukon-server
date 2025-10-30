@@ -1,11 +1,16 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+import Igloo from '@objects/room/Igloo'
+
 import { hasProps } from '@utils/validation'
 
 
 export default class Buddy extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -17,7 +22,7 @@ export default class Buddy extends GamePlugin {
         }
     }
 
-    buddyRequest(args, user) {
+    buddyRequest(args: Args, user: GameUser) {
         let recipient = this.usersById[args.id]
 
         if (!recipient) {
@@ -44,7 +49,7 @@ export default class Buddy extends GamePlugin {
         recipient.send('buddy_request', { id: user.id, username: user.username })
     }
 
-    async buddyAccept(args, user) {
+    async buddyAccept(args: Args, user: GameUser) {
         if (!hasProps(args, 'id')) {
             return
         }
@@ -74,11 +79,11 @@ export default class Buddy extends GamePlugin {
         user.addBuddy(args.id, username)
     }
 
-    buddyReject(args, user) {
+    buddyReject(args: Args, user: GameUser) {
         user.buddyRequests = user.buddyRequests.filter(item => item != args.id)
     }
 
-    buddyRemove(args, user) {
+    buddyRemove(args: Args, user: GameUser) {
         if (!user.buddies.includes(args.id)) {
             return
         }
@@ -94,7 +99,7 @@ export default class Buddy extends GamePlugin {
         }
     }
 
-    buddyFind(args, user) {
+    buddyFind(args: Args, user: GameUser) {
         if (!user.buddies.includes(args.id) || !(args.id in this.usersById)) {
             return
         }
@@ -105,9 +110,9 @@ export default class Buddy extends GamePlugin {
             return
         }
 
-        let result = { find: buddy.room.id }
+        let result: Record<string, any> = { find: buddy.room.id }
 
-        if (buddy.room.isIgloo) {
+        if (buddy.room instanceof Igloo) {
             result.igloo = true
         } else if (buddy.room.game) {
             result.game = true

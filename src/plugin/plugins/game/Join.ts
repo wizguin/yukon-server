@@ -1,5 +1,9 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { isNumber } from '@utils/validation'
 
 import Igloo from '@objects/room/Igloo'
@@ -7,7 +11,7 @@ import Igloo from '@objects/room/Igloo'
 
 export default class Join extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -19,7 +23,7 @@ export default class Join extends GamePlugin {
 
     // Events
 
-    async joinServer(args, user) {
+    async joinServer(args: Args, user: GameUser) {
         user.send('load_player', {
             user: user,
             rank: user.rank,
@@ -47,10 +51,11 @@ export default class Join extends GamePlugin {
 
         user.joinedServer = true
 
+        // @ts-expect-error temp
         await this.handler.updateWorldPopulation()
     }
 
-    joinRoom(args, user) {
+    joinRoom(args: Args, user: GameUser) {
         if (!isNumber(args.room)) {
             return
         }
@@ -58,10 +63,12 @@ export default class Join extends GamePlugin {
         user.joinRoom(this.rooms[args.room], args.x, args.y)
     }
 
-    async joinIgloo(args, user) {
+    async joinIgloo(args: Args, user: GameUser) {
         let igloo = await this.getIgloo(args.igloo)
 
-        user.joinRoom(igloo, args.x, args.y)
+        if (igloo) {
+            user.joinRoom(igloo, args.x, args.y)
+        }
     }
 
     // Functions
@@ -83,7 +90,7 @@ export default class Join extends GamePlugin {
         return spawns[Math.floor(Math.random() * spawns.length)]
     }
 
-    async getIgloo(id) {
+    async getIgloo(id: number) {
         if (!isNumber(id)) {
             return null
         }

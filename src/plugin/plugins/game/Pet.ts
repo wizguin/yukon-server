@@ -1,5 +1,9 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { hasProps, isNumber, isInRange } from '@utils/validation'
 
 
@@ -8,7 +12,7 @@ const allowedFrames = [26, 32, 33]
 
 export default class Pet extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -26,13 +30,13 @@ export default class Pet extends GamePlugin {
         }
     }
 
-    adoptPet(args, user) {
+    adoptPet(args: Args, user: GameUser) {
         if (!hasProps(args, 'typeId', 'name')) return
 
         user.pets.add(args.typeId, args.name)
     }
 
-    async getPets(args, user) {
+    async getPets(args: Args, user: GameUser) {
         if (!hasProps(args, 'userId')) return
         if (!isNumber(args.userId)) return
 
@@ -42,7 +46,7 @@ export default class Pet extends GamePlugin {
         user.send('get_pets', { pets: pets })
     }
 
-    petMove(args, user) {
+    petMove(args: Args, user: GameUser) {
         if (!hasProps(args, 'x', 'y')) return
         if (!isInRange(args.x, 0, 1520)) return
         if (!isInRange(args.y, 0, 960)) return
@@ -53,11 +57,13 @@ export default class Pet extends GamePlugin {
             pet.x = args.x
             pet.y = args.y
 
-            user.room.send(user, 'pet_move', args)
+            if (user.room) {
+                user.room.send(user, 'pet_move', args)
+            }
         }
     }
 
-    petPlay(args, user) {
+    petPlay(args: Args, user: GameUser) {
         if (!user.pets.includes(args.id)) return
         const pet = user.pets.get(args.id)
 
@@ -73,23 +79,25 @@ export default class Pet extends GamePlugin {
         // Different rest levels play different animation
         const playType = pet.rest > 80 ? 1 : pet.rest > 60 ? 2 : 0
 
-        user.room.send(user, 'pet_play', { id: args.id, energy: pet.energy, health: pet.health, rest: pet.rest, playType: playType }, [])
+        if (user.room) {
+            user.room.send(user, 'pet_play', { id: args.id, energy: pet.energy, health: pet.health, rest: pet.rest, playType: playType }, [])
+        }
     }
 
-    petRest(args, user) {
+    petRest(args: Args, user: GameUser) {
         this.sendInteraction(user, args.id, 'pet_rest', {
             energy: -10,
             rest: 100,
         })
     }
 
-    petFeed(args, user) {
+    petFeed(args: Args, user: GameUser) {
         this.sendInteraction(user, args.id, 'pet_feed', {
             energy: 100
         })
     }
 
-    petBath(args, user) {
+    petBath(args: Args, user: GameUser) {
         this.sendInteraction(user, args.id, 'pet_bath', {
             energy: -20,
             health: 100,
@@ -97,36 +105,40 @@ export default class Pet extends GamePlugin {
         })
     }
 
-    petGum(args, user) {
+    petGum(args: Args, user: GameUser) {
         this.sendInteraction(user, args.id, 'pet_gum', {
             health: -10
         })
     }
 
-    petCookie(args, user) {
+    petCookie(args: Args, user: GameUser) {
         this.sendInteraction(user, args.id, 'pet_cookie', {
             health: -10
         })
     }
 
-    petFrame(args, user) {
+    petFrame(args: Args, user: GameUser) {
         if (!user.pets.includes(args.id)) return
         if (!allowedFrames.includes(args.frame)) return
 
-        user.room.send(user, 'pet_frame', { id: args.id, frame: args.frame }, [])
+        if (user.room) {
+            user.room.send(user, 'pet_frame', { id: args.id, frame: args.frame }, [])
+        }
     }
 
-    petStartWalk(args, user) {
+    petStartWalk(args: Args, user: GameUser) {
         user.startWalkingPet(args.id)
     }
 
-    sendInteraction(user, petId, action, updates) {
+    sendInteraction(user: GameUser, petId: number, action: string, updates: Record<string, number>) {
         if (!user.pets.includes(petId)) return
         const pet = user.pets.get(petId)
 
         pet.updateStats(updates)
 
-        user.room.send(user, action, { id: petId, energy: pet.energy, health: pet.health, rest: pet.rest }, [])
+        if (user.room) {
+            user.room.send(user, action, { id: petId, energy: pet.energy, health: pet.health, rest: pet.rest }, [])
+        }
     }
 
 }

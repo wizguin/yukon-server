@@ -1,9 +1,13 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 
 export default class Minigame extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -14,26 +18,26 @@ export default class Minigame extends GamePlugin {
         }
     }
 
-    getGame(args, user) {
+    getGame(args: Args, user: GameUser) {
         if (user.minigameRoom) {
             user.minigameRoom.getGame(args, user)
         }
     }
 
-    joinGame(args, user) {
+    joinGame(args: Args, user: GameUser) {
         if (user.minigameRoom) {
             user.minigameRoom.joinGame(args, user)
         }
     }
 
-    sendMove(args, user) {
+    sendMove(args: Args, user: GameUser) {
         if (user.minigameRoom) {
             user.minigameRoom.sendMove(args, user)
         }
     }
 
-    gameOver(args, user) {
-        if (user.room.game || user.minigameRoom) {
+    gameOver(args: Args, user: GameUser) {
+        if (user.room?.game || user.minigameRoom) {
             user.updateCoins(args.coins, true)
         }
     }

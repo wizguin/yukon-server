@@ -1,11 +1,16 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+import type IglooRoom from '@objects/room/Igloo'
+
 import { isInRange } from '@utils/validation'
 
 
 export default class Igloo extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -27,7 +32,7 @@ export default class Igloo extends GamePlugin {
 
     // Events
 
-    async addIgloo(args, user) {
+    async addIgloo(args: Args, user: GameUser) {
         let igloo = user.validatePurchase.igloo(args.igloo)
 
         if (!igloo) {
@@ -40,7 +45,7 @@ export default class Igloo extends GamePlugin {
         user.send('add_igloo', { igloo: args.igloo, coins: user.coins })
     }
 
-    addFurniture(args, user) {
+    addFurniture(args: Args, user: GameUser) {
         let furniture = user.validatePurchase.furniture(args.furniture)
 
         if (!furniture) {
@@ -54,7 +59,7 @@ export default class Igloo extends GamePlugin {
         }
     }
 
-    async updateIgloo(args, user) {
+    async updateIgloo(args: Args, user: GameUser) {
         let igloo = this.getIgloo(user.id)
 
         if (!igloo || igloo != user.room || igloo.type == args.type) {
@@ -77,7 +82,7 @@ export default class Igloo extends GamePlugin {
         igloo.refresh(user)
     }
 
-    async updateFurniture(args, user) {
+    async updateFurniture(args: Args, user: GameUser) {
         let igloo = this.getIgloo(user.id)
 
         if (!Array.isArray(args.furniture) || !igloo || igloo != user.room) {
@@ -86,7 +91,7 @@ export default class Igloo extends GamePlugin {
 
         await igloo.clearFurniture()
 
-        let quantities = {}
+        let quantities: Record<number, number>  = {}
 
         for (let item of args.furniture) {
             let id = item.furnitureId
@@ -106,10 +111,11 @@ export default class Igloo extends GamePlugin {
             igloo.furniture.push({ ...item, userId: user.id })
         }
 
+        // @ts-expect-error temp
         this.db.furnitures.bulkCreate(igloo.furniture)
     }
 
-    updateFlooring(args, user) {
+    updateFlooring(args: Args, user: GameUser) {
         let igloo = this.getIgloo(user.id)
 
         if (!igloo || igloo != user.room) {
@@ -129,7 +135,7 @@ export default class Igloo extends GamePlugin {
         user.send('update_flooring', { flooring: args.flooring, coins: user.coins })
     }
 
-    updateMusic(args, user) {
+    updateMusic(args: Args, user: GameUser) {
         let igloo = this.getIgloo(user.id)
 
         if (!igloo || igloo != user.room || igloo.music == args.music) {
@@ -146,7 +152,7 @@ export default class Igloo extends GamePlugin {
         user.send('update_music', { music: args.music })
     }
 
-    openIgloo(args, user) {
+    openIgloo(args: Args, user: GameUser) {
         let igloo = this.getIgloo(user.id)
 
         if (igloo && igloo == user.room) {
@@ -154,7 +160,7 @@ export default class Igloo extends GamePlugin {
         }
     }
 
-    closeIgloo(args, user) {
+    closeIgloo(args: Args, user: GameUser) {
         let igloo = this.getIgloo(user.id)
 
         if (igloo && igloo == user.room) {
@@ -162,11 +168,11 @@ export default class Igloo extends GamePlugin {
         }
     }
 
-    getIgloos(args, user) {
+    getIgloos(args: Args, user: GameUser) {
         user.send('get_igloos', { igloos: this.openIgloos })
     }
 
-    getIglooOpen(args, user) {
+    getIglooOpen(args: Args, user: GameUser) {
         let open = this.openIgloos.includes(args.igloo)
 
         user.send('get_igloo_open', { open: open })
@@ -174,11 +180,11 @@ export default class Igloo extends GamePlugin {
 
     // Functions
 
-    getIgloo(id) {
+    getIgloo(id: number) {
         let iglooId = id + this.config.game.iglooIdOffset
 
         if (iglooId in this.rooms) {
-            return this.rooms[iglooId]
+            return this.rooms[iglooId] as IglooRoom
         }
     }
 

@@ -1,11 +1,15 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import type { Args } from '../../../server/Server'
+import type GameHandler from '../../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 import { hasProps, isNumber } from '@utils/validation'
 
 
 export default class Ignore extends GamePlugin {
 
-    constructor(handler) {
+    constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
@@ -14,7 +18,7 @@ export default class Ignore extends GamePlugin {
         }
     }
 
-    async ignoreAdd(args, user) {
+    async ignoreAdd(args: Args, user: GameUser) {
         if (!hasProps(args, 'id')) {
             return
         }
@@ -56,7 +60,7 @@ export default class Ignore extends GamePlugin {
         user.send('ignore_add', { id: args.id, username: username })
     }
 
-    ignoreRemove(args, user) {
+    ignoreRemove(args: Args, user: GameUser) {
         if (!user.ignores.includes(args.id)) {
             return
         }
