@@ -1,30 +1,66 @@
+import type { Action, Args } from '../../server/Server'
+import type AuthTokens from '@database/models/AuthTokens'
+import type Bans from '@database/models/Bans'
+import type BaseHandler from '../../handlers/BaseHandler'
+import type { Config } from '../../config/config'
+import type Database from '@database/Database'
+import type Server from '../../server/Server'
+import type Users from '@database/models/Users'
+
 import getSocketAddress from './getSocketAddress'
 import pick from '@utils/pick'
 
 import crypto from 'crypto'
+import type { EventEmitter } from 'stream'
 import { Op } from 'sequelize'
+import type { Socket } from 'socket.io'
 
 
 export default class User {
 
-    constructor(server, socket) {
-        this.server = server
-        this.socket = socket
+    db: Database
+    handler: BaseHandler
+    config: Config
 
+    address: string
+    loginSent = false
+    isModerator = false
+
+    events: EventEmitter | null = null
+    cooldowns: Record<string, number> = {}
+
+    id!: number
+    username!: string
+    password!: string
+    loginKey!: string | null
+    rank!: number
+    permaBan!: boolean
+    joinTime!: number
+    coins!: number
+    head!: number
+    face!: number
+    neck!: number
+    body!: number
+    hand!: number
+    feet!: number
+    color!: number
+    photo!: number
+    flag!: number
+    ninjaRank!: number
+    ninjaProgress!: number
+
+    authToken!: AuthTokens
+    ban!: Bans
+
+    constructor(server: Server, public socket: Socket) {
         this.db = server.db
         this.handler = server.handler
         this.config = server.config
 
         this.address = getSocketAddress(socket, this.config)
-
-        this.loginSent = false
-        this.isModerator = false
-
-        // Events on cooldown
-        this.cooldowns = {}
     }
 
-    send(action, args = {}) {
+    send(action: Action, args: Args = {}) {
         this.socket.emit('message', { action: action, args: args })
     }
 
@@ -36,14 +72,14 @@ export default class User {
         return this.id ? this.id : this.socket.id
     }
 
-    createLoginHash(randomKey) {
+    createLoginHash(randomKey: string) {
         const userAgent = this.socket.request.headers['user-agent']
         const string = `${this.username}${randomKey}${this.address}${userAgent}`
 
         return crypto.createHash('sha256').update(string).digest('hex')
     }
 
-    async load(username, selector = null) {
+    async load(username: string, selector: string | null = null) {
         try {
             const user = await this.db.users.findOne({
                 where: {
@@ -83,13 +119,15 @@ export default class User {
             return true
 
         } catch (error) {
-            this.handler.error(error)
+            if (error instanceof Error) {
+                this.handler.error(error)
+            }
 
             return false
         }
     }
 
-    async update(updates) {
+    async update(updates: Partial<Users>) {
         if (!this.id) {
             return
         }

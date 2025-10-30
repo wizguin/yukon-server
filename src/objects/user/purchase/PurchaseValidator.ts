@@ -1,9 +1,18 @@
+import type GameUser from '../GameUser'
+import Igloo from '@objects/room/Igloo'
+
 import { isNumber } from '@utils/validation'
 
 
+interface Includes {
+    includes: (...args: any[]) => boolean
+}
+
 export default class PurchaseValidator {
 
-    constructor(user) {
+    user: GameUser
+
+    constructor(user: GameUser) {
         this.user = user
     }
 
@@ -11,25 +20,27 @@ export default class PurchaseValidator {
         return this.user.crumbs
     }
 
-    item(id) {
+    item(id: number) {
         return this.validate(id, 'items', this.user.inventory)
     }
 
-    igloo(id) {
+    igloo(id: number) {
         return this.validate(id, 'igloos', this.user.igloos)
     }
 
-    furniture(id) {
+    furniture(id: number) {
         return this.validate(id, 'furnitures')
     }
 
-    flooring(id) {
+    flooring(id: number) {
+        if (!(this.user.room instanceof Igloo)) {
+            return
+        }
+
         return this.validate(id, 'floorings', [this.user.room.flooring])
     }
 
-    validate(id, type, includes = []) {
-        id = parseInt(id)
-
+    validate(id: number, type: string, includes: Includes = new Array()) {
         if (!isNumber(id)) {
             return false
         }

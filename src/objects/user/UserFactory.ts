@@ -1,7 +1,10 @@
 import GameUser from './GameUser'
+import type Server from '../../server/Server'
 import User from './User'
 
-export default function(server, socket) {
+import type { Socket } from 'socket.io'
+
+export default function(server: Server, socket: Socket) {
     const userClass = server.id === 'Login'
         ? User
         : GameUser

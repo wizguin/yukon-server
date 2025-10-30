@@ -1,8 +1,5 @@
 import User from './User'
 
-import pick from '@utils/pick'
-import { isInRange } from '@utils/validation'
-
 import BuddyCollection from '@database/collections/BuddyCollection'
 import CardCollection from '@database/collections/CardCollection'
 import FurnitureCollection from '@database/collections/FurnitureCollection'
@@ -14,33 +11,65 @@ import PostcardCollection from '@database/collections/PostcardCollection'
 
 import PurchaseValidator from './purchase/PurchaseValidator'
 
+import type BaseInstance from '@objects/instance/BaseInstance'
+import type BaseTable from '@objects/room/table/BaseTable'
+import Igloo from '@objects/room/Igloo'
+import type Pets from '@database/models/Pets'
+import type Room from '@objects/room/Room'
+import type Server from '../../server/Server'
+import type Waddle from '@objects/room/waddle/Waddle'
+
+import pick from '@utils/pick'
+import { isInRange } from '@utils/validation'
+
 import EventEmitter from 'events'
 import { Op } from 'sequelize'
+import type { Socket } from 'socket.io'
 
+
+interface Token {
+    selector?: string
+    validatorHash?: string
+    oldSelector?: string
+}
 
 export default class GameUser extends User {
 
-    constructor(server, socket) {
+    crumbs: any
+
+    gameAuthSent = false
+    authenticated = false
+    joinedServer = false
+
+    token: Token = {}
+
+    x = 0
+    y = 0
+    frame = 0
+
+    room: Room | Igloo | null = null
+    waddle: Waddle | null = null
+    minigameRoom: BaseInstance | BaseTable | null = null
+
+    buddyRequests: number[] = []
+    walkingPet: Pets | null = null
+
+    validatePurchase: PurchaseValidator
+
+    buddies!: BuddyCollection
+    ignores!: IgnoreCollection
+    inventory!: InventoryCollection
+    igloos!: IglooCollection
+    furniture!: FurnitureCollection
+    cards!: CardCollection
+    postcards!: PostcardCollection
+    pets!: PetCollection
+
+    constructor(server: Server, socket: Socket) {
         super(server, socket)
 
+        // @ts-expect-error temp
         this.crumbs = this.handler.crumbs
-
-        this.gameAuthSent = false
-        this.authenticated = false
-        this.joinedServer = false
-        this.token = {}
-
-        this.room
-        this.waddle
-        this.minigameRoom
-
-        this.x
-        this.y
-        this.frame
-
-        this.buddyRequests = []
-
-        this.walkingPet = null
 
         this.validatePurchase = new PurchaseValidator(this)
 
@@ -53,10 +82,11 @@ export default class GameUser extends User {
     }
 
     inOwnIgloo() {
-        return this.room?.isIgloo && this.room?.userId === this.id
+        return this.room instanceof Igloo && this.room.userId === this.id
     }
 
-    setItem(slot, item) {
+    setItem(slot: string, item: number) {
+        // @ts-expect-error temp
         if (this[slot] == item) {
             return
         }
@@ -65,11 +95,13 @@ export default class GameUser extends User {
         this.sendUpdatePlayer(slot, item)
     }
 
-    sendUpdatePlayer(slot, item) {
-        this.room.send(this, 'update_player', { id: this.id, item: item, slot: slot }, [])
+    sendUpdatePlayer(slot: string, item: number) {
+        if (this.room) {
+            this.room.send(this, 'update_player', { id: this.id, item: item, slot: slot }, [])
+        }
     }
 
-    joinRoom(room, x = 0, y = 0) {
+    joinRoom(room: Room, x = 0, y = 0) {
         if (!room || room === this.room || this.minigameRoom || this.waddle) {
             return
         }
@@ -98,7 +130,7 @@ export default class GameUser extends User {
         this.room.add(this)
     }
 
-    joinTable(table) {
+    joinTable(table: BaseTable) {
         if (table && !this.minigameRoom) {
             this.minigameRoom = table
 
@@ -106,26 +138,29 @@ export default class GameUser extends User {
         }
     }
 
-    addBuddy(id, username, requester = false) {
+    addBuddy(id: number, username: string, requester = false) {
         this.buddies.add(id)
 
+        // @ts-expect-error temp
         let online = id in this.handler.usersById
 
         this.send('buddy_accept', { id: id, username: username, requester: requester, online: online })
     }
 
-    removeBuddy(id) {
+    removeBuddy(id: number) {
         this.buddies.remove(id)
 
         this.send('buddy_remove', { id: id })
     }
 
-    clearBuddyRequest(id) {
+    clearBuddyRequest(id: number) {
         this.buddyRequests = this.buddyRequests.filter(request => request != id)
     }
 
-    updateCoins(coins, gameOver = false) {
-        coins = parseInt(coins)
+    updateCoins(coins: number | string, gameOver = false) {
+        if (typeof coins === 'string') {
+            coins = parseInt(coins)
+        }
 
         if (!isNaN(coins)) {
             coins = Math.max(Math.min(1000000000, this.coins + coins), 0)
@@ -138,7 +173,8 @@ export default class GameUser extends User {
         }
     }
 
-    async addSystemMail(postcardId, details = null) {
+    async addSystemMail(postcardId: number, details: any = null) {
+        // @ts-expect-error temp
         const postcard = await this.postcards.add(null, postcardId, details)
 
         if (postcard) this.send('receive_mail', postcard)
@@ -146,7 +182,7 @@ export default class GameUser extends User {
         return postcard
     }
 
-    async startWalkingPet(petId) {
+    async startWalkingPet(petId: number) {
         if (!this.pets.includes(petId)) return
         if (this.walkingPet) this.stopWalkingPet()
 
@@ -157,7 +193,9 @@ export default class GameUser extends User {
         pet.walking = true
         this.walkingPet = pet
 
-        this.room.send(this, 'pet_start_walk', { userId: this.id, petId: pet.id }, [])
+        if (this.room) {
+            this.room.send(this, 'pet_start_walk', { userId: this.id, petId: pet.id }, [])
+        }
 
         // Remove current hand item
         await this.update({ hand: 0 })
@@ -171,15 +209,18 @@ export default class GameUser extends User {
 
     stopWalkingPet() {
         if (this.walkingPet) {
-            this.room.send(this, 'pet_stop_walk', { userId: this.id, petId: this.walkingPet.id }, [])
+            if (this.room) {
+                this.room.send(this, 'pet_stop_walk', { userId: this.id, petId: this.walkingPet.id }, [])
+            }
 
             this.walkingPet.walking = false
             this.walkingPet = null
         }
     }
 
-    async load(username) {
+    async load(username: string) {
         try {
+            // @ts-expect-error temp
             const user = await this.db.users.findOne({
                 where: {
                     username
@@ -276,7 +317,9 @@ export default class GameUser extends User {
             return true
 
         } catch (error) {
-            this.handler.error(error)
+            if (error instanceof Error) {
+               this.handler.error(error)
+            }
 
             return false
         }
