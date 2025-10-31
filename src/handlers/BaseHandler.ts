@@ -57,7 +57,7 @@ export default class BaseHandler {
         }
     }
 
-    handleGuard(message: Message, user: User | GameUser) {
+    handleGuard(_message: Message, _user: User | GameUser) {
         return false
     }
 

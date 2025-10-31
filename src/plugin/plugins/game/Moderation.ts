@@ -16,7 +16,7 @@ export default class Moderation extends GamePlugin {
         }
     }
 
-    mutePlayer(args: Args, user: GameUser) {
+    mutePlayer(_args: Args, _user: GameUser) {
 
     }
 

@@ -73,7 +73,7 @@ export default class GameAuth extends GamePlugin {
         // Verify JWT
         try {
             decoded = jwt.verify(user.loginKey, this.config.crypto.secret) as LoginKeyPayload
-        } catch (err) {
+        } catch {
             return user.close()
         }
 
