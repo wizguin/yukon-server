@@ -8,12 +8,12 @@ import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
 import type User from '@objects/user/User'
 
+import type { ServerOptions, Socket } from 'socket.io'
 import fs from 'fs'
 import http from 'http'
 import https from 'https'
-import { RateLimiterRes } from 'rate-limiter-flexible'
-import type { ServerOptions, Socket } from 'socket.io'
 import { Server as IoServer } from 'socket.io'
+import { RateLimiterRes } from 'rate-limiter-flexible'
 
 export type Action = string
 export type Args = Record<string, any>

@@ -1,8 +1,8 @@
 import BaseModel from '../BaseModel'
 
 import type Database from '@database/Database'
-import type Users from './Users'
 import pick from '@utils/pick'
+import type Users from './Users'
 
 import Sequelize from 'sequelize'
 

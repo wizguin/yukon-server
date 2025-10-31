@@ -19,8 +19,8 @@ import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
 import type Waddle from '@objects/room/waddle/Waddle'
 
-import pick from '@utils/pick'
 import { isInRange } from '@utils/validation'
+import pick from '@utils/pick'
 
 import EventEmitter from 'events'
 import { Op } from 'sequelize'

@@ -15,9 +15,9 @@ import type Postcards from './models/Postcards'
 import type Users from './models/Users'
 import type Worlds from './models/Worlds'
 
+import type { FindOptions } from 'sequelize'
 import fs from 'fs'
 import path from 'path'
-import type { FindOptions } from 'sequelize'
 import { Sequelize } from 'sequelize'
 
 type FindCallback = ((result: any) => any) | null

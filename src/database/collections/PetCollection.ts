@@ -3,8 +3,8 @@ import Collection from '../Collection'
 import type GameUser from '@objects/user/GameUser'
 import type Pets from '@database/models/Pets'
 
-import { clamp } from '@utils/math'
 import { isLength, isString } from '@utils/validation'
+import { clamp } from '@utils/math'
 
 import { pets } from '@data/data'
 

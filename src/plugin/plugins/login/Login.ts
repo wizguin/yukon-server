@@ -6,10 +6,10 @@ import type User from '@objects/user/User'
 
 import { hasProps, isLength, isString } from '@utils/validation'
 
+import Validator, { type AsyncCheckFunction, type SyncCheckFunction } from 'fastest-validator'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
-import Validator, { type AsyncCheckFunction, type SyncCheckFunction } from 'fastest-validator'
 
 const responses = {
     notFound: {
