@@ -6,15 +6,14 @@ import type GameUser from '@objects/user/GameUser'
 
 import { hasProps, isNumber } from '@utils/validation'
 
-
 export default class Ignore extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'ignore_add': this.ignoreAdd,
-            'ignore_remove': this.ignoreRemove
+            ignore_add: this.ignoreAdd,
+            ignore_remove: this.ignoreRemove
         }
     }
 
@@ -39,7 +38,7 @@ export default class Ignore extends GamePlugin {
             return
         }
 
-        let ignore = this.usersById[args.id]
+        const ignore = this.usersById[args.id]
         let username
 
         if (ignore) {
@@ -57,7 +56,7 @@ export default class Ignore extends GamePlugin {
         user.clearBuddyRequest(args.id)
 
         user.ignores.add(args.id)
-        user.send('ignore_add', { id: args.id, username: username })
+        user.send('ignore_add', { id: args.id, username })
     }
 
     ignoreRemove(args: Args, user: GameUser) {

@@ -8,16 +8,15 @@ import { isNumber } from '@utils/validation'
 
 import Igloo from '@objects/room/Igloo'
 
-
 export default class Join extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'join_server': this.joinServer,
-            'join_room': this.joinRoom,
-            'join_igloo': this.joinIgloo
+            join_server: this.joinServer,
+            join_room: this.joinRoom,
+            join_igloo: this.joinIgloo
         }
     }
 
@@ -25,7 +24,7 @@ export default class Join extends GamePlugin {
 
     async joinServer(args: Args, user: GameUser) {
         user.send('load_player', {
-            user: user,
+            user,
             rank: user.rank,
             coins: user.coins,
             buddies: user.buddies,
@@ -46,7 +45,7 @@ export default class Join extends GamePlugin {
             this.db.authTokens.create({ userId: user.id, selector: user.token.selector, validator: user.token.validatorHash })
         }
 
-        let spawn = this.getSpawn()
+        const spawn = this.getSpawn()
         user.joinRoom(spawn)
 
         user.joinedServer = true
@@ -64,7 +63,7 @@ export default class Join extends GamePlugin {
     }
 
     async joinIgloo(args: Args, user: GameUser) {
-        let igloo = await this.getIgloo(args.igloo)
+        const igloo = await this.getIgloo(args.igloo)
 
         if (igloo) {
             user.joinRoom(igloo, args.x, args.y)
@@ -74,7 +73,7 @@ export default class Join extends GamePlugin {
     // Functions
 
     getSpawn() {
-        let preferredSpawn = this.config.game.preferredSpawn
+        const preferredSpawn = this.config.game.preferredSpawn
 
         if (preferredSpawn && !this.rooms[preferredSpawn].isFull) {
             return this.rooms[preferredSpawn]
@@ -96,10 +95,10 @@ export default class Join extends GamePlugin {
         }
 
         // Ensures igloos are above all default rooms
-        let iglooId = id + this.config.game.iglooIdOffset
+        const iglooId = id + this.config.game.iglooIdOffset
 
         if (!(iglooId in this.rooms)) {
-            let igloo = await this.db.getIgloo(id)
+            const igloo = await this.db.getIgloo(id)
 
             if (!igloo) {
                 return null

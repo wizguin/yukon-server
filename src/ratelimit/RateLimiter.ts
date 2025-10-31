@@ -1,7 +1,6 @@
 import type { Config } from '../config/config'
 import { RateLimiterMemory } from 'rate-limiter-flexible'
 
-
 export default class RateLimiter {
 
     addressConnects: RateLimiterMemory
@@ -16,7 +15,7 @@ export default class RateLimiter {
 
     createLimiter(points: number) {
         return new RateLimiterMemory({
-            points: points,
+            points,
             duration: 1
         })
     }

@@ -7,33 +7,32 @@ import type IglooRoom from '@objects/room/Igloo'
 
 import { isInRange } from '@utils/validation'
 
-
 export default class Igloo extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'add_igloo': this.addIgloo,
-            'add_furniture': this.addFurniture,
+            add_igloo: this.addIgloo,
+            add_furniture: this.addFurniture,
 
-            'update_igloo': this.updateIgloo,
-            'update_furniture': this.updateFurniture,
-            'update_flooring': this.updateFlooring,
-            'update_music': this.updateMusic,
+            update_igloo: this.updateIgloo,
+            update_furniture: this.updateFurniture,
+            update_flooring: this.updateFlooring,
+            update_music: this.updateMusic,
 
-            'open_igloo': this.openIgloo,
-            'close_igloo': this.closeIgloo,
+            open_igloo: this.openIgloo,
+            close_igloo: this.closeIgloo,
 
-            'get_igloos': this.getIgloos,
-            'get_igloo_open': this.getIglooOpen
+            get_igloos: this.getIgloos,
+            get_igloo_open: this.getIglooOpen
         }
     }
 
     // Events
 
     async addIgloo(args: Args, user: GameUser) {
-        let igloo = user.validatePurchase.igloo(args.igloo)
+        const igloo = user.validatePurchase.igloo(args.igloo)
 
         if (!igloo) {
             return
@@ -46,7 +45,7 @@ export default class Igloo extends GamePlugin {
     }
 
     addFurniture(args: Args, user: GameUser) {
-        let furniture = user.validatePurchase.furniture(args.furniture)
+        const furniture = user.validatePurchase.furniture(args.furniture)
 
         if (!furniture) {
             return
@@ -60,7 +59,7 @@ export default class Igloo extends GamePlugin {
     }
 
     async updateIgloo(args: Args, user: GameUser) {
-        let igloo = this.getIgloo(user.id)
+        const igloo = this.getIgloo(user.id)
 
         if (!igloo || igloo != user.room || igloo.type == args.type) {
             return
@@ -83,7 +82,7 @@ export default class Igloo extends GamePlugin {
     }
 
     async updateFurniture(args: Args, user: GameUser) {
-        let igloo = this.getIgloo(user.id)
+        const igloo = this.getIgloo(user.id)
 
         if (!Array.isArray(args.furniture) || !igloo || igloo != user.room) {
             return
@@ -91,17 +90,17 @@ export default class Igloo extends GamePlugin {
 
         await igloo.clearFurniture()
 
-        let quantities: Record<number, number>  = {}
+        const quantities: Record<number, number> = {}
 
-        for (let item of args.furniture) {
-            let id = item.furnitureId
+        for (const item of args.furniture) {
+            const id = item.furnitureId
 
             if (!item || !user.furniture.includes(id)) {
                 continue
             }
 
             // Update quantity
-            quantities[id] = (quantities[id]) ? quantities[id] + 1 : 1
+            quantities[id] = quantities[id] ? quantities[id] + 1 : 1
 
             // Validate quantity
             if (quantities[id] > user.furniture.getQuantity(id)) {
@@ -116,13 +115,13 @@ export default class Igloo extends GamePlugin {
     }
 
     updateFlooring(args: Args, user: GameUser) {
-        let igloo = this.getIgloo(user.id)
+        const igloo = this.getIgloo(user.id)
 
         if (!igloo || igloo != user.room) {
             return
         }
 
-        let flooring = user.validatePurchase.flooring(args.flooring)
+        const flooring = user.validatePurchase.flooring(args.flooring)
 
         if (!flooring) {
             return
@@ -136,7 +135,7 @@ export default class Igloo extends GamePlugin {
     }
 
     updateMusic(args: Args, user: GameUser) {
-        let igloo = this.getIgloo(user.id)
+        const igloo = this.getIgloo(user.id)
 
         if (!igloo || igloo != user.room || igloo.music == args.music) {
             return
@@ -153,7 +152,7 @@ export default class Igloo extends GamePlugin {
     }
 
     openIgloo(args: Args, user: GameUser) {
-        let igloo = this.getIgloo(user.id)
+        const igloo = this.getIgloo(user.id)
 
         if (igloo && igloo == user.room) {
             this.openIgloos.add(user)
@@ -161,7 +160,7 @@ export default class Igloo extends GamePlugin {
     }
 
     closeIgloo(args: Args, user: GameUser) {
-        let igloo = this.getIgloo(user.id)
+        const igloo = this.getIgloo(user.id)
 
         if (igloo && igloo == user.room) {
             this.openIgloos.remove(user)
@@ -173,15 +172,15 @@ export default class Igloo extends GamePlugin {
     }
 
     getIglooOpen(args: Args, user: GameUser) {
-        let open = this.openIgloos.includes(args.igloo)
+        const open = this.openIgloos.includes(args.igloo)
 
-        user.send('get_igloo_open', { open: open })
+        user.send('get_igloo_open', { open })
     }
 
     // Functions
 
     getIgloo(id: number) {
-        let iglooId = id + this.config.game.iglooIdOffset
+        const iglooId = id + this.config.game.iglooIdOffset
 
         if (iglooId in this.rooms) {
             return this.rooms[iglooId] as IglooRoom

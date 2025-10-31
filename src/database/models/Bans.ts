@@ -4,7 +4,6 @@ import type Database from '@database/Database'
 
 import Sequelize from 'sequelize'
 
-
 export default class Bans extends BaseModel {
 
     protectedAttributes = ['id', 'moderatorId', 'message']
@@ -27,7 +26,7 @@ export default class Bans extends BaseModel {
                 },
                 userId: {
                     type: Sequelize.INTEGER,
-                    allowNull: false,
+                    allowNull: false
                 },
                 issued: {
                     type: Sequelize.DATE,

@@ -2,7 +2,6 @@ import Collection from '../Collection'
 
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class IgnoreCollection extends Collection {
 
     constructor(user: GameUser, models: any[]) {
@@ -14,12 +13,12 @@ export default class IgnoreCollection extends Collection {
     }
 
     toJSON() {
-        let ignores = []
+        const ignores = []
 
-        for (let ignore in this.collection) {
-            let username = this.collection[ignore].user.username
+        for (const ignore in this.collection) {
+            const username = this.collection[ignore].user.username
 
-            ignores.push({ id: parseInt(ignore), username: username })
+            ignores.push({ id: parseInt(ignore), username })
         }
 
         return ignores

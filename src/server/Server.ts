@@ -12,8 +12,8 @@ import fs from 'fs'
 import http from 'http'
 import https from 'https'
 import { RateLimiterRes } from 'rate-limiter-flexible'
-import { Server as IoServer, ServerOptions, Socket } from 'socket.io'
-
+import type { ServerOptions, Socket } from 'socket.io'
+import { Server as IoServer } from 'socket.io'
 
 export type Action = string
 export type Args = Record<string, any>

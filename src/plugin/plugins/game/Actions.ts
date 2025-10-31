@@ -6,16 +6,15 @@ import type GameUser from '@objects/user/GameUser'
 
 import { hasProps, isInRange } from '@utils/validation'
 
-
 export default class Actions extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'send_position': this.sendPosition,
-            'send_frame': this.sendFrame,
-            'snowball': this.snowball
+            send_position: this.sendPosition,
+            send_frame: this.sendFrame,
+            snowball: this.snowball
         }
     }
 

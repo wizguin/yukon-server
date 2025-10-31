@@ -2,7 +2,6 @@ import Collection from '../Collection'
 
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class PostcardCollection extends Collection {
 
     constructor(user: GameUser, models: any[]) {
@@ -14,9 +13,9 @@ export default class PostcardCollection extends Collection {
         try {
             const model = await this.model.create({
                 userId: this.user.id,
-                senderId: senderId,
-                postcardId: postcardId,
-                details: details
+                senderId,
+                postcardId,
+                details
             })
 
             await model.reload({
@@ -41,7 +40,7 @@ export default class PostcardCollection extends Collection {
 
     async removeFrom(senderId: number) {
         // Delete query
-        await this.model.destroy({ where: { userId: this.user.id, senderId: senderId } })
+        await this.model.destroy({ where: { userId: this.user.id, senderId } })
 
         // Clear from collection
         for (const key in this.collection) {

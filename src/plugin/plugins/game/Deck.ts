@@ -6,7 +6,6 @@ import type GameUser from '@objects/user/GameUser'
 
 import data from '@data/data'
 
-
 export default class Sensei extends GamePlugin {
 
     starterDeckId = 821
@@ -16,7 +15,7 @@ export default class Sensei extends GamePlugin {
         super(handler)
 
         this.events = {
-            'add_starter_deck': this.addStarterDeck
+            add_starter_deck: this.addStarterDeck
         }
 
         this.starterDeck = this.crumbs.items[this.starterDeckId]

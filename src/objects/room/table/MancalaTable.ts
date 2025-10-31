@@ -2,7 +2,6 @@ import BaseTable from './BaseTable'
 
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class MancalaTable extends BaseTable {
 
     init() {
@@ -19,14 +18,14 @@ export default class MancalaTable extends BaseTable {
             return
         }
 
-        let hole = args.hole
+        const hole = args.hole
 
         if (!this.isValidMove(user, hole)) {
             return
         }
 
-        let move = this.makeMove(hole)
-        this.send('send_move', { turn: this.currentTurn, hole: hole, move: move })
+        const move = this.makeMove(hole)
+        this.send('send_move', { turn: this.currentTurn, hole, move })
 
         if (this.isGameOver()) {
             this.sendGameOver()
@@ -34,7 +33,7 @@ export default class MancalaTable extends BaseTable {
         }
 
         if (move !== 'free') {
-            this.currentTurn = (this.currentTurn === 1) ? 2 : 1
+            this.currentTurn = this.currentTurn === 1 ? 2 : 1
         }
     }
 
@@ -43,7 +42,7 @@ export default class MancalaTable extends BaseTable {
             return false
         }
 
-        let turn = this.users.indexOf(user) + 1
+        const turn = this.users.indexOf(user) + 1
         if (turn != this.currentTurn) {
             return false
         }
@@ -76,7 +75,7 @@ export default class MancalaTable extends BaseTable {
 
     getNextHole(hole: number) {
         hole++
-        let opponentMancala = (this.currentTurn === 1) ? 13 : 6
+        const opponentMancala = this.currentTurn === 1 ? 13 : 6
 
         if (hole === opponentMancala) {
             hole++
@@ -91,8 +90,8 @@ export default class MancalaTable extends BaseTable {
 
     checkLastHole(hole: number) {
         // Capture
-        let oppositeHole = 12 - hole
-        let myMancala = (this.currentTurn === 1) ? 6 : 13
+        const oppositeHole = 12 - hole
+        const myMancala = this.currentTurn === 1 ? 6 : 13
 
         if (this.map[hole] === 1 && this.map[oppositeHole] > 0) {
             // Only if on your side
@@ -115,8 +114,8 @@ export default class MancalaTable extends BaseTable {
 
     isGameOver() {
         // Sums not including mancalas
-        let player1Sum = this.sum(this.map.slice(0, 6))
-        let player2Sum = this.sum(this.map.slice(7, -1))
+        const player1Sum = this.sum(this.map.slice(0, 6))
+        const player2Sum = this.sum(this.map.slice(7, -1))
 
         if (player1Sum === 0 || player2Sum === 0) {
             return true
@@ -125,8 +124,8 @@ export default class MancalaTable extends BaseTable {
 
     sendGameOver() {
         // Sums including mancalas
-        let player1Sum = this.sum(this.map.slice(0, 7))
-        let player2Sum = this.sum(this.map.slice(7, 14))
+        const player1Sum = this.sum(this.map.slice(0, 7))
+        const player2Sum = this.sum(this.map.slice(7, 14))
 
         this.users[0].updateCoins(player1Sum, true)
         this.users[1].updateCoins(player2Sum, true)
@@ -143,9 +142,7 @@ export default class MancalaTable extends BaseTable {
     }
 
     sum(array: number[]) {
-        return array.reduce((previousValue, currentValue) => {
-            return previousValue + currentValue
-        }, 0)
+        return array.reduce((previousValue, currentValue) => previousValue + currentValue, 0)
     }
 
     toJSON() {

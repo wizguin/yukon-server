@@ -5,7 +5,6 @@ import type Users from './Users'
 
 import Sequelize from 'sequelize'
 
-
 export default class Buddies extends BaseModel {
 
     declare userId: number

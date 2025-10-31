@@ -6,7 +6,6 @@ import pick from '@utils/pick'
 
 import Sequelize from 'sequelize'
 
-
 export default class Pets extends BaseModel {
 
     declare id: number
@@ -35,7 +34,7 @@ export default class Pets extends BaseModel {
     get happiness() {
         const statTotal = this.energy + this.health + this.rest
 
-        return Math.round((statTotal / 300) * 100)
+        return Math.round(statTotal / 300 * 100)
     }
 
     static initModel(sequelize: Sequelize.Sequelize) {
@@ -57,7 +56,7 @@ export default class Pets extends BaseModel {
                 },
                 name: {
                     type: Sequelize.STRING(12),
-                    allowNull: false,
+                    allowNull: false
                 },
                 adoptionDate: {
                     type: Sequelize.DATE,

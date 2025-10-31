@@ -1,7 +1,6 @@
 import type GameUser from '@objects/user/GameUser'
 import InstanceFactory from '@objects/instance/InstanceFactory'
 
-
 export default class Waddle {
 
     users: (GameUser | null)[]
@@ -26,7 +25,7 @@ export default class Waddle {
             return
         }
 
-        let seat = this.users.indexOf(null)
+        const seat = this.users.indexOf(null)
         this.users[seat] = user
 
         user.waddle = this
@@ -36,28 +35,28 @@ export default class Waddle {
             return this.start()
         }
 
-        user.send('join_waddle', { waddle: this.id, seat: seat, game: this.game })
-        user.room?.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: user.username }, [])
+        user.send('join_waddle', { waddle: this.id, seat, game: this.game })
+        user.room?.send(user, 'update_waddle', { waddle: this.id, seat, username: user.username }, [])
     }
 
     remove(user: GameUser) {
-        let seat = this.users.indexOf(user)
+        const seat = this.users.indexOf(user)
         this.users[seat] = null
 
         user.waddle = null
 
-        user.room?.send(user, 'update_waddle', { waddle: this.id, seat: seat, username: null }, [])
+        user.room?.send(user, 'update_waddle', { waddle: this.id, seat, username: null }, [])
     }
 
     start() {
-        let instance = InstanceFactory.createInstance(this)
+        const instance = InstanceFactory.createInstance(this)
 
         this.reset()
         instance.init()
     }
 
     reset() {
-        for (let user of this.users.filter(Boolean)) {
+        for (const user of this.users.filter(Boolean)) {
             if (user) {
                 this.remove(user)
             }

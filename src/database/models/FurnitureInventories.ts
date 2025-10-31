@@ -4,7 +4,6 @@ import type Database from '@database/Database'
 
 import Sequelize from 'sequelize'
 
-
 export default class FurnitureInventories extends BaseModel {
 
     declare userId: number
@@ -26,7 +25,7 @@ export default class FurnitureInventories extends BaseModel {
                 },
                 quantity: {
                     type: Sequelize.INTEGER,
-                    allowNull: false,
+                    allowNull: false
                 }
             },
             { sequelize, timestamps: false, tableName: 'furniture_inventories' }

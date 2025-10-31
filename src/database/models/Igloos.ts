@@ -4,7 +4,6 @@ import type Database from '@database/Database'
 
 import Sequelize from 'sequelize'
 
-
 export default class Igloos extends BaseModel {
 
     declare userId: number

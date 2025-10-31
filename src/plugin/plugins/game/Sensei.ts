@@ -6,7 +6,6 @@ import type GameUser from '@objects/user/GameUser'
 
 import SenseiInstance from '@objects/instance/card/SenseiInstance'
 
-
 export default class Sensei extends GamePlugin {
 
     senseiRoom = 951
@@ -15,7 +14,7 @@ export default class Sensei extends GamePlugin {
         super(handler)
 
         this.events = {
-            'join_sensei': this.joinSensei
+            join_sensei: this.joinSensei
         }
     }
 
@@ -28,7 +27,7 @@ export default class Sensei extends GamePlugin {
             return
         }
 
-        let instance = new SenseiInstance(user)
+        const instance = new SenseiInstance(user)
 
         instance.init()
     }

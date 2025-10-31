@@ -4,7 +4,6 @@ import type Database from '@database/Database'
 
 import Sequelize from 'sequelize'
 
-
 export default class Cards extends BaseModel {
 
     declare userId: number
@@ -27,11 +26,11 @@ export default class Cards extends BaseModel {
                 },
                 quantity: {
                     type: Sequelize.INTEGER,
-                    allowNull: false,
+                    allowNull: false
                 },
                 memberQuantity: {
                     type: Sequelize.INTEGER,
-                    allowNull: false,
+                    allowNull: false
                 }
             },
             { sequelize, timestamps: false, tableName: 'cards' }

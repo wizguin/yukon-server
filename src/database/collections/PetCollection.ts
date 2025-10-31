@@ -1,13 +1,12 @@
 import Collection from '../Collection'
 
 import type GameUser from '@objects/user/GameUser'
-import Pets from '@database/models/Pets'
+import type Pets from '@database/models/Pets'
 
 import { clamp } from '@utils/math'
 import { isLength, isString } from '@utils/validation'
 
 import { pets } from '@data/data'
-
 
 const feedPostcard = 110
 const adoptPostcard = 111
@@ -48,7 +47,7 @@ export default class PetCollection extends Collection {
         }
 
         try {
-            const model = await this.model.create({ userId: this.user.id, typeId: typeId, name: name })
+            const model = await this.model.create({ userId: this.user.id, typeId, name })
 
             this.addModel(model)
 
@@ -69,7 +68,9 @@ export default class PetCollection extends Collection {
         for (const pet of this.values) {
             this.decreaseStats(pet)
 
-            if (this.checkRunAway(pet)) continue
+            if (this.checkRunAway(pet)) {
+                continue
+            }
             await this.checkHungry(pet)
 
             updates.push(pet.dataValues)
@@ -94,7 +95,9 @@ export default class PetCollection extends Collection {
 
     checkRunAway(pet: Pets) {
         // Can't run away whilst owner is in their igloo
-        if (this.user.inOwnIgloo()) return false
+        if (this.user.inOwnIgloo()) {
+            return false
+        }
 
         if (pet.dead) {
             this.user.addSystemMail(pets[pet.typeId].ranPostcard, pet.name)
@@ -120,7 +123,7 @@ export default class PetCollection extends Collection {
 
     sendUpdates(updates: any) {
         if (this.user.inOwnIgloo() && this.user.room) {
-            this.user.room.send(this.user, 'update_pets', { updates: updates }, [])
+            this.user.room.send(this.user, 'update_pets', { updates }, [])
         }
 
         // Bulk update

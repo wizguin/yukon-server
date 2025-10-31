@@ -17,9 +17,9 @@ export default class Item extends GamePlugin {
         super(handler)
 
         this.events = {
-            'update_player': this.updatePlayer,
-            'add_item': this.addItem,
-            'remove_item': this.removeItem
+            update_player: this.updatePlayer,
+            add_item: this.addItem,
+            remove_item: this.removeItem
         }
 
         this.items = this.crumbs.items
@@ -59,7 +59,7 @@ export default class Item extends GamePlugin {
         }
 
         user.updateCoins(-item.cost)
-        user.send('add_item', { item: args.item, name: item.name, slot: slot, coins: user.coins })
+        user.send('add_item', { item: args.item, name: item.name, slot, coins: user.coins })
     }
 
     removeItem(args: Args, user: GameUser) {

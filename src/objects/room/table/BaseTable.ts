@@ -1,4 +1,4 @@
-import GameUser from '@objects/user/GameUser'
+import type GameUser from '@objects/user/GameUser'
 import type Room from '../Room'
 
 export default class BaseTable {
@@ -41,10 +41,10 @@ export default class BaseTable {
             return
         }
 
-        let turn = this.users.indexOf(user) + 1
+        const turn = this.users.indexOf(user) + 1
 
-        user.send('join_game', { turn: turn })
-        this.send('update_game', { username: user.username, turn: turn })
+        user.send('join_game', { turn })
+        this.send('update_game', { username: user.username, turn })
 
         if (this.users.length == 2) {
             this.started = true
@@ -55,10 +55,10 @@ export default class BaseTable {
     add(user: GameUser) {
         this.users.push(user)
 
-        let seat = this.users.length
+        const seat = this.users.length
 
-        user.send('join_table', { table: this.id, seat: seat, game: this.game })
-        user.room?.send(user, 'update_table', { table: this.id, seat: seat }, [])
+        user.send('join_table', { table: this.id, seat, game: this.game })
+        user.room?.send(user, 'update_table', { table: this.id, seat }, [])
     }
 
     remove(user: GameUser) {
@@ -74,7 +74,7 @@ export default class BaseTable {
     }
 
     reset(quittingUser: string | null = null) {
-        for (let user of this.users) {
+        for (const user of this.users) {
             user.minigameRoom = null
         }
 
@@ -89,7 +89,7 @@ export default class BaseTable {
     }
 
     send(action: string, args = {}) {
-        for (let user of this.users) {
+        for (const user of this.users) {
             user.send(action, args)
         }
     }

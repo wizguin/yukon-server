@@ -1,7 +1,6 @@
 import type GameUser from '@objects/user/GameUser'
 import type { Action, Args } from '../../../server/Server'
 
-
 export default class MatchmakerPlayer {
 
     user: GameUser

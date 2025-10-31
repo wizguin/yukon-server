@@ -3,7 +3,6 @@ import Igloo from '@objects/room/Igloo'
 
 import { isNumber } from '@utils/validation'
 
-
 interface Includes {
     includes: (...args: any[]) => boolean
 }
@@ -40,12 +39,12 @@ export default class PurchaseValidator {
         return this.validate(id, 'floorings', [this.user.room.flooring])
     }
 
-    validate(id: number, type: string, includes: Includes = new Array()) {
+    validate(id: number, type: string, includes: Includes = []) {
         if (!isNumber(id)) {
             return false
         }
 
-        let item = this.crumbs[type][id]
+        const item = this.crumbs[type][id]
 
         if (!item) {
             return false

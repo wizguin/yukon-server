@@ -7,23 +7,22 @@ import Igloo from '@objects/room/Igloo'
 
 import { hasProps } from '@utils/validation'
 
-
 export default class Buddy extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'buddy_request': this.buddyRequest,
-            'buddy_accept': this.buddyAccept,
-            'buddy_reject': this.buddyReject,
-            'buddy_remove': this.buddyRemove,
-            'buddy_find': this.buddyFind
+            buddy_request: this.buddyRequest,
+            buddy_accept: this.buddyAccept,
+            buddy_reject: this.buddyReject,
+            buddy_remove: this.buddyRemove,
+            buddy_find: this.buddyFind
         }
     }
 
     buddyRequest(args: Args, user: GameUser) {
-        let recipient = this.usersById[args.id]
+        const recipient = this.usersById[args.id]
 
         if (!recipient) {
             return
@@ -54,7 +53,7 @@ export default class Buddy extends GamePlugin {
             return
         }
 
-        if (!(user.buddyRequests.includes(args.id))) {
+        if (!user.buddyRequests.includes(args.id)) {
             return
         }
 
@@ -64,7 +63,7 @@ export default class Buddy extends GamePlugin {
 
         user.clearBuddyRequest(args.id)
 
-        let requester = this.usersById[args.id]
+        const requester = this.usersById[args.id]
         let username
 
         if (requester) {
@@ -90,7 +89,7 @@ export default class Buddy extends GamePlugin {
 
         user.removeBuddy(args.id)
 
-        let buddy = this.usersById[args.id]
+        const buddy = this.usersById[args.id]
 
         if (buddy) {
             buddy.removeBuddy(user.id)
@@ -104,13 +103,13 @@ export default class Buddy extends GamePlugin {
             return
         }
 
-        let buddy = this.usersById[args.id]
+        const buddy = this.usersById[args.id]
 
         if (!buddy.room) {
             return
         }
 
-        let result: Record<string, any> = { find: buddy.room.id }
+        const result: Record<string, any> = { find: buddy.room.id }
 
         if (buddy.room instanceof Igloo) {
             result.igloo = true

@@ -5,7 +5,6 @@ import type User from '@objects/user/User'
 
 import Sequelize from 'sequelize'
 
-
 export default class Ignores extends BaseModel {
 
     declare userId: number

@@ -4,7 +4,6 @@ import type CardMatchmaker from './matchmaker/CardMatchmaker'
 import type GameUser from '@objects/user/GameUser'
 import type Waddle from './waddle/Waddle'
 
-
 export default class Room {
 
     users: Record<string, GameUser> = {}
@@ -40,7 +39,7 @@ export default class Room {
         }
 
         user.send('join_room', { room: this.id, users: this.userValues })
-        this.send(user, 'add_player', { user: user })
+        this.send(user, 'add_player', { user })
     }
 
     remove(user: GameUser) {
@@ -65,9 +64,9 @@ export default class Room {
      * @param {boolean} checkIgnore - Whether or not to exclude users who have user added to their ignore list
      */
     send(user: GameUser | null, action: Action, args: Args = {}, filter: (GameUser | null)[] = [user], checkIgnore: boolean = false) {
-        let users = this.userValues.filter(u => !filter.includes(u))
+        const users = this.userValues.filter(u => !filter.includes(u))
 
-        for (let u of users) {
+        for (const u of users) {
             if (user && checkIgnore && u.ignores.includes(user.id)) {
                 continue
             }

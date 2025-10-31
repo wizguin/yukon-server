@@ -1,8 +1,7 @@
 import Room from './Room'
 
-import Database from '@database/Database'
+import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
-
 
 interface Furniture {
     furnitureId: number
@@ -44,11 +43,11 @@ export default class Igloo extends Room {
         this.users[user.socket.id] = user
 
         user.send('join_igloo', this)
-        this.send(user, 'add_player', { user: user })
+        this.send(user, 'add_player', { user })
     }
 
     refresh(user: GameUser) {
-        for (let u of this.userValues) {
+        for (const u of this.userValues) {
             u.x = 0
             u.y = 0
             u.frame = 1

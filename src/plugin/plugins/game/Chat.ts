@@ -4,8 +4,7 @@ import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-import { hasProps, isNumber, isString, isLength } from '@utils/validation'
-
+import { hasProps, isLength, isNumber, isString } from '@utils/validation'
 
 type CommandHandler = (args: string[], user: GameUser) => void
 
@@ -19,20 +18,20 @@ export default class Chat extends GamePlugin {
         super(handler)
 
         this.events = {
-            'send_message': this.sendMessage,
-            'send_safe': this.sendSafe,
-            'send_emote': this.sendEmote,
-            'send_joke': this.sendJoke,
-            'send_tour': this.sendTour
+            send_message: this.sendMessage,
+            send_safe: this.sendSafe,
+            send_emote: this.sendEmote,
+            send_joke: this.sendJoke,
+            send_tour: this.sendTour
         }
 
         this.commands = {
-            'ai': this.addItem,
-            'af': this.addFurniture,
-            'ac': this.addCoins,
-            'jr': this.joinRoom,
-            'id': this.id,
-            'users': this.userPopulation
+            ai: this.addItem,
+            af: this.addFurniture,
+            ac: this.addCoins,
+            jr: this.joinRoom,
+            id: this.id,
+            users: this.userPopulation
         }
 
         this.bindCommands()
@@ -135,7 +134,7 @@ export default class Chat extends GamePlugin {
     // Commands
 
     bindCommands() {
-        for (let command in this.commands) {
+        for (const command in this.commands) {
             this.commands[command] = this.commands[command].bind(this)
         }
     }
@@ -143,8 +142,8 @@ export default class Chat extends GamePlugin {
     processCommand(message: string, user: GameUser) {
         message = message.substring(1)
 
-        let args = message.split(' ')
-        let command = args.shift()?.toLowerCase()
+        const args = message.split(' ')
+        const command = args.shift()?.toLowerCase()
 
         if (command && command in this.commands) {
             this.commands[command](args, user)

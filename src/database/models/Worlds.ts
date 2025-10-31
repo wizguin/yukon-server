@@ -2,7 +2,6 @@ import BaseModel from '../BaseModel'
 
 import Sequelize from 'sequelize'
 
-
 export default class Worlds extends BaseModel {
 
     declare id: string

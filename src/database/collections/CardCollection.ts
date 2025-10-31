@@ -4,7 +4,6 @@ import type GameUser from '@objects/user/GameUser'
 
 import { cards } from '@data/data'
 
-
 export default class CardCollection extends Collection {
 
     starterDeckId = 821
@@ -15,7 +14,7 @@ export default class CardCollection extends Collection {
 
     // Owned cards * their quantities
     get deck() {
-        let deck: any[] = []
+        const deck: any[] = []
 
         this.keys.forEach(card => {
             const quantity = this.getQuantity(card)
@@ -41,7 +40,7 @@ export default class CardCollection extends Collection {
             this.collection[card].update({ quantity: this.getQuantity(card) + quantity })
 
         } else {
-            super.add({ userId: this.user.id, cardId: card, quantity: quantity, memberQuantity: 0 })
+            super.add({ userId: this.user.id, cardId: card, quantity, memberQuantity: 0 })
         }
     }
 

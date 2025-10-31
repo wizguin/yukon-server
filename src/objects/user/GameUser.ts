@@ -26,7 +26,6 @@ import EventEmitter from 'events'
 import { Op } from 'sequelize'
 import type { Socket } from 'socket.io'
 
-
 interface Token {
     selector?: string
     validatorHash?: string
@@ -76,7 +75,7 @@ export default class GameUser extends User {
         // Used for dynamic/temporary events
         this.events = new EventEmitter({ captureRejections: true })
 
-        this.events.on('error', (error) => {
+        this.events.on('error', error => {
             this.handler.error(error)
         })
     }
@@ -97,7 +96,7 @@ export default class GameUser extends User {
 
     sendUpdatePlayer(slot: string, item: number) {
         if (this.room) {
-            this.room.send(this, 'update_player', { id: this.id, item: item, slot: slot }, [])
+            this.room.send(this, 'update_player', { id: this.id, item, slot }, [])
         }
     }
 
@@ -142,15 +141,15 @@ export default class GameUser extends User {
         this.buddies.add(id)
 
         // @ts-expect-error temp
-        let online = id in this.handler.usersById
+        const online = id in this.handler.usersById
 
-        this.send('buddy_accept', { id: id, username: username, requester: requester, online: online })
+        this.send('buddy_accept', { id, username, requester, online })
     }
 
     removeBuddy(id: number) {
         this.buddies.remove(id)
 
-        this.send('buddy_remove', { id: id })
+        this.send('buddy_remove', { id })
     }
 
     clearBuddyRequest(id: number) {
@@ -165,7 +164,7 @@ export default class GameUser extends User {
         if (!isNaN(coins)) {
             coins = Math.max(Math.min(1000000000, this.coins + coins), 0)
 
-            this.update({ coins: coins })
+            this.update({ coins })
         }
 
         if (gameOver) {
@@ -177,18 +176,26 @@ export default class GameUser extends User {
         // @ts-expect-error temp
         const postcard = await this.postcards.add(null, postcardId, details)
 
-        if (postcard) this.send('receive_mail', postcard)
+        if (postcard) {
+            this.send('receive_mail', postcard)
+        }
 
         return postcard
     }
 
     async startWalkingPet(petId: number) {
-        if (!this.pets.includes(petId)) return
-        if (this.walkingPet) this.stopWalkingPet()
+        if (!this.pets.includes(petId)) {
+            return
+        }
+        if (this.walkingPet) {
+            this.stopWalkingPet()
+        }
 
         const pet = this.pets.get(petId)
 
-        if (pet.rest < 20 || pet.energy < 40) return
+        if (pet.rest < 20 || pet.energy < 40) {
+            return
+        }
 
         pet.walking = true
         this.walkingPet = pet
@@ -318,7 +325,7 @@ export default class GameUser extends User {
 
         } catch (error) {
             if (error instanceof Error) {
-               this.handler.error(error)
+                this.handler.error(error)
             }
 
             return false

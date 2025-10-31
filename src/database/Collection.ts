@@ -37,7 +37,7 @@ export default class Collection {
     }
 
     collect(models: any[]) {
-        for (let model of models) {
+        for (const model of models) {
             this.addModel(model)
         }
     }

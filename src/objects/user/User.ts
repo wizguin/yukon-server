@@ -15,7 +15,6 @@ import type { EventEmitter } from 'stream'
 import { Op } from 'sequelize'
 import type { Socket } from 'socket.io'
 
-
 export default class User {
 
     db: Database
@@ -61,7 +60,7 @@ export default class User {
     }
 
     send(action: Action, args: Args = {}) {
-        this.socket.emit('message', { action: action, args: args })
+        this.socket.emit('message', { action, args })
     }
 
     close() {
@@ -153,7 +152,7 @@ export default class User {
             'feet',
             'color',
             'photo',
-            'flag',
+            'flag'
         )
     }
 

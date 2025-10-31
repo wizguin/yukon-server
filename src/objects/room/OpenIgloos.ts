@@ -1,6 +1,5 @@
 import type GameUser from '@objects/user/GameUser'
 
-
 interface OpenIgloo {
     id: number
     username: string

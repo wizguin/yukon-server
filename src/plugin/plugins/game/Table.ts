@@ -12,9 +12,9 @@ export default class Table extends GamePlugin {
         super(handler)
 
         this.events = {
-            'get_tables': this.getTables,
-            'join_table': this.joinTable,
-            'leave_table': this.leaveTable
+            get_tables: this.getTables,
+            join_table: this.joinTable,
+            leave_table: this.leaveTable
         }
     }
 
@@ -23,13 +23,13 @@ export default class Table extends GamePlugin {
             return
         }
 
-        let tables = Object.fromEntries(Object.values(user.room.tables).map(table => {
-            let users = table.users.map(user => user.username)
+        const tables = Object.fromEntries(Object.values(user.room.tables).map(table => {
+            const users = table.users.map(user => user.username)
 
             return [table.id, users]
         }))
 
-        user.send('get_tables', { tables: tables })
+        user.send('get_tables', { tables })
     }
 
     joinTable(args: Args, user: GameUser) {
@@ -41,7 +41,7 @@ export default class Table extends GamePlugin {
             return
         }
 
-        let table = user.room.tables[args.table]
+        const table = user.room.tables[args.table]
 
         user.joinTable(table)
     }

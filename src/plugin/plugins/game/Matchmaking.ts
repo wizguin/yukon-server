@@ -4,15 +4,14 @@ import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class Matchmaking extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'join_matchmaking': this.joinMatchmaking,
-            'leave_matchmaking': this.leaveMatchmaking
+            join_matchmaking: this.joinMatchmaking,
+            leave_matchmaking: this.leaveMatchmaking
         }
     }
 

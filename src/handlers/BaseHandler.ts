@@ -7,7 +7,6 @@ import type User from '@objects/user/User'
 
 import EventEmitter from 'events'
 
-
 export default class BaseHandler {
 
     logging = true
@@ -22,7 +21,7 @@ export default class BaseHandler {
     ) {
         this.events = new EventEmitter({ captureRejections: true })
 
-        this.events.on('error', (error) => {
+        this.events.on('error', error => {
             this.error(error)
         })
     }
@@ -51,7 +50,7 @@ export default class BaseHandler {
                 user.events.emit(message.action, message.args, user)
             }
 
-        } catch(error) {
+        } catch (error) {
             if (error instanceof Error) {
                 this.error(error)
             }

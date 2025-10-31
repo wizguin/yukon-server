@@ -16,7 +16,6 @@ import type Pets from './Pets'
 
 import Sequelize from 'sequelize'
 
-
 export default class Users extends BaseModel {
 
     declare id: number
@@ -212,7 +211,7 @@ export default class Users extends BaseModel {
             'feet',
             'color',
             'photo',
-            'flag',
+            'flag'
         )
     }
 

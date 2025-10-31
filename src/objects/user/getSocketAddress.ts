@@ -2,7 +2,6 @@ import type { Config } from '../../config/config'
 
 import type { Socket } from 'socket.io'
 
-
 export default function(socket: Socket, config: Config) {
     const headers = socket.handshake.headers
 

@@ -8,26 +8,25 @@ import type { Config } from './config/config'
 
 const conf = config as Config
 
-
 class World extends Server {
 
     constructor(id: string) {
         console.log(`[${id}] Starting world ${id} on port ${conf.worlds[id].port}`)
 
-        let users = {}
-        let db = new Database(conf.database)
+        const users = {}
+        const db = new Database(conf.database)
 
-        let handlerClass = id === 'Login' ? LoginHandler : GameHandler
-        let handler = new handlerClass(id, users, db, conf)
+        const handlerClass = id === 'Login' ? LoginHandler : GameHandler
+        const handler = new handlerClass(id, users, db, conf)
 
         super(id, users, db, handler, conf)
     }
 
 }
 
-let args = process.argv.slice(2)
+const args = process.argv.slice(2)
 
-for (let world of args) {
+for (const world of args) {
     if (world in config.worlds) {
         new World(world)
     }

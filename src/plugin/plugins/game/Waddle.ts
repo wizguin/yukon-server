@@ -4,16 +4,15 @@ import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class Waddle extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'get_waddles': this.getWaddles,
-            'join_waddle': this.joinWaddle,
-            'leave_waddle': this.leaveWaddle
+            get_waddles: this.getWaddles,
+            join_waddle: this.joinWaddle,
+            leave_waddle: this.leaveWaddle
         }
     }
 
@@ -22,13 +21,13 @@ export default class Waddle extends GamePlugin {
             return
         }
 
-        let waddles = Object.fromEntries(Object.values(user.room.waddles).map(waddle => {
-            let users = waddle.users.map(user => user ? user.username : null)
+        const waddles = Object.fromEntries(Object.values(user.room.waddles).map(waddle => {
+            const users = waddle.users.map(user => user ? user.username : null)
 
             return [waddle.id, users]
         }))
 
-        user.send('get_waddles', { waddles: waddles })
+        user.send('get_waddles', { waddles })
     }
 
     joinWaddle(args: Args, user: GameUser) {
@@ -36,7 +35,7 @@ export default class Waddle extends GamePlugin {
             return
         }
 
-        let waddle = user.room.waddles[args.waddle]
+        const waddle = user.room.waddles[args.waddle]
 
         if (!waddle) {
             return

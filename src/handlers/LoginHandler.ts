@@ -4,7 +4,6 @@ import type { Config } from '../config/config'
 import type Database from '@database/Database'
 import type User from '@objects/user/User'
 
-
 export default class LoginHandler extends BaseHandler {
 
     constructor(

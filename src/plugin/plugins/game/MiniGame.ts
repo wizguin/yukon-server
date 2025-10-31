@@ -4,17 +4,16 @@ import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class Minigame extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'get_game': this.getGame,
-            'join_game': this.joinGame,
-            'send_move': this.sendMove,
-            'game_over': this.gameOver
+            get_game: this.getGame,
+            join_game: this.joinGame,
+            send_move: this.sendMove,
+            game_over: this.gameOver
         }
     }
 

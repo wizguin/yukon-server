@@ -2,14 +2,13 @@ import FourTable from './FourTable'
 import MancalaTable from './MancalaTable'
 import type Room from '../Room'
 
-
 type TableType = keyof typeof TableFactory.types
 
 export default class TableFactory {
 
     static types = {
-        'four': FourTable,
-        'mancala': MancalaTable
+        four: FourTable,
+        mancala: MancalaTable
     }
 
     static createTable(table: any, room: Room) {

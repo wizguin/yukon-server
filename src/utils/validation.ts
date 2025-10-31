@@ -1,5 +1,5 @@
 export function hasProps(object: any, ...props: string[]) {
-    for (let prop of props) {
+    for (const prop of props) {
 
         if (!(prop in object)) {
             return false
@@ -10,13 +10,13 @@ export function hasProps(object: any, ...props: string[]) {
 }
 
 export function isNumber(value: any) {
-    return typeof value == 'number'
+    return typeof value === 'number'
         && !isNaN(value)
         && Number.isInteger(value)
 }
 
 export function isString(value: any) {
-    return typeof value == 'string'
+    return typeof value === 'string'
 }
 
 export function isInRange(value: number, min: number, max: number) {

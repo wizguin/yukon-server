@@ -11,7 +11,6 @@ import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import Validator, { type AsyncCheckFunction, type SyncCheckFunction } from 'fastest-validator'
 
-
 const responses = {
     notFound: {
         success: false,
@@ -35,8 +34,8 @@ export default class Login extends Plugin {
         super(handler)
 
         this.events = {
-            'login': this.login,
-            'token_login': this.tokenLogin
+            login: this.login,
+            token_login: this.tokenLogin
         }
 
         this.check = this.createValidator()
@@ -52,7 +51,7 @@ export default class Login extends Plugin {
         // Only handle login once
         user.loginSent = true
 
-        let check = this.check({ username: args.username, password: args.password })
+        const check = this.check({ username: args.username, password: args.password })
 
         if (check != true) {
             // Invalid data input
@@ -85,9 +84,9 @@ export default class Login extends Plugin {
     // Functions
 
     createValidator() {
-        let validator = new Validator()
+        const validator = new Validator()
 
-        let schema = {
+        const schema = {
             username: {
                 empty: false,
                 trim: true,
@@ -97,7 +96,7 @@ export default class Login extends Plugin {
                 messages: {
                     stringEmpty: 'You must provide your Penguin Name to enter Club Penguin',
                     stringMin: 'Your Penguin Name is too short. Please try again',
-                    stringMax: 'Your Penguin Name is too long. Please try again',
+                    stringMax: 'Your Penguin Name is too long. Please try again'
                 }
             },
             password: {
@@ -118,17 +117,17 @@ export default class Login extends Plugin {
     }
 
     async comparePasswords(args: Args, user: User) {
-        let load = await user.load(args.username)
+        const load = await user.load(args.username)
         if (!load) {
             return responses.notFound
         }
 
-        let match = await bcrypt.compare(args.password, user.password)
+        const match = await bcrypt.compare(args.password, user.password)
         if (!match) {
             return responses.wrongPassword
         }
 
-        let banned = this.checkBanned(user)
+        const banned = this.checkBanned(user)
         if (banned) {
             return banned
         }
@@ -145,12 +144,12 @@ export default class Login extends Plugin {
             return responses.wrongPassword
         }
 
-        let split = args.token.split(':')
+        const split = args.token.split(':')
         if (split.length != 2) {
             return responses.wrongPassword
         }
 
-        let load = await user.load(args.username, split[0])
+        const load = await user.load(args.username, split[0])
         if (!load) {
             return responses.notFound
         }
@@ -159,12 +158,12 @@ export default class Login extends Plugin {
             return responses.wrongPassword
         }
 
-        let match = await bcrypt.compare(split[1], user.authToken.validator)
+        const match = await bcrypt.compare(split[1], user.authToken.validator)
         if (!match) {
             return responses.wrongPassword
         }
 
-        let banned = this.checkBanned(user)
+        const banned = this.checkBanned(user)
         if (banned) {
             return banned
         }
@@ -181,7 +180,7 @@ export default class Login extends Plugin {
             return
         }
 
-        let hours = Math.round((user.ban.expires - Date.now()) / 60 / 60 / 1000)
+        const hours = Math.round((user.ban.expires - Date.now()) / 60 / 60 / 1000)
         return {
             success: false,
             message: `Banned:\nYou are banned for the next ${hours} hours`
@@ -190,11 +189,11 @@ export default class Login extends Plugin {
 
     async onLoginSuccess(user: User) {
         // Generate random key, used by client for authentication
-        let randomKey = crypto.randomBytes(32).toString('hex')
+        const randomKey = crypto.randomBytes(32).toString('hex')
         // Generate new login key, used to validate user on game server
-        let loginKey = await this.genLoginKey(user, randomKey)
+        const loginKey = await this.genLoginKey(user, randomKey)
 
-        let populations = await this.getWorldPopulations(user.isModerator)
+        const populations = await this.getWorldPopulations(user.isModerator)
 
         // All validation passed
         await user.update({ loginKey })
@@ -203,33 +202,33 @@ export default class Login extends Plugin {
             success: true,
             username: user.username,
             key: randomKey,
-            populations: populations
+            populations
         }
     }
 
     async genLoginKey(user: User, randomKey: string) {
-        let hash = user.createLoginHash(randomKey)
+        const hash = user.createLoginHash(randomKey)
 
         return jwt.sign({
-            hash: hash
+            hash
         }, this.config.crypto.secret, { expiresIn: this.config.crypto.loginKeyExpiry })
     }
 
     async getWorldPopulations(isModerator: boolean) {
-        let pops = await this.db.getWorldPopulations()
-        let populations: Record<string, number> = {}
+        const pops = await this.db.getWorldPopulations()
+        const populations: Record<string, number> = {}
 
-        for (let world of Object.keys(pops)) {
-            let maxUsers = this.config.worlds[world].maxUsers || 300
-            let population = pops[world].population
+        for (const world of Object.keys(pops)) {
+            const maxUsers = this.config.worlds[world].maxUsers || 300
+            const population = pops[world].population
 
             if (population >= maxUsers) {
-                populations[world] = (isModerator) ? 5 : 6
+                populations[world] = isModerator ? 5 : 6
                 continue
             }
 
-            let barSize = Math.round(maxUsers / 5)
-            let bars = Math.max(Math.ceil(population / barSize), 1) || 1
+            const barSize = Math.round(maxUsers / 5)
+            const bars = Math.max(Math.ceil(population / barSize), 1) || 1
 
             populations[world] = bars
         }

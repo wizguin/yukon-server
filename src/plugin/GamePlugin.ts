@@ -4,7 +4,6 @@ import type GameHandler from '../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import type OpenIgloos from '@objects/room/OpenIgloos'
 
-
 export default class GamePlugin extends Plugin {
 
     usersById: Record<number, GameUser>

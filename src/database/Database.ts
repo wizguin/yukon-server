@@ -17,8 +17,8 @@ import type Worlds from './models/Worlds'
 
 import fs from 'fs'
 import path from 'path'
-import { FindOptions, Sequelize } from 'sequelize'
-
+import type { FindOptions } from 'sequelize'
+import { Sequelize } from 'sequelize'
 
 type FindCallback = ((result: any) => any) | null
 
@@ -54,17 +54,17 @@ export default class Database {
             {
                 host: config.host,
                 dialect: config.dialect,
-                logging: (config.debug) ? console.log : false,
+                logging: config.debug ? console.log : false,
                 logQueryParameters: config.logQueryParameters
             }
         )
 
         // Used to translate type id to string
-        this.slots = [ 'color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award' ]
+        this.slots = ['color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award']
 
         this.dir = `${__dirname}/models`
 
-        let models = this.loadModels()
+        const models = this.loadModels()
         this.loadAssociations(models)
 
         this.usernameRegex = /[^ -~]/i
@@ -81,13 +81,13 @@ export default class Database {
     }
 
     loadModels() {
-        let models: any[] = []
+        const models: any[] = []
 
         fs.readdirSync(this.dir).forEach(model => {
-            let modelImport = require(path.join(this.dir, model)).default
-            let modelObject = modelImport.initModel(this.sequelize, Sequelize)
+            const modelImport = require(path.join(this.dir, model)).default
+            const modelObject = modelImport.initModel(this.sequelize, Sequelize)
 
-            let name = model.charAt(0).toLowerCase() + model.slice(1, -3)
+            const name = model.charAt(0).toLowerCase() + model.slice(1, -3)
 
             // @ts-expect-error temp
             this[name] = modelObject
@@ -99,7 +99,7 @@ export default class Database {
     }
 
     loadAssociations(models: any[]) {
-        for (let model of models) {
+        for (const model of models) {
             if (model.associate) {
                 model.associate(this)
             }
@@ -112,7 +112,7 @@ export default class Database {
         }
 
         return await this.findOne('users', {
-            where: { username: username }
+            where: { username }
         })
     }
 
@@ -128,23 +128,21 @@ export default class Database {
             attributes: ['username'],
             raw: true
 
-        }, null, (result) => {
-            return result.username
-        })
+        }, null, result => result.username)
     }
 
     async getBanCount(userId: number) {
         return await this.bans.count({
-            where: { userId: userId }
+            where: { userId }
         })
     }
 
     async getIgloo(userId: number) {
         return await this.findOne('igloos', {
-            where: { userId: userId },
+            where: { userId },
             raw: true
 
-        }, null, async (result) => {
+        }, null, async result => {
             // Add furniture to igloo object
             result.furniture = await this.getFurnitures(userId)
             return result
@@ -153,17 +151,15 @@ export default class Database {
 
     async getFurnitures(userId: number) {
         return await this.findAll('furnitures', {
-            where: { userId: userId },
+            where: { userId },
             raw: true
 
-        }, [], (result) => {
-            return result.map(({ id, userId, ...furniture }: any) => furniture)
-        })
+        }, [], result => result.map(({ id, userId, ...furniture }: any) => furniture))
     }
 
     async getPets(userId: number) {
         return await this.findAll('pets', {
-            where: { userId: userId }
+            where: { userId }
         })
     }
 
@@ -173,13 +169,13 @@ export default class Database {
 
     async getIgnored(userId: number, ignoreId: number) {
         return await this.findOne('ignores', {
-            where: { userId: userId, ignoreId: ignoreId }
+            where: { userId, ignoreId }
         })
     }
 
     async getPostcardsCount(userId: number) {
         return await this.postcards.count({
-            where: { userId: userId }
+            where: { userId }
         })
     }
 
@@ -211,15 +207,13 @@ export default class Database {
         return await this.findAll(table, {
             raw: true
 
-        }, {}, (result) => {
-            return this.arrayToObject(result, 'id')
-        })
+        }, {}, result => this.arrayToObject(result, 'id'))
     }
 
     arrayToObject(array: any[], key: string, value: string | null = null) {
         return array.reduce((obj, item) => {
             // If a value is passed in then the key will be mapped to item[value]
-            let result = (value) ? item[value] : item
+            const result = value ? item[value] : item
 
             obj[item[key]] = result
             delete item[key]

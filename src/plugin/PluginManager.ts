@@ -5,7 +5,6 @@ import type { EventEmitter } from 'stream'
 import fs from 'fs'
 import path from 'path'
 
-
 export default class PluginManager {
 
     events: EventEmitter
@@ -24,28 +23,26 @@ export default class PluginManager {
     }
 
     loadPlugins(handler: BaseHandler) {
-        let plugins = fs.readdirSync(this.dir).filter(file => {
-            return path.extname(file) == '.ts'
-        })
+        const plugins = fs.readdirSync(this.dir).filter(file => path.extname(file) == '.ts')
 
-        for (let plugin of plugins) {
-            let pluginImport = require(path.join(this.dir, plugin)).default
-            let pluginObject = new pluginImport(handler)
+        for (const plugin of plugins) {
+            const pluginImport = require(path.join(this.dir, plugin)).default
+            const pluginObject = new pluginImport(handler)
 
             this.plugins[plugin.replace('.ts', '').toLowerCase()] = pluginObject
 
             this.loadEvents(pluginObject)
         }
 
-        let pluginsCount = Object.keys(this.plugins).length
+        const pluginsCount = Object.keys(this.plugins).length
         // @ts-expect-error temp
-        let eventsCount = this.events._eventsCount
+        const eventsCount = this.events._eventsCount
 
         console.log(`[${this.id}] Loaded ${pluginsCount} plugins and ${eventsCount} events`)
     }
 
     loadEvents(plugin: Plugin) {
-        for (let event in plugin.events) {
+        for (const event in plugin.events) {
             this.events.on(event, plugin.events[event].bind(plugin))
         }
     }

@@ -1,13 +1,12 @@
 import CardMatchmaker from './CardMatchmaker'
 import type Room from '../Room'
 
-
 type MatchmakerType = keyof typeof MatchmakerFactory.types
 
 export default class MatchmakerFactory {
 
     static types = {
-        'card': CardMatchmaker
+        card: CardMatchmaker
     }
 
     static createMatchmaker(matchmaker: any, room: Room) {

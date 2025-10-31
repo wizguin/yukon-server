@@ -13,7 +13,6 @@ import type { Message } from '../server/Server'
 
 import data from '@data/data'
 
-
 export default class GameHandler extends BaseHandler {
 
     crumbs: any
@@ -54,9 +53,9 @@ export default class GameHandler extends BaseHandler {
     }
 
     setRooms() {
-        let rooms = {}
+        const rooms = {}
 
-        for (let room of data.rooms) {
+        for (const room of data.rooms) {
             // @ts-expect-error temp
             rooms[room.id] = new Room(room)
         }
@@ -65,22 +64,22 @@ export default class GameHandler extends BaseHandler {
     }
 
     setTables() {
-        for (let table of data.tables) {
-            let room = this.rooms[table.roomId]
+        for (const table of data.tables) {
+            const room = this.rooms[table.roomId]
 
             room.tables[table.id] = TableFactory.createTable(table, room)
         }
     }
 
     setWaddles() {
-        for (let waddle of data.waddles) {
+        for (const waddle of data.waddles) {
             this.rooms[waddle.roomId].waddles[waddle.id] = new Waddle(waddle)
         }
     }
 
     setMatchmakers() {
-        for (let id in data.matchmakers) {
-            let room = this.rooms[id]
+        for (const id in data.matchmakers) {
+            const room = this.rooms[id]
 
             room.matchmaker = MatchmakerFactory.createMatchmaker(data.matchmakers[id], room)
         }
@@ -129,8 +128,7 @@ export default class GameHandler extends BaseHandler {
             }
 
             this.closeAndUpdatePopulation(user)
-        }
-        catch (error) {
+        } catch (error) {
             if (error instanceof Error) {
                 this.error(error)
             }
@@ -152,7 +150,7 @@ export default class GameHandler extends BaseHandler {
     }
 
     updateWorldPopulation() {
-        this.db.worlds.update({ population: this.population }, { where: { id: this.id }})
+        this.db.worlds.update({ population: this.population }, { where: { id: this.id } })
     }
 
 }

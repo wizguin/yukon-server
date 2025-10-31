@@ -6,14 +6,13 @@ import type GameUser from '@objects/user/GameUser'
 
 import { hasProps, isNumber } from '@utils/validation'
 
-
 export default class Get extends GamePlugin {
 
     constructor(handler: GameHandler) {
         super(handler)
 
         this.events = {
-            'get_player': this.getPlayer
+            get_player: this.getPlayer
         }
     }
 
@@ -34,7 +33,7 @@ export default class Get extends GamePlugin {
             return
         }
 
-        let u = await this.db.getUserById(args.id)
+        const u = await this.db.getUserById(args.id)
         if (u) {
             user.send('get_player', { penguin: u.anonymous })
         }

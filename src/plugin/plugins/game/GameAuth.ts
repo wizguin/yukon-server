@@ -11,7 +11,6 @@ import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { v4 as uuid } from 'uuid'
 
-
 interface LoginKeyPayload extends jwt.JwtPayload {
     hash: string
 }
@@ -22,7 +21,7 @@ export default class GameAuth extends GamePlugin {
         super(handler)
 
         this.events = {
-            'game_auth': this.gameAuth
+            game_auth: this.gameAuth
         }
     }
 
@@ -44,7 +43,7 @@ export default class GameAuth extends GamePlugin {
             return user.close()
         }
 
-        let load = await user.load(args.username)
+        const load = await user.load(args.username)
         if (!load) {
             return user.close()
         }
@@ -79,7 +78,7 @@ export default class GameAuth extends GamePlugin {
         }
 
         // Verify hash
-        let hash = user.createLoginHash(args.key)
+        const hash = user.createLoginHash(args.key)
         if (decoded.hash != hash) {
             return user.close()
         }
@@ -108,7 +107,7 @@ export default class GameAuth extends GamePlugin {
         user.authenticated = true
 
         // Send response
-        let response: { success: boolean, token?: string } = { success: true }
+        const response: { success: boolean, token?: string } = { success: true }
         if (token) {
             response.token = token
         }
@@ -117,9 +116,9 @@ export default class GameAuth extends GamePlugin {
     }
 
     async genAuthToken(user: GameUser) {
-        let selector = uuid()
-        let validator = crypto.randomBytes(32).toString('hex')
-        let validatorHash = await bcrypt.hash(validator, this.config.crypto.rounds)
+        const selector = uuid()
+        const validator = crypto.randomBytes(32).toString('hex')
+        const validatorHash = await bcrypt.hash(validator, this.config.crypto.rounds)
 
         user.token.selector = selector
         user.token.validatorHash = validatorHash

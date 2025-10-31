@@ -6,7 +6,6 @@ import type GameUser from '@objects/user/GameUser'
 
 import { hasProps, isNumber } from '@utils/validation'
 
-
 export default class Puck extends GamePlugin {
 
     rinkRoomId = 802
@@ -17,26 +16,40 @@ export default class Puck extends GamePlugin {
         super(handler)
 
         this.events = {
-            'get_puck': this.getPuck,
-            'move_puck': this.movePuck
+            get_puck: this.getPuck,
+            move_puck: this.movePuck
         }
     }
 
     getPuck(args: Args, user: GameUser) {
-        if (user.room?.id !== this.rinkRoomId) return
+        if (user.room?.id !== this.rinkRoomId) {
+            return
+        }
 
         user.send('get_puck', { x: this.puckX, y: this.puckY })
     }
 
     movePuck(args: Args, user: GameUser) {
-        if (user.room?.id !== this.rinkRoomId) return
+        if (user.room?.id !== this.rinkRoomId) {
+            return
+        }
 
-        if (!hasProps(args, 'x', 'y', 'speedX', 'speedY')) return
+        if (!hasProps(args, 'x', 'y', 'speedX', 'speedY')) {
+            return
+        }
 
-        if (!isNumber(args.x)) return
-        if (!isNumber(args.y)) return
-        if (!isNumber(args.speedX)) return
-        if (!isNumber(args.speedY)) return
+        if (!isNumber(args.x)) {
+            return
+        }
+        if (!isNumber(args.y)) {
+            return
+        }
+        if (!isNumber(args.speedX)) {
+            return
+        }
+        if (!isNumber(args.speedY)) {
+            return
+        }
 
         this.puckX = args.x
         this.puckY = args.y

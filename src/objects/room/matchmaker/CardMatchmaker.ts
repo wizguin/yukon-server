@@ -3,7 +3,6 @@ import type GameUser from '@objects/user/GameUser'
 import MatchmakerPlayer from './MatchmakerPlayer'
 import type Room from '../Room'
 
-
 const maxPlayers = 2
 const matchEvery = 10
 
@@ -25,24 +24,26 @@ export default class CardMatchmaker {
     }
 
     tick() {
-        let values = Object.values(this.players)
+        const values = Object.values(this.players)
 
-        let matchesLength = values.length - values.length % maxPlayers
+        const matchesLength = values.length - values.length % maxPlayers
 
-        if (!matchesLength) return
+        if (!matchesLength) {
+            return
+        }
 
         this.sort(values)
-        let matches = values.filter((p, i) => i < matchesLength)
+        const matches = values.filter((p, i) => i < matchesLength)
 
         for (let i = 0; i < matchesLength; i += maxPlayers) {
-            let matched = matches.slice(i, i + maxPlayers)
+            const matched = matches.slice(i, i + maxPlayers)
 
             this.updateMatched(matched)
         }
     }
 
     updateMatched(matched: MatchmakerPlayer[]) {
-        let ready = matched.some(player => player.tick == -1)
+        const ready = matched.some(player => player.tick == -1)
 
         if (!ready) {
             this.onTick(matched)
@@ -55,26 +56,26 @@ export default class CardMatchmaker {
     }
 
     onTick(matched: MatchmakerPlayer[]) {
-        let users = matched.map(player => player.user.username)
+        const users = matched.map(player => player.user.username)
 
-        for (let player of matched) {
-            player.send('tick_matchmaking', { tick: player.tick, users: users })
+        for (const player of matched) {
+            player.send('tick_matchmaking', { tick: player.tick, users })
         }
     }
 
     onMatch(matched: MatchmakerPlayer[]) {
-        for (let player of matched) {
+        for (const player of matched) {
             this.remove(player.user)
         }
 
-        let users = matched.map(player => player.user)
-        let instance = new CardInstance({ users: users })
+        const users = matched.map(player => player.user)
+        const instance = new CardInstance({ users })
 
         instance.init()
     }
 
     decreaseTick(matched: MatchmakerPlayer[]) {
-        for (let player of matched) {
+        for (const player of matched) {
             player.tick -= 1
         }
     }

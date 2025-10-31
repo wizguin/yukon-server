@@ -2,7 +2,6 @@ import Collection from '../Collection'
 
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class BuddyCollection extends Collection {
 
     usersById: Record<number, GameUser>
@@ -23,16 +22,16 @@ export default class BuddyCollection extends Collection {
     }
 
     sendOnline(id: any) {
-        let user = this.usersById[id]
+        const user = this.usersById[id]
 
         user.send('buddy_online', { id: this.user.id })
     }
 
     sendOffline() {
-        for (let buddy in this.collection) {
+        for (const buddy in this.collection) {
             if (this.isOnline(buddy)) {
                 // @ts-expect-error temp
-                let user = this.usersById[buddy]
+                const user = this.usersById[buddy]
 
                 user.send('buddy_offline', { id: this.user.id })
             }
@@ -40,13 +39,13 @@ export default class BuddyCollection extends Collection {
     }
 
     toJSON() {
-        let buddies = []
+        const buddies = []
 
-        for (let buddy in this.collection) {
-            let online = this.isOnline(buddy)
-            let username = this.collection[buddy].user.username
+        for (const buddy in this.collection) {
+            const online = this.isOnline(buddy)
+            const username = this.collection[buddy].user.username
 
-            buddies.push({ id: parseInt(buddy), username: username, online: online })
+            buddies.push({ id: parseInt(buddy), username, online })
 
             if (online) {
                 this.sendOnline(buddy)

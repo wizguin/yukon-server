@@ -2,7 +2,6 @@ import Collection from '../Collection'
 
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class FurnitureCollection extends Collection {
 
     constructor(user: GameUser, models: any[]) {
@@ -20,7 +19,7 @@ export default class FurnitureCollection extends Collection {
 
     add(item: number) {
         if (this.includes(item)) {
-            let quantity = this.getQuantity(item)
+            const quantity = this.getQuantity(item)
 
             // Maxed quantity
             if (quantity >= this.furnitures[item].max) {
@@ -38,9 +37,9 @@ export default class FurnitureCollection extends Collection {
     }
 
     toJSON() {
-        let furniture = {}
+        const furniture = {}
 
-        for (let f in this.collection) {
+        for (const f in this.collection) {
             // @ts-expect-error temp
             furniture[f] = this.collection[f].quantity
         }

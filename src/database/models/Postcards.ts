@@ -6,7 +6,6 @@ import pick from '@utils/pick'
 
 import Sequelize from 'sequelize'
 
-
 const systemName = 'sys'
 
 export default class Postcards extends BaseModel {

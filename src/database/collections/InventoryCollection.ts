@@ -2,7 +2,6 @@ import Collection from '../Collection'
 
 import type GameUser from '@objects/user/GameUser'
 
-
 export default class InventoryCollection extends Collection {
 
     constructor(user: GameUser, models: any[]) {

@@ -1,6 +1,5 @@
 import { Model } from 'sequelize'
 
-
 export default abstract class BaseModel extends Model {
 
     protectedAttributes: string[] = []
