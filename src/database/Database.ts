@@ -111,19 +111,19 @@ export default class Database {
             return null
         }
 
-        return await this.findOne('users', {
+        return this.findOne('users', {
             where: { username }
         })
     }
 
     async getUserById(userId: number) {
-        return await this.findOne('users', {
+        return this.findOne('users', {
             where: { id: userId }
         })
     }
 
     async getUsername(userId: number) {
-        return await this.findOne('users', {
+        return this.findOne('users', {
             where: { id: userId },
             attributes: ['username'],
             raw: true
@@ -132,13 +132,13 @@ export default class Database {
     }
 
     async getBanCount(userId: number) {
-        return await this.bans.count({
+        return this.bans.count({
             where: { userId }
         })
     }
 
     async getIgloo(userId: number) {
-        return await this.findOne('igloos', {
+        return this.findOne('igloos', {
             where: { userId },
             raw: true
 
@@ -150,7 +150,7 @@ export default class Database {
     }
 
     async getFurnitures(userId: number) {
-        return await this.findAll('furnitures', {
+        return this.findAll('furnitures', {
             where: { userId },
             raw: true
 
@@ -158,23 +158,23 @@ export default class Database {
     }
 
     async getPets(userId: number) {
-        return await this.findAll('pets', {
+        return this.findAll('pets', {
             where: { userId }
         })
     }
 
     async getWorldPopulations() {
-        return await this.getCrumb('worlds')
+        return this.getCrumb('worlds')
     }
 
     async getIgnored(userId: number, ignoreId: number) {
-        return await this.findOne('ignores', {
+        return this.findOne('ignores', {
             where: { userId, ignoreId }
         })
     }
 
     async getPostcardsCount(userId: number) {
-        return await this.postcards.count({
+        return this.postcards.count({
             where: { userId }
         })
     }
@@ -204,7 +204,7 @@ export default class Database {
     }
 
     async getCrumb(table: string) {
-        return await this.findAll(table, {
+        return this.findAll(table, {
             raw: true
 
         }, {}, result => this.arrayToObject(result, 'id'))

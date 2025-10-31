@@ -132,7 +132,7 @@ export default class Login extends Plugin {
             return banned
         }
 
-        return await this.onLoginSuccess(user)
+        return this.onLoginSuccess(user)
     }
 
     async compareTokens(args: Args, user: User) {
@@ -168,7 +168,7 @@ export default class Login extends Plugin {
             return banned
         }
 
-        return await this.onLoginSuccess(user)
+        return this.onLoginSuccess(user)
     }
 
     checkBanned(user: User) {
