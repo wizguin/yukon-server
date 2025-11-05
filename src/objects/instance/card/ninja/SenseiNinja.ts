@@ -1,3 +1,5 @@
+// @ts-nocheck temp
+
 import Ninja from './Ninja'
 
 import Card from './Card'
@@ -15,13 +17,13 @@ export default class SenseiNinja extends Ninja {
     }
 
     dealCards(opponentCards, canBeatSensei) {
-        let currentDealt = []
-        let dealNumber = this.dealtSize - this.dealt.length
+        const currentDealt = []
+        const dealNumber = this.dealtSize - this.dealt.length
 
         for (let i = 0; i < dealNumber; i++) {
-            let deal = canBeatSensei ? this.dealRandomCard() : this.dealWinCard(opponentCards[i])
+            const deal = canBeatSensei ? this.dealRandomCard() : this.dealWinCard(opponentCards[i])
 
-            let card = new Card(deal)
+            const card = new Card(deal)
 
             currentDealt.push(card)
             this.dealt.push(card)
@@ -33,13 +35,13 @@ export default class SenseiNinja extends Ninja {
     }
 
     dealRandomCard() {
-        let ids = Object.keys(cards)
+        const ids = Object.keys(cards)
 
         return this.getRandomElement(ids)
     }
 
     dealWinCard(card) {
-        let winCards = Object.keys(cards).filter(c => this.beatsCard(cards[c], card))
+        const winCards = Object.keys(cards).filter(c => this.beatsCard(cards[c], card))
 
         if (!winCards.length) {
             return this.dealRandomCard()
@@ -49,7 +51,9 @@ export default class SenseiNinja extends Ninja {
     }
 
     beatsCard(first, second) {
-        if (first.element != second.element) return this.compareElements(first, second)
+        if (first.element != second.element) {
+            return this.compareElements(first, second)
+        }
 
         return first.value > second.value
     }
@@ -59,7 +63,7 @@ export default class SenseiNinja extends Ninja {
     }
 
     pickCard(opponentCard) {
-        let card = this.removeFromMoves(opponentCard)
+        const card = this.removeFromMoves(opponentCard)
         this.pick = this.getPick(card)
 
         this.opponent.send('pick_card', { card: this.dealt.indexOf(this.pick) })
@@ -76,7 +80,7 @@ export default class SenseiNinja extends Ninja {
     }
 
     removeFromMoves(opponentCard) {
-        let card = this.moves[opponentCard].pop()
+        const card = this.moves[opponentCard].pop()
 
         if (!this.moves[opponentCard].length) {
             delete this.moves[opponentCard]

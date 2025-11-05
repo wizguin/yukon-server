@@ -1,6 +1,12 @@
+import type Card from './ninja/Card'
+
 export default class Power {
 
-    constructor(seat, card) {
+    seat: number
+    card: Card
+    id: number
+
+    constructor(seat: number, card: Card) {
         this.seat = seat
         this.card = card
 

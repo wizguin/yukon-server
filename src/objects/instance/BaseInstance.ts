@@ -1,41 +1,44 @@
+import type GameHandler from '../../handlers/GameHandler'
+import type GameUser from '@objects/user/GameUser'
+
 export default class BaseInstance {
 
-    constructor(waddle) {
+    users: (GameUser | null)[]
+    ready: GameUser[] = []
+    started = false
+
+    constructor(waddle: any, private id: number) {
         this.users = [...waddle.users]
-
-        // Don't start until all users are ready
-        this.ready = []
-
-        // Game room ID
-        this.id = null
-
-        this.started = false
 
         this.handleStartGame = this.handleStartGame.bind(this)
         this.handleLeaveGame = this.handleLeaveGame.bind(this)
     }
 
     init() {
-        for (let user of this.users) {
+        for (const user of this.users) {
+            if (!user) {
+                continue
+            }
+
             this.addListeners(user)
 
-            user.joinRoom(user.handler.rooms[this.id])
+            user.joinRoom((user.handler as GameHandler).rooms[this.id])
 
             user.minigameRoom = this
         }
     }
 
-    addListeners(user) {
+    addListeners(user: GameUser) {
         user.events.on('start_game', this.handleStartGame)
         user.events.on('leave_game', this.handleLeaveGame)
     }
 
-    removeListeners(user) {
+    removeListeners(user: GameUser) {
         user.events.off('start_game', this.handleStartGame)
         user.events.off('leave_game', this.handleLeaveGame)
     }
 
-    handleStartGame(args, user) {
+    handleStartGame(_args: any, user: GameUser) {
         if (!this.started && !this.ready.includes(user)) {
             this.ready.push(user)
 
@@ -43,7 +46,7 @@ export default class BaseInstance {
         }
     }
 
-    handleLeaveGame(args, user) {
+    handleLeaveGame(_args: any, user: GameUser) {
         this.remove(user)
     }
 
@@ -58,11 +61,11 @@ export default class BaseInstance {
         this.started = true
     }
 
-    remove(user) {
+    remove(user: GameUser) {
         this.removeListeners(user)
 
         // Remove from users
-        let seat = this.getSeat(user)
+        const seat = this.getSeat(user)
         this.users[seat] = null
 
         // Remove from ready
@@ -71,15 +74,17 @@ export default class BaseInstance {
         user.minigameRoom = null
     }
 
-    getSeat(user) {
+    getSeat(user: GameUser) {
         return this.users.indexOf(user)
     }
 
-    send(action, args = {}, user = null, filter = [user]) {
-        let users = this.users.filter(u => !filter.includes(u)).filter(Boolean)
+    send(action: string, args = {}, user: GameUser | null = null, filter = [user]) {
+        const users = this.users.filter(u => !filter.includes(u)).filter(Boolean)
 
-        for (let u of users) {
-            u.send(action, args)
+        for (const u of users) {
+            if (u) {
+                u.send(action, args)
+            }
         }
     }
 

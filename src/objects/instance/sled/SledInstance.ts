@@ -1,41 +1,38 @@
 import BaseInstance from '../BaseInstance'
 
-import { hasProps, isInRange } from '@utils/validation'
+import GameUser from '@objects/user/GameUser'
 
+import { hasProps, isInRange } from '@utils/validation'
 
 export default class SledInstance extends BaseInstance {
 
-    constructor(waddle) {
-        super(waddle)
+    coins = [20, 10, 5, 5]
 
-        this.id = 999
-
-        this.coins = [20, 10, 5, 5]
+    constructor(waddle: any) {
+        super(waddle, 999)
     }
 
-    addListeners(user) {
+    addListeners(user: GameUser) {
         super.addListeners(user)
     }
 
-    removeListeners(user) {
+    removeListeners(user: GameUser) {
         super.removeListeners(user)
     }
 
     start() {
-        const users = this.users.map(user => {
-            return {
-                username: user.username,
-                color: user.color,
-                hand: user.hand
-            }
-        })
+        const users = this.users.filter(user => user instanceof GameUser).map(user => ({
+            username: user.username,
+            color: user.color,
+            hand: user.hand
+        }))
 
-        this.send('start_game', { users: users })
+        this.send('start_game', { users })
 
         super.start()
     }
 
-    sendMove(args, user) {
+    sendMove(args: any, user: GameUser) {
         if (!hasProps(args, 'move')) {
             return
         }
@@ -51,9 +48,9 @@ export default class SledInstance extends BaseInstance {
         this.send('send_move', { id: this.getSeat(user), move: args.move }, user)
     }
 
-    sendGameOver(user) {
+    sendGameOver(user: GameUser) {
         this.remove(user)
-        user.updateCoins(this.coins.shift(), true)
+        user.updateCoins(this.coins.shift() || 0, true)
     }
 
 }

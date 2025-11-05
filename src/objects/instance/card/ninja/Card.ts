@@ -2,12 +2,15 @@ import { cards } from '@data/data'
 
 import pick from '@utils/pick'
 
-
 export default class Card {
 
-    constructor(id) {
-        this.id = parseInt(id)
+    powerId: number
+    element: string
+    color: string
+    value: number
+    originalElement: string
 
+    constructor(public id: number) {
         const card = cards[id]
 
         this.powerId = card.powerId

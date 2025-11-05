@@ -1,18 +1,19 @@
+// @ts-nocheck temp
+
 import Card from './Card'
 
 import { cards } from '@data/data'
-
 
 export default class Ninja {
 
     constructor(user = null) {
         this.user = user
 
-        this.opponent
+        this.opponent = null
 
         this.deck = []
         this.dealt = []
-        this.pick
+        this.pick = null
 
         this.wins = {
             f: [],
@@ -25,7 +26,9 @@ export default class Ninja {
         // Player has already dealt this turn
         this.hasDealt = false
 
-        if (user) this.setDeck()
+        if (user) {
+            this.setDeck()
+        }
     }
 
     setDeck() {
@@ -42,7 +45,7 @@ export default class Ninja {
     }
 
     hasPlayableCards(element) {
-        let filtered = this.getLimitedDealt(element)
+        const filtered = this.getLimitedDealt(element)
 
         return Boolean(filtered.length)
     }
@@ -54,15 +57,17 @@ export default class Ninja {
     dealCards(dealPowers = true) {
         this.hasDealt = true
 
-        if (!dealPowers) this.filterDeckRegularCards()
+        if (!dealPowers) {
+            this.filterDeckRegularCards()
+        }
 
-        let currentDealt = []
-        let dealNumber = this.dealtSize - this.dealt.length
+        const currentDealt = []
+        const dealNumber = this.dealtSize - this.dealt.length
 
         for (let i = 0; i < dealNumber; i++) {
-            let deal = this.dealCard()
+            const deal = this.dealCard()
 
-            let card = new Card(deal)
+            const card = new Card(deal)
 
             currentDealt.push(card)
             this.dealt.push(card)
@@ -72,10 +77,12 @@ export default class Ninja {
     }
 
     dealCard() {
-        if (this.deck.length < 1) this.setDeck()
+        if (this.deck.length < 1) {
+            this.setDeck()
+        }
 
-        let randomIndex = Math.floor(Math.random() * this.deck.length)
-        let randomCard = this.deck[randomIndex]
+        const randomIndex = Math.floor(Math.random() * this.deck.length)
+        const randomCard = this.deck[randomIndex]
 
         this.deck.splice(randomIndex, 1)
 

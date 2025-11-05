@@ -1,7 +1,8 @@
+// @ts-nocheck temp
+
 import CardInstance from './CardInstance'
 
 import SenseiNinja from './ninja/SenseiNinja'
-
 
 export default class SenseiInstance extends CardInstance {
 
@@ -17,8 +18,8 @@ export default class SenseiInstance extends CardInstance {
             sensei: true
         }
 
-        this.sensei
-        this.me
+        this.sensei = null
+        this.me = null
     }
 
     init() {
@@ -32,7 +33,7 @@ export default class SenseiInstance extends CardInstance {
     }
 
     start() {
-        let users = [
+        const users = [
             this.senseiData,
             {
                 username: this.user.username,
@@ -41,7 +42,7 @@ export default class SenseiInstance extends CardInstance {
             }
         ]
 
-        this.send('start_game', { users: users })
+        this.send('start_game', { users })
 
         this.started = true
     }
@@ -51,19 +52,23 @@ export default class SenseiInstance extends CardInstance {
     }
 
     handleSendDeal(args, user) {
-        if (this.me.hasDealt) return
+        if (this.me.hasDealt) {
+            return
+        }
 
-        let canBeatSensei = user.ninjaRank >= this.itemAwards.length - 1
+        const canBeatSensei = user.ninjaRank >= this.itemAwards.length - 1
 
-        let cards = this.me.dealCards(canBeatSensei)
-        let senseiCards = this.sensei.dealCards(cards, canBeatSensei)
+        const cards = this.me.dealCards(canBeatSensei)
+        const senseiCards = this.sensei.dealCards(cards, canBeatSensei)
 
-        user.send('send_deal', { cards: cards })
+        user.send('send_deal', { cards })
         user.send('send_opponent_deal', { deal: senseiCards.length })
     }
 
     handlePickCard(args, user) {
-        if (!this.me.isInDealt(args.card) || this.me.pick) return
+        if (!this.me.isInDealt(args.card) || this.me.pick) {
+            return
+        }
 
         this.me.pickCard(args.card)
         this.sensei.pickCard(args.card)
@@ -73,7 +78,9 @@ export default class SenseiInstance extends CardInstance {
     }
 
     updateProgress(user, won) {
-        if (!user) return
+        if (!user) {
+            return
+        }
 
         if (this.checkBlackBeltWin(user, won)) {
             user.update({ ninjaProgress: 100 })
