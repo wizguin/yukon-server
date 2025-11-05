@@ -5,6 +5,6 @@
         "./data"
     ],
     "execMap": {
-        "ts": "ts-node --transpile-only -r tsconfig-paths/register"
+        "ts": "ts-node -r tsconfig-paths/register"
     }
 }
