@@ -1,3 +1,6 @@
+import { loadJson } from '@utils/loadJson'
+
+import type { Assert } from 'ts-runtime-checks'
 import type { Dialect } from 'sequelize'
 
 export interface Config {
@@ -44,3 +47,5 @@ export interface Config {
         iglooIdOffset: number
     }
 }
+
+export const config = loadJson('config/config') as Assert<Config>
