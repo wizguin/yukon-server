@@ -1,4 +1,4 @@
-import type { Config } from '../config/config'
+import { config } from '@config'
 import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
 import type { Message } from '../server/Server'
@@ -16,8 +16,7 @@ export default class BaseHandler {
     constructor(
         public id: string,
         public users: Record<string, User | GameUser>,
-        public db: Database,
-        public config: Config
+        public db: Database
     ) {
         this.events = new EventEmitter({ captureRejections: true })
 
@@ -40,7 +39,7 @@ export default class BaseHandler {
                 return user.close()
             }
 
-            if (message.action in this.config.cooldowns) {
+            if (message.action in config.cooldowns) {
                 this.setCooldown(message, user)
             }
 
@@ -66,7 +65,7 @@ export default class BaseHandler {
     }
 
     isOnCooldown({ action }: Message, user: User | GameUser) {
-        if (!(action in this.config.cooldowns)) {
+        if (!(action in config.cooldowns)) {
             return false
         }
 
@@ -74,7 +73,7 @@ export default class BaseHandler {
             return false
         }
 
-        const cooldown = this.config.cooldowns[action]
+        const cooldown = config.cooldowns[action]
         const lastUsed = user.cooldowns[action]
 
         return Date.now() - lastUsed < cooldown

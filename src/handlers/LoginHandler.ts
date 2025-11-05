@@ -1,6 +1,5 @@
 import BaseHandler from './BaseHandler'
 
-import type { Config } from '../config/config'
 import type Database from '@database/Database'
 import type User from '@objects/user/User'
 
@@ -9,10 +8,9 @@ export default class LoginHandler extends BaseHandler {
     constructor(
         public id: string,
         public users: Record<string, User>,
-        public db: Database,
-        public config: Config
+        public db: Database
     ) {
-        super(id, users, db, config)
+        super(id, users, db)
 
         this.logging = false
 

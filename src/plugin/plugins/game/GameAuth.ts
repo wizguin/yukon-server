@@ -1,6 +1,7 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import type { Args } from '../../../server/Server'
+import { config } from '@config'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
@@ -72,7 +73,7 @@ export default class GameAuth extends GamePlugin {
 
         // Verify JWT
         try {
-            decoded = jwt.verify(user.loginKey, this.config.crypto.secret) as LoginKeyPayload
+            decoded = jwt.verify(user.loginKey, config.crypto.secret) as LoginKeyPayload
         } catch {
             return user.close()
         }
@@ -118,7 +119,7 @@ export default class GameAuth extends GamePlugin {
     async genAuthToken(user: GameUser) {
         const selector = uuid()
         const validator = crypto.randomBytes(32).toString('hex')
-        const validatorHash = await bcrypt.hash(validator, this.config.crypto.rounds)
+        const validatorHash = await bcrypt.hash(validator, config.crypto.rounds)
 
         user.token.selector = selector
         user.token.validatorHash = validatorHash

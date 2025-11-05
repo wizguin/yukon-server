@@ -1,6 +1,7 @@
 import Plugin from '@plugin/Plugin'
 
 import type { Args } from '../../../server/Server'
+import { config } from '@config'
 import type LoginHandler from '../../../handlers/LoginHandler'
 import type User from '@objects/user/User'
 
@@ -211,7 +212,7 @@ export default class Login extends Plugin {
 
         return jwt.sign({
             hash
-        }, this.config.crypto.secret, { expiresIn: this.config.crypto.loginKeyExpiry })
+        }, config.crypto.secret, { expiresIn: config.crypto.loginKeyExpiry })
     }
 
     async getWorldPopulations(isModerator: boolean) {
@@ -219,7 +220,7 @@ export default class Login extends Plugin {
         const populations: Record<string, number> = {}
 
         for (const world of Object.keys(pops)) {
-            const maxUsers = this.config.worlds[world].maxUsers || 300
+            const maxUsers = config.worlds[world].maxUsers || 300
             const population = pops[world].population
 
             if (population >= maxUsers) {

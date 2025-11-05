@@ -1,6 +1,7 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import type { Args } from '../../../server/Server'
+import { config } from '@config'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
@@ -73,7 +74,7 @@ export default class Join extends GamePlugin {
     // Functions
 
     getSpawn() {
-        const preferredSpawn = this.config.game.preferredSpawn
+        const preferredSpawn = config.game.preferredSpawn
 
         if (preferredSpawn && !this.rooms[preferredSpawn].isFull) {
             return this.rooms[preferredSpawn]
@@ -95,7 +96,7 @@ export default class Join extends GamePlugin {
         }
 
         // Ensures igloos are above all default rooms
-        const iglooId = id + this.config.game.iglooIdOffset
+        const iglooId = id + config.game.iglooIdOffset
 
         if (!(iglooId in this.rooms)) {
             const igloo = await this.db.getIgloo(id)
@@ -104,7 +105,7 @@ export default class Join extends GamePlugin {
                 return null
             }
 
-            this.rooms[iglooId] = new Igloo(igloo, this.db, this.config.game.iglooIdOffset)
+            this.rooms[iglooId] = new Igloo(igloo, this.db, config.game.iglooIdOffset)
         }
 
         return this.rooms[iglooId]

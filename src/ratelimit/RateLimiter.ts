@@ -1,4 +1,5 @@
-import type { Config } from '../config/config'
+import { config } from '@config'
+
 import { RateLimiterMemory } from 'rate-limiter-flexible'
 
 export default class RateLimiter {
@@ -7,7 +8,7 @@ export default class RateLimiter {
     addressEvents: RateLimiterMemory
     userEvents: RateLimiterMemory
 
-    constructor(config: Config) {
+    constructor() {
         this.addressConnects = this.createLimiter(config.rateLimit.addressConnectsPerSecond)
         this.addressEvents = this.createLimiter(config.rateLimit.addressEventsPerSecond)
         this.userEvents = this.createLimiter(config.rateLimit.userEventsPerSecond)

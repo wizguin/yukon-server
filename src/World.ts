@@ -1,25 +1,22 @@
+import Server from './server/Server'
+
+import { config } from '@config'
 import Database from './database/Database'
 import GameHandler from './handlers/GameHandler'
 import LoginHandler from './handlers/LoginHandler'
-import Server from './server/Server'
-
-import config from '../config/config.json'
-import type { Config } from './config/config'
-
-const conf = config as Config
 
 class World extends Server {
 
     constructor(id: string) {
-        console.log(`[${id}] Starting world ${id} on port ${conf.worlds[id].port}`)
+        console.log(`[${id}] Starting world ${id} on port ${config.worlds[id].port}`)
 
         const users = {}
-        const db = new Database(conf.database)
+        const db = new Database()
 
         const handlerClass = id === 'Login' ? LoginHandler : GameHandler
-        const handler = new handlerClass(id, users, db, conf)
+        const handler = new handlerClass(id, users, db)
 
-        super(id, users, db, handler, conf)
+        super(id, users, db, handler)
     }
 
 }

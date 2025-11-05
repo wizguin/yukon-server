@@ -1,6 +1,7 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import type { Args } from '../../../server/Server'
+import { config } from '@config'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import type IglooRoom from '@objects/room/Igloo'
@@ -180,7 +181,7 @@ export default class Igloo extends GamePlugin {
     // Functions
 
     getIgloo(id: number) {
-        const iglooId = id + this.config.game.iglooIdOffset
+        const iglooId = id + config.game.iglooIdOffset
 
         if (iglooId in this.rooms) {
             return this.rooms[iglooId] as IglooRoom

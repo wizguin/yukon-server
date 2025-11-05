@@ -1,4 +1,4 @@
-import type { Config } from '../config/config'
+import { config } from '@config'
 
 import type AuthTokens from './models/AuthTokens'
 import type Bans from './models/Bans'
@@ -21,6 +21,8 @@ import path from 'path'
 import { Sequelize } from 'sequelize'
 
 type FindCallback = ((result: any) => any) | null
+
+const { host, user, password, database, dialect, debug, logQueryParameters } = config.database
 
 export default class Database {
 
@@ -46,16 +48,16 @@ export default class Database {
     users!: typeof Users
     worlds!: typeof Worlds
 
-    constructor(config: Config['database']) {
+    constructor() {
         this.sequelize = new Sequelize(
-            config.database,
-            config.user,
-            config.password,
+            database,
+            user,
+            password,
             {
-                host: config.host,
-                dialect: config.dialect,
-                logging: config.debug ? console.log : false,
-                logQueryParameters: config.logQueryParameters
+                host,
+                dialect,
+                logging: debug ? console.log : false,
+                logQueryParameters
             }
         )
 

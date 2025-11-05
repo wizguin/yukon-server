@@ -2,7 +2,6 @@ import type { Action, Args } from '../../server/Server'
 import type AuthTokens from '@database/models/AuthTokens'
 import type Bans from '@database/models/Bans'
 import type BaseHandler from '../../handlers/BaseHandler'
-import type { Config } from '../../config/config'
 import type Database from '@database/Database'
 import type Server from '../../server/Server'
 import type Users from '@database/models/Users'
@@ -19,7 +18,6 @@ export default class User {
 
     db: Database
     handler: BaseHandler
-    config: Config
 
     address: string
     loginSent = false
@@ -54,9 +52,8 @@ export default class User {
     constructor(server: Server, public socket: Socket) {
         this.db = server.db
         this.handler = server.handler
-        this.config = server.config
 
-        this.address = getSocketAddress(socket, this.config)
+        this.address = getSocketAddress(socket)
     }
 
     send(action: Action, args: Args = {}) {

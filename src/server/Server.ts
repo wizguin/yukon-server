@@ -1,9 +1,10 @@
+import { config } from '@config'
 import getSocketAddress from '@objects/user/getSocketAddress'
 import RateLimiter from '../ratelimit/RateLimiter'
 import UserFactory from '@objects/user/UserFactory'
 
 import type BaseHandler from '../handlers/BaseHandler'
-import type { Config } from '../config/config'
+import type { Config } from '@config'
 import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
 import type User from '@objects/user/User'
@@ -32,8 +33,7 @@ export default class Server {
         public id: string,
         private users: Record<string, User>,
         public db: Database,
-        public handler: BaseHandler,
-        public config: Config
+        public handler: BaseHandler
     ) {
 
         const io = this.createIo(config.socketio, {
@@ -45,7 +45,7 @@ export default class Server {
         })
 
         this.rateLimiter = config.rateLimit.enabled
-            ? new RateLimiter(config)
+            ? new RateLimiter()
             : null
 
         this.server = io.listen(config.worlds[id].port)
@@ -53,9 +53,9 @@ export default class Server {
         this.server.on('connection', socket => this.onConnection(socket))
     }
 
-    createIo(config: Config['socketio'], options: Partial<ServerOptions>) {
-        const server = config.https
-            ? this.httpsServer(config.ssl)
+    createIo({ https, ssl }: Config['socketio'], options: Partial<ServerOptions>) {
+        const server = https
+            ? this.httpsServer(ssl)
             : this.httpServer()
 
         return new IoServer(server, options)
@@ -79,7 +79,7 @@ export default class Server {
     async onConnection(socket: Socket) {
         try {
             if (this.rateLimiter) {
-                const address = getSocketAddress(socket, this.config)
+                const address = getSocketAddress(socket)
 
                 await this.rateLimiter.addressConnects.consume(address)
             }

@@ -1,8 +1,8 @@
-import type { Config } from '../../config/config'
+import { config } from '@config'
 
 import type { Socket } from 'socket.io'
 
-export default function(socket: Socket, config: Config) {
+export default function(socket: Socket) {
     const headers = socket.handshake.headers
 
     const ipAddressHeader = config.rateLimit.ipAddressHeader
