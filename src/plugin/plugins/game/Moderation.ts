@@ -61,7 +61,7 @@ export default class Moderation extends GamePlugin {
             this.db.users.update({ permaBan: true }, { where: { id } })
         }
 
-        this.db.bans.create({ userId: id, expires, moderatorId: moderator.data.id, message })
+        this.db.bans.create({ userId: id, expires, moderatorId: moderator.id, message })
     }
 
     async getRecipientRank(recipient: GameUser, id: number) {
