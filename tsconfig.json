@@ -13,7 +13,9 @@
         "outDir": "dist",
 
         "paths": {
-            "@data/*": ["./data/*"],
+            "@config": ["./src/config/config"],
+            "@data": ["./src/data/data"],
+
             "@database/*": ["./src/database/*"],
             "@objects/*": ["./src/objects/*"],
             "@plugin/*": ["./src/plugin/*"],
