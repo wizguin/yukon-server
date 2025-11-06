@@ -65,7 +65,7 @@ export default class SenseiInstance extends CardInstance {
         user.send('send_opponent_deal', { deal: senseiCards.length })
     }
 
-    handlePickCard(args, user) {
+    handlePickCard(args, _user) {
         if (!this.me.isInDealt(args.card) || this.me.pick) {
             return
         }
