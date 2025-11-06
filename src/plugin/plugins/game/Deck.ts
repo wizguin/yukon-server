@@ -34,6 +34,7 @@ export default class Sensei extends GamePlugin {
             }
         }
 
+        // @ts-expect-error temp
         const powerCards = deck.filter((card: string) => data.cards[card].powerId > 0)
 
         const randomPowerCard = powerCards[Math.floor(Math.random() * powerCards.length)]

@@ -29,12 +29,16 @@ export default class BaseInstance {
     }
 
     addListeners(user: GameUser) {
+        // @ts-expect-error temp
         user.events.on('start_game', this.handleStartGame)
+        // @ts-expect-error temp
         user.events.on('leave_game', this.handleLeaveGame)
     }
 
     removeListeners(user: GameUser) {
+        // @ts-expect-error temp
         user.events.off('start_game', this.handleStartGame)
+        // @ts-expect-error temp
         user.events.off('leave_game', this.handleLeaveGame)
     }
 
