@@ -86,6 +86,7 @@ export default class Database {
         const models: any[] = []
 
         fs.readdirSync(this.dir).forEach(model => {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             const modelImport = require(path.join(this.dir, model)).default
             const modelObject = modelImport.initModel(this.sequelize, Sequelize)
 
