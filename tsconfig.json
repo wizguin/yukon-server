@@ -18,7 +18,11 @@
             "@objects/*": ["./src/objects/*"],
             "@plugin/*": ["./src/plugin/*"],
             "@utils/*": ["./src/utils/*"]
-        }
+        },
+
+        "plugins": [
+            { "transform": "ts-runtime-checks" }
+        ]
     },
     "include": ["src"]
 }
