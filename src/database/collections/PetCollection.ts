@@ -6,7 +6,7 @@ import type Pets from '@database/models/Pets'
 import { isLength, isString } from '@utils/validation'
 import { clamp } from '@utils/math'
 
-import { pets } from '@data/data'
+import { pets } from '@data'
 
 const feedPostcard = 110
 const adoptPostcard = 111

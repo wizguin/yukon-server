@@ -4,7 +4,7 @@ import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-import data from '@data/data'
+import * as data from '@data'
 
 export default class Sensei extends GamePlugin {
 

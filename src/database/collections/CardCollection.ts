@@ -2,7 +2,7 @@ import Collection from '../Collection'
 
 import type GameUser from '@objects/user/GameUser'
 
-import { cards } from '@data/data'
+import { cards } from '@data'
 
 export default class CardCollection extends Collection {
 

@@ -5,8 +5,7 @@ import Ninja from './Ninja'
 import Card from './Card'
 import Rules from '../Rules'
 
-import { cards } from '@data/data'
-
+import { cards } from '@data'
 
 export default class SenseiNinja extends Ninja {
 

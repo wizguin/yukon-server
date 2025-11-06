@@ -11,7 +11,7 @@ import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
 import type { Message } from '../server/Server'
 
-import data from '@data/data'
+import * as data from '@data'
 
 export default class GameHandler extends BaseHandler {
 
@@ -31,8 +31,8 @@ export default class GameHandler extends BaseHandler {
         this.crumbs = {
             items: data.items,
             igloos: data.igloos,
-            furnitures: data.furnitures,
-            floorings: data.floorings,
+            furnitures: data.furniture,
+            floorings: data.flooring,
             cards: data.cards
         }
 

@@ -2,7 +2,7 @@
 
 import Card from './Card'
 
-import { cards } from '@data/data'
+import { cards } from '@data'
 
 export default class Ninja {
 
