@@ -1,9 +1,9 @@
 import type BaseHandler from '../handlers/BaseHandler'
 import type Plugin from './Plugin'
 
+import { join, parse } from 'path'
 import type { EventEmitter } from 'stream'
-import fs from 'fs'
-import path from 'path'
+import { readdir } from 'fs/promises'
 
 export default class PluginManager {
 
@@ -12,33 +12,44 @@ export default class PluginManager {
     dir: string
     plugins: Record<string, Plugin> = {}
 
-    constructor(handler: BaseHandler, pluginsDir: string) {
+    constructor(private handler: BaseHandler, pluginsDir: string) {
         this.events = handler.events
         this.id = handler.id
 
-        this.dir = `${__dirname}/plugins${pluginsDir}`
-        this.plugins = {}
+        this.dir = join(__dirname, 'plugins', pluginsDir)
 
-        this.loadPlugins(handler)
+        this.loadPlugins()
     }
 
-    loadPlugins(handler: BaseHandler) {
-        const plugins = fs.readdirSync(this.dir).filter(file => path.extname(file) == '.ts')
+    get pluginsCount() {
+        return Object.keys(this.plugins).length
+    }
 
-        for (const plugin of plugins) {
-            const pluginImport = require(path.join(this.dir, plugin)).default
-            const pluginObject = new pluginImport(handler)
+    get eventsCount() {
+        let eventsCount = 0
 
-            this.plugins[plugin.replace('.ts', '').toLowerCase()] = pluginObject
-
-            this.loadEvents(pluginObject)
+        for (const plugin of Object.values(this.plugins)) {
+            eventsCount += Object.keys(plugin.events).length
         }
 
-        const pluginsCount = Object.keys(this.plugins).length
-        // @ts-expect-error temp
-        const eventsCount = this.events._eventsCount
+        return eventsCount
+    }
 
-        console.log(`[${this.id}] Loaded ${pluginsCount} plugins and ${eventsCount} events`)
+    async loadPlugins() {
+        const files = await readdir(this.dir)
+
+        await Promise.all(files.map(file => this.loadPlugin(file)))
+
+        console.log(`[${this.id}] Loaded ${this.pluginsCount} plugins and ${this.eventsCount} events`)
+    }
+
+    async loadPlugin(file: string) {
+        const name = parse(file).name.toLowerCase()
+        const plugin = (await import(join(this.dir, name))).default
+
+        this.plugins[name] = new plugin(this.handler)
+
+        this.loadEvents(this.plugins[name])
     }
 
     loadEvents(plugin: Plugin) {
