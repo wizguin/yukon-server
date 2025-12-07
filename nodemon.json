@@ -5,6 +5,6 @@
         "./data"
     ],
     "execMap": {
-        "ts": "ts-node -r tsconfig-paths/register"
+        "ts": "node -r ts-node/register -r tsconfig-paths/register --env-file=.env"
     }
 }
