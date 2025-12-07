@@ -1,0 +1,217 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../src/generated/prisma"
+}
+
+datasource db {
+    provider = "mysql"
+}
+
+model AuthToken {
+    userId    Int
+    selector  String   @db.Char(36)
+    validator String   @db.Char(64)
+    timestamp DateTime @default(now()) @db.Timestamp(0)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "auth_tokens_ibfk_1")
+
+    @@id([userId, selector])
+    @@map("auth_tokens")
+}
+
+model Ban {
+    id          Int      @id @default(autoincrement())
+    userId      Int
+    issued      DateTime @default(now()) @db.Timestamp(0)
+    expires     DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.Timestamp(0)
+    moderatorId Int?
+    message     String?  @db.VarChar(60)
+
+    user      User  @relation("Bans", fields: [userId], references: [id], onDelete: Cascade, map: "bans_ibfk_1")
+    moderator User? @relation("BansOf", fields: [moderatorId], references: [id], onUpdate: SetNull, map: "bans_ibfk_2")
+
+    @@index([moderatorId], map: "moderatorId")
+    @@index([userId], map: "userId")
+    @@map("bans")
+}
+
+model Buddy {
+    userId  Int
+    buddyId Int
+
+    user  User @relation("Buddies", fields: [userId], references: [id], onDelete: Cascade, map: "buddies_ibfk_1")
+    buddy User @relation("BuddiesOf", fields: [buddyId], references: [id], onDelete: Cascade, map: "buddies_ibfk_2")
+
+    @@id([userId, buddyId])
+    @@index([buddyId], map: "buddies_ibfk_2")
+    @@map("buddies")
+}
+
+model Card {
+    userId         Int
+    cardId         Int
+    quantity       Int @default(1)
+    memberQuantity Int @default(0)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "cards_ibfk_1")
+
+    @@id([userId, cardId])
+    @@map("cards")
+}
+
+model Furniture {
+    id          Int @id @default(autoincrement())
+    userId      Int
+    furnitureId Int
+    x           Int @default(0) @db.SmallInt
+    y           Int @default(0) @db.SmallInt
+    rotation    Int @default(1) @db.SmallInt
+    frame       Int @default(1) @db.SmallInt
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "furnitures_ibfk_1")
+
+    @@index([userId], map: "userId")
+    @@map("furnitures")
+}
+
+model FurnitureInventory {
+    userId   Int
+    itemId   Int
+    quantity Int
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "furniture_inventories_ibfk_1")
+
+    @@id([userId, itemId])
+    @@map("furniture_inventories")
+}
+
+model Igloo {
+    userId   Int     @id
+    type     Int     @default(1)
+    flooring Int     @default(0)
+    music    Int     @default(0)
+    location Int     @default(1)
+    locked   Boolean @default(true)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "igloos_ibfk_1")
+
+    @@map("igloo_inventories")
+}
+
+model IglooInventory {
+    userId  Int
+    iglooId Int
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "igloo_inventories_ibfk_1")
+
+    @@id([userId, iglooId])
+    @@map("igloos")
+}
+
+model Ignore {
+    userId   Int
+    ignoreId Int
+
+    user   User @relation("Ignores", fields: [userId], references: [id], onDelete: Cascade, map: "ignores_ibfk_1")
+    ignore User @relation("IgnoresOf", fields: [ignoreId], references: [id], onDelete: Cascade, map: "ignores_ibfk_2")
+
+    @@id([userId, ignoreId])
+    @@index([ignoreId], map: "ignores_ibfk_2")
+    @@map("ignores")
+}
+
+model Inventory {
+    userId Int
+    itemId Int
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "inventories_ibfk_1")
+
+    @@id([userId, itemId])
+    @@map("inventories")
+}
+
+model Pet {
+    id             Int      @id @default(autoincrement())
+    userId         Int
+    typeId         Int
+    name           String   @db.VarChar(12)
+    adoptionDate   DateTime @default(now()) @db.Timestamp(0)
+    energy         Int      @default(100) @db.TinyInt
+    health         Int      @default(100) @db.TinyInt
+    rest           Int      @default(100) @db.TinyInt
+    feedPostcardId Int?
+
+    user         User      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "pets_ibfk_1")
+    feedPostcard Postcard? @relation(fields: [feedPostcardId], references: [id], map: "pets_ibfk_2")
+
+    @@index([feedPostcardId], map: "feedPostcardId")
+    @@index([userId], map: "userId")
+    @@map("pets")
+}
+
+model Postcard {
+    id         Int      @id @default(autoincrement())
+    userId     Int
+    senderId   Int?
+    postcardId Int
+    sendDate   DateTime @default(now()) @db.Timestamp(3)
+    details    String?  @db.VarChar(255)
+    hasRead    Boolean  @default(false)
+
+    pets   Pet[]
+    user   User  @relation("Postcards", fields: [userId], references: [id], onDelete: Cascade, map: "postcards_ibfk_1")
+    sender User? @relation("PostcardsOf", fields: [senderId], references: [id], onDelete: Cascade, map: "postcards_ibfk_2")
+
+    @@index([senderId], map: "senderId")
+    @@index([userId], map: "userId")
+    @@map("postcards")
+}
+
+model User {
+    id            Int      @id @default(autoincrement())
+    username      String   @unique(map: "username") @db.VarChar(12)
+    email         String?  @db.VarChar(254)
+    password      String   @db.Char(60)
+    loginKey      String?  @db.Text
+    rank          Boolean  @default(true)
+    permaBan      Boolean  @default(false)
+    joinTime      DateTime @default(now()) @db.Timestamp(0)
+    coins         Int      @default(500)
+    head          Int      @default(0)
+    face          Int      @default(0)
+    neck          Int      @default(0)
+    body          Int      @default(0)
+    hand          Int      @default(0)
+    feet          Int      @default(0)
+    color         Int      @default(1)
+    photo         Int      @default(0)
+    flag          Int      @default(0)
+    ninjaRank     Boolean  @default(false)
+    ninjaProgress Int      @default(0) @db.TinyInt
+
+    authTokens         AuthToken[]
+    bans               Ban[]                @relation("Bans")
+    bansOf             Ban[]                @relation("BansOf")
+    buddies            Buddy[]              @relation("Buddies")
+    buddiesOf          Buddy[]              @relation("BuddiesOf")
+    cards              Card[]
+    furniture          Furniture[]
+    furnitureInventory FurnitureInventory[]
+    igloo              Igloo?
+    iglooInventory     IglooInventory[]
+    ignores            Ignore[]             @relation("Ignores")
+    ignoresOf          Ignore[]             @relation("IgnoresOf")
+    inventory          Inventory[]
+    pets               Pet[]
+    postcards          Postcard[]           @relation("Postcards")
+    postcardsOf        Postcard[]           @relation("PostcardsOf")
+
+    @@map("users")
+}
+
+model World {
+    id         String @id @db.VarChar(100)
+    population Int    @default(0) @db.SmallInt
+
+    @@map("worlds")
+}
