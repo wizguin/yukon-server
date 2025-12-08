@@ -95,7 +95,7 @@ model Igloo {
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "igloos_ibfk_1")
 
-    @@map("igloo_inventories")
+    @@map("igloos")
 }
 
 model IglooInventory {
@@ -105,7 +105,7 @@ model IglooInventory {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "igloo_inventories_ibfk_1")
 
     @@id([userId, iglooId])
-    @@map("igloos")
+    @@map("igloo_inventories")
 }
 
 model Ignore {
