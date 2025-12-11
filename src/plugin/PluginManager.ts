@@ -44,12 +44,12 @@ export default class PluginManager {
     }
 
     async loadPlugin(file: string) {
-        const name = parse(file).name.toLowerCase()
+        const name = parse(file).name
         const plugin = (await import(join(this.dir, name))).default
 
-        this.plugins[name] = new plugin(this.handler)
+        this.plugins[name.toLowerCase()] = new plugin(this.handler)
 
-        this.loadEvents(this.plugins[name])
+        this.loadEvents(this.plugins[name.toLowerCase()])
     }
 
     loadEvents(plugin: Plugin) {
