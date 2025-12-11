@@ -181,7 +181,7 @@ export default class Login extends Plugin {
             return
         }
 
-        const hours = Math.round((user.ban.expires - Date.now()) / 60 / 60 / 1000)
+        const hours = Math.round((user.ban.expires.getTime() - Date.now()) / 60 / 60 / 1000)
         return {
             success: false,
             message: `Banned:\nYou are banned for the next ${hours} hours`

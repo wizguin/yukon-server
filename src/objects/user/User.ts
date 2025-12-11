@@ -1,8 +1,8 @@
 import type { Action, Args } from '../../server/Server'
-import type AuthTokens from '@database/models/AuthTokens'
-import type Bans from '@database/models/Bans'
+import type { AuthToken, Ban } from '../../generated/prisma/client'
 import type BaseHandler from '../../handlers/BaseHandler'
 import type Database from '@database/Database'
+import PrismaDatabase from '@database/PrismaDatabase'
 import type Server from '../../server/Server'
 import type Users from '@database/models/Users'
 
@@ -11,7 +11,6 @@ import pick from '@utils/pick'
 
 import crypto from 'crypto'
 import type { EventEmitter } from 'stream'
-import { Op } from 'sequelize'
 import type { Socket } from 'socket.io'
 
 export default class User {
@@ -46,8 +45,8 @@ export default class User {
     ninjaRank!: number
     ninjaProgress!: number
 
-    authToken!: AuthTokens
-    ban!: Bans
+    authToken: AuthToken | null = null
+    ban: Ban | null = null
 
     constructor(server: Server, public socket: Socket) {
         this.db = server.db
@@ -75,40 +74,39 @@ export default class User {
         return crypto.createHash('sha256').update(string).digest('hex')
     }
 
-    async load(username: string, selector: string | null = null) {
+    async load(username: string, selector: string | undefined = undefined) {
         try {
-            const user = await this.db.users.findOne({
+            const user = await PrismaDatabase.user.findFirst({
                 where: {
                     username
                 },
-
-                include: [
-                    {
-                        model: this.db.authTokens,
-                        as: 'authToken',
+                include: {
+                    authTokens: {
                         where: {
                             selector
-                        },
-                        required: false
+                        }
                     },
-                    {
-                        model: this.db.bans,
-                        as: 'ban',
+                    bans: {
                         where: {
                             expires: {
-                                [Op.gt]: Date.now()
+                                gt: new Date()
                             }
                         },
-                        required: false
+                        take: 1
                     }
-                ]
+                }
             })
 
             if (!user) {
                 return false
             }
 
-            Object.assign(this, user.get({ plain: true }))
+            const { authTokens, bans, ...rest } = user
+
+            Object.assign(this, rest)
+
+            this.authToken = authTokens[0] ?? null
+            this.ban = bans[0] ?? null
 
             this.setPermissions()
 
