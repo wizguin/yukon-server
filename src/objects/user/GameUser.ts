@@ -15,6 +15,7 @@ import type BaseInstance from '@objects/instance/BaseInstance'
 import type BaseTable from '@objects/room/table/BaseTable'
 import Igloo from '@objects/room/Igloo'
 import type Pets from '@database/models/Pets'
+import PrismaDatabase from '@database/PrismaDatabase'
 import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
 import type Waddle from '@objects/room/waddle/Waddle'
@@ -227,97 +228,70 @@ export default class GameUser extends User {
 
     async load(username: string) {
         try {
-            // @ts-expect-error temp
-            const user = await this.db.users.findOne({
+            const user = await PrismaDatabase.user.findFirst({
                 where: {
                     username
                 },
-
-                include: [
-                    {
-                        model: this.db.bans,
-                        as: 'ban',
+                include: {
+                    bans: {
                         where: {
                             expires: {
-                                [Op.gt]: Date.now()
+                                gt: new Date()
                             }
                         },
-                        required: false
+                        take: 1
                     },
-                    {
-                        model: this.db.buddies,
-                        as: 'buddies',
+
+                    buddies: {
                         include: {
-                            model: this.db.users,
-                            as: 'user',
-                            attributes: ['username']
-                        },
-                        separate: true
+                            buddy: { select: { username: true } }
+                        }
                     },
-                    {
-                        model: this.db.ignores,
-                        as: 'ignores',
+
+                    cards: true,
+
+                    furnitureInventory: true,
+
+                    ignores: {
                         include: {
-                            model: this.db.users,
-                            as: 'user',
-                            attributes: ['username']
-                        },
-                        separate: true
+                            ignore: { select: { username: true } }
+                        }
                     },
-                    {
-                        model: this.db.inventories,
-                        as: 'inventory',
-                        attributes: ['itemId'],
-                        separate: true
-                    },
-                    {
-                        model: this.db.iglooInventories,
-                        as: 'igloos',
-                        attributes: ['iglooId'],
-                        separate: true
-                    },
-                    {
-                        model: this.db.furnitureInventories,
-                        as: 'furniture',
-                        separate: true
-                    },
-                    {
-                        model: this.db.cards,
-                        as: 'cards',
-                        separate: true
-                    },
-                    {
-                        model: this.db.postcards,
-                        as: 'postcards',
+
+                    iglooInventory: true,
+
+                    inventory: true,
+
+                    pets: true,
+
+                    postcards: {
                         include: {
-                            model: this.db.users,
-                            as: 'user',
-                            attributes: ['username']
-                        },
-                        separate: true
-                    },
-                    {
-                        model: this.db.pets,
-                        as: 'pets',
-                        separate: true
+                            user: { select: { username: true } }
+                        }
                     }
-                ]
+                }
             })
 
             if (!user) {
                 return false
             }
 
-            Object.assign(this, user.get({ plain: true }))
+            const {
+                bans,
+                buddies,
+                cards,
+                furnitureInventory,
+                ignores,
+                iglooInventory,
+                inventory,
+                pets,
+                postcards,
+                ...rest
+            } = user
 
-            this.buddies = new BuddyCollection(this, user.buddies)
-            this.ignores = new IgnoreCollection(this, user.ignores)
-            this.inventory = new InventoryCollection(this, user.inventory)
-            this.igloos = new IglooCollection(this, user.igloos)
-            this.furniture = new FurnitureCollection(this, user.furniture)
-            this.cards = new CardCollection(this, user.cards)
-            this.postcards = new PostcardCollection(this, user.postcards)
-            this.pets = new PetCollection(this, user.pets)
+            Object.assign(this, rest)
+
+            // Add collections here
 
             this.setPermissions()
 
