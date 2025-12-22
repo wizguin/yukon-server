@@ -173,7 +173,7 @@ model User {
     email         String?  @db.VarChar(254)
     password      String   @db.Char(60)
     loginKey      String?  @db.Text
-    rank          Boolean  @default(true)
+    rank          Int      @default(1) @db.TinyInt
     permaBan      Boolean  @default(false)
     joinTime      DateTime @default(now()) @db.Timestamp(0)
     coins         Int      @default(500)
@@ -186,7 +186,7 @@ model User {
     color         Int      @default(1)
     photo         Int      @default(0)
     flag          Int      @default(0)
-    ninjaRank     Boolean  @default(false)
+    ninjaRank     Int      @default(0) @db.TinyInt
     ninjaProgress Int      @default(0) @db.TinyInt
 
     authTokens         AuthToken[]
