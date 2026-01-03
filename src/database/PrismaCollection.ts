@@ -1,14 +1,14 @@
 import type User from '@objects/user/User'
 
-type IndexKey<R> = Extract<keyof R, string>
+type IndexKey<Record> = Extract<keyof Record, string>
 
-export default abstract class PrismaCollection<R> {
+export default abstract class PrismaCollection<Record> {
 
     user: User
-    indexKey: IndexKey<R>
-    collection: Map<number, R>
+    indexKey: IndexKey<Record>
+    collection: Map<number, Record>
 
-    constructor(user: User, records: R[], indexKey: IndexKey<R>) {
+    constructor(user: User, records: Record[], indexKey: IndexKey<Record>) {
         this.user = user
         this.indexKey = indexKey
 
@@ -35,7 +35,7 @@ export default abstract class PrismaCollection<R> {
         this.collection.delete(key)
     }
 
-    collect(record: R) {
+    collect(record: Record) {
         const indexValue = record[this.indexKey]
 
         if (typeof indexValue === 'number') {
@@ -46,7 +46,7 @@ export default abstract class PrismaCollection<R> {
         }
     }
 
-    collectRecords(records: R[]) {
+    collectRecords(records: Record[]) {
         records.forEach(record => this.collect(record))
     }
 
