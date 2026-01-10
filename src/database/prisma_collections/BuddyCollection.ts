@@ -69,8 +69,10 @@ export default class BuddyCollection extends PrismaCollection<Buddy> {
         return buddyId in this.usersById
     }
 
-    sendOnline(buddyId: number) {
-        this.sendStatus(buddyId, Status.Online)
+    sendOnline() {
+        for (const buddyId of this.keys) {
+            this.sendStatus(buddyId, Status.Online)
+        }
     }
 
     sendOffline() {
