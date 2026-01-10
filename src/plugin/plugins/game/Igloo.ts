@@ -45,7 +45,7 @@ export default class Igloo extends GamePlugin {
         user.send('add_igloo', { igloo: args.igloo, coins: user.coins })
     }
 
-    addFurniture(args: Args, user: GameUser) {
+    async addFurniture(args: Args, user: GameUser) {
         const furniture = user.validatePurchase.furniture(args.furniture)
 
         if (!furniture) {
@@ -53,7 +53,7 @@ export default class Igloo extends GamePlugin {
         }
 
         // If furniture added successfuly
-        if (user.furniture.add(args.furniture)) {
+        if (await user.furniture.add(args.furniture)) {
             user.updateCoins(-furniture.cost)
             user.send('add_furniture', { furniture: args.furniture, coins: user.coins })
         }
