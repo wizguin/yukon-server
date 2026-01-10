@@ -24,6 +24,10 @@ export default class Join extends GamePlugin {
     // Events
 
     async joinServer(args: Args, user: GameUser) {
+        if (user.joinedServer) {
+            return
+        }
+
         user.send('load_player', {
             user,
             rank: user.rank,
