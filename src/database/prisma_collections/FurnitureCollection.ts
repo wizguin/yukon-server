@@ -22,11 +22,22 @@ export default class FurnitureCollection extends PrismaCollection<FurnitureInven
         }
 
         try {
-            const record = this.includes(itemId)
-                ? await this.incrementExisting(itemId)
-                : await this.createNew(itemId)
-
-            this.collect(record)
+            this.collect(await PrismaDatabase.furnitureInventory.upsert({
+                where: {
+                    userId_itemId: {
+                        userId: this.user.id,
+                        itemId
+                    }
+                },
+                update: {
+                    quantity: { increment: 1 }
+                },
+                create: {
+                    userId: this.user.id,
+                    itemId,
+                    quantity: 1
+                }
+            }))
 
             return true
 
@@ -35,30 +46,6 @@ export default class FurnitureCollection extends PrismaCollection<FurnitureInven
 
             return false
         }
-    }
-
-    async createNew(itemId: number) {
-        return PrismaDatabase.furnitureInventory.create({
-            data: {
-                userId: this.user.id,
-                itemId,
-                quantity: 1
-            }
-        })
-    }
-
-    async incrementExisting(itemId: number) {
-        return PrismaDatabase.furnitureInventory.update({
-            data: {
-                quantity: { increment: 1 }
-            },
-            where: {
-                userId_itemId: {
-                    userId: this.user.id,
-                    itemId
-                }
-            }
-        })
     }
 
     getQuantity(itemId: number) {
