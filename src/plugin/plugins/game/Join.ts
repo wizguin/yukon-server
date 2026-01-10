@@ -55,6 +55,8 @@ export default class Join extends GamePlugin {
 
         user.joinedServer = true
 
+        user.buddies.sendOnline()
+
         // @ts-expect-error temp
         await this.handler.updateWorldPopulation()
     }
