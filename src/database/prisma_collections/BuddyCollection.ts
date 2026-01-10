@@ -65,27 +65,21 @@ export default class BuddyCollection extends PrismaCollection<Buddy> {
         super.remove(buddyId)
     }
 
-    isOnline(buddyId: number) {
-        return buddyId in this.usersById
-    }
-
     sendOnline() {
-        for (const buddyId of this.keys) {
-            this.sendStatus(buddyId, Status.Online)
-        }
+        this.sendStatus(Status.Online)
     }
 
     sendOffline() {
-        for (const buddyId of this.keys) {
-            this.sendStatus(buddyId, Status.Offline)
-        }
+        this.sendStatus(Status.Offline)
     }
 
-    sendStatus(buddyId: number, status: Status) {
-        if (this.isOnline(buddyId)) {
+    sendStatus(status: Status) {
+        for (const buddyId of this.keys) {
             const buddy = this.usersById[buddyId]
 
-            buddy.send(status, { id: this.user.id })
+            if (buddy) {
+                buddy.send(status, { id: this.user.id })
+            }
         }
     }
 
@@ -94,7 +88,7 @@ export default class BuddyCollection extends PrismaCollection<Buddy> {
             {
                 id: buddyId,
                 username: buddy.username,
-                online: this.isOnline(buddyId)
+                online: buddyId in this.usersById
             }
         ))
     }
