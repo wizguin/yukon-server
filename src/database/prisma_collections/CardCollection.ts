@@ -33,14 +33,23 @@ export default class CardCollection extends PrismaCollection<Card> {
         return hasStarterDeck && hasCards
     }
 
-    async add(cardId: number) {
+    async add(cardId: number, quantity: number = 1) {
         if (!(cardId in cards)) {
             return
         }
 
         try {
-            this.collect(await PrismaDatabase.card.create({
-                data: {
+            this.collect(await PrismaDatabase.card.upsert({
+                where: {
+                    userId_cardId: {
+                        userId: this.user.id,
+                        cardId
+                    }
+                },
+                update: {
+                    quantity: { increment: quantity }
+                },
+                create: {
                     userId: this.user.id,
                     cardId
                 }
