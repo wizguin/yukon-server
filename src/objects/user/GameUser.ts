@@ -1,13 +1,13 @@
 import User from './User'
 
-import BuddyCollection from '@database/collections/BuddyCollection'
-import CardCollection from '@database/collections/CardCollection'
-import FurnitureCollection from '@database/collections/FurnitureCollection'
-import IglooCollection from '@database/collections/IglooCollection'
-import IgnoreCollection from '@database/collections/IgnoreCollection'
-import InventoryCollection from '@database/collections/InventoryCollection'
-import PetCollection from '@database/collections/PetCollection'
-import PostcardCollection from '@database/collections/PostcardCollection'
+import BuddyCollection from '@database/prisma_collections/BuddyCollection'
+import CardCollection from '@database/prisma_collections/CardCollection'
+import FurnitureCollection from '@database/prisma_collections/FurnitureCollection'
+import IglooCollection from '@database/prisma_collections/IglooCollection'
+import IgnoreCollection from '@database/prisma_collections/IgnoreCollection'
+import InventoryCollection from '@database/prisma_collections/InventoryCollection'
+import PetCollection from '@database/prisma_collections/PetCollection'
+import PostcardCollection from '@database/prisma_collections/PostcardCollection'
 
 import PurchaseValidator from './purchase/PurchaseValidator'
 
@@ -291,7 +291,14 @@ export default class GameUser extends User {
 
             Object.assign(this, rest)
 
-            // Add collections here
+            this.buddies = new BuddyCollection(this, buddies)
+            this.cards = new CardCollection(this, cards)
+            this.furniture = new FurnitureCollection(this, furnitureInventory)
+            this.igloos = new IglooCollection(this, iglooInventory)
+            this.ignores = new IgnoreCollection(this, ignores)
+            this.inventory = new InventoryCollection(this, inventory)
+            this.pets = new PetCollection(this, pets)
+            this.postcards = new PostcardCollection(this, postcards)
 
             this.setPermissions()
 
