@@ -48,7 +48,7 @@ export default class Item extends GamePlugin {
         }
 
         const slot = this.db.slots[item.type - 1]
-        user.inventory.add(args.item)
+        user.inventory.add(parseInt(args.item))
 
         if (args.item === tourItem) {
             user.addSystemMail(tourPostcard)
