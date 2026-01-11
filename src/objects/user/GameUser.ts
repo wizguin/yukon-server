@@ -266,7 +266,7 @@ export default class GameUser extends User {
 
                     postcards: {
                         include: {
-                            user: { select: { username: true } }
+                            sender: { select: { username: true } }
                         }
                     }
                 }
