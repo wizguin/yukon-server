@@ -44,6 +44,10 @@ export default class PostcardCollection extends PrismaCollection<Postcard> {
         }
     }
 
+    addSystem(postcardId: number, details?: string) {
+        return this.add(postcardId, undefined, details)
+    }
+
     async remove(postcardId: number) {
         if (!this.includes(postcardId)) {
             return

@@ -173,9 +173,8 @@ export default class GameUser extends User {
         }
     }
 
-    async addSystemMail(postcardId: number, details: any = null) {
-        // @ts-expect-error temp
-        const postcard = await this.postcards.add(null, postcardId, details)
+    async addSystemMail(postcardId: number, details?: string) {
+        const postcard = await this.postcards.addSystem(postcardId, details)
 
         if (postcard) {
             this.send('receive_mail', postcard)
