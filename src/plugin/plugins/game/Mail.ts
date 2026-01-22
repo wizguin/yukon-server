@@ -88,7 +88,7 @@ export default class Mail extends GamePlugin {
         }
 
         // Add postcard
-        const postcard = await recipient.postcards.add(user.id, postcardId)
+        const postcard = await recipient.postcards.add(postcardId, user.id)
         if (!postcard) {
             return
         }

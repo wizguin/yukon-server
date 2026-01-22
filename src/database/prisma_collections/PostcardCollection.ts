@@ -19,7 +19,7 @@ export default class PostcardCollection extends PrismaCollection<Postcard> {
         super(user, records, 'id')
     }
 
-    async add(senderId: number, postcardId: number, details?: string) {
+    async add(postcardId: number, senderId?: number, details?: string) {
         try {
             const postcard = await PrismaDatabase.postcard.create({
                 data: {
