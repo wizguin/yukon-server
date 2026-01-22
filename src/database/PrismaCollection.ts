@@ -29,7 +29,7 @@ export default abstract class PrismaCollection<Record> {
         return this.collection.size
     }
 
-    abstract add(...args: (number | string)[]): void
+    abstract add(...args: (number | string | undefined)[]): void
 
     remove(key: number) {
         this.collection.delete(key)
