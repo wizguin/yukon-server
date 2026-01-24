@@ -1,4 +1,4 @@
-import PrismaCollection from '@database/PrismaCollection'
+import BaseCollection from '@database/BaseCollection'
 
 import { isLength, isString } from '@utils/validation'
 import Pet, { type Update } from '@objects/pet/Pet'
@@ -20,7 +20,7 @@ const nameRegex = /^[a-z ]+$/i
 // 3.6 minutes
 const updateInterval = 3.6 * 60000
 
-export default class PetCollection extends PrismaCollection<Pet> {
+export default class PetCollection extends BaseCollection<Pet> {
 
     petUpdate: NodeJS.Timeout
 

@@ -2,7 +2,7 @@ import type User from '@objects/user/User'
 
 type IndexKey<Record> = Extract<keyof Record, string>
 
-export default abstract class PrismaCollection<Record> {
+export default abstract class BaseCollection<Record> {
 
     user: User
     indexKey: IndexKey<Record>

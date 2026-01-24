@@ -1,4 +1,4 @@
-import PrismaCollection from '@database/PrismaCollection'
+import BaseCollection from '@database/BaseCollection'
 
 import PrismaDatabase from '@database/PrismaDatabase'
 import type User from '@objects/user/User'
@@ -13,7 +13,7 @@ interface Postcard extends PrismaPostcard {
 
 const systemName = 'sys'
 
-export default class PostcardCollection extends PrismaCollection<Postcard> {
+export default class PostcardCollection extends BaseCollection<Postcard> {
 
     constructor(user: User, records: Postcard[]) {
         super(user, records, 'id')

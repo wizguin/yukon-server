@@ -1,4 +1,4 @@
-import PrismaCollection from '@database/PrismaCollection'
+import BaseCollection from '@database/BaseCollection'
 
 import type GameHandler from '../../handlers/GameHandler'
 import PrismaDatabase from '@database/PrismaDatabase'
@@ -17,7 +17,7 @@ enum Status {
     Offline = 'buddy_offline'
 }
 
-export default class BuddyCollection extends PrismaCollection<Buddy> {
+export default class BuddyCollection extends BaseCollection<Buddy> {
 
     constructor(user: User, records: Buddy[]) {
         super(user, records, 'buddyId')

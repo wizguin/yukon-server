@@ -1,11 +1,11 @@
-import PrismaCollection from '@database/PrismaCollection'
+import BaseCollection from '@database/BaseCollection'
 
 import PrismaDatabase from '@database/PrismaDatabase'
 import type User from '@objects/user/User'
 
 import type { Inventory } from '../../generated/prisma/client'
 
-export default class InventoryCollection extends PrismaCollection<Inventory> {
+export default class InventoryCollection extends BaseCollection<Inventory> {
 
     constructor(user: User, records: Inventory[]) {
         super(user, records, 'itemId')

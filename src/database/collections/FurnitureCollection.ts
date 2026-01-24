@@ -1,4 +1,4 @@
-import PrismaCollection from '@database/PrismaCollection'
+import BaseCollection from '@database/BaseCollection'
 
 import { furniture } from '@data'
 import PrismaDatabase from '@database/PrismaDatabase'
@@ -6,7 +6,7 @@ import type User from '@objects/user/User'
 
 import type { FurnitureInventory } from '../../generated/prisma/client'
 
-export default class FurnitureCollection extends PrismaCollection<FurnitureInventory> {
+export default class FurnitureCollection extends BaseCollection<FurnitureInventory> {
 
     constructor(user: User, records: FurnitureInventory[]) {
         super(user, records, 'itemId')

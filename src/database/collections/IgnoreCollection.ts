@@ -1,4 +1,4 @@
-import PrismaCollection from '@database/PrismaCollection'
+import BaseCollection from '@database/BaseCollection'
 
 import PrismaDatabase from '@database/PrismaDatabase'
 import type User from '@objects/user/User'
@@ -11,7 +11,7 @@ interface Ignore extends PrismaIgnore {
     }
 }
 
-export default class IgnoreCollection extends PrismaCollection<Ignore> {
+export default class IgnoreCollection extends BaseCollection<Ignore> {
 
     constructor(user: User, records: Ignore[]) {
         super(user, records, 'ignoreId')

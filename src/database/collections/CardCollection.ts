@@ -1,4 +1,4 @@
-import PrismaCollection from '@database/PrismaCollection'
+import BaseCollection from '@database/BaseCollection'
 
 import { cards } from '@data'
 import type GameUser from '@objects/user/GameUser'
@@ -9,7 +9,7 @@ import type { Card } from '../../generated/prisma/client'
 
 const starterDeckId = 821
 
-export default class CardCollection extends PrismaCollection<Card> {
+export default class CardCollection extends BaseCollection<Card> {
 
     constructor(user: User, records: Card[]) {
         super(user, records, 'cardId')
