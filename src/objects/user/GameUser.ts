@@ -14,7 +14,7 @@ import PurchaseValidator from './purchase/PurchaseValidator'
 import type BaseInstance from '@objects/instance/BaseInstance'
 import type BaseTable from '@objects/room/table/BaseTable'
 import Igloo from '@objects/room/Igloo'
-import type Pets from '@database/models/Pets'
+import type Pet from '@objects/pet/Pet'
 import PrismaDatabase from '@database/PrismaDatabase'
 import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
@@ -24,7 +24,6 @@ import { isInRange } from '@utils/validation'
 import pick from '@utils/pick'
 
 import EventEmitter from 'events'
-import { Op } from 'sequelize'
 import type { Socket } from 'socket.io'
 
 interface Token {
@@ -52,7 +51,7 @@ export default class GameUser extends User {
     minigameRoom: BaseInstance | BaseTable | null = null
 
     buddyRequests: number[] = []
-    walkingPet: Pets | null = null
+    walkingPet: Pet | null = null
 
     validatePurchase: PurchaseValidator
 
@@ -184,14 +183,15 @@ export default class GameUser extends User {
     }
 
     async startWalkingPet(petId: number) {
-        if (!this.pets.includes(petId)) {
+        const pet = this.pets.get(petId)
+
+        if (!pet) {
             return
         }
+
         if (this.walkingPet) {
             this.stopWalkingPet()
         }
-
-        const pet = this.pets.get(petId)
 
         if (pet.rest < 20 || pet.energy < 40) {
             return

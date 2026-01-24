@@ -46,7 +46,7 @@ export default class Pet extends GamePlugin {
         }
 
         const owner = this.usersById[args.userId]
-        const pets = owner ? owner.pets.values : await this.db.getPets(args.userId)
+        const pets = owner ? owner.pets : await this.db.getPets(args.userId)
 
         user.send('get_pets', { pets })
     }
@@ -55,30 +55,35 @@ export default class Pet extends GamePlugin {
         if (!hasProps(args, 'x', 'y')) {
             return
         }
+
         if (!isInRange(args.x, 0, 1520)) {
             return
         }
+
         if (!isInRange(args.y, 0, 960)) {
             return
         }
 
-        if (user.pets.includes(args.id)) {
-            const pet = user.pets.get(args.id)
+        const pet = user.pets.get(args.id)
 
-            pet.x = args.x
-            pet.y = args.y
+        if (!pet) {
+            return
+        }
 
-            if (user.room) {
-                user.room.send(user, 'pet_move', args)
-            }
+        pet.x = args.x
+        pet.y = args.y
+
+        if (user.room) {
+            user.room.send(user, 'pet_move', args)
         }
     }
 
     petPlay(args: Args, user: GameUser) {
-        if (!user.pets.includes(args.id)) {
+        const pet = user.pets.get(args.id)
+
+        if (!pet) {
             return
         }
-        const pet = user.pets.get(args.id)
 
         // Angry
         if (pet.rest < 20 || pet.happiness < 10) {
@@ -150,10 +155,11 @@ export default class Pet extends GamePlugin {
     }
 
     sendInteraction(user: GameUser, petId: number, action: string, updates: Record<string, number>) {
-        if (!user.pets.includes(petId)) {
+        const pet = user.pets.get(petId)
+
+        if (!pet) {
             return
         }
-        const pet = user.pets.get(petId)
 
         pet.updateStats(updates)
 
