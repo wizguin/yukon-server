@@ -9,6 +9,8 @@ const tourPostcard = 126
 const agentItem = 800
 const agentPostcard = 127
 
+const slots = ['color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award']
+
 export default class Item extends GamePlugin {
 
     items: Record<string, any>
@@ -32,7 +34,7 @@ export default class Item extends GamePlugin {
             return
         }
 
-        const slot = this.db.slots[item.type - 1]
+        const slot = slots[item.type - 1]
         if (slot === 'hand') {
             user.stopWalkingPet()
         }
@@ -47,7 +49,7 @@ export default class Item extends GamePlugin {
             return
         }
 
-        const slot = this.db.slots[item.type - 1]
+        const slot = slots[item.type - 1]
         user.inventory.add(parseInt(args.item))
 
         if (args.item === tourItem) {
@@ -63,7 +65,7 @@ export default class Item extends GamePlugin {
     }
 
     removeItem(args: Args, user: GameUser) {
-        if (!this.db.slots.includes(args.type)) {
+        if (!slots.includes(args.type)) {
             return
         }
 
