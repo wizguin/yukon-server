@@ -1,10 +1,9 @@
 import type { Action, Args } from '../../server/Server'
 import type { AuthToken, Ban } from '../../generated/prisma/client'
 import type BaseHandler from '../../handlers/BaseHandler'
-import type Database from '@database/Database'
 import PrismaDatabase from '@database/PrismaDatabase'
 import type Server from '../../server/Server'
-import type Users from '@database/models/Users'
+import type { UserUpdateInput } from '../../generated/prisma/models'
 
 import getSocketAddress from './getSocketAddress'
 import pick from '@utils/pick'
@@ -15,7 +14,6 @@ import type { Socket } from 'socket.io'
 
 export default class User {
 
-    db: Database
     handler: BaseHandler
 
     address: string
@@ -49,7 +47,6 @@ export default class User {
     ban: Ban | null = null
 
     constructor(server: Server, public socket: Socket) {
-        this.db = server.db
         this.handler = server.handler
 
         this.address = getSocketAddress(socket)
@@ -121,14 +118,24 @@ export default class User {
         }
     }
 
-    async update(updates: Partial<Users>) {
+    async update(data: UserUpdateInput) {
         if (!this.id) {
             return
         }
 
-        Object.assign(this, updates)
+        try {
+            await PrismaDatabase.user.update({
+                where: {
+                    id: this.id
+                },
+                data
+            })
 
-        return this.db.users.update(updates, { where: { id: this.id } })
+            Object.assign(this, data)
+
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     setPermissions() {
