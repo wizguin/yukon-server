@@ -150,11 +150,15 @@ export default class GameHandler extends BaseHandler {
     }
 
     async updateWorldPopulation() {
-        await PrismaDatabase.world.update({
+        await PrismaDatabase.world.upsert({
             where: {
                 id: this.id
             },
-            data: {
+            update: {
+                population: this.population
+            },
+            create: {
+                id: this.id,
                 population: this.population
             }
         })
