@@ -12,6 +12,7 @@ import type GameUser from '@objects/user/GameUser'
 import type { Message } from '../server/Server'
 
 import * as data from '@data'
+import PrismaDatabase from '@database/PrismaDatabase'
 
 export default class GameHandler extends BaseHandler {
 
@@ -148,8 +149,15 @@ export default class GameHandler extends BaseHandler {
         this.updateWorldPopulation()
     }
 
-    updateWorldPopulation() {
-        this.db.worlds.update({ population: this.population }, { where: { id: this.id } })
+    async updateWorldPopulation() {
+        await PrismaDatabase.world.update({
+            where: {
+                id: this.id
+            },
+            data: {
+                population: this.population
+            }
+        })
     }
 
 }
