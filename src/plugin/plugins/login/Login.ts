@@ -3,6 +3,7 @@ import Plugin from '@plugin/Plugin'
 import type { Args } from '../../../server/Server'
 import { config } from '@config'
 import type LoginHandler from '../../../handlers/LoginHandler'
+import PrismaDatabase from '@database/PrismaDatabase'
 import type User from '@objects/user/User'
 
 import { hasProps, isLength, isString } from '@utils/validation'
@@ -216,22 +217,21 @@ export default class Login extends Plugin {
     }
 
     async getWorldPopulations(isModerator: boolean) {
-        const pops = await this.db.getWorldPopulations()
+        const pops = await PrismaDatabase.world.findMany()
         const populations: Record<string, number> = {}
 
-        for (const world of Object.keys(pops)) {
-            const maxUsers = config.worlds[world].maxUsers || 300
-            const population = pops[world].population
+        for (const { id, population } of pops) {
+            const maxUsers = config.worlds[id].maxUsers || 300
 
             if (population >= maxUsers) {
-                populations[world] = isModerator ? 5 : 6
+                populations[id] = isModerator ? 5 : 6
                 continue
             }
 
             const barSize = Math.round(maxUsers / 5)
             const bars = Math.max(Math.ceil(population / barSize), 1) || 1
 
-            populations[world] = bars
+            populations[id] = bars
         }
 
         return populations
