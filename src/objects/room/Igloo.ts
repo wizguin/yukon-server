@@ -1,7 +1,8 @@
 import Room from './Room'
 
-import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
+import type { IglooUpdateInput } from '../../generated/prisma/models'
+import PrismaDatabase from '@database/PrismaDatabase'
 
 interface Furniture {
     furnitureId: number
@@ -24,7 +25,6 @@ export default class Igloo extends Room {
 
     constructor(
         data: any,
-        private db: Database,
         private iglooIdOffset: number
     ) {
         super(data)
@@ -55,8 +55,18 @@ export default class Igloo extends Room {
         this.send(user, 'join_igloo', this, [])
     }
 
-    update(query: any) {
-        this.db.igloos.update(query, { where: { userId: this.userId } })
+    async update(data: IglooUpdateInput) {
+        try {
+            await PrismaDatabase.igloo.update({
+                where: {
+                    userId: this.userId
+                },
+                data
+            })
+
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     async clearFurniture() {
