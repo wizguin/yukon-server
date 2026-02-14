@@ -70,7 +70,10 @@ export default class Igloo extends Room {
     }
 
     async clearFurniture() {
-        await this.db.furnitures.destroy({ where: { userId: this.userId } })
+        await PrismaDatabase.furniture.deleteMany({
+            where: { userId: this.userId }
+        })
+
         this.furniture = []
     }
 
