@@ -3,6 +3,8 @@ import GamePlugin from '@plugin/GamePlugin'
 import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
+import type { PetModel } from '../../../generated/prisma/models'
+import PrismaDatabase from '@database/PrismaDatabase'
 
 import { hasProps, isInRange, isNumber } from '@utils/validation'
 
@@ -41,12 +43,14 @@ export default class Pet extends GamePlugin {
         if (!hasProps(args, 'userId')) {
             return
         }
+
         if (!isNumber(args.userId)) {
             return
         }
 
         const owner = this.usersById[args.userId]
-        const pets = owner ? owner.pets : await this.db.getPets(args.userId)
+
+        const pets = owner ? owner.pets : await this.getOfflinePets(args.userId)
 
         user.send('get_pets', { pets })
     }
@@ -165,6 +169,30 @@ export default class Pet extends GamePlugin {
 
         if (user.room) {
             user.room.send(user, action, { id: petId, energy: pet.energy, health: pet.health, rest: pet.rest }, [])
+        }
+    }
+
+    async getOfflinePets(userId: number) {
+        const records = await PrismaDatabase.pet.findMany({
+            where: {
+                userId
+            }
+        })
+
+        return records.map(record => this.formatOfflinePet(record))
+    }
+
+    formatOfflinePet({ id, typeId, name, energy, health, rest }: PetModel) {
+        return {
+            id,
+            typeId,
+            name,
+            energy,
+            health,
+            rest,
+            x: 0,
+            y: 0,
+            walking: false
         }
     }
 
