@@ -40,15 +40,15 @@ export default class Moderation extends GamePlugin {
 
         const recipient = this.usersById[args.id]
 
-        if (!recipient) {
+        const recipientRank = recipient?.rank ?? await this.getRank(args.id)
+
+        if (recipientRank === null || recipientRank >= user.rank) {
             return
         }
 
-        const recipientRank = await this.getRecipientRank(recipient, args.id)
+        await this.applyBan(user, args.id)
 
-        if (recipientRank < user.rank) {
-            await this.applyBan(user, args.id)
-
+        if (recipient) {
             recipient.close()
         }
     }
@@ -82,10 +82,17 @@ export default class Moderation extends GamePlugin {
         })
     }
 
-    async getRecipientRank(recipient: GameUser, id: number) {
-        return recipient
-            ? recipient.rank
-            : (await this.db.getUserById(id)).rank
+    async getRank(userId: number) {
+        const user = await PrismaDatabase.user.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                rank: true
+            }
+        })
+
+        return user?.rank ?? null
     }
 
 }
