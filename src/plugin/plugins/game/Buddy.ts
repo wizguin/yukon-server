@@ -4,7 +4,9 @@ import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import Igloo from '@objects/room/Igloo'
+import PrismaDatabase from '@database/PrismaDatabase'
 
+import { getUsername } from '@utils/user'
 import { hasProps } from '@utils/validation'
 
 export default class Buddy extends GamePlugin {
@@ -64,15 +66,21 @@ export default class Buddy extends GamePlugin {
         user.clearBuddyRequest(args.id)
 
         const requester = this.usersById[args.id]
-        let username
+        let username: string
 
         if (requester) {
             username = requester.username
             requester.addBuddy(user.id, user.username, true)
 
         } else {
-            username = await this.db.getUsername(args.id)
-            this.db.buddies.create({ userId: args.id, buddyId: user.id })
+            username = await getUsername(args.id)
+
+            await PrismaDatabase.buddy.create({
+                data: {
+                    userId: args.id,
+                    buddyId: user.id
+                }
+            })
         }
 
         user.addBuddy(args.id, username)
@@ -82,7 +90,7 @@ export default class Buddy extends GamePlugin {
         user.buddyRequests = user.buddyRequests.filter(item => item != args.id)
     }
 
-    buddyRemove(args: Args, user: GameUser) {
+    async buddyRemove(args: Args, user: GameUser) {
         if (!user.buddies.includes(args.id)) {
             return
         }
@@ -94,7 +102,15 @@ export default class Buddy extends GamePlugin {
         if (buddy) {
             buddy.removeBuddy(user.id)
         } else {
-            this.db.buddies.destroy({ where: { userId: args.id, buddyId: user.id } })
+
+            await PrismaDatabase.buddy.delete({
+                where: {
+                    userId_buddyId: {
+                        userId: args.id,
+                        buddyId: user.id
+                    }
+                }
+            })
         }
     }
 
