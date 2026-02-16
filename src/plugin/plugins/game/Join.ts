@@ -4,6 +4,7 @@ import type { Args } from '../../../server/Server'
 import { config } from '@config'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
+import PrismaDatabase from '@database/PrismaDatabase'
 
 import { isNumber } from '@utils/validation'
 
@@ -43,11 +44,24 @@ export default class Join extends GamePlugin {
 
         // Update token on database now that user has fully connected
         if (user.token.oldSelector) {
-            this.db.authTokens.destroy({ where: { userId: user.id, selector: user.token.oldSelector } })
+            await PrismaDatabase.authToken.delete({
+                where: {
+                    userId_selector: {
+                        userId: user.id,
+                        selector: user.token.oldSelector
+                    }
+                }
+            })
         }
 
         if (user.token.selector && user.token.validatorHash) {
-            this.db.authTokens.create({ userId: user.id, selector: user.token.selector, validator: user.token.validatorHash })
+            await PrismaDatabase.authToken.create({
+                data: {
+                    userId: user.id,
+                    selector: user.token.selector,
+                    validator: user.token.validatorHash
+                }
+            })
         }
 
         const spawn = this.getSpawn()
