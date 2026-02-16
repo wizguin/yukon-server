@@ -3,8 +3,10 @@ import GamePlugin from '@plugin/GamePlugin'
 import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
+import PrismaDatabase from '@database/PrismaDatabase'
 
 import { hasProps, isNumber } from '@utils/validation'
+import { userIdExists } from '@utils/user'
 
 export default class Mail extends GamePlugin {
 
@@ -99,26 +101,27 @@ export default class Mail extends GamePlugin {
     }
 
     async sendMailOffline(user: GameUser, recipientId: number, postcardId: number) {
-        const recipient = await this.db.getUserById(recipientId)
-        if (!recipient) {
+        if (!await userIdExists(recipientId)) {
             return
         }
 
         // Ignored
-        if (await this.db.getIgnored(recipientId, user.id)) {
+        if (await this.isIgnored(recipientId, user.id)) {
             return this.sendMailResponse(user, this.responses.Success)
         }
 
         // Full inbox
-        if (await this.db.getPostcardsCount(recipientId) >= this.maxPostcards) {
+        if (await this.getPostcardsCount(recipientId) >= this.maxPostcards) {
             return this.sendMailResponse(user, this.responses.FullInbox)
         }
 
         // Add postcard
-        this.db.postcards.create({
-            userId: recipientId,
-            senderId: user.id,
-            postcardId
+        await PrismaDatabase.postcard.create({
+            data: {
+                userId: recipientId,
+                senderId: user.id,
+                postcardId
+            }
         })
 
         this.removeCoins(user)
@@ -134,6 +137,25 @@ export default class Mail extends GamePlugin {
      */
     sendMailResponse(user: GameUser, response: number) {
         user.send('send_mail', { coins: user.coins, response })
+    }
+
+    async isIgnored(userId: number, ignoreId: number) {
+        const ignore = await PrismaDatabase.ignore.findUnique({
+            where: {
+                userId_ignoreId: {
+                    userId,
+                    ignoreId
+                }
+            }
+        })
+
+        return ignore !== null
+    }
+
+    getPostcardsCount(userId: number) {
+        return PrismaDatabase.postcard.count({
+            where: { userId }
+        })
     }
 
 }
