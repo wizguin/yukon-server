@@ -5,6 +5,7 @@ import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
 import { hasProps, isNumber } from '@utils/validation'
+import { getUsername } from '@utils/user'
 
 export default class Ignore extends GamePlugin {
 
@@ -39,14 +40,14 @@ export default class Ignore extends GamePlugin {
         }
 
         const ignore = this.usersById[args.id]
-        let username
+        let username: string
 
         if (ignore) {
             username = ignore.username
             ignore.clearBuddyRequest(user.id)
 
         } else {
-            username = await this.db.getUsername(args.id)
+            username = await getUsername(args.id)
         }
 
         if (!username) {
