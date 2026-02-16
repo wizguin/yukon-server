@@ -29,7 +29,7 @@ export default class User {
     loginKey!: string | null
     rank!: number
     permaBan!: boolean
-    joinTime!: number
+    joinTime!: Date
     coins!: number
     head!: number
     face!: number
