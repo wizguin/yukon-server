@@ -110,22 +110,42 @@ export default class Join extends GamePlugin {
         return spawns[Math.floor(Math.random() * spawns.length)]
     }
 
-    async getIgloo(id: number) {
-        if (!isNumber(id)) {
+    async getIgloo(userId: number) {
+        if (!isNumber(userId)) {
             return null
         }
 
         // Ensures igloos are above all default rooms
-        const iglooId = id + config.game.iglooIdOffset
+        const iglooId = userId + config.game.iglooIdOffset
 
         if (!(iglooId in this.rooms)) {
-            const igloo = await this.db.getIgloo(id)
+            const igloo = await PrismaDatabase.igloo.findUnique({
+                where: { userId }
+            })
 
             if (!igloo) {
                 return null
             }
 
-            this.rooms[iglooId] = new Igloo(igloo, config.game.iglooIdOffset)
+            const furniture = await PrismaDatabase.furniture.findMany({
+                where: { userId },
+                select: {
+                    furnitureId: true,
+                    x: true,
+                    y: true,
+                    rotation: true,
+                    frame: true
+                }
+            })
+
+            this.rooms[iglooId] = new Igloo(
+                userId,
+                igloo.type,
+                igloo.flooring,
+                igloo.music,
+                igloo.location,
+                furniture
+            )
         }
 
         return this.rooms[iglooId]

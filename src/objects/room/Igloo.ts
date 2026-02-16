@@ -1,5 +1,6 @@
 import Room from './Room'
 
+import { config } from '@config'
 import type GameUser from '@objects/user/GameUser'
 import type { IglooUpdateInput } from '../../generated/prisma/models'
 import PrismaDatabase from '@database/PrismaDatabase'
@@ -16,27 +17,17 @@ export default class Igloo extends Room {
 
     isIgloo = true
 
-    userId: number
-    type: number
-    flooring: number
-    music: number
-    location: number
-    furniture: Furniture[]
-
     constructor(
-        data: any,
-        private iglooIdOffset: number
+        public userId: number,
+        public type: number,
+        public flooring: number,
+        public music: number,
+        public location: number,
+        public furniture: Furniture[] = []
     ) {
-        super(data)
+        super({})
 
-        this.userId = data.userId
-        this.type = data.type
-        this.flooring = data.flooring
-        this.music = data.music
-        this.location = data.location
-        this.furniture = data.furniture
-
-        this.id = data.userId + this.iglooIdOffset
+        this.id = userId + config.game.iglooIdOffset
     }
 
     add(user: GameUser) {
