@@ -4,7 +4,7 @@ import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import type { PetModel } from '../../../generated/prisma/models'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 
 import { hasProps, isInRange, isNumber } from '@utils/validation'
 
@@ -173,7 +173,7 @@ export default class Pet extends GamePlugin {
     }
 
     async getOfflinePets(userId: number) {
-        const records = await PrismaDatabase.pet.findMany({
+        const records = await Database.pet.findMany({
             where: {
                 userId
             }

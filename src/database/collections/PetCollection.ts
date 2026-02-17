@@ -4,7 +4,7 @@ import { isLength, isString } from '@utils/validation'
 import Pet, { type Update } from '@objects/pet/Pet'
 import type GameUser from '@objects/user/GameUser'
 import { pets } from '@data'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type User from '@objects/user/User'
 
 import { type Pet as PrismaPet } from '../../generated/prisma/client'
@@ -53,7 +53,7 @@ export default class PetCollection extends BaseCollection<Pet> {
         }
 
         try {
-            const record = await PrismaDatabase.pet.create({
+            const record = await Database.pet.create({
                 data: {
                     userId: this.user.id,
                     typeId,
@@ -83,7 +83,7 @@ export default class PetCollection extends BaseCollection<Pet> {
         }
 
         try {
-            await PrismaDatabase.pet.delete({
+            await Database.pet.delete({
                 where: {
                     id: petId
                 }

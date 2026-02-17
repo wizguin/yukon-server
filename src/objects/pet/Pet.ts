@@ -3,7 +3,7 @@ import pick from '@utils/pick'
 
 import type GameUser from '@objects/user/GameUser'
 import { pets } from '@data'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type { Pet as PrismaPet } from '../../generated/prisma/client'
 
 export interface Update {
@@ -110,7 +110,7 @@ export default class Pet implements PrismaPet {
                 return
             }
 
-            await PrismaDatabase.pet.update({
+            await Database.pet.update({
                 where: {
                     id: this.id
                 },
@@ -132,7 +132,7 @@ export default class Pet implements PrismaPet {
         this.rest = this.getNewStat(this.rest, update.rest)
 
         try {
-            await PrismaDatabase.pet.update({
+            await Database.pet.update({
                 where: {
                     id: this.id
                 },

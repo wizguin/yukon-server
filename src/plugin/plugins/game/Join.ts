@@ -4,7 +4,7 @@ import type { Args } from '../../../server/Server'
 import { config } from '@config'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 
 import { isNumber } from '@utils/validation'
 
@@ -44,7 +44,7 @@ export default class Join extends GamePlugin {
 
         // Update token on database now that user has fully connected
         if (user.token.oldSelector) {
-            await PrismaDatabase.authToken.delete({
+            await Database.authToken.delete({
                 where: {
                     userId_selector: {
                         userId: user.id,
@@ -55,7 +55,7 @@ export default class Join extends GamePlugin {
         }
 
         if (user.token.selector && user.token.validatorHash) {
-            await PrismaDatabase.authToken.create({
+            await Database.authToken.create({
                 data: {
                     userId: user.id,
                     selector: user.token.selector,
@@ -119,7 +119,7 @@ export default class Join extends GamePlugin {
         const iglooId = userId + config.game.iglooIdOffset
 
         if (!(iglooId in this.rooms)) {
-            const igloo = await PrismaDatabase.igloo.findUnique({
+            const igloo = await Database.igloo.findUnique({
                 where: { userId }
             })
 
@@ -127,7 +127,7 @@ export default class Join extends GamePlugin {
                 return null
             }
 
-            const furniture = await PrismaDatabase.furniture.findMany({
+            const furniture = await Database.furniture.findMany({
                 where: { userId }
             })
 

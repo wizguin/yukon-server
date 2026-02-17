@@ -2,7 +2,7 @@ import BaseCollection from '@database/BaseCollection'
 
 import { cards } from '@data'
 import type GameUser from '@objects/user/GameUser'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type User from '@objects/user/User'
 
 import type { Card } from '../../generated/prisma/client'
@@ -39,7 +39,7 @@ export default class CardCollection extends BaseCollection<Card> {
         }
 
         try {
-            this.collect(await PrismaDatabase.card.upsert({
+            this.collect(await Database.card.upsert({
                 where: {
                     userId_cardId: {
                         userId: this.user.id,

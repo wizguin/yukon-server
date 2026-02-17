@@ -3,7 +3,7 @@ import GamePlugin from '@plugin/GamePlugin'
 import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 
 export default class Moderation extends GamePlugin {
 
@@ -56,13 +56,13 @@ export default class Moderation extends GamePlugin {
     async applyBan(moderator: GameUser, userId: number, hours = 24, message = '') {
         const expires = new Date(Date.now() + hours * 60 * 60 * 1000)
 
-        const banCount = await PrismaDatabase.ban.count({
+        const banCount = await Database.ban.count({
             where: { userId }
         })
 
         // 5th ban is a permanent ban
         if (banCount >= 4) {
-            await PrismaDatabase.user.update({
+            await Database.user.update({
                 where: {
                     id: userId
                 },
@@ -72,7 +72,7 @@ export default class Moderation extends GamePlugin {
             })
         }
 
-        await PrismaDatabase.ban.create({
+        await Database.ban.create({
             data: {
                 userId,
                 expires,
@@ -83,7 +83,7 @@ export default class Moderation extends GamePlugin {
     }
 
     async getRank(userId: number) {
-        const user = await PrismaDatabase.user.findUnique({
+        const user = await Database.user.findUnique({
             where: {
                 id: userId
             },

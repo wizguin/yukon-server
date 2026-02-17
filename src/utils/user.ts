@@ -1,5 +1,5 @@
 import type { UserSelect, UserWhereUniqueInput } from '../generated/prisma/models'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 
 export async function getUserById(id: number) {
     if (!id) {
@@ -38,7 +38,7 @@ export async function usernameExists(username: string) {
 }
 
 async function getUser(where: UserWhereUniqueInput, select?: UserSelect) {
-    return PrismaDatabase.user.findUnique({
+    return Database.user.findUnique({
         where,
         select
     })

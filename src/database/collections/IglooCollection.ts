@@ -1,6 +1,6 @@
 import BaseCollection from '@database/BaseCollection'
 
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type User from '@objects/user/User'
 
 import type { IglooInventory } from '../../generated/prisma/client'
@@ -13,7 +13,7 @@ export default class IglooCollection extends BaseCollection<IglooInventory> {
 
     async add(iglooId: number) {
         try {
-            this.collect(await PrismaDatabase.iglooInventory.create({
+            this.collect(await Database.iglooInventory.create({
                 data: {
                     userId: this.user.id,
                     iglooId

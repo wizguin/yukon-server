@@ -1,6 +1,6 @@
 import BaseCollection from '@database/BaseCollection'
 
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type User from '@objects/user/User'
 
 import type { Postcard as PrismaPostcard } from '../../generated/prisma/client'
@@ -21,7 +21,7 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
 
     async add(postcardId: number, senderId?: number, details?: string) {
         try {
-            const postcard = await PrismaDatabase.postcard.create({
+            const postcard = await Database.postcard.create({
                 data: {
                     userId: this.user.id,
                     senderId,
@@ -54,7 +54,7 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
         }
 
         try {
-            await PrismaDatabase.postcard.delete({
+            await Database.postcard.delete({
                 where: {
                     id: postcardId
                 }
@@ -69,7 +69,7 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
 
     async removeFrom(senderId: number) {
         try {
-            await PrismaDatabase.postcard.deleteMany({
+            await Database.postcard.deleteMany({
                 where: {
                     senderId
                 }
@@ -93,7 +93,7 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
             }
 
             try {
-                await PrismaDatabase.postcard.update({
+                await Database.postcard.update({
                     where: {
                         id: postcard.id
                     },

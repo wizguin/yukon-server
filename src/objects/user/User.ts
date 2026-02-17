@@ -1,7 +1,7 @@
 import type { Action, Args } from '../../server/Server'
 import type { AuthToken, Ban } from '../../generated/prisma/client'
 import type BaseHandler from '../../handlers/BaseHandler'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type Server from '../../server/Server'
 import type { UserUpdateInput } from '../../generated/prisma/models'
 
@@ -73,7 +73,7 @@ export default class User {
 
     async load(username: string, selector: string | undefined = undefined) {
         try {
-            const user = await PrismaDatabase.user.findFirst({
+            const user = await Database.user.findFirst({
                 where: {
                     username
                 },
@@ -124,7 +124,7 @@ export default class User {
         }
 
         try {
-            await PrismaDatabase.user.update({
+            await Database.user.update({
                 where: {
                     id: this.id
                 },

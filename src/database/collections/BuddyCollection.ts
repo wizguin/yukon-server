@@ -1,7 +1,7 @@
 import BaseCollection from '@database/BaseCollection'
 
 import type GameHandler from '../../handlers/GameHandler'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type User from '@objects/user/User'
 
 import type { Buddy as PrismaBuddy } from '../../generated/prisma/client'
@@ -33,7 +33,7 @@ export default class BuddyCollection extends BaseCollection<Buddy> {
         }
 
         try {
-            this.collect(await PrismaDatabase.buddy.create({
+            this.collect(await Database.buddy.create({
                 data: {
                     userId: this.user.id,
                     buddyId
@@ -53,7 +53,7 @@ export default class BuddyCollection extends BaseCollection<Buddy> {
             return
         }
 
-        await PrismaDatabase.buddy.delete({
+        await Database.buddy.delete({
             where: {
                 userId_buddyId: {
                     userId: this.user.id,

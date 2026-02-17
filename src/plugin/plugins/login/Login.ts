@@ -3,7 +3,7 @@ import Plugin from '@plugin/Plugin'
 import type { Args } from '../../../server/Server'
 import { config } from '@config'
 import type LoginHandler from '../../../handlers/LoginHandler'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type User from '@objects/user/User'
 
 import { hasProps, isLength, isString } from '@utils/validation'
@@ -217,7 +217,7 @@ export default class Login extends Plugin {
     }
 
     async getWorldPopulations(isModerator: boolean) {
-        const pops = await PrismaDatabase.world.findMany()
+        const pops = await Database.world.findMany()
         const populations: Record<string, number> = {}
 
         for (const { id, population } of pops) {

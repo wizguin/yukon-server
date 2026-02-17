@@ -5,7 +5,7 @@ import { config } from '@config'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import type IglooRoom from '@objects/room/Igloo'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 
 import { isInRange } from '@utils/validation'
 
@@ -112,7 +112,7 @@ export default class Igloo extends GamePlugin {
             igloo.furniture.push({ ...item, userId: user.id })
         }
 
-        await PrismaDatabase.furniture.createMany({
+        await Database.furniture.createMany({
             data: igloo.furniture
         })
     }

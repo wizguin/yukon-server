@@ -1,7 +1,7 @@
 import BaseCollection from '@database/BaseCollection'
 
 import { furniture } from '@data'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type User from '@objects/user/User'
 
 import type { FurnitureInventory } from '../../generated/prisma/client'
@@ -22,7 +22,7 @@ export default class FurnitureCollection extends BaseCollection<FurnitureInvento
         }
 
         try {
-            this.collect(await PrismaDatabase.furnitureInventory.upsert({
+            this.collect(await Database.furnitureInventory.upsert({
                 where: {
                     userId_itemId: {
                         userId: this.user.id,

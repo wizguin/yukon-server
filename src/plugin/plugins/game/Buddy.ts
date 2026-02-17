@@ -4,7 +4,7 @@ import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import Igloo from '@objects/room/Igloo'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 
 import { getUsername } from '@utils/user'
 import { hasProps } from '@utils/validation'
@@ -75,7 +75,7 @@ export default class Buddy extends GamePlugin {
         } else {
             username = await getUsername(args.id)
 
-            await PrismaDatabase.buddy.create({
+            await Database.buddy.create({
                 data: {
                     userId: args.id,
                     buddyId: user.id
@@ -103,7 +103,7 @@ export default class Buddy extends GamePlugin {
             buddy.removeBuddy(user.id)
         } else {
 
-            await PrismaDatabase.buddy.delete({
+            await Database.buddy.delete({
                 where: {
                     userId_buddyId: {
                         userId: args.id,

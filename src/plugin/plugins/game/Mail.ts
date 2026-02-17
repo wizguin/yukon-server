@@ -3,7 +3,7 @@ import GamePlugin from '@plugin/GamePlugin'
 import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 
 import { hasProps, isNumber } from '@utils/validation'
 import { userIdExists } from '@utils/user'
@@ -116,7 +116,7 @@ export default class Mail extends GamePlugin {
         }
 
         // Add postcard
-        await PrismaDatabase.postcard.create({
+        await Database.postcard.create({
             data: {
                 userId: recipientId,
                 senderId: user.id,
@@ -140,7 +140,7 @@ export default class Mail extends GamePlugin {
     }
 
     async isIgnored(userId: number, ignoreId: number) {
-        const ignore = await PrismaDatabase.ignore.findUnique({
+        const ignore = await Database.ignore.findUnique({
             where: {
                 userId_ignoreId: {
                     userId,
@@ -153,7 +153,7 @@ export default class Mail extends GamePlugin {
     }
 
     getPostcardsCount(userId: number) {
-        return PrismaDatabase.postcard.count({
+        return Database.postcard.count({
             where: { userId }
         })
     }

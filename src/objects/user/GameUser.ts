@@ -15,7 +15,7 @@ import type BaseInstance from '@objects/instance/BaseInstance'
 import type BaseTable from '@objects/room/table/BaseTable'
 import Igloo from '@objects/room/Igloo'
 import type Pet from '@objects/pet/Pet'
-import PrismaDatabase from '@database/PrismaDatabase'
+import Database from '@database/Database'
 import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
 import type Waddle from '@objects/room/waddle/Waddle'
@@ -227,7 +227,7 @@ export default class GameUser extends User {
 
     async load(username: string) {
         try {
-            const user = await PrismaDatabase.user.findFirst({
+            const user = await Database.user.findFirst({
                 where: {
                     username
                 },
