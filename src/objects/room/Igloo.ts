@@ -6,6 +6,7 @@ import type { IglooUpdateInput } from '../../generated/prisma/models'
 import PrismaDatabase from '@database/PrismaDatabase'
 
 interface Furniture {
+    userId: number
     furnitureId: number
     x: number
     y: number
