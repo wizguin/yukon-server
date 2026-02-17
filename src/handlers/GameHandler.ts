@@ -7,7 +7,6 @@ import Room from '@objects/room/Room'
 import TableFactory from '@objects/room/table/TableFactory'
 import Waddle from '@objects/room/waddle/Waddle'
 
-import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
 import type { Message } from '../server/Server'
 
@@ -24,10 +23,9 @@ export default class GameHandler extends BaseHandler {
 
     constructor(
         public id: string,
-        public users: Record<string, GameUser>,
-        public db: Database
+        public users: Record<string, GameUser>
     ) {
-        super(id, users, db)
+        super(id, users)
 
         this.crumbs = {
             items: data.items,

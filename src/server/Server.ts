@@ -5,7 +5,6 @@ import UserFactory from '@objects/user/UserFactory'
 
 import type BaseHandler from '../handlers/BaseHandler'
 import type { Config } from '@config'
-import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
 import type User from '@objects/user/User'
 
@@ -32,7 +31,6 @@ export default class Server {
     constructor(
         public id: string,
         private users: Record<string, User>,
-        public db: Database,
         public handler: BaseHandler
     ) {
 

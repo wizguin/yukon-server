@@ -1,5 +1,4 @@
 import { config } from '@config'
-import type Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
 import type { Message } from '../server/Server'
 import PluginManager from '@plugin/PluginManager'
@@ -15,8 +14,7 @@ export default class BaseHandler {
 
     constructor(
         public id: string,
-        public users: Record<string, User | GameUser>,
-        public db: Database
+        public users: Record<string, User | GameUser>
     ) {
         this.events = new EventEmitter({ captureRejections: true })
 
