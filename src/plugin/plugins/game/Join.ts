@@ -128,14 +128,7 @@ export default class Join extends GamePlugin {
             }
 
             const furniture = await PrismaDatabase.furniture.findMany({
-                where: { userId },
-                select: {
-                    furnitureId: true,
-                    x: true,
-                    y: true,
-                    rotation: true,
-                    frame: true
-                }
+                where: { userId }
             })
 
             this.rooms[iglooId] = new Igloo(
