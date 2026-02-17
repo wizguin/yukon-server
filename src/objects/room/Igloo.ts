@@ -70,6 +70,10 @@ export default class Igloo extends Room {
     }
 
     toJSON() {
+        const furniture = this.furniture.map(({ furnitureId, x, y, rotation, frame }) => (
+            { furnitureId, x, y, rotation, frame }
+        ))
+
         return {
             igloo: this.userId,
             users: this.userValues,
@@ -77,7 +81,7 @@ export default class Igloo extends Room {
             flooring: this.flooring,
             music: this.music,
             location: this.location,
-            furniture: this.furniture
+            furniture
         }
     }
 
