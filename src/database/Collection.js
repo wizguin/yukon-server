@@ -1,3 +1,4 @@
+const DANGEROUS = new Set(["__proto__", "constructor", "prototype"]);
 export default class Collection {
 
     constructor(user, models, model, indexKey) {
@@ -55,6 +56,7 @@ export default class Collection {
     }
 
     includes(key) {
+        if(DANGEROUS.has(key)) return false;
         return key in this.collection
     }
 
