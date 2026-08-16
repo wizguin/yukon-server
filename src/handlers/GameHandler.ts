@@ -148,18 +148,25 @@ export default class GameHandler extends BaseHandler {
     }
 
     async updateWorldPopulation() {
-        await Database.world.upsert({
-            where: {
-                id: this.id
-            },
-            update: {
-                population: this.population
-            },
-            create: {
-                id: this.id,
-                population: this.population
+        try {
+            await Database.world.upsert({
+                where: {
+                    id: this.id
+                },
+                update: {
+                    population: this.population
+                },
+                create: {
+                    id: this.id,
+                    population: this.population
+                }
+            })
+
+        } catch (error) {
+            if (error instanceof Error) {
+                this.error(error)
             }
-        })
+        }
     }
 
 }
