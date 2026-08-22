@@ -1,108 +1,131 @@
-import { loadJson } from '../utils/loadJson'
+import { loadJson } from '@utils/loadJson'
 
-import type { Assert } from 'ts-runtime-checks'
+import { type } from 'arktype'
 
-interface Card {
-    name: string | number
-    setId: number
-    powerId: number
-    element: string
-    color: string
-    value: number
-}
+const Card = type({
+    name: 'string | number',
+    setId: 'number',
+    powerId: 'number',
+    element: 'string',
+    color: 'string',
+    value: 'number'
+})
 
-interface FlooringItem {
-    name: string
-    cost: number
-    patched: number
-}
+const FlooringItem = type({
+    name: 'string',
+    cost: 'number',
+    patched: 'number'
+})
 
-interface FurnitureItem {
-    name: string
-    type: number
-    sort: number
-    cost: number
-    member: number
-    bait: number
-    patched: number
-    max: number
-}
+const FurnitureItem = type({
+    name: 'string',
+    type: 'number',
+    sort: 'number',
+    cost: 'number',
+    member: 'number',
+    bait: 'number',
+    patched: 'number',
+    max: 'number'
+})
 
-interface Igloo {
-    name: string
-    cost: number
-    patched: number
-}
+const Igloo = type({
+    name: 'string',
+    cost: 'number',
+    patched: 'number'
+})
 
-interface Item {
-    name: string
-    type: number
-    cost: number
-    member: number
-    bait: number
-    patched: number
-    treasure: number
-}
+const Item = type({
+    name: 'string',
+    type: 'number',
+    cost: 'number',
+    member: 'number',
+    bait: 'number',
+    patched: 'number',
+    treasure: 'number'
+})
 
-interface Matchmaker {
-    game: string
-}
+const Matchmaker = type({
+    game: 'string'
+})
 
-interface Pet {
-    name: string
-    cost: number
-    member: number
-    ranPostcard: number
-}
+const Pet = type({
+    name: 'string',
+    cost: 'number',
+    member: 'number',
+    ranPostcard: 'number'
+})
 
-interface Room {
-    id: number
-    name: string
-    member: number
-    maxUsers: number
-    game: number
-    spawn: number
-}
+const Room = type({
+    id: 'number',
+    name: 'string',
+    member: 'number',
+    maxUsers: 'number',
+    game: 'number',
+    spawn: 'number'
+})
 
-interface Table {
-    id: number
-    roomId: number
-    game: string
-}
+const Table = type({
+    id: 'number',
+    roomId: 'number',
+    game: 'string'
+})
 
-interface Waddle {
-    id: number
-    roomId: number
-    seats: number
-    game: string
-}
+const Waddle = type({
+    id: 'number',
+    roomId: 'number',
+    seats: 'number',
+    game: 'string'
+})
 
-type Flooring = Record<string, FlooringItem>
-type Furniture = Record<string, FurnitureItem>
-type Items = Record<string, Item>
-type Pets = Record<string, Pet>
+const Flooring = type({
+    '[string]': FlooringItem
+})
 
-type Igloos = Record<string, Igloo>
-type Rooms = Room[]
+const Furniture = type({
+    '[string]': FurnitureItem
+})
 
-type Matchmakers = Record<string, Matchmaker>
-type Tables = Table[]
-type Waddles = Waddle[]
+const Items = type({
+    '[string]': Item
+})
 
-type Cards = Record<string, Card>
-type Decks = Record<string, number[]>
+const Pets = type({
+    '[string]': Pet
+})
 
-export const flooring = loadJson('data/flooring') as Assert<Flooring>
-export const furniture = loadJson('data/furniture') as Assert<Furniture>
-export const items = loadJson('data/items') as Assert<Items>
-export const pets = loadJson('data/pets') as Assert<Pets>
+const Igloos = type({
+    '[string]': Igloo
+})
 
-export const igloos = loadJson('data/igloos') as Assert<Igloos>
-export const rooms = loadJson('data/rooms') as Assert<Rooms>
+const Rooms = Room.array()
 
-export const matchmakers = loadJson('data/matchmakers') as Assert<Matchmakers>
-export const tables = loadJson('data/tables') as Assert<Tables>
-export const waddles = loadJson('data/waddles') as Assert<Waddles>
+const Matchmakers = type({
+    '[string]': Matchmaker
+})
 
-export const cards = loadJson('data/cards') as Assert<Cards>
-export const decks = loadJson('data/decks') as Assert<Decks>
+const Tables = Table.array()
+
+const Waddles = Waddle.array()
+
+const Cards = type({
+    '[string]': Card
+})
+
+const Decks = type({
+    '[string]': 'number[]'
+})
+
+export const flooring = Flooring.assert(loadJson('data/flooring'))
+export const furniture = Furniture.assert(loadJson('data/furniture'))
+export const items = Items.assert(loadJson('data/items'))
+export const pets = Pets.assert(loadJson('data/pets'))
+
+export const igloos = Igloos.assert(loadJson('data/igloos'))
+export const rooms = Rooms.assert(loadJson('data/rooms'))
+
+export const matchmakers = Matchmakers.assert(loadJson('data/matchmakers'))
+export const tables = Tables.assert(loadJson('data/tables'))
+export const waddles = Waddles.assert(loadJson('data/waddles'))
+
+export const cards = Cards.assert(loadJson('data/cards'))
+export const decks = Decks.assert(loadJson('data/decks'))
