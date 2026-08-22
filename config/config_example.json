@@ -4,15 +4,6 @@
         "rounds": 10,
         "loginKeyExpiry": 300
     },
-    "database": {
-        "host": "localhost",
-        "user": "user",
-        "password": "password",
-        "database": "yukon",
-        "dialect": "mysql",
-        "debug": false,
-        "logQueryParameters": false
-    },
     "socketio": {
         "https": false,
         "ssl": {
