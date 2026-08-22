@@ -1,3 +1,8 @@
+import { type } from 'arktype'
+
+export const X = type('0 <= number <= 1520')
+export const Y = type('0 <= number <= 960')
+
 export function hasProps(object: any, ...props: string[]) {
     for (const prop of props) {
 
