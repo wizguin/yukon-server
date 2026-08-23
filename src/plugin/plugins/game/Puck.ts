@@ -1,10 +1,16 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-import { hasProps, isNumber } from '@utils/validation'
+import { type } from 'arktype'
+
+const MovePuck = type({
+    x: 'number',
+    y: 'number',
+    speedX: 'number',
+    speedY: 'number'
+})
 
 export default class Puck extends GamePlugin {
 
@@ -21,7 +27,7 @@ export default class Puck extends GamePlugin {
         }
     }
 
-    getPuck(args: Args, user: GameUser) {
+    getPuck(args: unknown, user: GameUser) {
         if (user.room?.id !== this.rinkRoomId) {
             return
         }
@@ -29,32 +35,17 @@ export default class Puck extends GamePlugin {
         user.send('get_puck', { x: this.puckX, y: this.puckY })
     }
 
-    movePuck(args: Args, user: GameUser) {
+    movePuck(args: unknown, user: GameUser) {
         if (user.room?.id !== this.rinkRoomId) {
             return
         }
 
-        if (!hasProps(args, 'x', 'y', 'speedX', 'speedY')) {
-            return
-        }
+        const { x, y, speedX, speedY } = MovePuck.assert(args)
 
-        if (!isNumber(args.x)) {
-            return
-        }
-        if (!isNumber(args.y)) {
-            return
-        }
-        if (!isNumber(args.speedX)) {
-            return
-        }
-        if (!isNumber(args.speedY)) {
-            return
-        }
+        this.puckX = x
+        this.puckY = y
 
-        this.puckX = args.x
-        this.puckY = args.y
-
-        user.room.send(user, 'move_puck', { x: args.x, y: args.y, speedX: args.speedX, speedY: args.speedY })
+        user.room.send(user, 'move_puck', { x, y, speedX, speedY })
     }
 
 }
