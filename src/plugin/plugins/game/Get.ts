@@ -1,12 +1,15 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
+import { getUserById } from '@utils/user'
 import type { User } from '../../../generated/prisma/client'
 
-import { hasProps, isNumber } from '@utils/validation'
-import { getUserById } from '@utils/user'
+import { type } from 'arktype'
+
+const GetPlayer = type({
+    id: 'number'
+})
 
 export default class Get extends GamePlugin {
 
@@ -18,24 +21,18 @@ export default class Get extends GamePlugin {
         }
     }
 
-    async getPlayer(args: Args, user: GameUser) {
-        if (!hasProps(args, 'id')) {
+    async getPlayer(args: unknown, user: GameUser) {
+        const { id } = GetPlayer.assert(args)
+
+        if (id in this.usersById) {
+            return user.send('get_player', { penguin: this.formatGetPlayer(this.usersById[id]) })
+        }
+
+        if (!user.buddies.includes(id)) {
             return
         }
 
-        if (!isNumber(args.id)) {
-            return
-        }
-
-        if (args.id in this.usersById) {
-            return user.send('get_player', { penguin: this.formatGetPlayer(this.usersById[args.id]) })
-        }
-
-        if (!user.buddies.includes(args.id)) {
-            return
-        }
-
-        const u = await getUserById(args.id)
+        const u = await getUserById(id)
 
         if (u) {
             user.send('get_player', { penguin: this.formatGetPlayer(u) })
