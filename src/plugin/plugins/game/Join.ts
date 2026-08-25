@@ -1,14 +1,25 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
+import { X, Y } from '@utils/validation'
 import { config } from '@config'
+import Database from '@database/Database'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-import Database from '@database/Database'
-
-import { isNumber } from '@utils/validation'
-
 import Igloo from '@objects/room/Igloo'
+
+import { type } from 'arktype'
+
+const JoinRoom = type({
+    room: 'number',
+    'x?': X,
+    'y?': Y
+})
+
+const JoinIgloo = type({
+    igloo: 'number',
+    'x?': X,
+    'y?': Y
+})
 
 export default class Join extends GamePlugin {
 
@@ -22,9 +33,7 @@ export default class Join extends GamePlugin {
         }
     }
 
-    // Events
-
-    async joinServer(args: Args, user: GameUser) {
+    async joinServer(args: unknown, user: GameUser) {
         if (user.joinedServer) {
             return
         }
@@ -65,33 +74,30 @@ export default class Join extends GamePlugin {
         }
 
         const spawn = this.getSpawn()
+
         user.joinRoom(spawn)
-
         user.joinedServer = true
-
         user.buddies.sendOnline()
 
         // @ts-expect-error temp
         await this.handler.updateWorldPopulation()
     }
 
-    joinRoom(args: Args, user: GameUser) {
-        if (!isNumber(args.room)) {
-            return
-        }
+    joinRoom(args: unknown, user: GameUser) {
+        const { room, x, y } = JoinRoom.assert(args)
 
-        user.joinRoom(this.rooms[args.room], args.x, args.y)
+        user.joinRoom(this.rooms[room], x, y)
     }
 
-    async joinIgloo(args: Args, user: GameUser) {
-        const igloo = await this.getIgloo(args.igloo)
+    async joinIgloo(args: unknown, user: GameUser) {
+        const { igloo: iglooId, x, y } = JoinIgloo.assert(args)
+
+        const igloo = await this.getIgloo(iglooId)
 
         if (igloo) {
-            user.joinRoom(igloo, args.x, args.y)
+            user.joinRoom(igloo, x, y)
         }
     }
-
-    // Functions
 
     getSpawn() {
         const preferredSpawn = config.game.preferredSpawn
@@ -111,10 +117,6 @@ export default class Join extends GamePlugin {
     }
 
     async getIgloo(userId: number) {
-        if (!isNumber(userId)) {
-            return null
-        }
-
         // Ensures igloos are above all default rooms
         const iglooId = userId + config.game.iglooIdOffset
 
