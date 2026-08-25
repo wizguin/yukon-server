@@ -1,8 +1,13 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
+
+import { type } from 'arktype'
+
+const GameOver = type({
+    coins: 'number'
+})
 
 export default class Minigame extends GamePlugin {
 
@@ -17,30 +22,32 @@ export default class Minigame extends GamePlugin {
         }
     }
 
-    getGame(args: Args, user: GameUser) {
+    getGame(args: unknown, user: GameUser) {
         if (user.minigameRoom) {
             // @ts-expect-error temp
             user.minigameRoom.getGame(args, user)
         }
     }
 
-    joinGame(args: Args, user: GameUser) {
+    joinGame(args: unknown, user: GameUser) {
         if (user.minigameRoom) {
             // @ts-expect-error temp
             user.minigameRoom.joinGame(args, user)
         }
     }
 
-    sendMove(args: Args, user: GameUser) {
+    sendMove(args: unknown, user: GameUser) {
         if (user.minigameRoom) {
             // @ts-expect-error temp
             user.minigameRoom.sendMove(args, user)
         }
     }
 
-    gameOver(args: Args, user: GameUser) {
+    gameOver(args: unknown, user: GameUser) {
+        const { coins } = GameOver.assert(args)
+
         if (user.room?.game || user.minigameRoom) {
-            user.updateCoins(args.coins, true)
+            user.updateCoins(coins, true)
         }
     }
 
