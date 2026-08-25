@@ -1,10 +1,9 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-import * as data from '@data'
+import { cards, decks, items } from '@data'
 
 export default class Sensei extends GamePlugin {
 
@@ -18,24 +17,24 @@ export default class Sensei extends GamePlugin {
             add_starter_deck: this.addStarterDeck
         }
 
-        this.starterDeck = this.crumbs.items[this.starterDeckId]
+        this.starterDeck = items[this.starterDeckId]
     }
 
-    addStarterDeck(args: Args, user: GameUser) {
+    addStarterDeck(args: unknown, user: GameUser) {
         if (user.inventory.includes(this.starterDeckId)) {
             return
         }
 
-        const deck = data.decks[this.starterDeckId]
+        const deck = decks[this.starterDeckId]
 
         for (const card of deck) {
-            if (data.cards[card].powerId === 0) {
+            if (cards[card].powerId === 0) {
                 user.cards.add(card)
             }
         }
 
         // @ts-expect-error temp
-        const powerCards = deck.filter((card: string) => data.cards[card].powerId > 0)
+        const powerCards = deck.filter((card: string) => cards[card].powerId > 0)
 
         const randomPowerCard = powerCards[Math.floor(Math.random() * powerCards.length)]
 
