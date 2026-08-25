@@ -1,8 +1,9 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
+
+import { type } from 'arktype'
 
 const tourItem = 428
 const tourPostcard = 126
@@ -10,6 +11,14 @@ const agentItem = 800
 const agentPostcard = 127
 
 const slots = ['color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award']
+
+const UpdatePlayer = type({
+    item: 'number'
+})
+
+const RemoveItem = type({
+    type: 'string'
+})
 
 export default class Item extends GamePlugin {
 
@@ -27,10 +36,12 @@ export default class Item extends GamePlugin {
         this.items = this.crumbs.items
     }
 
-    updatePlayer(args: Args, user: GameUser) {
-        const item = this.items[args.item]
+    updatePlayer(args: unknown, user: GameUser) {
+        const { item: itemId } = UpdatePlayer.assert(args)
 
-        if (!item || item.type === 10 || !user.inventory.includes(args.item)) {
+        const item = this.items[itemId]
+
+        if (!item || item.type === 10 || !user.inventory.includes(itemId)) {
             return
         }
 
@@ -39,41 +50,46 @@ export default class Item extends GamePlugin {
             user.stopWalkingPet()
         }
 
-        user.setItem(slot, args.item)
+        user.setItem(slot, itemId)
     }
 
-    addItem(args: Args, user: GameUser) {
-        const item = user.validatePurchase.item(args.item)
+    addItem(args: unknown, user: GameUser) {
+        const { item: itemId } = UpdatePlayer.assert(args)
+
+        const item = user.validatePurchase.item(itemId)
 
         if (!item) {
             return
         }
 
         const slot = slots[item.type - 1]
-        user.inventory.add(parseInt(args.item))
 
-        if (args.item === tourItem) {
+        user.inventory.add(itemId)
+
+        if (itemId === tourItem) {
             user.addSystemMail(tourPostcard)
         }
 
-        if (args.item === agentItem) {
+        if (itemId === agentItem) {
             user.addSystemMail(agentPostcard)
         }
 
         user.updateCoins(-item.cost)
-        user.send('add_item', { item: args.item, name: item.name, slot, coins: user.coins })
+        user.send('add_item', { item: itemId, name: item.name, slot, coins: user.coins })
     }
 
-    removeItem(args: Args, user: GameUser) {
-        if (!slots.includes(args.type)) {
+    removeItem(args: unknown, user: GameUser) {
+        const { type } = RemoveItem.assert(args)
+
+        if (!slots.includes(type)) {
             return
         }
 
-        if (args.type === 'hand') {
+        if (type === 'hand') {
             user.stopWalkingPet()
         }
 
-        user.setItem(args.type, 0)
+        user.setItem(type, 0)
     }
 
 }
