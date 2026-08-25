@@ -2,6 +2,7 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
+import { items } from '@data'
 
 import { type } from 'arktype'
 
@@ -22,8 +23,6 @@ const RemoveItem = type({
 
 export default class Item extends GamePlugin {
 
-    items: Record<string, any>
-
     constructor(handler: GameHandler) {
         super(handler)
 
@@ -32,14 +31,12 @@ export default class Item extends GamePlugin {
             add_item: this.addItem,
             remove_item: this.removeItem
         }
-
-        this.items = this.crumbs.items
     }
 
     updatePlayer(args: unknown, user: GameUser) {
         const { item: itemId } = UpdatePlayer.assert(args)
 
-        const item = this.items[itemId]
+        const item = items[itemId]
 
         if (!item || item.type === 10 || !user.inventory.includes(itemId)) {
             return
