@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
@@ -18,8 +17,8 @@ export default class Sensei extends GamePlugin {
         }
     }
 
-    joinSensei(args: Args, user: GameUser) {
-        if (user.room?.id != this.senseiRoom) {
+    joinSensei(args: unknown, user: GameUser) {
+        if (user.room?.id !== this.senseiRoom) {
             return
         }
 
