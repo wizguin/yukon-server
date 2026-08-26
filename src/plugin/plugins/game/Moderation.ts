@@ -1,9 +1,14 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
+import Database from '@database/Database'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-import Database from '@database/Database'
+
+import { type } from 'arktype'
+
+const Id = type({
+    id: 'number'
+})
 
 export default class Moderation extends GamePlugin {
 
@@ -17,36 +22,40 @@ export default class Moderation extends GamePlugin {
         }
     }
 
-    mutePlayer(_args: Args, _user: GameUser) {
+    mutePlayer(args: unknown, user: GameUser) {
 
     }
 
-    kickPlayer(args: Args, user: GameUser) {
+    kickPlayer(args: unknown, user: GameUser) {
+        const { id } = Id.assert(args)
+
         if (!user.isModerator) {
             return
         }
 
-        const recipient = this.usersById[args.id]
+        const recipient = this.usersById[id]
 
         if (recipient && recipient.rank < user.rank) {
             recipient.close()
         }
     }
 
-    async banPlayer(args: Args, user: GameUser) {
+    async banPlayer(args: unknown, user: GameUser) {
+        const { id } = Id.assert(args)
+
         if (!user.isModerator) {
             return
         }
 
-        const recipient = this.usersById[args.id]
+        const recipient = this.usersById[id]
 
-        const recipientRank = recipient?.rank ?? await this.getRank(args.id)
+        const recipientRank = recipient?.rank ?? await this.getRank(id)
 
         if (recipientRank === null || recipientRank >= user.rank) {
             return
         }
 
-        await this.applyBan(user, args.id)
+        await this.applyBan(user, id)
 
         if (recipient) {
             recipient.close()
