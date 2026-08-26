@@ -1,12 +1,24 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
+import Database from '@database/Database'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-import Database from '@database/Database'
-
-import { hasProps, isNumber } from '@utils/validation'
 import { userIdExists } from '@utils/user'
+
+import { type } from 'arktype'
+
+const SendMail = type({
+    recipient: 'number',
+    postcardId: 'number'
+})
+
+const DeleteMail = type({
+    id: 'number'
+})
+
+const DeleteMailFrom = type({
+    senderId: 'number | null'
+})
 
 export default class Mail extends GamePlugin {
 
@@ -29,53 +41,36 @@ export default class Mail extends GamePlugin {
         }
     }
 
-    sendMail(args: Args, user: GameUser) {
-        if (!hasProps(args, 'recipient', 'postcardId')) {
-            return
-        }
-        if (!isNumber(args.recipient) || !isNumber(args.postcardId)) {
-            return
-        }
+    sendMail(args: unknown, user: GameUser) {
+        const { recipient: recipientId, postcardId } = SendMail.assert(args)
 
-        // Insufficient coins
         if (user.coins < this.postcardCost) {
             return this.sendMailResponse(user, this.responses.InsufficientCoins)
         }
 
-        const recipient = this.usersById[args.recipient]
+        const recipient = this.usersById[recipientId]
 
         if (recipient) {
-            this.sendMailOnline(user, recipient, args.postcardId)
+            this.sendMailOnline(user, recipient, postcardId)
         } else {
-            this.sendMailOffline(user, args.recipient, args.postcardId)
+            this.sendMailOffline(user, recipientId, postcardId)
         }
     }
 
-    readMail(args: Args, user: GameUser) {
+    readMail(args: unknown, user: GameUser) {
         user.postcards.readMail()
     }
 
-    deleteMail(args: Args, user: GameUser) {
-        if (!hasProps(args, 'id')) {
-            return
-        }
-        if (!isNumber(args.id)) {
-            return
-        }
+    deleteMail(args: unknown, user: GameUser) {
+        const { id } = DeleteMail.assert(args)
 
-        user.postcards.remove(args.id)
+        user.postcards.remove(id)
     }
 
-    deleteMailFrom(args: Args, user: GameUser) {
-        if (!hasProps(args, 'senderId')) {
-            return
-        }
-        // null for system mail
-        if (!isNumber(args.senderId) && args.senderId !== null) {
-            return
-        }
+    deleteMailFrom(args: unknown, user: GameUser) {
+        const { senderId } = DeleteMailFrom.assert(args)
 
-        user.postcards.removeFrom(args.senderId)
+        user.postcards.removeFrom(senderId)
     }
 
     async sendMailOnline(user: GameUser, recipient: GameUser, postcardId: number) {
