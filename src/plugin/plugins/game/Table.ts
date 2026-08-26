@@ -1,10 +1,13 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-import { isNumber } from '@utils/validation'
+import { type } from 'arktype'
+
+const JoinTable = type({
+    table: 'number'
+})
 
 export default class Table extends GamePlugin {
 
@@ -18,7 +21,7 @@ export default class Table extends GamePlugin {
         }
     }
 
-    getTables(args: Args, user: GameUser) {
+    getTables(args: unknown, user: GameUser) {
         if (!user.room) {
             return
         }
@@ -32,21 +35,19 @@ export default class Table extends GamePlugin {
         user.send('get_tables', { tables })
     }
 
-    joinTable(args: Args, user: GameUser) {
-        if (!isNumber(args.table)) {
-            return
-        }
+    joinTable(args: unknown, user: GameUser) {
+        const { table: tableId } = JoinTable.assert(args)
 
         if (!user.room) {
             return
         }
 
-        const table = user.room.tables[args.table]
+        const table = user.room.tables[tableId]
 
         user.joinTable(table)
     }
 
-    leaveTable(args: Args, user: GameUser) {
+    leaveTable(args: unknown, user: GameUser) {
         if (user.minigameRoom) {
             user.minigameRoom.remove(user)
         }
