@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
@@ -15,7 +14,7 @@ export default class Matchmaking extends GamePlugin {
         }
     }
 
-    joinMatchmaking(args: Args, user: GameUser) {
+    joinMatchmaking(args: unknown, user: GameUser) {
         if (!user.room?.matchmaker) {
             return
         }
@@ -25,7 +24,7 @@ export default class Matchmaking extends GamePlugin {
         }
     }
 
-    leaveMatchmaking(args: Args, user: GameUser) {
+    leaveMatchmaking(args: unknown, user: GameUser) {
         if (!user.room?.matchmaker) {
             return
         }
