@@ -1,20 +1,25 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import { config } from '@config'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-import { hasProps, isLength } from '@utils/validation'
-
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
+import { type } from 'arktype'
 import { v4 as uuid } from 'uuid'
 
 interface LoginKeyPayload extends jwt.JwtPayload {
     hash: string
 }
+
+const Auth = type({
+    username: '4 <= string <= 12',
+    key: 'string == 64',
+    'token?': 'string == 36',
+    'createToken?': 'boolean'
+})
 
 export default class GameAuth extends GamePlugin {
 
@@ -28,7 +33,7 @@ export default class GameAuth extends GamePlugin {
 
     // Events
 
-    async gameAuth(args: Args, user: GameUser) {
+    async gameAuth(args: unknown, user: GameUser) {
         if (user.gameAuthSent || user.authenticated) {
             return user.close()
         }
@@ -36,15 +41,10 @@ export default class GameAuth extends GamePlugin {
         // Only handle game_auth once
         user.gameAuthSent = true
 
-        if (!hasProps(args, 'username', 'key')) {
-            return user.close()
-        }
+        const { username, key, token, createToken } = Auth.assert(args)
 
-        if (!isLength(args.username, 4, 12) || !isLength(args.key, 64, 64)) {
-            return user.close()
-        }
+        const load = await user.load(username)
 
-        const load = await user.load(args.username)
         if (!load) {
             return user.close()
         }
@@ -58,18 +58,17 @@ export default class GameAuth extends GamePlugin {
             return user.close()
         }
 
-        this.compareLoginKey(args, user)
+        this.compareLoginKey(user, key, token, createToken)
     }
 
     // Functions
 
-    async compareLoginKey(args: Args, user: GameUser) {
-        let decoded: LoginKeyPayload
-        let token
-
+    async compareLoginKey(user: GameUser, key: string, token?: string, createToken?: boolean) {
         if (!user.loginKey) {
             return user.close()
         }
+
+        let decoded: LoginKeyPayload
 
         // Verify JWT
         try {
@@ -79,8 +78,9 @@ export default class GameAuth extends GamePlugin {
         }
 
         // Verify hash
-        const hash = user.createLoginHash(args.key)
-        if (decoded.hash != hash) {
+        const hash = user.createLoginHash(key)
+
+        if (decoded.hash !== hash) {
             return user.close()
         }
 
@@ -88,13 +88,8 @@ export default class GameAuth extends GamePlugin {
         user.update({ loginKey: null })
 
         // Set selector for token destruction
-        if (args.token) {
-            user.token.oldSelector = args.token
-        }
-
-        // Create new token
-        if (args.createToken) {
-            token = await this.genAuthToken(user)
+        if (token) {
+            user.token.oldSelector = token
         }
 
         // Disconnect if already logged in
@@ -109,8 +104,10 @@ export default class GameAuth extends GamePlugin {
 
         // Send response
         const response: { success: boolean, token?: string } = { success: true }
-        if (token) {
-            response.token = token
+
+        // Create new token
+        if (createToken) {
+            response.token = await this.genAuthToken(user)
         }
 
         user.send('game_auth', response)
