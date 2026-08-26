@@ -1,13 +1,16 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
+import Database from '@database/Database'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-import Igloo from '@objects/room/Igloo'
-import Database from '@database/Database'
-
 import { getUsername } from '@utils/user'
-import { hasProps } from '@utils/validation'
+import Igloo from '@objects/room/Igloo'
+
+import { type } from 'arktype'
+
+const BuddyId = type({
+    id: 'number'
+})
 
 export default class Buddy extends GamePlugin {
 
@@ -23,14 +26,16 @@ export default class Buddy extends GamePlugin {
         }
     }
 
-    buddyRequest(args: Args, user: GameUser) {
-        const recipient = this.usersById[args.id]
+    buddyRequest(args: unknown, user: GameUser) {
+        const { id } = BuddyId.assert(args)
+
+        const recipient = this.usersById[id]
 
         if (!recipient) {
             return
         }
 
-        if (recipient.id == user.id) {
+        if (recipient.id === user.id) {
             return
         }
 
@@ -50,22 +55,20 @@ export default class Buddy extends GamePlugin {
         recipient.send('buddy_request', { id: user.id, username: user.username })
     }
 
-    async buddyAccept(args: Args, user: GameUser) {
-        if (!hasProps(args, 'id')) {
+    async buddyAccept(args: unknown, user: GameUser) {
+        const { id } = BuddyId.assert(args)
+
+        if (!user.buddyRequests.includes(id)) {
             return
         }
 
-        if (!user.buddyRequests.includes(args.id)) {
+        if (user.buddies.includes(id)) {
             return
         }
 
-        if (user.buddies.includes(args.id)) {
-            return
-        }
+        user.clearBuddyRequest(id)
 
-        user.clearBuddyRequest(args.id)
-
-        const requester = this.usersById[args.id]
+        const requester = this.usersById[id]
         let username: string
 
         if (requester) {
@@ -73,40 +76,44 @@ export default class Buddy extends GamePlugin {
             requester.addBuddy(user.id, user.username, true)
 
         } else {
-            username = await getUsername(args.id)
+            username = await getUsername(id)
 
             await Database.buddy.create({
                 data: {
-                    userId: args.id,
+                    userId: id,
                     buddyId: user.id
                 }
             })
         }
 
-        user.addBuddy(args.id, username)
+        user.addBuddy(id, username)
     }
 
-    buddyReject(args: Args, user: GameUser) {
-        user.buddyRequests = user.buddyRequests.filter(item => item != args.id)
+    buddyReject(args: unknown, user: GameUser) {
+        const { id } = BuddyId.assert(args)
+
+        user.buddyRequests = user.buddyRequests.filter(item => item !== id)
     }
 
-    async buddyRemove(args: Args, user: GameUser) {
-        if (!user.buddies.includes(args.id)) {
+    async buddyRemove(args: unknown, user: GameUser) {
+        const { id } = BuddyId.assert(args)
+
+        if (!user.buddies.includes(id)) {
             return
         }
 
-        user.removeBuddy(args.id)
+        user.removeBuddy(id)
 
-        const buddy = this.usersById[args.id]
+        const buddy = this.usersById[id]
 
         if (buddy) {
             buddy.removeBuddy(user.id)
-        } else {
 
+        } else {
             await Database.buddy.delete({
                 where: {
                     userId_buddyId: {
-                        userId: args.id,
+                        userId: id,
                         buddyId: user.id
                     }
                 }
@@ -114,12 +121,14 @@ export default class Buddy extends GamePlugin {
         }
     }
 
-    buddyFind(args: Args, user: GameUser) {
-        if (!user.buddies.includes(args.id) || !(args.id in this.usersById)) {
+    buddyFind(args: unknown, user: GameUser) {
+        const { id } = BuddyId.assert(args)
+
+        if (!user.buddies.includes(id) || !(id in this.usersById)) {
             return
         }
 
-        const buddy = this.usersById[args.id]
+        const buddy = this.usersById[id]
 
         if (!buddy.room) {
             return
