@@ -1,8 +1,13 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
+
+import { type } from 'arktype'
+
+const JoinWaddle = type({
+    waddle: 'number'
+})
 
 export default class Waddle extends GamePlugin {
 
@@ -16,7 +21,7 @@ export default class Waddle extends GamePlugin {
         }
     }
 
-    getWaddles(args: Args, user: GameUser) {
+    getWaddles(args: unknown, user: GameUser) {
         if (!user.room) {
             return
         }
@@ -30,12 +35,14 @@ export default class Waddle extends GamePlugin {
         user.send('get_waddles', { waddles })
     }
 
-    joinWaddle(args: Args, user: GameUser) {
+    joinWaddle(args: unknown, user: GameUser) {
+        const { waddle: waddleId } = JoinWaddle.assert(args)
+
         if (!user.room) {
             return
         }
 
-        const waddle = user.room.waddles[args.waddle]
+        const waddle = user.room.waddles[waddleId]
 
         if (!waddle) {
             return
@@ -46,7 +53,7 @@ export default class Waddle extends GamePlugin {
         }
     }
 
-    leaveWaddle(args: Args, user: GameUser) {
+    leaveWaddle(args: unknown, user: GameUser) {
         if (user.waddle) {
             user.waddle.remove(user)
         }
