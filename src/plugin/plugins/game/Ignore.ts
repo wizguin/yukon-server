@@ -1,11 +1,14 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-
-import { hasProps, isNumber } from '@utils/validation'
 import { getUsername } from '@utils/user'
+
+import { type } from 'arktype'
+
+const IgnoreId = type({
+    id: 'number'
+})
 
 export default class Ignore extends GamePlugin {
 
@@ -18,28 +21,22 @@ export default class Ignore extends GamePlugin {
         }
     }
 
-    async ignoreAdd(args: Args, user: GameUser) {
-        if (!hasProps(args, 'id')) {
+    async ignoreAdd(args: unknown, user: GameUser) {
+        const { id } = IgnoreId.assert(args)
+
+        if (user.id === id) {
             return
         }
 
-        if (!isNumber(args.id)) {
+        if (user.buddies.includes(id)) {
             return
         }
 
-        if (user.id == args.id) {
+        if (user.ignores.includes(id)) {
             return
         }
 
-        if (user.buddies.includes(args.id)) {
-            return
-        }
-
-        if (user.ignores.includes(args.id)) {
-            return
-        }
-
-        const ignore = this.usersById[args.id]
+        const ignore = this.usersById[id]
         let username: string
 
         if (ignore) {
@@ -47,26 +44,28 @@ export default class Ignore extends GamePlugin {
             ignore.clearBuddyRequest(user.id)
 
         } else {
-            username = await getUsername(args.id)
+            username = await getUsername(id)
         }
 
         if (!username) {
             return
         }
 
-        user.clearBuddyRequest(args.id)
+        user.clearBuddyRequest(id)
 
-        user.ignores.add(args.id)
-        user.send('ignore_add', { id: args.id, username })
+        user.ignores.add(id)
+        user.send('ignore_add', { id, username })
     }
 
-    ignoreRemove(args: Args, user: GameUser) {
-        if (!user.ignores.includes(args.id)) {
+    ignoreRemove(args: unknown, user: GameUser) {
+        const { id } = IgnoreId.assert(args)
+
+        if (!user.ignores.includes(id)) {
             return
         }
 
-        user.ignores.remove(args.id)
-        user.send('ignore_remove', { id: args.id })
+        user.ignores.remove(id)
+        user.send('ignore_remove', { id })
     }
 
 }
