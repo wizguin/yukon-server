@@ -31,8 +31,6 @@ export default class GameAuth extends GamePlugin {
         }
     }
 
-    // Events
-
     async gameAuth(args: unknown, user: GameUser) {
         if (user.gameAuthSent || user.authenticated) {
             return user.close()
@@ -41,8 +39,15 @@ export default class GameAuth extends GamePlugin {
         // Only handle game_auth once
         user.gameAuthSent = true
 
-        const { username, key, token, createToken } = Auth.assert(args)
+        let auth: ReturnType<typeof Auth.assert>
 
+        try {
+            auth = Auth.assert(args)
+        } catch {
+            return user.close()
+        }
+
+        const { username, key, token, createToken } = auth
         const load = await user.load(username)
 
         if (!load) {
@@ -60,8 +65,6 @@ export default class GameAuth extends GamePlugin {
 
         this.compareLoginKey(user, key, token, createToken)
     }
-
-    // Functions
 
     async compareLoginKey(user: GameUser, key: string, token?: string, createToken?: boolean) {
         if (!user.loginKey) {
