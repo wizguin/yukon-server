@@ -1,15 +1,36 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
+import { X, Y } from '@utils/validation'
+import Database from '@database/Database'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import type { PetModel } from '../../../generated/prisma/models'
-import Database from '@database/Database'
 
-import { hasProps, isInRange, isNumber } from '@utils/validation'
+import { type } from 'arktype'
 
-// Frames allowed to be sent in pet_frame
-const allowedFrames = [26, 32, 33]
+const AdoptPet = type({
+    typeId: 'number',
+    name: 'string'
+})
+
+const GetPets = type({
+    userId: 'number'
+})
+
+const PetMove = type({
+    id: 'number',
+    x: X,
+    y: Y
+})
+
+const PetFrame = type({
+    id: 'number',
+    frame: '26 | 32 | 33'
+})
+
+const PetId = type({
+    id: 'number'
+})
 
 export default class Pet extends GamePlugin {
 
@@ -31,59 +52,43 @@ export default class Pet extends GamePlugin {
         }
     }
 
-    adoptPet(args: Args, user: GameUser) {
-        if (!hasProps(args, 'typeId', 'name')) {
-            return
-        }
+    adoptPet(args: unknown, user: GameUser) {
+        const { typeId, name } = AdoptPet.assert(args)
 
-        user.pets.add(args.typeId, args.name)
+        user.pets.add(typeId, name)
     }
 
-    async getPets(args: Args, user: GameUser) {
-        if (!hasProps(args, 'userId')) {
-            return
-        }
+    async getPets(args: unknown, user: GameUser) {
+        const { userId } = GetPets.assert(args)
 
-        if (!isNumber(args.userId)) {
-            return
-        }
+        const owner = this.usersById[userId]
 
-        const owner = this.usersById[args.userId]
-
-        const pets = owner ? owner.pets : await this.getOfflinePets(args.userId)
+        const pets = owner ? owner.pets : await this.getOfflinePets(userId)
 
         user.send('get_pets', { pets })
     }
 
-    petMove(args: Args, user: GameUser) {
-        if (!hasProps(args, 'x', 'y')) {
-            return
-        }
+    petMove(args: unknown, user: GameUser) {
+        const { id, x, y } = PetMove.assert(args)
 
-        if (!isInRange(args.x, 0, 1520)) {
-            return
-        }
-
-        if (!isInRange(args.y, 0, 960)) {
-            return
-        }
-
-        const pet = user.pets.get(args.id)
+        const pet = user.pets.get(id)
 
         if (!pet) {
             return
         }
 
-        pet.x = args.x
-        pet.y = args.y
+        pet.x = x
+        pet.y = y
 
         if (user.room) {
-            user.room.send(user, 'pet_move', args)
+            user.room.send(user, 'pet_move', { id, x, y })
         }
     }
 
-    petPlay(args: Args, user: GameUser) {
-        const pet = user.pets.get(args.id)
+    petPlay(args: unknown, user: GameUser) {
+        const { id } = PetId.assert(args)
+
+        const pet = user.pets.get(id)
 
         if (!pet) {
             return
@@ -104,58 +109,69 @@ export default class Pet extends GamePlugin {
         const playType = pet.rest > 80 ? 1 : pet.rest > 60 ? 2 : 0
 
         if (user.room) {
-            user.room.send(user, 'pet_play', { id: args.id, energy: pet.energy, health: pet.health, rest: pet.rest, playType }, [])
+            user.room.send(user, 'pet_play', { id, energy: pet.energy, health: pet.health, rest: pet.rest, playType }, [])
         }
     }
 
-    petRest(args: Args, user: GameUser) {
-        this.sendInteraction(user, args.id, 'pet_rest', {
+    petRest(args: unknown, user: GameUser) {
+        const { id } = PetId.assert(args)
+
+        this.sendInteraction(user, id, 'pet_rest', {
             energy: -10,
             rest: 100
         })
     }
 
-    petFeed(args: Args, user: GameUser) {
-        this.sendInteraction(user, args.id, 'pet_feed', {
+    petFeed(args: unknown, user: GameUser) {
+        const { id } = PetId.assert(args)
+
+        this.sendInteraction(user, id, 'pet_feed', {
             energy: 100
         })
     }
 
-    petBath(args: Args, user: GameUser) {
-        this.sendInteraction(user, args.id, 'pet_bath', {
+    petBath(args: unknown, user: GameUser) {
+        const { id } = PetId.assert(args)
+
+        this.sendInteraction(user, id, 'pet_bath', {
             energy: -20,
             health: 100,
             rest: 100
         })
     }
 
-    petGum(args: Args, user: GameUser) {
-        this.sendInteraction(user, args.id, 'pet_gum', {
+    petGum(args: unknown, user: GameUser) {
+        const { id } = PetId.assert(args)
+
+        this.sendInteraction(user, id, 'pet_gum', {
             health: -10
         })
     }
 
-    petCookie(args: Args, user: GameUser) {
-        this.sendInteraction(user, args.id, 'pet_cookie', {
+    petCookie(args: unknown, user: GameUser) {
+        const { id } = PetId.assert(args)
+
+        this.sendInteraction(user, id, 'pet_cookie', {
             health: -10
         })
     }
 
-    petFrame(args: Args, user: GameUser) {
-        if (!user.pets.includes(args.id)) {
-            return
-        }
-        if (!allowedFrames.includes(args.frame)) {
+    petFrame(args: unknown, user: GameUser) {
+        const { id, frame } = PetFrame.assert(args)
+
+        if (!user.pets.includes(id)) {
             return
         }
 
         if (user.room) {
-            user.room.send(user, 'pet_frame', { id: args.id, frame: args.frame }, [])
+            user.room.send(user, 'pet_frame', { id, frame }, [])
         }
     }
 
-    petStartWalk(args: Args, user: GameUser) {
-        user.startWalkingPet(args.id)
+    petStartWalk(args: unknown, user: GameUser) {
+        const { id } = PetId.assert(args)
+
+        user.startWalkingPet(id)
     }
 
     sendInteraction(user: GameUser, petId: number, action: string, updates: Record<string, number>) {
