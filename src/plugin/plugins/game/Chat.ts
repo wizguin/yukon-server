@@ -1,12 +1,31 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
-import { hasProps, isLength, isNumber, isString } from '@utils/validation'
+import { type } from 'arktype'
 
 type CommandHandler = (args: string[], user: GameUser) => void
+
+const SendMessage = type({
+    message: 'string'
+})
+
+const SendSafe = type({
+    safe: 'number'
+})
+
+const SendEmote = type({
+    emote: 'number'
+})
+
+const SendJoke = type({
+    joke: 'number'
+})
+
+const SendTour = type({
+    roomId: 'number'
+})
 
 export default class Chat extends GamePlugin {
 
@@ -42,92 +61,62 @@ export default class Chat extends GamePlugin {
 
     // Events
 
-    sendMessage(args: Args, user: GameUser) {
-        if (!hasProps(args, 'message')) {
-            return
-        }
+    sendMessage(args: unknown, user: GameUser) {
+        const { message: rawMessage } = SendMessage.assert(args)
 
-        if (!isString(args.message)) {
-            return
-        }
-
-        if (this.messageRegex.test(args.message)) {
+        if (this.messageRegex.test(rawMessage)) {
             return
         }
 
         // Remove extra whitespace
-        args.message = args.message.replace(/  +/g, ' ').trim()
+        const message = rawMessage.replace(/  +/g, ' ').trim()
 
-        if (!isLength(args.message, 1, this.maxMessageLength)) {
+        if (message.length < 1 || message.length > this.maxMessageLength) {
             return
         }
 
-        if (args.message.startsWith('!') && this.processCommand(args.message, user)) {
+        if (message.startsWith('!') && this.processCommand(message, user)) {
             return
         }
 
         if (user.room) {
-            user.room.send(user, 'send_message', { id: user.id, message: args.message }, [user], true)
+            user.room.send(user, 'send_message', { id: user.id, message }, [user], true)
         }
     }
 
-    sendSafe(args: Args, user: GameUser) {
-        if (!hasProps(args, 'safe')) {
-            return
-        }
-
-        if (!isNumber(args.safe)) {
-            return
-        }
+    sendSafe(args: unknown, user: GameUser) {
+        const { safe } = SendSafe.assert(args)
 
         if (user.room) {
-            user.room.send(user, 'send_safe', { id: user.id, safe: args.safe }, [user], true)
+            user.room.send(user, 'send_safe', { id: user.id, safe }, [user], true)
         }
     }
 
-    sendEmote(args: Args, user: GameUser) {
-        if (!hasProps(args, 'emote')) {
-            return
-        }
-
-        if (!isNumber(args.emote)) {
-            return
-        }
+    sendEmote(args: unknown, user: GameUser) {
+        const { emote } = SendEmote.assert(args)
 
         if (user.room) {
-            user.room.send(user, 'send_emote', { id: user.id, emote: args.emote }, [user], true)
+            user.room.send(user, 'send_emote', { id: user.id, emote }, [user], true)
         }
     }
 
-    sendJoke(args: Args, user: GameUser) {
-        if (!hasProps(args, 'joke')) {
-            return
-        }
-
-        if (!isNumber(args.joke)) {
-            return
-        }
+    sendJoke(args: unknown, user: GameUser) {
+        const { joke } = SendJoke.assert(args)
 
         if (user.room) {
-            user.room.send(user, 'send_joke', { id: user.id, joke: args.joke }, [user], true)
+            user.room.send(user, 'send_joke', { id: user.id, joke }, [user], true)
         }
     }
 
-    sendTour(args: Args, user: GameUser) {
-        if (!hasProps(args, 'roomId')) {
-            return
-        }
+    sendTour(args: unknown, user: GameUser) {
+        const { roomId } = SendTour.assert(args)
 
-        if (!isNumber(args.roomId)) {
-            return
-        }
-
-        if (args.roomId !== user.room?.id) {
+        if (roomId !== user.room?.id) {
             return
         }
 
         if (user.room) {
-            user.room.send(user, 'send_tour', { id: user.id, roomId: args.roomId }, [user], true)
+            user.room.send(user, 'send_tour', { id: user.id, roomId }, [user], true)
         }
     }
 
@@ -153,27 +142,27 @@ export default class Chat extends GamePlugin {
         return false
     }
 
-    addItem(args: Args, user: GameUser) {
+    addItem(args: string[], user: GameUser) {
         if (user.isModerator) {
             // @ts-expect-error temp
-            this.plugins.item.addItem({ item: args[0] }, user)
+            this.plugins.item.addItem({ item: parseInt(args[0]) }, user)
         }
     }
 
-    addFurniture(args: Args, user: GameUser) {
+    addFurniture(args: string[], user: GameUser) {
         if (user.isModerator) {
             // @ts-expect-error temp
-            this.plugins.igloo.addFurniture({ furniture: args[0] }, user)
+            this.plugins.igloo.addFurniture({ furniture: parseInt(args[0]) }, user)
         }
     }
 
-    addCoins(args: Args, user: GameUser) {
+    addCoins(args: string[], user: GameUser) {
         if (user.isModerator) {
             user.updateCoins(args[0], true)
         }
     }
 
-    joinRoom(args: Args, user: GameUser) {
+    joinRoom(args: string[], user: GameUser) {
         if (!user.isModerator) {
             return
         }
@@ -184,13 +173,15 @@ export default class Chat extends GamePlugin {
             return
         }
 
+        // @ts-expect-error temp
         if (!isNaN(room)) {
             // @ts-expect-error temp
             this.plugins.join.joinRoom({ room: parseInt(room) }, user)
             return
         }
 
-        room = Object.values(this.rooms).find(r => r.name == room.toLowerCase())
+        // @ts-expect-error temp
+        room = Object.values(this.rooms).find(r => r.name === room.toLowerCase())
 
         if (room) {
             // @ts-expect-error temp
@@ -198,11 +189,11 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    id(args: Args, user: GameUser) {
+    id(args: string[], user: GameUser) {
         user.send('error', { error: `Your ID: ${user.id}` })
     }
 
-    userPopulation(args: Args, user: GameUser) {
+    userPopulation(args: string[], user: GameUser) {
         // @ts-expect-error temp
         user.send('error', { error: `Users online: ${this.handler.population}` })
     }
