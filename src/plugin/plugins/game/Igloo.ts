@@ -1,13 +1,48 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type { Args } from '../../../server/Server'
 import { config } from '@config'
+import Database from '@database/Database'
 import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import type IglooRoom from '@objects/room/Igloo'
-import Database from '@database/Database'
 
-import { isInRange } from '@utils/validation'
+import { type } from 'arktype'
+
+const AddIgloo = type({
+    igloo: 'number'
+})
+
+const AddFurniture = type({
+    furniture: 'number'
+})
+
+const UpdateIgloo = type({
+    type: 'number'
+})
+
+const Furniture = type({
+    furnitureId: 'number',
+    x: 'number',
+    y: 'number',
+    rotation: 'number',
+    frame: 'number'
+})
+
+const UpdateFurniture = type({
+    furniture: Furniture.array()
+})
+
+const UpdateFlooring = type({
+    flooring: 'number'
+})
+
+const UpdateMusic = type({
+    music: '0 <= number <= 999'
+})
+
+const GetIglooOpen = type({
+    igloo: 'number'
+})
 
 export default class Igloo extends GamePlugin {
 
@@ -31,62 +66,68 @@ export default class Igloo extends GamePlugin {
         }
     }
 
-    // Events
+    async addIgloo(args: unknown, user: GameUser) {
+        const { igloo: iglooId } = AddIgloo.assert(args)
 
-    async addIgloo(args: Args, user: GameUser) {
-        const igloo = user.validatePurchase.igloo(args.igloo)
+        const igloo = user.validatePurchase.igloo(iglooId)
 
         if (!igloo) {
             return
         }
 
-        user.igloos.add(args.igloo)
+        user.igloos.add(iglooId)
 
         user.updateCoins(-igloo.cost)
-        user.send('add_igloo', { igloo: args.igloo, coins: user.coins })
+        user.send('add_igloo', { igloo: iglooId, coins: user.coins })
     }
 
-    async addFurniture(args: Args, user: GameUser) {
-        const furniture = user.validatePurchase.furniture(args.furniture)
+    async addFurniture(args: unknown, user: GameUser) {
+        const { furniture: furnitureId } = AddFurniture.assert(args)
+
+        const furniture = user.validatePurchase.furniture(furnitureId)
 
         if (!furniture) {
             return
         }
 
         // If furniture added successfuly
-        if (await user.furniture.add(args.furniture)) {
+        if (await user.furniture.add(furnitureId)) {
             user.updateCoins(-furniture.cost)
-            user.send('add_furniture', { furniture: args.furniture, coins: user.coins })
+
+            user.send('add_furniture', { furniture: furnitureId, coins: user.coins })
         }
     }
 
-    async updateIgloo(args: Args, user: GameUser) {
+    async updateIgloo(args: unknown, user: GameUser) {
+        const { type } = UpdateIgloo.assert(args)
+
         const igloo = this.getIgloo(user.id)
 
-        if (!igloo || igloo != user.room || igloo.type == args.type) {
+        if (!igloo || igloo !== user.room || igloo.type === type) {
             return
         }
 
-        if (!user.igloos.includes(args.type)) {
+        if (!user.igloos.includes(type)) {
             return
         }
 
         await igloo.clearFurniture()
 
-        igloo.update({ type: args.type })
+        igloo.update({ type })
         igloo.update({ flooring: 0 })
 
-        igloo.type = args.type
+        igloo.type = type
         igloo.flooring = 0
 
-        // Refresh igloo
         igloo.refresh(user)
     }
 
-    async updateFurniture(args: Args, user: GameUser) {
+    async updateFurniture(args: unknown, user: GameUser) {
+        const { furniture } = UpdateFurniture.assert(args)
+
         const igloo = this.getIgloo(user.id)
 
-        if (!Array.isArray(args.furniture) || !igloo || igloo != user.room) {
+        if (!igloo || igloo !== user.room) {
             return
         }
 
@@ -94,10 +135,10 @@ export default class Igloo extends GamePlugin {
 
         const quantities: Record<number, number> = {}
 
-        for (const item of args.furniture) {
+        for (const item of furniture) {
             const id = item.furnitureId
 
-            if (!item || !user.furniture.includes(id)) {
+            if (!user.furniture.includes(id)) {
                 continue
             }
 
@@ -117,70 +158,70 @@ export default class Igloo extends GamePlugin {
         })
     }
 
-    updateFlooring(args: Args, user: GameUser) {
+    updateFlooring(args: unknown, user: GameUser) {
+        const { flooring: flooringId } = UpdateFlooring.assert(args)
+
         const igloo = this.getIgloo(user.id)
 
-        if (!igloo || igloo != user.room) {
+        if (!igloo || igloo !== user.room) {
             return
         }
 
-        const flooring = user.validatePurchase.flooring(args.flooring)
+        const flooring = user.validatePurchase.flooring(flooringId)
 
         if (!flooring) {
             return
         }
 
-        igloo.update({ flooring: args.flooring })
-        igloo.flooring = args.flooring
+        igloo.update({ flooring: flooringId })
+        igloo.flooring = flooringId
 
         user.updateCoins(-flooring.cost)
-        user.send('update_flooring', { flooring: args.flooring, coins: user.coins })
+        user.send('update_flooring', { flooring: flooringId, coins: user.coins })
     }
 
-    updateMusic(args: Args, user: GameUser) {
+    updateMusic(args: unknown, user: GameUser) {
+        const { music } = UpdateMusic.assert(args)
+
         const igloo = this.getIgloo(user.id)
 
-        if (!igloo || igloo != user.room || igloo.music == args.music) {
+        if (!igloo || igloo !== user.room || igloo.music === music) {
             return
         }
 
-        if (!isInRange(args.music, 0, 999)) {
-            return
-        }
+        igloo.update({ music })
+        igloo.music = music
 
-        igloo.update({ music: args.music })
-        igloo.music = args.music
-
-        user.send('update_music', { music: args.music })
+        user.send('update_music', { music })
     }
 
-    openIgloo(args: Args, user: GameUser) {
+    openIgloo(args: unknown, user: GameUser) {
         const igloo = this.getIgloo(user.id)
 
-        if (igloo && igloo == user.room) {
+        if (igloo && igloo === user.room) {
             this.openIgloos.add(user)
         }
     }
 
-    closeIgloo(args: Args, user: GameUser) {
+    closeIgloo(args: unknown, user: GameUser) {
         const igloo = this.getIgloo(user.id)
 
-        if (igloo && igloo == user.room) {
+        if (igloo && igloo === user.room) {
             this.openIgloos.remove(user)
         }
     }
 
-    getIgloos(args: Args, user: GameUser) {
+    getIgloos(args: unknown, user: GameUser) {
         user.send('get_igloos', { igloos: this.openIgloos })
     }
 
-    getIglooOpen(args: Args, user: GameUser) {
-        const open = this.openIgloos.includes(args.igloo)
+    getIglooOpen(args: unknown, user: GameUser) {
+        const { igloo } = GetIglooOpen.assert(args)
+
+        const open = this.openIgloos.includes(igloo)
 
         user.send('get_igloo_open', { open })
     }
-
-    // Functions
 
     getIgloo(id: number) {
         const iglooId = id + config.game.iglooIdOffset
