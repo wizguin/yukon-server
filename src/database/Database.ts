@@ -8,7 +8,8 @@ const adapter = new PrismaMariaDb({
     port: Number(port),
     user: username,
     password,
-    database: pathname.slice(1)
+    database: pathname.slice(1),
+    allowPublicKeyRetrieval: true
 })
 
 class Database extends PrismaClient {
