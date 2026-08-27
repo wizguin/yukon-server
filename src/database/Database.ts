@@ -12,23 +12,4 @@ const adapter = new PrismaMariaDb({
     allowPublicKeyRetrieval: true
 })
 
-class Database extends PrismaClient {
-
-    constructor() {
-        super({ adapter })
-    }
-
-    async connect() {
-        try {
-            await this.$queryRaw`SELECT 1`
-
-            console.log('Connected to database')
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-}
-
-export default new Database()
+export default new PrismaClient({ adapter })
