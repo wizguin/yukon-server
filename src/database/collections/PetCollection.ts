@@ -1,10 +1,9 @@
 import BaseCollection from '@database/BaseCollection'
 
-import { isLength, isString } from '@utils/validation'
 import Pet, { type Update } from '@objects/pet/Pet'
+import Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
 import { pets } from '@data'
-import Database from '@database/Database'
 import type User from '@objects/user/User'
 
 import { type Pet as PrismaPet } from '../../generated/prisma/client'
@@ -15,7 +14,7 @@ interface SendUpdate extends Required<Update> {
 
 const adoptPostcard = 111
 const maxPets = 18
-const nameRegex = /^[a-z ]+$/i
+const nameRegex = /^[a-z ]{1,12}$/
 
 // 3.6 minutes
 const updateInterval = 3.6 * 60000
@@ -40,7 +39,7 @@ export default class PetCollection extends BaseCollection<Pet> {
             return
         }
 
-        if (!this.checkName(name)) {
+        if (!nameRegex.test(name)) {
             this.user.send('error', { error: 'Sorry, this name is not available. Please try again' })
             return
         }
@@ -125,10 +124,6 @@ export default class PetCollection extends BaseCollection<Pet> {
 
     stopPetUpdate() {
         clearTimeout(this.petUpdate)
-    }
-
-    checkName(name: string) {
-        return isString(name) && isLength(name, 1, 12) && nameRegex.test(name)
     }
 
     toJSON() {
