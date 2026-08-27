@@ -1,7 +1,12 @@
 import BaseTable from './BaseTable'
 
 import type GameUser from '@objects/user/GameUser'
-import { isNumber } from '@utils/validation'
+
+import { type } from 'arktype'
+
+const SendMove = type({
+    column: '0 <= number <= 6'
+})
 
 export default class FourTable extends BaseTable {
 
@@ -11,19 +16,22 @@ export default class FourTable extends BaseTable {
         this.map = Array.from({ length: 7 }, () => Array(6).fill(0))
     }
 
-    sendMove(args: any, user: GameUser) {
+    sendMove(args: unknown, user: GameUser) {
+        const { column } = SendMove.assert(args)
+
         if (!this.started) {
             return
         }
 
-        if (!this.isValidMove(user, args.column)) {
+        if (!this.isValidMove(user, column)) {
             return
         }
 
-        const move = this.makeMove(args.column)
+        const move = this.makeMove(column)
+
         this.send('send_move', { turn: this.currentTurn, x: move[0], y: move[1] })
 
-        const opponent = this.users[this.currentTurn == 1 ? 1 : 0]
+        const opponent = this.users[this.currentTurn === 1 ? 1 : 0]
 
         if (this.isWin(move[0], move[1])) {
             user.updateCoins(10, true)
@@ -45,17 +53,13 @@ export default class FourTable extends BaseTable {
     }
 
     isValidMove(user: GameUser, col: number) {
-        if (!isNumber(col)) {
-            return false
-        }
-
         const turn = this.users.indexOf(user) + 1
 
-        if (turn != this.currentTurn) {
+        if (turn !== this.currentTurn) {
             return false
         }
 
-        if (col < 0 || col > 6 || this.map[col][0] !== 0) {
+        if (this.map[col][0] !== 0) {
             return false
         }
 
