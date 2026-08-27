@@ -5,6 +5,7 @@ import PluginManager from '@plugin/PluginManager'
 import type User from '@objects/user/User'
 
 import EventEmitter from 'events'
+import { TraversalError } from 'arktype'
 
 export default class BaseHandler {
 
@@ -48,6 +49,11 @@ export default class BaseHandler {
             }
 
         } catch (error) {
+            if (error instanceof TraversalError) {
+                console.warn(`Event validation error: ${error.message}`)
+                return
+            }
+
             if (error instanceof Error) {
                 this.error(error)
             }
