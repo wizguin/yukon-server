@@ -2,7 +2,11 @@ import BaseInstance from '../BaseInstance'
 
 import GameUser from '@objects/user/GameUser'
 
-import { hasProps, isInRange } from '@utils/validation'
+import { type } from 'arktype'
+
+const SendMove = type({
+    move: '1 <= number <= 5'
+})
 
 export default class SledInstance extends BaseInstance {
 
@@ -32,20 +36,14 @@ export default class SledInstance extends BaseInstance {
         super.start()
     }
 
-    sendMove(args: any, user: GameUser) {
-        if (!hasProps(args, 'move')) {
-            return
-        }
+    sendMove(args: unknown, user: GameUser) {
+        const { move } = SendMove.assert(args)
 
-        if (!isInRange(args.move, 1, 5)) {
-            return
-        }
-
-        if (args.move === 5) {
+        if (move === 5) {
             return this.sendGameOver(user)
         }
 
-        this.send('send_move', { id: this.getSeat(user), move: args.move }, user)
+        this.send('send_move', { id: this.getSeat(user), move }, user)
     }
 
     sendGameOver(user: GameUser) {
