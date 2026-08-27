@@ -20,7 +20,7 @@ export default class BaseHandler {
         this.events = new EventEmitter({ captureRejections: true })
 
         this.events.on('error', error => {
-            this.error(error)
+            this.handleError(error)
         })
     }
 
@@ -49,14 +49,7 @@ export default class BaseHandler {
             }
 
         } catch (error) {
-            if (error instanceof TraversalError) {
-                console.warn(`Event validation error: ${error.message}`)
-                return
-            }
-
-            if (error instanceof Error) {
-                this.error(error)
-            }
+            this.handleError(error)
         }
     }
 
@@ -85,6 +78,20 @@ export default class BaseHandler {
 
     close(user: User | GameUser) {
         delete this.users[user.socket.id]
+    }
+
+    handleError(error: unknown) {
+        if (error instanceof TraversalError) {
+            console.warn(`Event validation error: ${error.message}`)
+            return
+        }
+
+        if (error instanceof Error) {
+            this.error(error)
+            return
+        }
+
+        console.error(error)
     }
 
     error(error: Error) {
