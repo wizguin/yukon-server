@@ -13,14 +13,15 @@ import PurchaseValidator from './purchase/PurchaseValidator'
 
 import type BaseInstance from '@objects/instance/BaseInstance'
 import type BaseTable from '@objects/room/table/BaseTable'
+import Database from '@database/Database'
+import type GameHandler from '../../handlers/GameHandler'
 import Igloo from '@objects/room/Igloo'
 import type Pet from '@objects/pet/Pet'
-import Database from '@database/Database'
 import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
 import type Waddle from '@objects/room/waddle/Waddle'
 
-import { isInRange } from '@utils/validation'
+import { clamp } from '@utils/math'
 import pick from '@utils/pick'
 
 import EventEmitter from 'events'
@@ -67,8 +68,7 @@ export default class GameUser extends User {
     constructor(server: Server, socket: Socket) {
         super(server, socket)
 
-        // @ts-expect-error temp
-        this.crumbs = this.handler.crumbs
+        this.crumbs = this.gameHandler.crumbs
 
         this.validatePurchase = new PurchaseValidator(this)
 
@@ -80,13 +80,17 @@ export default class GameUser extends User {
         })
     }
 
+    get gameHandler() {
+        return this.handler as GameHandler
+    }
+
     inOwnIgloo() {
         return this.room instanceof Igloo && this.room.userId === this.id
     }
 
     setItem(slot: string, item: number) {
         // @ts-expect-error temp
-        if (this[slot] == item) {
+        if (this[slot] === item) {
             return
         }
 
@@ -109,13 +113,8 @@ export default class GameUser extends User {
             return this.send('error', { error: 'Sorry this room is currently full' })
         }
 
-        if (!isInRange(x, 0, 1520)) {
-            x = 0
-        }
-
-        if (!isInRange(y, 0, 960)) {
-            y = 0
-        }
+        x = clamp(x, 0, 1520)
+        y = clamp(y, 0, 960)
 
         if (this.room) {
             this.room.remove(this)
@@ -140,8 +139,7 @@ export default class GameUser extends User {
     addBuddy(id: number, username: string, requester = false) {
         this.buddies.add(id)
 
-        // @ts-expect-error temp
-        const online = id in this.handler.usersById
+        const online = id in this.gameHandler.usersById
 
         this.send('buddy_accept', { id, username, requester, online })
     }
@@ -153,7 +151,7 @@ export default class GameUser extends User {
     }
 
     clearBuddyRequest(id: number) {
-        this.buddyRequests = this.buddyRequests.filter(request => request != id)
+        this.buddyRequests = this.buddyRequests.filter(request => request !== id)
     }
 
     updateCoins(coins: number | string, gameOver = false) {
@@ -162,7 +160,7 @@ export default class GameUser extends User {
         }
 
         if (!isNaN(coins)) {
-            coins = Math.max(Math.min(1000000000, this.coins + coins), 0)
+            coins = clamp(this.coins + coins, 0, 1_000_000_000)
 
             this.update({ coins })
         }
