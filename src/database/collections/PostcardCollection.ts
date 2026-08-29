@@ -67,7 +67,7 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
         }
     }
 
-    async removeFrom(senderId: number) {
+    async removeFrom(senderId: number | null) {
         try {
             await Database.postcard.deleteMany({
                 where: {
