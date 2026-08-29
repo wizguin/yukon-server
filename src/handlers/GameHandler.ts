@@ -51,10 +51,9 @@ export default class GameHandler extends BaseHandler {
     }
 
     setRooms() {
-        const rooms = {}
+        const rooms: Record<number, Room> = {}
 
         for (const room of data.rooms) {
-            // @ts-expect-error temp
             rooms[room.id] = new Room(room)
         }
 
