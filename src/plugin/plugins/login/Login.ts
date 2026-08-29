@@ -2,16 +2,20 @@ import Plugin from '@plugin/Plugin'
 
 import type { Args } from '../../../server/Server'
 import { config } from '@config'
-import type LoginHandler from '../../../handlers/LoginHandler'
 import Database from '@database/Database'
+import type LoginHandler from '../../../handlers/LoginHandler'
 import type User from '@objects/user/User'
-
-import { hasProps, isLength, isString } from '@utils/validation'
 
 import Validator, { type AsyncCheckFunction, type SyncCheckFunction } from 'fastest-validator'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
+import { type } from 'arktype'
+
+const TokenLogin = type({
+    username: '4 <= string <= 12',
+    token: 'string'
+})
 
 const responses = {
     notFound: {
@@ -55,7 +59,7 @@ export default class Login extends Plugin {
 
         const check = this.check({ username: args.username, password: args.password })
 
-        if (check != true) {
+        if (check !== true) {
             // Invalid data input
             user.send('login', {
                 success: false,
@@ -138,16 +142,12 @@ export default class Login extends Plugin {
     }
 
     async compareTokens(args: Args, user: User) {
-        if (!hasProps(args, 'username', 'token')) {
-            return responses.wrongPassword
-        }
-
-        if (!isLength(args.username, 4, 12) || !isString(args.token)) {
+        if (!TokenLogin.allows(args)) {
             return responses.wrongPassword
         }
 
         const split = args.token.split(':')
-        if (split.length != 2) {
+        if (split.length !== 2) {
             return responses.wrongPassword
         }
 
