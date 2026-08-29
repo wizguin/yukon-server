@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import { getUsername } from '@utils/user'
 
@@ -12,13 +11,9 @@ const IgnoreId = type({
 
 export default class Ignore extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            ignore_add: this.ignoreAdd,
-            ignore_remove: this.ignoreRemove
-        }
+    events = {
+        ignore_add: this.ignoreAdd,
+        ignore_remove: this.ignoreRemove
     }
 
     async ignoreAdd(args: unknown, user: GameUser) {

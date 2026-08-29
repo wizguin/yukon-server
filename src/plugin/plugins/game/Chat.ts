@@ -27,36 +27,32 @@ const SendTour = type({
     roomId: 'number'
 })
 
+const messageRegex = /[^ -~]/i
+const maxMessageLength = 48
+
 export default class Chat extends GamePlugin {
 
-    commands: Record<string, CommandHandler>
-    messageRegex: RegExp
-    maxMessageLength: number
+    events = {
+        send_message: this.sendMessage,
+        send_safe: this.sendSafe,
+        send_emote: this.sendEmote,
+        send_joke: this.sendJoke,
+        send_tour: this.sendTour
+    }
+
+    commands: Record<string, CommandHandler> = {
+        ai: this.addItem,
+        af: this.addFurniture,
+        ac: this.addCoins,
+        jr: this.joinRoom,
+        id: this.id,
+        users: this.userPopulation
+    }
 
     constructor(handler: GameHandler) {
         super(handler)
 
-        this.events = {
-            send_message: this.sendMessage,
-            send_safe: this.sendSafe,
-            send_emote: this.sendEmote,
-            send_joke: this.sendJoke,
-            send_tour: this.sendTour
-        }
-
-        this.commands = {
-            ai: this.addItem,
-            af: this.addFurniture,
-            ac: this.addCoins,
-            jr: this.joinRoom,
-            id: this.id,
-            users: this.userPopulation
-        }
-
         this.bindCommands()
-
-        this.messageRegex = /[^ -~]/i
-        this.maxMessageLength = 48
     }
 
     // Events
@@ -64,14 +60,14 @@ export default class Chat extends GamePlugin {
     sendMessage(args: unknown, user: GameUser) {
         const { message: rawMessage } = SendMessage.assert(args)
 
-        if (this.messageRegex.test(rawMessage)) {
+        if (messageRegex.test(rawMessage)) {
             return
         }
 
         // Remove extra whitespace
         const message = rawMessage.replace(/  +/g, ' ').trim()
 
-        if (message.length < 1 || message.length > this.maxMessageLength) {
+        if (message.length < 1 || message.length > maxMessageLength) {
             return
         }
 

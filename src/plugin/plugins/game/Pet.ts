@@ -2,7 +2,6 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import { X, Y } from '@utils/validation'
 import Database from '@database/Database'
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import type { PetModel } from '../../../generated/prisma/models'
 
@@ -34,22 +33,18 @@ const PetId = type({
 
 export default class Pet extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            adopt_pet: this.adoptPet,
-            get_pets: this.getPets,
-            pet_move: this.petMove,
-            pet_play: this.petPlay,
-            pet_rest: this.petRest,
-            pet_feed: this.petFeed,
-            pet_bath: this.petBath,
-            pet_gum: this.petGum,
-            pet_cookie: this.petCookie,
-            pet_frame: this.petFrame,
-            pet_start_walk: this.petStartWalk
-        }
+    events = {
+        adopt_pet: this.adoptPet,
+        get_pets: this.getPets,
+        pet_move: this.petMove,
+        pet_play: this.petPlay,
+        pet_rest: this.petRest,
+        pet_feed: this.petFeed,
+        pet_bath: this.petBath,
+        pet_gum: this.petGum,
+        pet_cookie: this.petCookie,
+        pet_frame: this.petFrame,
+        pet_start_walk: this.petStartWalk
     }
 
     adoptPet(args: unknown, user: GameUser) {

@@ -3,7 +3,6 @@ import GamePlugin from '@plugin/GamePlugin'
 import { X, Y } from '@utils/validation'
 import { config } from '@config'
 import Database from '@database/Database'
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import Igloo from '@objects/room/Igloo'
 
@@ -23,14 +22,10 @@ const JoinIgloo = type({
 
 export default class Join extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            join_server: this.joinServer,
-            join_room: this.joinRoom,
-            join_igloo: this.joinIgloo
-        }
+    events = {
+        join_server: this.joinServer,
+        join_room: this.joinRoom,
+        join_igloo: this.joinIgloo
     }
 
     async joinServer(args: unknown, user: GameUser) {

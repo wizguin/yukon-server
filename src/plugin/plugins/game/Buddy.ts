@@ -1,7 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import Database from '@database/Database'
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import { getUsername } from '@utils/user'
 import Igloo from '@objects/room/Igloo'
@@ -14,16 +13,12 @@ const BuddyId = type({
 
 export default class Buddy extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            buddy_request: this.buddyRequest,
-            buddy_accept: this.buddyAccept,
-            buddy_reject: this.buddyReject,
-            buddy_remove: this.buddyRemove,
-            buddy_find: this.buddyFind
-        }
+    events = {
+        buddy_request: this.buddyRequest,
+        buddy_accept: this.buddyAccept,
+        buddy_reject: this.buddyReject,
+        buddy_remove: this.buddyRemove,
+        buddy_find: this.buddyFind
     }
 
     buddyRequest(args: unknown, user: GameUser) {

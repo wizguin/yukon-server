@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
 import { type } from 'arktype'
@@ -11,14 +10,10 @@ const JoinTable = type({
 
 export default class Table extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            get_tables: this.getTables,
-            join_table: this.joinTable,
-            leave_table: this.leaveTable
-        }
+    events = {
+        get_tables: this.getTables,
+        join_table: this.joinTable,
+        leave_table: this.leaveTable
     }
 
     getTables(args: unknown, user: GameUser) {

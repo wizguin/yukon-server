@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
 import { type } from 'arktype'
@@ -11,15 +10,11 @@ const GameOver = type({
 
 export default class Minigame extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            get_game: this.getGame,
-            join_game: this.joinGame,
-            send_move: this.sendMove,
-            game_over: this.gameOver
-        }
+    events = {
+        get_game: this.getGame,
+        join_game: this.joinGame,
+        send_move: this.sendMove,
+        game_over: this.gameOver
     }
 
     getGame(args: unknown, user: GameUser) {

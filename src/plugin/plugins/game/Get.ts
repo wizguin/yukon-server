@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import { getUserById } from '@utils/user'
 import type { User } from '../../../generated/prisma/client'
@@ -13,12 +12,8 @@ const GetPlayer = type({
 
 export default class Get extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            get_player: this.getPlayer
-        }
+    events = {
+        get_player: this.getPlayer
     }
 
     async getPlayer(args: unknown, user: GameUser) {

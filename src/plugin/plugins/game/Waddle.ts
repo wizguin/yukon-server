@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
 import { type } from 'arktype'
@@ -11,14 +10,10 @@ const JoinWaddle = type({
 
 export default class Waddle extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            get_waddles: this.getWaddles,
-            join_waddle: this.joinWaddle,
-            leave_waddle: this.leaveWaddle
-        }
+    events = {
+        get_waddles: this.getWaddles,
+        join_waddle: this.joinWaddle,
+        leave_waddle: this.leaveWaddle
     }
 
     getWaddles(args: unknown, user: GameUser) {

@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
 import { type } from 'arktype'
@@ -12,23 +11,20 @@ const MovePuck = type({
     speedY: 'number'
 })
 
+const rinkRoomId = 802
+
 export default class Puck extends GamePlugin {
 
-    rinkRoomId = 802
     puckX = 0
     puckY = 0
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            get_puck: this.getPuck,
-            move_puck: this.movePuck
-        }
+    events = {
+        get_puck: this.getPuck,
+        move_puck: this.movePuck
     }
 
     getPuck(args: unknown, user: GameUser) {
-        if (user.room?.id !== this.rinkRoomId) {
+        if (user.room?.id !== rinkRoomId) {
             return
         }
 
@@ -36,7 +32,7 @@ export default class Puck extends GamePlugin {
     }
 
     movePuck(args: unknown, user: GameUser) {
-        if (user.room?.id !== this.rinkRoomId) {
+        if (user.room?.id !== rinkRoomId) {
             return
         }
 

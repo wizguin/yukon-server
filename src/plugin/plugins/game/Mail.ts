@@ -1,7 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import Database from '@database/Database'
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import { userIdExists } from '@utils/user'
 
@@ -20,32 +19,28 @@ const DeleteMailFrom = type({
     senderId: 'number | null'
 })
 
+const postcardCost = 10
+const maxPostcards = 100
+const responses = {
+    InsufficientCoins: 0,
+    FullInbox: 1,
+    Success: 2
+}
+
 export default class Mail extends GamePlugin {
 
-    postcardCost = 10
-    maxPostcards = 100
-    responses = {
-        InsufficientCoins: 0,
-        FullInbox: 1,
-        Success: 2
-    }
-
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            send_mail: this.sendMail,
-            read_mail: this.readMail,
-            delete_mail: this.deleteMail,
-            delete_mail_from: this.deleteMailFrom
-        }
+    events = {
+        send_mail: this.sendMail,
+        read_mail: this.readMail,
+        delete_mail: this.deleteMail,
+        delete_mail_from: this.deleteMailFrom
     }
 
     sendMail(args: unknown, user: GameUser) {
         const { recipient: recipientId, postcardId } = SendMail.assert(args)
 
-        if (user.coins < this.postcardCost) {
-            return this.sendMailResponse(user, this.responses.InsufficientCoins)
+        if (user.coins < postcardCost) {
+            return this.sendMailResponse(user, responses.InsufficientCoins)
         }
 
         const recipient = this.usersById[recipientId]
@@ -76,12 +71,12 @@ export default class Mail extends GamePlugin {
     async sendMailOnline(user: GameUser, recipient: GameUser, postcardId: number) {
         // Ignored
         if (recipient.ignores.includes(user.id)) {
-            return this.sendMailResponse(user, this.responses.Success)
+            return this.sendMailResponse(user, responses.Success)
         }
 
         // Full inbox
-        if (recipient.postcards.count >= this.maxPostcards) {
-            return this.sendMailResponse(user, this.responses.FullInbox)
+        if (recipient.postcards.count >= maxPostcards) {
+            return this.sendMailResponse(user, responses.FullInbox)
         }
 
         // Add postcard
@@ -102,12 +97,12 @@ export default class Mail extends GamePlugin {
 
         // Ignored
         if (await this.isIgnored(recipientId, user.id)) {
-            return this.sendMailResponse(user, this.responses.Success)
+            return this.sendMailResponse(user, responses.Success)
         }
 
         // Full inbox
-        if (await this.getPostcardsCount(recipientId) >= this.maxPostcards) {
-            return this.sendMailResponse(user, this.responses.FullInbox)
+        if (await this.getPostcardsCount(recipientId) >= maxPostcards) {
+            return this.sendMailResponse(user, responses.FullInbox)
         }
 
         // Add postcard
@@ -123,8 +118,8 @@ export default class Mail extends GamePlugin {
     }
 
     removeCoins(user: GameUser) {
-        user.updateCoins(-this.postcardCost)
-        this.sendMailResponse(user, this.responses.Success)
+        user.updateCoins(-postcardCost)
+        this.sendMailResponse(user, responses.Success)
     }
 
     /**

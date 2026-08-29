@@ -1,7 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import { config } from '@config'
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
 import bcrypt from 'bcrypt'
@@ -23,12 +22,8 @@ const Auth = type({
 
 export default class GameAuth extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            game_auth: this.gameAuth
-        }
+    events = {
+        game_auth: this.gameAuth
     }
 
     async gameAuth(args: unknown, user: GameUser) {

@@ -1,7 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import Database from '@database/Database'
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
 import { type } from 'arktype'
@@ -12,14 +11,10 @@ const Id = type({
 
 export default class Moderation extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            mute_player: this.mutePlayer,
-            kick_player: this.kickPlayer,
-            ban_player: this.banPlayer
-        }
+    events = {
+        mute_player: this.mutePlayer,
+        kick_player: this.kickPlayer,
+        ban_player: this.banPlayer
     }
 
     mutePlayer(args: unknown, user: GameUser) {

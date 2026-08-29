@@ -2,7 +2,6 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import { config } from '@config'
 import Database from '@database/Database'
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import type IglooRoom from '@objects/room/Igloo'
 
@@ -46,24 +45,20 @@ const GetIglooOpen = type({
 
 export default class Igloo extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
+    events = {
+        add_igloo: this.addIgloo,
+        add_furniture: this.addFurniture,
 
-        this.events = {
-            add_igloo: this.addIgloo,
-            add_furniture: this.addFurniture,
+        update_igloo: this.updateIgloo,
+        update_furniture: this.updateFurniture,
+        update_flooring: this.updateFlooring,
+        update_music: this.updateMusic,
 
-            update_igloo: this.updateIgloo,
-            update_furniture: this.updateFurniture,
-            update_flooring: this.updateFlooring,
-            update_music: this.updateMusic,
+        open_igloo: this.openIgloo,
+        close_igloo: this.closeIgloo,
 
-            open_igloo: this.openIgloo,
-            close_igloo: this.closeIgloo,
-
-            get_igloos: this.getIgloos,
-            get_igloo_open: this.getIglooOpen
-        }
+        get_igloos: this.getIgloos,
+        get_igloo_open: this.getIglooOpen
     }
 
     async addIgloo(args: unknown, user: GameUser) {

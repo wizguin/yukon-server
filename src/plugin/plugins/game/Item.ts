@@ -1,6 +1,5 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 import { items } from '@data'
 
@@ -23,14 +22,10 @@ const RemoveItem = type({
 
 export default class Item extends GamePlugin {
 
-    constructor(handler: GameHandler) {
-        super(handler)
-
-        this.events = {
-            update_player: this.updatePlayer,
-            add_item: this.addItem,
-            remove_item: this.removeItem
-        }
+    events = {
+        update_player: this.updatePlayer,
+        add_item: this.addItem,
+        remove_item: this.removeItem
     }
 
     updatePlayer(args: unknown, user: GameUser) {
