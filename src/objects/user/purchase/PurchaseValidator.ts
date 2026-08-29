@@ -1,10 +1,8 @@
 import type GameUser from '../GameUser'
 import Igloo from '@objects/room/Igloo'
 
-import { isNumber } from '@utils/validation'
-
 interface Includes {
-    includes: (...args: any[]) => boolean
+    includes(id: number): boolean
 }
 
 export default class PurchaseValidator {
@@ -39,16 +37,7 @@ export default class PurchaseValidator {
         return this.validate(id, 'floorings', [this.user.room.flooring])
     }
 
-    // @ts-expect-error temp
-    validate(id: number | string, type: string, includes: Includes = []) {
-        if (typeof id === 'string') {
-            id = parseInt(id)
-        }
-
-        if (!isNumber(id)) {
-            return false
-        }
-
+    validate(id: number, type: string, includes: Includes = []) {
         const item = this.crumbs[type][id]
 
         if (!item) {
