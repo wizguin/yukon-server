@@ -1,7 +1,7 @@
 import BaseCollection from '@database/BaseCollection'
 
-import { furniture } from '@data'
 import Database from '@database/Database'
+import { furniture } from '@data'
 import type User from '@objects/user/User'
 
 import type { FurnitureInventory } from '../../generated/prisma/client'
@@ -17,27 +17,42 @@ export default class FurnitureCollection extends BaseCollection<FurnitureInvento
             return false
         }
 
-        if (this.getQuantity(itemId) >= furniture[itemId].max) {
-            return false
-        }
+        const { max } = furniture[itemId]
 
         try {
-            this.collect(await Database.furnitureInventory.upsert({
+            // Ensure row exists
+            await Database.$executeRaw`
+                INSERT IGNORE INTO furniture_inventories (userId, itemId, quantity)
+                VALUES (${this.user.id}, ${itemId}, 0)
+            `
+
+            // Increment if below max
+            const updated = await Database.furnitureInventory.updateMany({
+                where: {
+                    userId: this.user.id,
+                    itemId,
+                    quantity: { lt: max }
+                },
+                data: {
+                    quantity: { increment: 1 }
+                }
+            })
+
+            if (updated.count === 0) {
+                return false
+            }
+
+            // Get updated record
+            const record = await Database.furnitureInventory.findUniqueOrThrow({
                 where: {
                     userId_itemId: {
                         userId: this.user.id,
                         itemId
                     }
-                },
-                update: {
-                    quantity: { increment: 1 }
-                },
-                create: {
-                    userId: this.user.id,
-                    itemId,
-                    quantity: 1
                 }
-            }))
+            })
+
+            this.collect(record)
 
             return true
 
