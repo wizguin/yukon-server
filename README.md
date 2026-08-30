@@ -131,19 +131,6 @@ The following is required when running the project in production.
 npm run build
 ```
 
-* HTTPS can be configured as follows. Make sure your web server is also configured to use HTTPS.
-
-```console
-"socketio": {
-    "https": true,
-    "ssl": {
-        "cert": "/path/to/cert.crt",
-        "ca": "/path/to/ca.ca-bundle",
-        "key": "/path/to/key.key"
-    }
-},
-```
-
 * The CORS origin must be set. This will likely just be your domain name, e.g "example.com".
 
 ```console

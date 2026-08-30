@@ -4,16 +4,12 @@ import RateLimiter from '../ratelimit/RateLimiter'
 import UserFactory from '@objects/user/UserFactory'
 
 import type BaseHandler from '../handlers/BaseHandler'
-import type { Config } from '@config'
 import type GameUser from '@objects/user/GameUser'
 import type User from '@objects/user/User'
 
-import type { ServerOptions, Socket } from 'socket.io'
-import fs from 'fs'
-import http from 'http'
-import https from 'https'
 import { Server as IoServer } from 'socket.io'
 import { RateLimiterRes } from 'rate-limiter-flexible'
+import type { Socket } from 'socket.io'
 
 export type Action = string
 export type Args = Record<string, any>
@@ -33,8 +29,7 @@ export default class Server {
         private users: Record<string, User>,
         public handler: BaseHandler
     ) {
-
-        const io = this.createIo(config.socketio, {
+        const io = new IoServer({
             cors: {
                 origin: config.cors.origin,
                 methods: ['GET', 'POST']
@@ -49,29 +44,6 @@ export default class Server {
         this.server = io.listen(config.worlds[id].port)
 
         this.server.on('connection', socket => this.onConnection(socket))
-    }
-
-    createIo({ https, ssl }: Config['socketio'], options: Partial<ServerOptions>) {
-        const server = https
-            ? this.httpsServer(ssl)
-            : this.httpServer()
-
-        return new IoServer(server, options)
-    }
-
-    httpServer() {
-        return http.createServer()
-    }
-
-    httpsServer(ssl: Config['socketio']['ssl']) {
-        const loaded: Record<string, string> = {}
-
-        // Loads ssl files
-        for (const key in ssl) {
-            loaded[key] = fs.readFileSync(ssl[key as keyof typeof ssl]).toString()
-        }
-
-        return https.createServer(loaded)
     }
 
     async onConnection(socket: Socket) {

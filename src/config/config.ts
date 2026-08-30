@@ -9,15 +9,6 @@ const Config = type({
         loginKeyExpiry: 'number'
     },
 
-    socketio: {
-        https: 'boolean',
-        ssl: {
-            cert: 'string',
-            ca: 'string',
-            key: 'string'
-        }
-    },
-
     cors: {
         origin: 'string'
     },
