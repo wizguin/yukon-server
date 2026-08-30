@@ -33,8 +33,6 @@ export default class PetCollection extends BaseCollection<Pet> {
     }
 
     async add(typeId: number, name: string) {
-        // todo: max check
-
         if (!(typeId in pets)) {
             return
         }
@@ -52,13 +50,12 @@ export default class PetCollection extends BaseCollection<Pet> {
         }
 
         try {
-            const record = await Database.pet.create({
-                data: {
-                    userId: this.user.id,
-                    typeId,
-                    name
-                }
-            })
+            const record = await this.insertPetRecord(typeId, name)
+
+            // Max pets
+            if (!record) {
+                return
+            }
 
             // todo: no casting
             const user = this.user as GameUser
@@ -74,6 +71,33 @@ export default class PetCollection extends BaseCollection<Pet> {
         } catch (error) {
             console.error(error)
         }
+    }
+
+    private async insertPetRecord(typeId: number, name: string) {
+        return Database.$transaction(async transaction => {
+            // Acquire row lock
+            await transaction.$executeRaw`
+                SELECT id FROM users WHERE id = ${this.user.id} FOR UPDATE
+            `
+
+            const count = await transaction.pet.count({
+                where: {
+                    userId: this.user.id
+                }
+            })
+
+            if (count >= maxPets) {
+                return null
+            }
+
+            return transaction.pet.create({
+                data: {
+                    userId: this.user.id,
+                    typeId,
+                    name
+                }
+            })
+        })
     }
 
     async remove(petId: number) {
