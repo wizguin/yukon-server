@@ -60,29 +60,36 @@ export default class Moderation extends GamePlugin {
     async applyBan(moderator: GameUser, userId: number, hours = 24, message = '') {
         const expires = new Date(Date.now() + hours * 60 * 60 * 1000)
 
-        const banCount = await Database.ban.count({
-            where: { userId }
-        })
+        await Database.$transaction(async transaction => {
+            // Acquire row lock
+            await transaction.$executeRaw`
+                SELECT id FROM users WHERE id = ${userId} FOR UPDATE
+            `
 
-        // 5th ban is a permanent ban
-        if (banCount >= 4) {
-            await Database.user.update({
-                where: {
-                    id: userId
-                },
+            const banCount = await transaction.ban.count({
+                where: { userId }
+            })
+
+            // 5th ban is a permanent ban
+            if (banCount >= 4) {
+                await transaction.user.update({
+                    where: {
+                        id: userId
+                    },
+                    data: {
+                        permaBan: true
+                    }
+                })
+            }
+
+            await transaction.ban.create({
                 data: {
-                    permaBan: true
+                    userId,
+                    expires,
+                    moderatorId: moderator.id,
+                    message
                 }
             })
-        }
-
-        await Database.ban.create({
-            data: {
-                userId,
-                expires,
-                moderatorId: moderator.id,
-                message
-            }
         })
     }
 
