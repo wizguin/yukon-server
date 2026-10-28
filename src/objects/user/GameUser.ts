@@ -21,11 +21,21 @@ import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
 import type Waddle from '@objects/room/waddle/Waddle'
 
+import { InsufficientCoinsError, isUniqueConstraintError } from '@utils/error'
 import { clamp } from '@utils/math'
+import { items } from '@data'
 import pick from '@utils/pick'
 
 import EventEmitter from 'events'
 import type { Socket } from 'socket.io'
+import type { TransactionClient } from '../../generated/prisma/internal/prismaNamespace'
+
+const tourItem = 428
+const tourPostcard = 126
+const agentItem = 800
+const agentPostcard = 127
+
+const slots = ['color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award']
 
 interface Token {
     selector?: string
@@ -134,6 +144,98 @@ export default class GameUser extends User {
 
             this.minigameRoom.add(this)
         }
+    }
+
+    async addItem(itemId: number) {
+        if (this.inventory.includes(itemId)) {
+            this.send('error', { error: 'You already have this item.' })
+            return
+        }
+
+        const item = items[itemId]
+
+        if (!item) {
+            return
+        }
+
+        if (item.patched) {
+            this.send('error', { error: 'This item is not currently available.' })
+            return
+        }
+
+        try {
+            await this.inventory.add(itemId, item.cost)
+
+        } catch (error) {
+            if (isUniqueConstraintError(error)) {
+                this.send('error', { error: 'You already have this item.' })
+                return
+            }
+
+            if (error instanceof InsufficientCoinsError) {
+                this.send('error', { error: 'You need more coins.' })
+                return
+            }
+
+            throw error
+        }
+
+        if (itemId === tourItem) {
+            await this.addSystemMail(tourPostcard)
+        }
+
+        if (itemId === agentItem) {
+            await this.addSystemMail(agentPostcard)
+        }
+
+        this.send('add_item', {
+            item: itemId,
+            name: item.name,
+            slot: slots[item.type - 1],
+            coins: this.coins
+        })
+    }
+
+    async purchase<T>(
+        cost: number,
+        operation: (tx: TransactionClient) => Promise<T>
+    ) {
+        const result = await Database.$transaction(async tx => {
+            // Acquire row lock
+            const users = await tx.$queryRaw<{ coins: number }[]>`
+                SELECT coins FROM users WHERE id = ${this.id} FOR UPDATE
+            `
+
+            const user = users[0]
+
+            if (!user) {
+                throw new Error(`User ${this.id} does not exist`)
+            }
+
+            // Read coins from locked row
+            if (user.coins < cost) {
+                throw new InsufficientCoinsError()
+            }
+
+            const result = await operation(tx)
+
+            await tx.user.update({
+                where: {
+                    id: this.id
+                },
+                data: {
+                    coins: {
+                        decrement: cost
+                    }
+                }
+            })
+
+            return result
+        })
+
+        this.coins -= cost
+
+        return result
     }
 
     addBuddy(id: number, username: string, requester = false) {

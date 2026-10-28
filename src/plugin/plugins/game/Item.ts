@@ -5,15 +5,14 @@ import { items } from '@data'
 
 import { type } from 'arktype'
 
-const tourItem = 428
-const tourPostcard = 126
-const agentItem = 800
-const agentPostcard = 127
-
 const slots = ['color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award']
 
 const UpdatePlayer = type({
     item: 'number'
+})
+
+const AddItem = type({
+    item: 'number.integer'
 })
 
 const RemoveItem = type({
@@ -45,29 +44,10 @@ export default class Item extends GamePlugin {
         user.setItem(slot, itemId)
     }
 
-    addItem(args: unknown, user: GameUser) {
-        const { item: itemId } = UpdatePlayer.assert(args)
+    async addItem(args: unknown, user: GameUser) {
+        const { item: itemId } = AddItem.assert(args)
 
-        const item = user.validatePurchase.item(itemId)
-
-        if (!item) {
-            return
-        }
-
-        const slot = slots[item.type - 1]
-
-        user.inventory.add(itemId)
-
-        if (itemId === tourItem) {
-            user.addSystemMail(tourPostcard)
-        }
-
-        if (itemId === agentItem) {
-            user.addSystemMail(agentPostcard)
-        }
-
-        user.updateCoins(-item.cost)
-        user.send('add_item', { item: itemId, name: item.name, slot, coins: user.coins })
+        await user.addItem(itemId)
     }
 
     removeItem(args: unknown, user: GameUser) {
