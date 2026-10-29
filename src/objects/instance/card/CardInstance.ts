@@ -70,7 +70,7 @@ export default class CardInstance extends BaseInstance {
         me.opponent.send('send_opponent_deal', { deal: cards.length })
     }
 
-    handlePickCard(args, user) {
+    async handlePickCard(args, user) {
         const me = this.ninjas[user.id]
 
         if (!me.isInDealt(args.card) || me.pick) {
@@ -84,7 +84,7 @@ export default class CardInstance extends BaseInstance {
         }
 
         me.revealCards()
-        this.judgeRound(me)
+        await this.judgeRound(me)
     }
 
     start() {
@@ -99,13 +99,13 @@ export default class CardInstance extends BaseInstance {
         super.start()
     }
 
-    judgeRound(me) {
+    async judgeRound(me) {
         const winner = this.getRoundWinner()
 
         this.send('judge', { winner })
 
         if (winner > -1) {
-            this.checkWin(winner)
+            await this.checkWin(winner)
         }
 
         me.resetTurn()
@@ -291,7 +291,7 @@ export default class CardInstance extends BaseInstance {
         return 1
     }
 
-    checkWin(winSeat) {
+    async checkWin(winSeat) {
         const winner = this.getNinja(winSeat)
         const winCard = winner.pick
 
@@ -302,11 +302,11 @@ export default class CardInstance extends BaseInstance {
         const winningCards = this.getWinningCards(winner)
 
         if (winningCards) {
-            this.updateNinja(winner, loser)
+            await this.updateNinja(winner, loser)
             this.sendWin(winSeat, winningCards)
 
         } else {
-            this.checkPlayable()
+            await this.checkPlayable()
         }
     }
 
@@ -370,7 +370,7 @@ export default class CardInstance extends BaseInstance {
         return false
     }
 
-    checkPlayable() {
+    async checkPlayable() {
         const ninjas = [this.getNinja(0), this.getNinja(1)]
 
         for (const ninja of ninjas) {
@@ -380,7 +380,7 @@ export default class CardInstance extends BaseInstance {
 
             const winSeat = ninjas.indexOf(ninja.opponent)
 
-            this.updateNinja(ninja.opponent, ninja)
+            await this.updateNinja(ninja.opponent, ninja)
             this.sendWin(winSeat)
 
             return
@@ -403,12 +403,12 @@ export default class CardInstance extends BaseInstance {
         return true
     }
 
-    updateNinja(winner, loser) {
-        this.updateProgress(winner.user, true)
-        this.updateProgress(loser.user, false)
+    async updateNinja(winner, loser) {
+        await this.updateProgress(winner.user, true)
+        await this.updateProgress(loser.user, false)
     }
 
-    updateProgress(user, won) {
+    async updateProgress(user, won) {
         if (this.checkNoBeltWin(user, won)) {
             user.update({ ninjaProgress: 100 })
 
@@ -421,7 +421,7 @@ export default class CardInstance extends BaseInstance {
         }
 
         if (user.ninjaProgress >= 100) {
-            this.rankUp(user)
+            await this.rankUp(user)
         }
     }
 
@@ -433,14 +433,14 @@ export default class CardInstance extends BaseInstance {
         return Math.floor(this.xpPercentageStart / (rank + 1))
     }
 
-    rankUp(user) {
+    async rankUp(user) {
         const rank = user.ninjaRank + 1
 
         if (rank > this.itemAwards.length) {
             return
         }
 
-        this.addAwards(user, rank)
+        await this.addAwards(user, rank)
 
         user.update({ ninjaRank: rank })
         user.update({ ninjaProgress: 0 })
@@ -448,12 +448,10 @@ export default class CardInstance extends BaseInstance {
         user.send('award', { rank: user.ninjaRank })
     }
 
-    addAwards(user, rank) {
+    async addAwards(user, rank) {
         const item = this.itemAwards[rank - 1]
 
-        if (!user.inventory.includes(item)) {
-            user.inventory.add(item)
-        }
+        await user.addItem(item, false)
 
         if (rank in this.postcardAwards) {
             user.addSystemMail(this.postcardAwards[rank])
