@@ -65,7 +65,7 @@ export default class SenseiInstance extends CardInstance {
         user.send('send_opponent_deal', { deal: senseiCards.length })
     }
 
-    handlePickCard(args, _user) {
+    async handlePickCard(args, _user) {
         if (!this.me.isInDealt(args.card) || this.me.pick) {
             return
         }
@@ -74,10 +74,10 @@ export default class SenseiInstance extends CardInstance {
         this.sensei.pickCard(args.card)
 
         this.me.revealCards()
-        this.judgeRound(this.me)
+        await this.judgeRound(this.me)
     }
 
-    updateProgress(user, won) {
+    async updateProgress(user, won) {
         if (!user) {
             return
         }
@@ -86,7 +86,7 @@ export default class SenseiInstance extends CardInstance {
             user.update({ ninjaProgress: 100 })
         }
 
-        super.updateProgress(user, won)
+        await super.updateProgress(user, won)
     }
 
     checkBlackBeltWin(user, won) {
