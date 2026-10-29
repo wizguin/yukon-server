@@ -146,7 +146,7 @@ export default class GameUser extends User {
         }
     }
 
-    async addItem(itemId: number) {
+    async addItem(itemId: number, notify = true) {
         if (this.inventory.includes(itemId)) {
             this.send('error', { error: 'You already have this item.' })
             return
@@ -188,12 +188,14 @@ export default class GameUser extends User {
             await this.addSystemMail(agentPostcard)
         }
 
-        this.send('add_item', {
-            item: itemId,
-            name: item.name,
-            slot: slots[item.type - 1],
-            coins: this.coins
-        })
+        if (notify) {
+            this.send('add_item', {
+                item: itemId,
+                name: item.name,
+                slot: slots[item.type - 1],
+                coins: this.coins
+            })
+        }
     }
 
     async purchase<T>(
