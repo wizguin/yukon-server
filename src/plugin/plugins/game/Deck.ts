@@ -2,10 +2,9 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import type GameUser from '@objects/user/GameUser'
 
-import { cards, decks, items } from '@data'
+import { cards, decks } from '@data'
 
 const starterDeckId = 821
-const starterDeck = items[starterDeckId]
 
 export default class Sensei extends GamePlugin {
 
@@ -13,7 +12,7 @@ export default class Sensei extends GamePlugin {
         add_starter_deck: this.addStarterDeck
     }
 
-    addStarterDeck(args: unknown, user: GameUser) {
+    async addStarterDeck(args: unknown, user: GameUser) {
         if (user.inventory.includes(starterDeckId)) {
             return
         }
@@ -31,9 +30,8 @@ export default class Sensei extends GamePlugin {
         const randomPowerCard = powerCards[Math.floor(Math.random() * powerCards.length)]
 
         user.cards.add(randomPowerCard)
-        user.inventory.add(starterDeckId)
 
-        user.send('add_item', { item: starterDeckId, name: starterDeck.name, slot: 'award', coins: user.coins })
+        await user.addItem(starterDeckId)
     }
 
 }
