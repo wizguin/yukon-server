@@ -202,7 +202,7 @@ export default class GameUser extends User {
         cost: number,
         operation: (tx: TransactionClient) => Promise<T>
     ) {
-        const result = await Database.$transaction(async tx => {
+        const { result, coins } = await Database.$transaction(async tx => {
             // Acquire row lock
             const users = await tx.$queryRaw<{ coins: number }[]>`
                 SELECT coins FROM users WHERE id = ${this.id} FOR UPDATE
@@ -221,7 +221,7 @@ export default class GameUser extends User {
 
             const result = await operation(tx)
 
-            await tx.user.update({
+            const updatedUser = await tx.user.update({
                 where: {
                     id: this.id
                 },
@@ -229,13 +229,16 @@ export default class GameUser extends User {
                     coins: {
                         decrement: cost
                     }
+                },
+                select: {
+                    coins: true
                 }
             })
 
-            return result
+            return { result, coins: updatedUser.coins }
         })
 
-        this.coins -= cost
+        this.coins = coins
 
         return result
     }
