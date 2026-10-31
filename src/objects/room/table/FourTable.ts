@@ -16,7 +16,7 @@ export default class FourTable extends BaseTable {
         this.map = Array.from({ length: 7 }, () => Array(6).fill(0))
     }
 
-    sendMove(args: unknown, user: GameUser) {
+    async sendMove(args: unknown, user: GameUser) {
         const { column } = SendMove.assert(args)
 
         if (!this.started) {
@@ -34,18 +34,24 @@ export default class FourTable extends BaseTable {
         const opponent = this.users[this.currentTurn === 1 ? 1 : 0]
 
         if (this.isWin(move[0], move[1])) {
-            user.updateCoins(10, true)
-            opponent.updateCoins(5, true)
-
             this.reset()
+
+            await Promise.all([
+                user.addCoins(10, true),
+                opponent.addCoins(5, true)
+            ])
+
             return
         }
 
         if (this.isFull()) {
-            user.updateCoins(5, true)
-            opponent.updateCoins(5, true)
-
             this.reset()
+
+            await Promise.all([
+                user.addCoins(5, true),
+                opponent.addCoins(5, true)
+            ])
+
             return
         }
 
