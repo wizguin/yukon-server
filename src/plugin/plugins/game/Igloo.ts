@@ -12,7 +12,7 @@ const AddIgloo = type({
 })
 
 const AddFurniture = type({
-    furniture: 'number'
+    furniture: 'number.integer'
 })
 
 const UpdateIgloo = type({
@@ -79,18 +79,7 @@ export default class Igloo extends GamePlugin {
     async addFurniture(args: unknown, user: GameUser) {
         const { furniture: furnitureId } = AddFurniture.assert(args)
 
-        const furniture = user.validatePurchase.furniture(furnitureId)
-
-        if (!furniture) {
-            return
-        }
-
-        // If furniture added successfuly
-        if (await user.furniture.add(furnitureId)) {
-            user.updateCoins(-furniture.cost)
-
-            user.send('add_furniture', { furniture: furnitureId, coins: user.coins })
-        }
+        await user.addFurniture(furnitureId)
     }
 
     async updateIgloo(args: unknown, user: GameUser) {

@@ -21,9 +21,9 @@ import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
 import type Waddle from '@objects/room/waddle/Waddle'
 
-import { InsufficientCoinsError, isUniqueConstraintError } from '@utils/error'
+import { furniture, items } from '@data'
+import { FurnitureLimitError, InsufficientCoinsError, isUniqueConstraintError } from '@utils/error'
 import { clamp } from '@utils/math'
-import { items } from '@data'
 import pick from '@utils/pick'
 
 import EventEmitter from 'events'
@@ -195,6 +195,39 @@ export default class GameUser extends User {
                 slot: slots[item.type - 1],
                 coins: this.coins
             })
+        }
+    }
+
+    async addFurniture(furnitureId: number, notify = true) {
+        const item = furniture[furnitureId]
+
+        if (!item) {
+            return
+        }
+
+        if (item.patched) {
+            this.send('error', { error: 'This item is not currently available.' })
+            return
+        }
+
+        try {
+            await this.furniture.add(furnitureId, item.cost, item.max)
+
+        } catch (error) {
+            if (error instanceof FurnitureLimitError) {
+                return
+            }
+
+            if (error instanceof InsufficientCoinsError) {
+                this.send('error', { error: 'You need more coins.' })
+                return
+            }
+
+            throw error
+        }
+
+        if (notify) {
+            this.send('add_furniture', { furniture: furnitureId, coins: this.coins })
         }
     }
 

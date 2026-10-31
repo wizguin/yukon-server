@@ -1,7 +1,7 @@
 import BaseCollection from '@database/BaseCollection'
 
-import Database from '@database/Database'
-import { furniture } from '@data'
+import { FurnitureLimitError } from '@utils/error'
+import type GameUser from '@objects/user/GameUser'
 import type User from '@objects/user/User'
 
 import type { FurnitureInventory } from '../../generated/prisma/client'
@@ -12,22 +12,16 @@ export default class FurnitureCollection extends BaseCollection<FurnitureInvento
         super(user, records, 'itemId')
     }
 
-    async add(itemId: number) {
-        if (!(itemId in furniture)) {
-            return false
-        }
-
-        const { max } = furniture[itemId]
-
-        try {
+    async add(itemId: number, cost: number, max: number) {
+        const record = await (this.user as GameUser).purchase(cost, async tx => {
             // Ensure row exists
-            await Database.$executeRaw`
+            await tx.$executeRaw`
                 INSERT IGNORE INTO furniture_inventories (userId, itemId, quantity)
                 VALUES (${this.user.id}, ${itemId}, 0)
             `
 
             // Increment if below max
-            const updated = await Database.furnitureInventory.updateMany({
+            const updated = await tx.furnitureInventory.updateMany({
                 where: {
                     userId: this.user.id,
                     itemId,
@@ -39,11 +33,11 @@ export default class FurnitureCollection extends BaseCollection<FurnitureInvento
             })
 
             if (updated.count === 0) {
-                return false
+                throw new FurnitureLimitError()
             }
 
             // Get updated record
-            const record = await Database.furnitureInventory.findUniqueOrThrow({
+            return tx.furnitureInventory.findUniqueOrThrow({
                 where: {
                     userId_itemId: {
                         userId: this.user.id,
@@ -51,16 +45,11 @@ export default class FurnitureCollection extends BaseCollection<FurnitureInvento
                     }
                 }
             })
+        })
 
-            this.collect(record)
+        this.collect(record)
 
-            return true
-
-        } catch (error) {
-            console.error(error)
-
-            return false
-        }
+        return record
     }
 
     getQuantity(itemId: number) {
