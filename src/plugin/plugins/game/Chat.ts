@@ -146,11 +146,14 @@ export default class Chat extends GamePlugin {
         await user.addItem(itemId)
     }
 
-    addFurniture(args: string[], user: GameUser) {
-        if (user.isModerator) {
-            // @ts-expect-error temp
-            this.plugins.igloo.addFurniture({ furniture: parseInt(args[0]) }, user)
+    async addFurniture(args: string[], user: GameUser) {
+        if (!user.isModerator) {
+            return
         }
+
+        const furnitureId = Integer.assert(args[0])
+
+        await user.addFurniture(furnitureId)
     }
 
     addCoins(args: string[], user: GameUser) {
