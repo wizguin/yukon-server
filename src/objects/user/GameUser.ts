@@ -203,16 +203,7 @@ export default class GameUser extends User {
         operation: (tx: TransactionClient) => Promise<T>
     ) {
         const { result, coins } = await Database.$transaction(async tx => {
-            // Acquire row lock
-            const users = await tx.$queryRaw<{ coins: number }[]>`
-                SELECT coins FROM users WHERE id = ${this.id} FOR UPDATE
-            `
-
-            const user = users[0]
-
-            if (!user) {
-                throw new Error(`User ${this.id} does not exist`)
-            }
+            const user = await this.lockUserCoins(tx)
 
             // Read coins from locked row
             if (user.coins < cost) {
@@ -249,16 +240,7 @@ export default class GameUser extends User {
         }
 
         const coins = await Database.$transaction(async tx => {
-            // Acquire row lock
-            const users = await tx.$queryRaw<{ coins: number }[]>`
-                SELECT coins FROM users WHERE id = ${this.id} FOR UPDATE
-            `
-
-            const user = users[0]
-
-            if (!user) {
-                throw new Error(`User ${this.id} does not exist`)
-            }
+            const user = await this.lockUserCoins(tx)
 
             const coins = clamp(user.coins + amount, 0, 1_000_000_000)
 
@@ -284,6 +266,21 @@ export default class GameUser extends User {
         }
 
         return coins
+    }
+
+    /** Acquire row lock. */
+    private async lockUserCoins(tx: TransactionClient) {
+        const users = await tx.$queryRaw<{ coins: number }[]>`
+            SELECT coins FROM users WHERE id = ${this.id} FOR UPDATE
+        `
+
+        const user = users[0]
+
+        if (!user) {
+            throw new Error(`User ${this.id} does not exist`)
+        }
+
+        return user
     }
 
     addBuddy(id: number, username: string, requester = false) {
