@@ -158,30 +158,26 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    joinRoom(args: string[], user: GameUser) {
+    joinRoom([room]: string[], user: GameUser) {
         if (!user.isModerator) {
             return
         }
-
-        let room = args[0]
 
         if (!room) {
             return
         }
 
-        // @ts-expect-error temp
-        if (!isNaN(room)) {
-            // @ts-expect-error temp
-            this.plugins.join.joinRoom({ room: parseInt(room) }, user)
+        if (Number.isInteger(Number(room))) {
+            user.joinRoom(this.rooms[Number(room)])
             return
         }
 
-        // @ts-expect-error temp
-        room = Object.values(this.rooms).find(r => r.name === room.toLowerCase())
+        const foundRoom = Object.values(this.rooms).find(
+            ({ name }) => name === room.toLowerCase()
+        )
 
-        if (room) {
-            // @ts-expect-error temp
-            this.plugins.join.joinRoom({ room: room.id }, user)
+        if (foundRoom) {
+            user.joinRoom(foundRoom)
         }
     }
 
