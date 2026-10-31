@@ -156,10 +156,14 @@ export default class Chat extends GamePlugin {
         await user.addFurniture(furnitureId)
     }
 
-    addCoins(args: string[], user: GameUser) {
-        if (user.isModerator) {
-            user.updateCoins(args[0], true)
+    async addCoins(args: string[], user: GameUser) {
+        if (!user.isModerator) {
+            return
         }
+
+        const coins = Integer.assert(args[0])
+
+        await user.addCoins(coins, true)
     }
 
     joinRoom([room]: string[], user: GameUser) {
