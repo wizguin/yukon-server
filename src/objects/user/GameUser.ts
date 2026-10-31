@@ -243,6 +243,49 @@ export default class GameUser extends User {
         return result
     }
 
+    async addCoins(amount: number, gameOver = false) {
+        if (!Number.isSafeInteger(amount)) {
+            throw new Error('Coin amount must be a safe integer')
+        }
+
+        const coins = await Database.$transaction(async tx => {
+            // Acquire row lock
+            const users = await tx.$queryRaw<{ coins: number }[]>`
+                SELECT coins FROM users WHERE id = ${this.id} FOR UPDATE
+            `
+
+            const user = users[0]
+
+            if (!user) {
+                throw new Error(`User ${this.id} does not exist`)
+            }
+
+            const coins = clamp(user.coins + amount, 0, 1_000_000_000)
+
+            const updatedUser = await tx.user.update({
+                where: {
+                    id: this.id
+                },
+                data: {
+                    coins
+                },
+                select: {
+                    coins: true
+                }
+            })
+
+            return updatedUser.coins
+        })
+
+        this.coins = coins
+
+        if (gameOver) {
+            this.send('game_over', { coins })
+        }
+
+        return coins
+    }
+
     addBuddy(id: number, username: string, requester = false) {
         this.buddies.add(id)
 
