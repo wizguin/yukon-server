@@ -5,7 +5,7 @@ import type GameUser from '@objects/user/GameUser'
 
 import { type } from 'arktype'
 
-type CommandHandler = (args: string[], user: GameUser) => void
+type CommandHandler = (args: string[], user: GameUser) => void | Promise<void>
 
 const SendMessage = type({
     message: 'string'
@@ -26,6 +26,8 @@ const SendJoke = type({
 const SendTour = type({
     roomId: 'number'
 })
+
+const Integer = type('string.integer.parse')
 
 const messageRegex = /[^ -~]/i
 const maxMessageLength = 48
@@ -55,9 +57,7 @@ export default class Chat extends GamePlugin {
         this.bindCommands()
     }
 
-    // Events
-
-    sendMessage(args: unknown, user: GameUser) {
+    async sendMessage(args: unknown, user: GameUser) {
         const { message: rawMessage } = SendMessage.assert(args)
 
         if (messageRegex.test(rawMessage)) {
@@ -71,7 +71,7 @@ export default class Chat extends GamePlugin {
             return
         }
 
-        if (message.startsWith('!') && this.processCommand(message, user)) {
+        if (message.startsWith('!') && await this.processCommand(message, user)) {
             return
         }
 
@@ -116,33 +116,34 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    // Commands
-
     bindCommands() {
         for (const command in this.commands) {
             this.commands[command] = this.commands[command].bind(this)
         }
     }
 
-    processCommand(message: string, user: GameUser) {
+    async processCommand(message: string, user: GameUser) {
         message = message.substring(1)
 
         const args = message.split(' ')
         const command = args.shift()?.toLowerCase()
 
         if (command && command in this.commands) {
-            this.commands[command](args, user)
+            await this.commands[command](args, user)
             return true
         }
 
         return false
     }
 
-    addItem(args: string[], user: GameUser) {
-        if (user.isModerator) {
-            // @ts-expect-error temp
-            this.plugins.item.addItem({ item: parseInt(args[0]) }, user)
+    async addItem(args: string[], user: GameUser) {
+        if (!user.isModerator) {
+            return
         }
+
+        const itemId = Integer.assert(args[0])
+
+        await user.addItem(itemId)
     }
 
     addFurniture(args: string[], user: GameUser) {
