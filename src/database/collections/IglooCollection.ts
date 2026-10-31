@@ -1,6 +1,6 @@
 import BaseCollection from '@database/BaseCollection'
 
-import Database from '@database/Database'
+import type GameUser from '@objects/user/GameUser'
 import type User from '@objects/user/User'
 
 import type { IglooInventory } from '../../generated/prisma/client'
@@ -11,18 +11,19 @@ export default class IglooCollection extends BaseCollection<IglooInventory> {
         super(user, records, 'iglooId')
     }
 
-    async add(iglooId: number) {
-        try {
-            this.collect(await Database.iglooInventory.create({
+    async add(iglooId: number, cost: number) {
+        const record = await (this.user as GameUser).purchase(cost, tx =>
+            tx.iglooInventory.create({
                 data: {
                     userId: this.user.id,
                     iglooId
                 }
-            }))
+            })
+        )
 
-        } catch (error) {
-            console.error(error)
-        }
+        this.collect(record)
+
+        return record
     }
 
 }

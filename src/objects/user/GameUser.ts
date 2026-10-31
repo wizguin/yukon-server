@@ -21,7 +21,7 @@ import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
 import type Waddle from '@objects/room/waddle/Waddle'
 
-import { furniture, items } from '@data'
+import { furniture, igloos, items } from '@data'
 import { FurnitureLimitError, InsufficientCoinsError, isUniqueConstraintError } from '@utils/error'
 import { clamp } from '@utils/math'
 import pick from '@utils/pick'
@@ -228,6 +228,45 @@ export default class GameUser extends User {
 
         if (notify) {
             this.send('add_furniture', { furniture: furnitureId, coins: this.coins })
+        }
+    }
+
+    async addIgloo(iglooId: number, notify = true) {
+        if (this.igloos.includes(iglooId)) {
+            this.send('error', { error: 'You already have this item.' })
+            return
+        }
+
+        const igloo = igloos[iglooId]
+
+        if (!igloo) {
+            return
+        }
+
+        if (igloo.patched) {
+            this.send('error', { error: 'This item is not currently available.' })
+            return
+        }
+
+        try {
+            await this.igloos.add(iglooId, igloo.cost)
+
+        } catch (error) {
+            if (isUniqueConstraintError(error)) {
+                this.send('error', { error: 'You already have this item.' })
+                return
+            }
+
+            if (error instanceof InsufficientCoinsError) {
+                this.send('error', { error: 'You need more coins.' })
+                return
+            }
+
+            throw error
+        }
+
+        if (notify) {
+            this.send('add_igloo', { igloo: iglooId, coins: this.coins })
         }
     }
 

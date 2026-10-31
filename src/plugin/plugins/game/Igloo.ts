@@ -8,7 +8,7 @@ import type IglooRoom from '@objects/room/Igloo'
 import { type } from 'arktype'
 
 const AddIgloo = type({
-    igloo: 'number'
+    igloo: 'number.integer'
 })
 
 const AddFurniture = type({
@@ -64,16 +64,7 @@ export default class Igloo extends GamePlugin {
     async addIgloo(args: unknown, user: GameUser) {
         const { igloo: iglooId } = AddIgloo.assert(args)
 
-        const igloo = user.validatePurchase.igloo(iglooId)
-
-        if (!igloo) {
-            return
-        }
-
-        user.igloos.add(iglooId)
-
-        user.updateCoins(-igloo.cost)
-        user.send('add_igloo', { igloo: iglooId, coins: user.coins })
+        await user.addIgloo(iglooId)
     }
 
     async addFurniture(args: unknown, user: GameUser) {
