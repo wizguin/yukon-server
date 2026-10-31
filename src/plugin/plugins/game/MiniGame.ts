@@ -5,7 +5,7 @@ import type GameUser from '@objects/user/GameUser'
 import { type } from 'arktype'
 
 const GameOver = type({
-    coins: 'number'
+    coins: 'number.integer'
 })
 
 export default class Minigame extends GamePlugin {
@@ -38,11 +38,11 @@ export default class Minigame extends GamePlugin {
         }
     }
 
-    gameOver(args: unknown, user: GameUser) {
+    async gameOver(args: unknown, user: GameUser) {
         const { coins } = GameOver.assert(args)
 
         if (user.room?.game || user.minigameRoom) {
-            user.updateCoins(coins, true)
+            await user.addCoins(coins, true)
         }
     }
 
