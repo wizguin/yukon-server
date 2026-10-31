@@ -57,11 +57,11 @@ export default class Room {
     /**
      * Sends a packet to all users in the room, by default the client is excluded.
      *
-     * @param {User} user - Client User object
-     * @param {string} action - Packet name
-     * @param {object} args - Packet arguments
-     * @param {Array} filter - Users to exclude
-     * @param {boolean} checkIgnore - Whether or not to exclude users who have user added to their ignore list
+     * @param user - Client User object
+     * @param action - Packet name
+     * @param args - Packet arguments
+     * @param filter - Users to exclude
+     * @param checkIgnore - Whether or not to exclude users who have user added to their ignore list
      */
     send(user: GameUser | null, action: Action, args: Args = {}, filter: (GameUser | null)[] = [user], checkIgnore: boolean = false) {
         const users = this.userValues.filter(u => !filter.includes(u))
