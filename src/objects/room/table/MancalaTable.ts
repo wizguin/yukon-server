@@ -13,7 +13,7 @@ export default class MancalaTable extends BaseTable {
         ]
     }
 
-    sendMove(args: any, user: GameUser) {
+    async sendMove(args: any, user: GameUser) {
         if (!this.started) {
             return
         }
@@ -28,7 +28,7 @@ export default class MancalaTable extends BaseTable {
         this.send('send_move', { turn: this.currentTurn, hole, move })
 
         if (this.isGameOver()) {
-            this.sendGameOver()
+            await this.sendGameOver()
             return
         }
 
@@ -122,15 +122,19 @@ export default class MancalaTable extends BaseTable {
         }
     }
 
-    sendGameOver() {
+    async sendGameOver() {
         // Sums including mancalas
         const player1Sum = this.sum(this.map.slice(0, 7))
         const player2Sum = this.sum(this.map.slice(7, 14))
 
-        this.users[0].updateCoins(player1Sum, true)
-        this.users[1].updateCoins(player2Sum, true)
+        const [player1, player2] = this.users
 
         this.reset()
+
+        await Promise.all([
+            player1.addCoins(player1Sum, true),
+            player2.addCoins(player2Sum, true)
+        ])
     }
 
     isTurn1Side(hole: number) {
