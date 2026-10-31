@@ -46,9 +46,9 @@ export default class SledInstance extends BaseInstance {
         this.send('send_move', { id: this.getSeat(user), move }, user)
     }
 
-    sendGameOver(user: GameUser) {
+    async sendGameOver(user: GameUser) {
         this.remove(user)
-        user.updateCoins(this.coins.shift() || 0, true)
+        await user.addCoins(this.coins.shift() || 0, true)
     }
 
 }

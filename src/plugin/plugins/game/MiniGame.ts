@@ -31,10 +31,10 @@ export default class Minigame extends GamePlugin {
         }
     }
 
-    sendMove(args: unknown, user: GameUser) {
+    async sendMove(args: unknown, user: GameUser) {
         if (user.minigameRoom) {
             // @ts-expect-error temp
-            user.minigameRoom.sendMove(args, user)
+            await user.minigameRoom.sendMove(args, user)
         }
     }
 
