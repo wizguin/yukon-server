@@ -17,6 +17,7 @@ import Database from '@database/Database'
 import type GameHandler from '../../handlers/GameHandler'
 import Igloo from '@objects/room/Igloo'
 import type Pet from '@objects/pet/Pet'
+import type { Postcard } from '@database/collections/PostcardCollection'
 import type Room from '@objects/room/Room'
 import type Server from '../../server/Server'
 import type Waddle from '@objects/room/waddle/Waddle'
@@ -392,9 +393,17 @@ export default class GameUser extends User {
     async addSystemMail(postcardId: number, details?: string) {
         const postcard = await this.postcards.addSystem(postcardId, details)
 
-        if (postcard) {
-            this.send('receive_mail', postcard)
-        }
+        this.send('receive_mail', postcard)
+
+        return postcard
+    }
+
+    receiveMail(record: Postcard) {
+        this.postcards.collect(record)
+
+        const postcard = this.postcards.formatPostcard(record)
+
+        this.send('receive_mail', postcard)
 
         return postcard
     }

@@ -2,13 +2,14 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
+import { InsufficientCoinsError } from '@utils/error'
 import { userIdExists } from '@utils/user'
 
 import { type } from 'arktype'
 
 const SendMail = type({
-    recipient: 'number',
-    postcardId: 'number'
+    recipient: 'number.integer',
+    postcardId: 'number.integer'
 })
 
 const DeleteMail = type({
@@ -36,97 +37,77 @@ export default class Mail extends GamePlugin {
         delete_mail_from: this.deleteMailFrom
     }
 
-    sendMail(args: unknown, user: GameUser) {
+    async sendMail(args: unknown, user: GameUser) {
         const { recipient: recipientId, postcardId } = SendMail.assert(args)
-
-        if (user.coins < postcardCost) {
-            return this.sendMailResponse(user, responses.InsufficientCoins)
-        }
 
         const recipient = this.usersById[recipientId]
 
-        if (recipient) {
-            this.sendMailOnline(user, recipient, postcardId)
-        } else {
-            this.sendMailOffline(user, recipientId, postcardId)
+        try {
+            if (recipient) {
+                await this.sendMailOnline(user, recipient, postcardId)
+            } else {
+                await this.sendMailOffline(user, recipientId, postcardId)
+            }
+
+        } catch (error) {
+            if (error instanceof InsufficientCoinsError) {
+                this.sendMailResponse(user, responses.InsufficientCoins)
+                return
+            }
+
+            throw error
         }
     }
 
-    readMail(args: unknown, user: GameUser) {
-        user.postcards.readMail()
-    }
-
-    deleteMail(args: unknown, user: GameUser) {
-        const { id } = DeleteMail.assert(args)
-
-        user.postcards.remove(id)
-    }
-
-    deleteMailFrom(args: unknown, user: GameUser) {
-        const { senderId } = DeleteMailFrom.assert(args)
-
-        user.postcards.removeFrom(senderId)
-    }
-
-    async sendMailOnline(user: GameUser, recipient: GameUser, postcardId: number) {
-        // Ignored
-        if (recipient.ignores.includes(user.id)) {
-            return this.sendMailResponse(user, responses.Success)
-        }
-
-        // Full inbox
-        if (recipient.postcards.count >= maxPostcards) {
-            return this.sendMailResponse(user, responses.FullInbox)
-        }
-
-        // Add postcard
-        const postcard = await recipient.postcards.add(postcardId, user.id)
-        if (!postcard) {
+    async sendMailOnline(sender: GameUser, recipient: GameUser, postcardId: number) {
+        if (recipient.ignores.includes(sender.id)) {
+            this.sendMailResponse(sender, responses.Success)
             return
         }
 
-        recipient.send('receive_mail', postcard)
+        if (recipient.postcards.count >= maxPostcards) {
+            this.sendMailResponse(sender, responses.FullInbox)
+            return
+        }
 
-        this.removeCoins(user)
+        await this.deliverMail(sender, recipient.id, postcardId)
     }
 
-    async sendMailOffline(user: GameUser, recipientId: number, postcardId: number) {
+    async sendMailOffline(sender: GameUser, recipientId: number, postcardId: number) {
         if (!await userIdExists(recipientId)) {
             return
         }
 
-        // Ignored
-        if (await this.isIgnored(recipientId, user.id)) {
-            return this.sendMailResponse(user, responses.Success)
+        if (await this.isIgnored(recipientId, sender.id)) {
+            this.sendMailResponse(sender, responses.Success)
+            return
         }
 
-        // Full inbox
         if (await this.getPostcardsCount(recipientId) >= maxPostcards) {
-            return this.sendMailResponse(user, responses.FullInbox)
+            this.sendMailResponse(sender, responses.FullInbox)
+            return
         }
 
-        // Add postcard
-        await Database.postcard.create({
-            data: {
-                userId: recipientId,
-                senderId: user.id,
-                postcardId
-            }
-        })
-
-        this.removeCoins(user)
+        await this.deliverMail(sender, recipientId, postcardId)
     }
 
-    removeCoins(user: GameUser) {
-        user.updateCoins(-postcardCost)
-        this.sendMailResponse(user, responses.Success)
-    }
+    async deliverMail(sender: GameUser, recipientId: number, postcardId: number) {
+        const postcard = await sender.purchase(postcardCost, tx =>
+            tx.postcard.create({
+                data: {
+                    userId: recipientId,
+                    senderId: sender.id,
+                    postcardId
+                },
+                include: {
+                    sender: { select: { username: true } }
+                }
+            })
+        )
 
-    /**
-     * Send response to the sending user.
-     */
-    sendMailResponse(user: GameUser, response: number) {
-        user.send('send_mail', { coins: user.coins, response })
+        this.usersById[recipientId]?.receiveMail(postcard)
+
+        this.sendMailResponse(sender, responses.Success)
     }
 
     async isIgnored(userId: number, ignoreId: number) {
@@ -146,6 +127,29 @@ export default class Mail extends GamePlugin {
         return Database.postcard.count({
             where: { userId }
         })
+    }
+
+    /**
+     * Send response to the sending user.
+     */
+    private sendMailResponse(sender: GameUser, response: number) {
+        sender.send('send_mail', { coins: sender.coins, response })
+    }
+
+    readMail(args: unknown, user: GameUser) {
+        user.postcards.readMail()
+    }
+
+    deleteMail(args: unknown, user: GameUser) {
+        const { id } = DeleteMail.assert(args)
+
+        user.postcards.remove(id)
+    }
+
+    deleteMailFrom(args: unknown, user: GameUser) {
+        const { senderId } = DeleteMailFrom.assert(args)
+
+        user.postcards.removeFrom(senderId)
     }
 
 }

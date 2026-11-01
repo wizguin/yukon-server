@@ -5,7 +5,7 @@ import type User from '@objects/user/User'
 
 import type { Postcard as PrismaPostcard } from '../../generated/prisma/client'
 
-interface Postcard extends PrismaPostcard {
+export interface Postcard extends PrismaPostcard {
     sender: {
         username: string
     } | null
@@ -20,28 +20,21 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
     }
 
     async add(postcardId: number, senderId?: number, details?: string) {
-        try {
-            const postcard = await Database.postcard.create({
-                data: {
-                    userId: this.user.id,
-                    senderId,
-                    postcardId,
-                    details
-                },
-                include: {
-                    sender: { select: { username: true } }
-                }
-            })
+        const postcard = await Database.postcard.create({
+            data: {
+                userId: this.user.id,
+                senderId,
+                postcardId,
+                details
+            },
+            include: {
+                sender: { select: { username: true } }
+            }
+        })
 
-            this.collect(postcard)
+        this.collect(postcard)
 
-            return this.formatPostcard(postcard)
-
-        } catch (error) {
-            console.error(error)
-
-            return false
-        }
+        return this.formatPostcard(postcard)
     }
 
     addSystem(postcardId: number, details?: string) {
