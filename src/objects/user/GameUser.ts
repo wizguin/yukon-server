@@ -271,11 +271,22 @@ export default class GameUser extends User {
         }
     }
 
+    /**
+     * Run an operation and deduct its cost in one transaction.
+     * Updates in-memory coins after commit.
+     *
+     * @param cost - Coin cost.
+     * @param operation - Database operation using the transaction client.
+     * @param prepare - Optional transaction setup.
+     */
     async purchase<T>(
         cost: number,
-        operation: (tx: TransactionClient) => Promise<T>
+        operation: (tx: TransactionClient) => Promise<T>,
+        prepare?: (tx: TransactionClient) => Promise<void>
     ) {
         const { result, coins } = await Database.$transaction(async tx => {
+            await prepare?.(tx)
+
             const user = await this.lockUserCoins(tx)
 
             // Read coins from locked row
@@ -341,7 +352,7 @@ export default class GameUser extends User {
         return coins
     }
 
-    /** Acquire row lock. */
+    /** Acquire this user's row lock and read its balance. */
     private async lockUserCoins(tx: TransactionClient) {
         const users = await tx.$queryRaw<{ coins: number }[]>`
             SELECT coins FROM users WHERE id = ${this.id} FOR UPDATE
