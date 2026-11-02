@@ -1,8 +1,8 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import { InboxFullError, InsufficientCoinsError } from '@utils/error'
 import Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
-import { InsufficientCoinsError } from '@utils/error'
 import { userIdExists } from '@utils/user'
 
 import { type } from 'arktype'
@@ -50,6 +50,11 @@ export default class Mail extends GamePlugin {
             }
 
         } catch (error) {
+            if (error instanceof InboxFullError) {
+                this.sendMailResponse(user, responses.FullInbox)
+                return
+            }
+
             if (error instanceof InsufficientCoinsError) {
                 this.sendMailResponse(user, responses.InsufficientCoins)
                 return
@@ -62,11 +67,6 @@ export default class Mail extends GamePlugin {
     async sendMailOnline(sender: GameUser, recipient: GameUser, postcardId: number) {
         if (recipient.ignores.includes(sender.id)) {
             this.sendMailResponse(sender, responses.Success)
-            return
-        }
-
-        if (recipient.postcards.count >= maxPostcards) {
-            this.sendMailResponse(sender, responses.FullInbox)
             return
         }
 
@@ -83,17 +83,18 @@ export default class Mail extends GamePlugin {
             return
         }
 
-        if (await this.getPostcardsCount(recipientId) >= maxPostcards) {
-            this.sendMailResponse(sender, responses.FullInbox)
-            return
-        }
-
         await this.deliverMail(sender, recipientId, postcardId)
     }
 
     async deliverMail(sender: GameUser, recipientId: number, postcardId: number) {
-        const postcard = await sender.purchase(postcardCost, tx =>
-            tx.postcard.create({
+        const postcard = await sender.purchase(postcardCost, async tx => {
+            const count = await tx.postcard.count({ where: { userId: recipientId } })
+
+            if (count >= maxPostcards) {
+                throw new InboxFullError()
+            }
+
+            return tx.postcard.create({
                 data: {
                     userId: recipientId,
                     senderId: sender.id,
@@ -103,7 +104,7 @@ export default class Mail extends GamePlugin {
                     sender: { select: { username: true } }
                 }
             })
-        )
+        })
 
         this.usersById[recipientId]?.receiveMail(postcard)
 
@@ -121,12 +122,6 @@ export default class Mail extends GamePlugin {
         })
 
         return ignore !== null
-    }
-
-    getPostcardsCount(userId: number) {
-        return Database.postcard.count({
-            where: { userId }
-        })
     }
 
     /**
