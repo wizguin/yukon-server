@@ -3,6 +3,7 @@ import GamePlugin from '@plugin/GamePlugin'
 import { InboxFullError, InsufficientCoinsError } from '@utils/error'
 import Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
+import lockUsers from '@database/lockUsers'
 import { userIdExists } from '@utils/user'
 
 import { type } from 'arktype'
@@ -104,7 +105,8 @@ export default class Mail extends GamePlugin {
                     sender: { select: { username: true } }
                 }
             })
-        })
+        // Lock both users to protect the sender balance and recipient inbox capacity.
+        }, tx => lockUsers(tx, [sender.id, recipientId]))
 
         this.usersById[recipientId]?.receiveMail(postcard)
 
