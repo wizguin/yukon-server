@@ -2,8 +2,10 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import { config } from '@config'
 import Database from '@database/Database'
+import { flooring } from '@data'
 import type GameUser from '@objects/user/GameUser'
 import type IglooRoom from '@objects/room/Igloo'
+import { InsufficientCoinsError } from '@utils/error'
 
 import { type } from 'arktype'
 
@@ -32,7 +34,7 @@ const UpdateFurniture = type({
 })
 
 const UpdateFlooring = type({
-    flooring: 'number'
+    flooring: 'number.integer'
 })
 
 const UpdateMusic = type({
@@ -133,7 +135,7 @@ export default class Igloo extends GamePlugin {
         })
     }
 
-    updateFlooring(args: unknown, user: GameUser) {
+    async updateFlooring(args: unknown, user: GameUser) {
         const { flooring: flooringId } = UpdateFlooring.assert(args)
 
         const igloo = this.getIgloo(user.id)
@@ -142,16 +144,40 @@ export default class Igloo extends GamePlugin {
             return
         }
 
-        const flooring = user.validatePurchase.flooring(flooringId)
+        const item = flooring[flooringId]
 
-        if (!flooring) {
+        if (!item) {
             return
         }
 
-        igloo.update({ flooring: flooringId })
-        igloo.flooring = flooringId
+        if (igloo.flooring === flooringId) {
+            user.send('error', { error: 'You already have this item.' })
+            return
+        }
 
-        user.updateCoins(-flooring.cost)
+        if (item.patched) {
+            user.send('error', { error: 'This item is not currently available.' })
+            return
+        }
+
+        try {
+            await user.purchase(item.cost, tx =>
+                tx.igloo.update({
+                    where: { userId: user.id },
+                    data: { flooring: flooringId }
+                })
+            )
+
+        } catch (error) {
+            if (error instanceof InsufficientCoinsError) {
+                user.send('error', { error: 'You need more coins.' })
+                return
+            }
+
+            throw error
+        }
+
+        igloo.flooring = flooringId
         user.send('update_flooring', { flooring: flooringId, coins: user.coins })
     }
 
