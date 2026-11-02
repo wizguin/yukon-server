@@ -9,8 +9,6 @@ import InventoryCollection from '@database/collections/InventoryCollection'
 import PetCollection from '@database/collections/PetCollection'
 import PostcardCollection from '@database/collections/PostcardCollection'
 
-import PurchaseValidator from './purchase/PurchaseValidator'
-
 import type BaseInstance from '@objects/instance/BaseInstance'
 import type BaseTable from '@objects/room/table/BaseTable'
 import Database from '@database/Database'
@@ -65,8 +63,6 @@ export default class GameUser extends User {
     buddyRequests: number[] = []
     walkingPet: Pet | null = null
 
-    validatePurchase: PurchaseValidator
-
     buddies!: BuddyCollection
     ignores!: IgnoreCollection
     inventory!: InventoryCollection
@@ -80,8 +76,6 @@ export default class GameUser extends User {
         super(server, socket)
 
         this.crumbs = this.gameHandler.crumbs
-
-        this.validatePurchase = new PurchaseValidator(this)
 
         // Used for dynamic/temporary events
         this.events = new EventEmitter({ captureRejections: true })
