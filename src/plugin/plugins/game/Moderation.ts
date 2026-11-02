@@ -2,6 +2,7 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
+import lockUsers from '@database/lockUsers'
 
 import { type } from 'arktype'
 
@@ -61,10 +62,8 @@ export default class Moderation extends GamePlugin {
         const expires = new Date(Date.now() + hours * 60 * 60 * 1000)
 
         await Database.$transaction(async transaction => {
-            // Acquire row lock
-            await transaction.$executeRaw`
-                SELECT id FROM users WHERE id = ${userId} FOR UPDATE
-            `
+            // Lock moderator and target in ID order to avoid conflicting with mail locks
+            await lockUsers(transaction, [moderator.id, userId])
 
             const banCount = await transaction.ban.count({
                 where: { userId }
