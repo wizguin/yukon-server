@@ -1,11 +1,11 @@
 import GamePlugin from '@plugin/GamePlugin'
 
+import { FlooringAlreadyOwnedError, InsufficientCoinsError } from '@utils/error'
 import { config } from '@config'
 import Database from '@database/Database'
 import { flooring } from '@data'
 import type GameUser from '@objects/user/GameUser'
 import type IglooRoom from '@objects/room/Igloo'
-import { InsufficientCoinsError } from '@utils/error'
 
 import { type } from 'arktype'
 
@@ -161,14 +161,28 @@ export default class Igloo extends GamePlugin {
         }
 
         try {
-            await user.purchase(item.cost, tx =>
-                tx.igloo.update({
+            await user.purchase(item.cost, async tx => {
+                const savedIgloo = await tx.igloo.findUniqueOrThrow({
+                    where: { userId: user.id },
+                    select: { flooring: true }
+                })
+
+                if (savedIgloo.flooring === flooringId) {
+                    throw new FlooringAlreadyOwnedError()
+                }
+
+                return tx.igloo.update({
                     where: { userId: user.id },
                     data: { flooring: flooringId }
                 })
-            )
+            })
 
         } catch (error) {
+            if (error instanceof FlooringAlreadyOwnedError) {
+                user.send('error', { error: 'You already have this item.' })
+                return
+            }
+
             if (error instanceof InsufficientCoinsError) {
                 user.send('error', { error: 'You need more coins.' })
                 return

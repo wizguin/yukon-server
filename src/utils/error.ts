@@ -2,6 +2,8 @@ import { Prisma } from '../generated/prisma/client'
 
 export class InsufficientCoinsError extends Error { }
 
+export class FlooringAlreadyOwnedError extends Error { }
+
 export class FurnitureLimitError extends Error { }
 
 export function isUniqueConstraintError(error: unknown) {
