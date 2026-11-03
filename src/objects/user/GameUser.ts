@@ -379,22 +379,6 @@ export default class GameUser extends User {
         this.buddyRequests = this.buddyRequests.filter(request => request !== id)
     }
 
-    updateCoins(coins: number | string, gameOver = false) {
-        if (typeof coins === 'string') {
-            coins = parseInt(coins)
-        }
-
-        if (!isNaN(coins)) {
-            coins = clamp(this.coins + coins, 0, 1_000_000_000)
-
-            this.update({ coins })
-        }
-
-        if (gameOver) {
-            this.send('game_over', { coins: coins || this.coins })
-        }
-    }
-
     async addSystemMail(postcardId: number, details?: string) {
         const postcard = await this.postcards.addSystem(postcardId, details)
 
