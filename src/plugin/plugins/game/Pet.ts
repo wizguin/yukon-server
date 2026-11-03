@@ -47,10 +47,10 @@ export default class Pet extends GamePlugin {
         pet_start_walk: this.petStartWalk
     }
 
-    adoptPet(args: unknown, user: GameUser) {
+    async adoptPet(args: unknown, user: GameUser) {
         const { typeId, name } = AdoptPet.assert(args)
 
-        user.pets.add(typeId, name)
+        await user.pets.add(typeId, name)
     }
 
     async getPets(args: unknown, user: GameUser) {

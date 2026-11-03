@@ -1,5 +1,6 @@
 import BaseCollection from '@database/BaseCollection'
 
+import { InsufficientCoinsError, PetLimitError } from '@utils/error'
 import Pet, { type Update } from '@objects/pet/Pet'
 import Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
@@ -44,53 +45,47 @@ export default class PetCollection extends BaseCollection<Pet> {
 
         const { cost } = pets[typeId]
 
-        if (this.user.coins < cost) {
-            this.user.send('error', { error: 'You need more coins.' })
-            return
-        }
+        const user = this.user as GameUser
+        let record: PrismaPet
 
         try {
-            const record = await this.insertPetRecord(typeId, name)
+            record = await this.insertPetRecord(typeId, name, cost)
 
-            // Max pets
-            if (!record) {
+        } catch (error) {
+            if (error instanceof PetLimitError) {
                 return
             }
 
-            // todo: no casting
-            const user = this.user as GameUser
+            if (error instanceof InsufficientCoinsError) {
+                user.send('error', { error: 'You need more coins.' })
+                return
+            }
 
-            const pet = createPet(user, record)
-
-            this.collect(pet)
-
-            user.updateCoins(-cost)
-            user.send('adopt_pet', { id: record.id, coins: user.coins })
-            user.addSystemMail(adoptPostcard, name)
-
-        } catch (error) {
-            console.error(error)
+            throw error
         }
+
+        const pet = createPet(user, record)
+
+        this.collect(pet)
+
+        // todo: move this to user.addPet, collection should only be creating records and collecting records
+        user.send('adopt_pet', { id: record.id, coins: user.coins })
+        await user.addSystemMail(adoptPostcard, name)
     }
 
-    private async insertPetRecord(typeId: number, name: string) {
-        return Database.$transaction(async transaction => {
-            // Acquire row lock
-            await transaction.$executeRaw`
-                SELECT id FROM users WHERE id = ${this.user.id} FOR UPDATE
-            `
-
-            const count = await transaction.pet.count({
+    private insertPetRecord(typeId: number, name: string, cost: number) {
+        return (this.user as GameUser).purchase(cost, async tx => {
+            const count = await tx.pet.count({
                 where: {
                     userId: this.user.id
                 }
             })
 
             if (count >= maxPets) {
-                return null
+                throw new PetLimitError()
             }
 
-            return transaction.pet.create({
+            return tx.pet.create({
                 data: {
                     userId: this.user.id,
                     typeId,

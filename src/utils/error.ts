@@ -6,6 +6,8 @@ export class FlooringAlreadyOwnedError extends Error { }
 
 export class FurnitureLimitError extends Error { }
 
+export class PetLimitError extends Error { }
+
 export class InboxFullError extends Error { }
 
 export function isUniqueConstraintError(error: unknown) {
