@@ -5,7 +5,7 @@ import type GameUser from '@objects/user/GameUser'
 import { type } from 'arktype'
 
 const JoinWaddle = type({
-    waddle: 'number'
+    waddle: 'number.integer'
 })
 
 export default class Waddle extends GamePlugin {

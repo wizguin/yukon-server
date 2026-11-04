@@ -14,11 +14,11 @@ const SendMail = type({
 })
 
 const DeleteMail = type({
-    id: 'number'
+    id: 'number.integer'
 })
 
 const DeleteMailFrom = type({
-    senderId: 'number | null'
+    senderId: 'number.integer | null'
 })
 
 const postcardCost = 10

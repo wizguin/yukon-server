@@ -5,8 +5,8 @@ import { type } from 'arktype'
 const Config = type({
     crypto: {
         secret: 'string',
-        rounds: 'number',
-        loginKeyExpiry: 'number'
+        rounds: 'number.integer',
+        loginKeyExpiry: 'number.integer'
     },
 
     cors: {
@@ -15,27 +15,27 @@ const Config = type({
 
     rateLimit: {
         enabled: 'boolean',
-        addressConnectsPerSecond: 'number',
-        addressEventsPerSecond: 'number',
-        userEventsPerSecond: 'number',
+        addressConnectsPerSecond: 'number.integer',
+        addressEventsPerSecond: 'number.integer',
+        userEventsPerSecond: 'number.integer',
         ipAddressHeader: 'false | string'
     },
 
     worlds: {
         '[string]': {
             host: 'string',
-            port: 'number',
-            'maxUsers?': 'number'
+            port: 'number.integer',
+            'maxUsers?': 'number.integer'
         }
     },
 
     cooldowns: {
-        '[string]': 'number'
+        '[string]': 'number.integer'
     },
 
     game: {
-        preferredSpawn: 'number',
-        iglooIdOffset: 'number'
+        preferredSpawn: 'number.integer',
+        iglooIdOffset: 'number.integer'
     }
 })
 

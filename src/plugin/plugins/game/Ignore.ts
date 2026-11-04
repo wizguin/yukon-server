@@ -6,7 +6,7 @@ import { getUsername } from '@utils/user'
 import { type } from 'arktype'
 
 const IgnoreId = type({
-    id: 'number'
+    id: 'number.integer'
 })
 
 export default class Ignore extends GamePlugin {

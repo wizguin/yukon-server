@@ -9,13 +9,13 @@ import Igloo from '@objects/room/Igloo'
 import { type } from 'arktype'
 
 const JoinRoom = type({
-    room: 'number',
+    room: 'number.integer',
     'x?': X,
     'y?': Y
 })
 
 const JoinIgloo = type({
-    igloo: 'number',
+    igloo: 'number.integer',
     'x?': X,
     'y?': Y
 })

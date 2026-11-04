@@ -18,15 +18,15 @@ const AddFurniture = type({
 })
 
 const UpdateIgloo = type({
-    type: 'number'
+    type: 'number.integer'
 })
 
 const Furniture = type({
-    furnitureId: 'number',
-    x: 'number',
-    y: 'number',
-    rotation: 'number',
-    frame: 'number'
+    furnitureId: 'number.integer',
+    x: 'number.integer',
+    y: 'number.integer',
+    rotation: 'number.integer',
+    frame: 'number.integer'
 })
 
 const UpdateFurniture = type({
@@ -38,11 +38,11 @@ const UpdateFlooring = type({
 })
 
 const UpdateMusic = type({
-    music: '0 <= number <= 999'
+    music: '0 <= number.integer <= 999'
 })
 
 const GetIglooOpen = type({
-    igloo: 'number'
+    igloo: 'number.integer'
 })
 
 export default class Igloo extends GamePlugin {

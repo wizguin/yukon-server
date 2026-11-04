@@ -8,7 +8,7 @@ import Igloo from '@objects/room/Igloo'
 import { type } from 'arktype'
 
 const BuddyId = type({
-    id: 'number'
+    id: 'number.integer'
 })
 
 export default class Buddy extends GamePlugin {

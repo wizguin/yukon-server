@@ -7,7 +7,7 @@ import lockUsers from '@database/lockUsers'
 import { type } from 'arktype'
 
 const Id = type({
-    id: 'number'
+    id: 'number.integer'
 })
 
 export default class Moderation extends GamePlugin {

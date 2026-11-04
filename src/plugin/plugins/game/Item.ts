@@ -8,7 +8,7 @@ import { type } from 'arktype'
 const slots = ['color', 'head', 'face', 'neck', 'body', 'hand', 'feet', 'flag', 'photo', 'award']
 
 const UpdatePlayer = type({
-    item: 'number'
+    item: 'number.integer'
 })
 
 const AddItem = type({

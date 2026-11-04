@@ -7,7 +7,7 @@ import type { User } from '../../../generated/prisma/client'
 import { type } from 'arktype'
 
 const GetPlayer = type({
-    id: 'number'
+    id: 'number.integer'
 })
 
 export default class Get extends GamePlugin {

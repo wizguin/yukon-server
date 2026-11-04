@@ -5,7 +5,7 @@ import GameUser from '@objects/user/GameUser'
 import { type } from 'arktype'
 
 const SendMove = type({
-    move: '1 <= number <= 5'
+    move: '1 <= number.integer <= 5'
 })
 
 export default class SledInstance extends BaseInstance {

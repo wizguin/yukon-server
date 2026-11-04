@@ -6,7 +6,7 @@ import type GameUser from '@objects/user/GameUser'
 import { type } from 'arktype'
 
 const SendFrame = type({
-    frame: '1 <= number <= 26',
+    frame: '1 <= number.integer <= 26',
     'set?': 'boolean'
 })
 

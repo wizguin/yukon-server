@@ -3,45 +3,45 @@ import { loadJson } from '@utils/loadJson'
 import { type } from 'arktype'
 
 const Card = type({
-    name: 'string | number',
-    setId: 'number',
-    powerId: 'number',
+    name: 'string | number.integer',
+    setId: 'number.integer',
+    powerId: 'number.integer',
     element: 'string',
     color: 'string',
-    value: 'number'
+    value: 'number.integer'
 })
 
 const FlooringItem = type({
     name: 'string',
-    cost: 'number',
-    patched: 'number'
+    cost: 'number.integer',
+    patched: 'number.integer'
 })
 
 const FurnitureItem = type({
     name: 'string',
-    type: 'number',
-    sort: 'number',
-    cost: 'number',
-    member: 'number',
-    bait: 'number',
-    patched: 'number',
-    max: 'number'
+    type: 'number.integer',
+    sort: 'number.integer',
+    cost: 'number.integer',
+    member: 'number.integer',
+    bait: 'number.integer',
+    patched: 'number.integer',
+    max: 'number.integer'
 })
 
 const Igloo = type({
     name: 'string',
-    cost: 'number',
-    patched: 'number'
+    cost: 'number.integer',
+    patched: 'number.integer'
 })
 
 const Item = type({
     name: 'string',
-    type: 'number',
-    cost: 'number',
-    member: 'number',
-    bait: 'number',
-    patched: 'number',
-    treasure: 'number'
+    type: 'number.integer',
+    cost: 'number.integer',
+    member: 'number.integer',
+    bait: 'number.integer',
+    patched: 'number.integer',
+    treasure: 'number.integer'
 })
 
 const Matchmaker = type({
@@ -50,30 +50,30 @@ const Matchmaker = type({
 
 const Pet = type({
     name: 'string',
-    cost: 'number',
-    member: 'number',
-    ranPostcard: 'number'
+    cost: 'number.integer',
+    member: 'number.integer',
+    ranPostcard: 'number.integer'
 })
 
 const Room = type({
-    id: 'number',
+    id: 'number.integer',
     name: 'string',
-    member: 'number',
-    maxUsers: 'number',
-    game: 'number',
-    spawn: 'number'
+    member: 'number.integer',
+    maxUsers: 'number.integer',
+    game: 'number.integer',
+    spawn: 'number.integer'
 })
 
 const Table = type({
-    id: 'number',
-    roomId: 'number',
+    id: 'number.integer',
+    roomId: 'number.integer',
     game: 'string'
 })
 
 const Waddle = type({
-    id: 'number',
-    roomId: 'number',
-    seats: 'number',
+    id: 'number.integer',
+    roomId: 'number.integer',
+    seats: 'number.integer',
     game: 'string'
 })
 
@@ -112,7 +112,7 @@ const Cards = type({
 })
 
 const Decks = type({
-    '[string]': 'number[]'
+    '[string]': 'number.integer[]'
 })
 
 export const flooring = Flooring.assert(loadJson('data/flooring'))

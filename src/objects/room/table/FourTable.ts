@@ -5,7 +5,7 @@ import type GameUser from '@objects/user/GameUser'
 import { type } from 'arktype'
 
 const SendMove = type({
-    column: '0 <= number <= 6'
+    column: '0 <= number.integer <= 6'
 })
 
 export default class FourTable extends BaseTable {

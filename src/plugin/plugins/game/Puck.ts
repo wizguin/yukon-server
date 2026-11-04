@@ -5,10 +5,10 @@ import type GameUser from '@objects/user/GameUser'
 import { type } from 'arktype'
 
 const MovePuck = type({
-    x: 'number',
-    y: 'number',
-    speedX: 'number',
-    speedY: 'number'
+    x: 'number.integer',
+    y: 'number.integer',
+    speedX: 'number.integer',
+    speedY: 'number.integer'
 })
 
 const rinkRoomId = 802

@@ -5,7 +5,7 @@ import type GameUser from '@objects/user/GameUser'
 import { type } from 'arktype'
 
 const JoinTable = type({
-    table: 'number'
+    table: 'number.integer'
 })
 
 export default class Table extends GamePlugin {

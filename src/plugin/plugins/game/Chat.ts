@@ -12,19 +12,19 @@ const SendMessage = type({
 })
 
 const SendSafe = type({
-    safe: 'number'
+    safe: 'number.integer'
 })
 
 const SendEmote = type({
-    emote: 'number'
+    emote: 'number.integer'
 })
 
 const SendJoke = type({
-    joke: 'number'
+    joke: 'number.integer'
 })
 
 const SendTour = type({
-    roomId: 'number'
+    roomId: 'number.integer'
 })
 
 const Integer = type('string.integer.parse')

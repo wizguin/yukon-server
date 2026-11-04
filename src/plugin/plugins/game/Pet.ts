@@ -8,27 +8,27 @@ import type { PetModel } from '../../../generated/prisma/models'
 import { type } from 'arktype'
 
 const AdoptPet = type({
-    typeId: 'number',
+    typeId: 'number.integer',
     name: 'string'
 })
 
 const GetPets = type({
-    userId: 'number'
+    userId: 'number.integer'
 })
 
 const PetMove = type({
-    id: 'number',
+    id: 'number.integer',
     x: X,
     y: Y
 })
 
 const PetFrame = type({
-    id: 'number',
+    id: 'number.integer',
     frame: '26 | 32 | 33'
 })
 
 const PetId = type({
-    id: 'number'
+    id: 'number.integer'
 })
 
 export default class Pet extends GamePlugin {
