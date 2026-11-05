@@ -64,6 +64,7 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
         try {
             await Database.postcard.deleteMany({
                 where: {
+                    userId: this.user.id,
                     senderId
                 }
             })
