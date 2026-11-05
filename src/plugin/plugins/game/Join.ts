@@ -48,12 +48,10 @@ export default class Join extends GamePlugin {
 
         // Update token on database now that user has fully connected
         if (user.token.oldSelector) {
-            await Database.authToken.delete({
+            await Database.authToken.deleteMany({
                 where: {
-                    userId_selector: {
-                        userId: user.id,
-                        selector: user.token.oldSelector
-                    }
+                    userId: user.id,
+                    selector: user.token.oldSelector
                 }
             })
         }
