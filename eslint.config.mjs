@@ -31,7 +31,6 @@ export default defineConfig(
                     null: 'ignore'
                 }
             ],
-            'no-return-await': 'error',
             'object-shorthand': 'error',
             'sort-imports': [
                 'error',
