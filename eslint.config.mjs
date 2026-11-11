@@ -5,11 +5,19 @@ import tseslint from 'typescript-eslint'
 
 export default defineConfig(
     globalIgnores([
-        'dist'
+        'dist',
+        'src/generated'
     ]),
     eslint.configs.recommended,
-    tseslint.configs.recommended,
+    tseslint.configs.recommendedTypeChecked,
     {
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname
+            }
+        },
+
         plugins: {
             '@stylistic': stylistic
         },
@@ -138,5 +146,9 @@ export default defineConfig(
                 }
             ]
         }
+    },
+    {
+        files: ['**/*.{js,cjs,mjs}', 'prisma.config.ts'],
+        extends: [tseslint.configs.disableTypeChecked]
     }
 )
