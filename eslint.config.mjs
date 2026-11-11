@@ -148,6 +148,12 @@ export default defineConfig(
         }
     },
     {
+        files: ['src/plugin/plugins/**/*.ts'],
+        rules: {
+            '@typescript-eslint/unbound-method': 'off'
+        }
+    },
+    {
         files: ['**/*.{js,cjs,mjs}', 'prisma.config.ts'],
         extends: [tseslint.configs.disableTypeChecked]
     }
