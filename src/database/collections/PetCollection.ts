@@ -30,7 +30,7 @@ export default class PetCollection extends BaseCollection<Pet> {
         super(user, pets, 'id')
 
         // First update happens immediately
-        this.petUpdate = setTimeout(() => this.updatePets(), 1)
+        this.petUpdate = setTimeout(() => this.runPetUpdate(), 1)
     }
 
     async add(typeId: number, name: string) {
@@ -114,6 +114,12 @@ export default class PetCollection extends BaseCollection<Pet> {
         }
     }
 
+    private runPetUpdate() {
+        this.updatePets().catch(error => {
+            this.user.handler.handleError(error)
+        })
+    }
+
     async updatePets() {
         const updates: SendUpdate[] = []
 
@@ -130,7 +136,7 @@ export default class PetCollection extends BaseCollection<Pet> {
         }
 
         // Schedule next update
-        this.petUpdate = setTimeout(() => this.updatePets(), updateInterval)
+        this.petUpdate = setTimeout(() => this.runPetUpdate(), updateInterval)
     }
 
     sendUpdates(updates: SendUpdate[]) {
