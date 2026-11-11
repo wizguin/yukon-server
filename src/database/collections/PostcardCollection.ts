@@ -53,7 +53,7 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
                 }
             })
 
-            super.remove(postcardId)
+            this.uncollect(postcardId)
 
         } catch (error) {
             console.error(error)
@@ -71,7 +71,7 @@ export default class PostcardCollection extends BaseCollection<Postcard> {
 
             for (const [key, postcard] of this.collection) {
                 if (postcard.senderId === senderId) {
-                    super.remove(key)
+                    this.uncollect(key)
                 }
             }
 

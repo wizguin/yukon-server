@@ -52,7 +52,7 @@ export default class IgnoreCollection extends BaseCollection<Ignore> {
             }
         })
 
-        super.remove(ignoreId)
+        this.uncollect(ignoreId)
     }
 
     toJSON() {

@@ -29,12 +29,6 @@ export default abstract class BaseCollection<Record> {
         return this.collection.size
     }
 
-    abstract add(...args: (number | string | undefined)[]): void
-
-    remove(key: number) {
-        this.collection.delete(key)
-    }
-
     collect(record: Record) {
         const indexValue = record[this.indexKey]
 
@@ -44,6 +38,10 @@ export default abstract class BaseCollection<Record> {
         } else {
             console.error('Record could not be added to collection', { record })
         }
+    }
+
+    uncollect(key: number) {
+        this.collection.delete(key)
     }
 
     collectRecords(records: Record[]) {

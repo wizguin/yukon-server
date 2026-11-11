@@ -107,7 +107,7 @@ export default class PetCollection extends BaseCollection<Pet> {
                 }
             })
 
-            super.remove(petId)
+            this.uncollect(petId)
 
         } catch (error) {
             console.error(error)

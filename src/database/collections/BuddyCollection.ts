@@ -1,7 +1,7 @@
 import BaseCollection from '@database/BaseCollection'
 
-import type GameHandler from '../../handlers/GameHandler'
 import Database from '@database/Database'
+import type GameHandler from '../../handlers/GameHandler'
 import type User from '@objects/user/User'
 
 import type { Buddy as PrismaBuddy } from '../../generated/prisma/client'
@@ -62,7 +62,7 @@ export default class BuddyCollection extends BaseCollection<Buddy> {
             }
         })
 
-        super.remove(buddyId)
+        this.uncollect(buddyId)
     }
 
     sendOnline() {
