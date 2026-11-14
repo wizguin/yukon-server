@@ -6,8 +6,8 @@ const Card = type({
     name: 'string | number.integer',
     setId: 'number.integer',
     powerId: 'number.integer',
-    element: 'string',
-    color: 'string',
+    element: '"f" | "w" | "s"',
+    color: '"r" | "b" | "g" | "y" | "o" | "p"',
     value: 'number.integer'
 })
 

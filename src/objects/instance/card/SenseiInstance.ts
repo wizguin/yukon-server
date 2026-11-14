@@ -59,7 +59,7 @@ export default class SenseiInstance extends CardInstance {
         const canBeatSensei = user.ninjaRank >= this.itemAwards.length - 1
 
         const cards = this.me.dealCards(canBeatSensei)
-        const senseiCards = this.sensei.dealCards(cards, canBeatSensei)
+        const senseiCards = this.sensei.dealSenseiCards(cards, canBeatSensei)
 
         user.send('send_deal', { cards })
         user.send('send_opponent_deal', { deal: senseiCards.length })

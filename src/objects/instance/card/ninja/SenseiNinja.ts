@@ -1,5 +1,3 @@
-// @ts-nocheck temp
-
 import Ninja from './Ninja'
 
 import Card from './Card'
@@ -7,7 +5,11 @@ import Rules from '../Rules'
 
 import { cards } from '@data'
 
+type CardData = (typeof cards)[number]
+
 export default class SenseiNinja extends Ninja {
+
+    moves: Record<number, number[]>
 
     constructor() {
         super()
@@ -15,7 +17,7 @@ export default class SenseiNinja extends Ninja {
         this.moves = {}
     }
 
-    dealCards(opponentCards, canBeatSensei) {
+    dealSenseiCards(opponentCards: Card[], canBeatSensei: boolean) {
         const currentDealt = []
         const dealNumber = this.dealtSize - this.dealt.length
 
@@ -34,13 +36,13 @@ export default class SenseiNinja extends Ninja {
     }
 
     dealRandomCard() {
-        const ids = Object.keys(cards)
+        const ids = Object.keys(cards).map(Number)
 
         return this.getRandomElement(ids)
     }
 
-    dealWinCard(card) {
-        const winCards = Object.keys(cards).filter(c => this.beatsCard(cards[c], card))
+    dealWinCard(card: Card) {
+        const winCards = Object.keys(cards).map(Number).filter(c => this.beatsCard(cards[c], card))
 
         if (!winCards.length) {
             return this.dealRandomCard()
@@ -49,28 +51,37 @@ export default class SenseiNinja extends Ninja {
         return this.getRandomElement(winCards)
     }
 
-    beatsCard(first, second) {
-        if (first.element != second.element) {
+    beatsCard(first: CardData, second: Card) {
+        if (first.element !== second.element) {
             return this.compareElements(first, second)
         }
 
         return first.value > second.value
     }
 
-    compareElements(first, second) {
-        return Rules.elements[first.element] == second.element
+    compareElements(first: CardData, second: Card) {
+        return Rules.elements[first.element] === second.element
     }
 
-    pickCard(opponentCard) {
+    pickCard(opponentCard: number) {
         const card = this.removeFromMoves(opponentCard)
+
+        if (card === undefined) {
+            return
+        }
+
         this.pick = this.getPick(card)
 
-        this.opponent.send('pick_card', { card: this.dealt.indexOf(this.pick) })
+        if (!this.pick) {
+            return
+        }
+
+        this.sendOpponent('pick_card', { card: this.dealt.indexOf(this.pick) })
 
         this.dealt.splice(this.dealt.indexOf(this.pick), 1)
     }
 
-    addToMoves(opponentCard, deal) {
+    addToMoves(opponentCard: number, deal: number) {
         if (!this.moves[opponentCard]) {
             this.moves[opponentCard] = []
         }
@@ -78,22 +89,28 @@ export default class SenseiNinja extends Ninja {
         this.moves[opponentCard].push(deal)
     }
 
-    removeFromMoves(opponentCard) {
-        const card = this.moves[opponentCard].pop()
+    removeFromMoves(opponentCard: number) {
+        const moves = this.moves[opponentCard]
 
-        if (!this.moves[opponentCard].length) {
+        if (!moves) {
+            return
+        }
+
+        const card = moves.pop()
+
+        if (!moves.length) {
             delete this.moves[opponentCard]
         }
 
         return card
     }
 
-    getRandomElement(array) {
+    getRandomElement(array: number[]) {
+        if (!array.length) {
+            throw new Error('No cards available for Sensei')
+        }
+
         return array[Math.floor(Math.random() * array.length)]
-    }
-
-    send() {
-
     }
 
 }
