@@ -1,6 +1,4 @@
-// @ts-nocheck temp
-
-import BaseInstance from '../BaseInstance'
+import BaseInstance, { type InstanceUsers } from '../BaseInstance'
 
 import Ninja from './ninja/Ninja'
 import Power from './Power'
@@ -9,7 +7,7 @@ import type GameUser from '@objects/user/GameUser'
 
 export default class CardInstance extends BaseInstance {
 
-    constructor(users: (GameUser | null)[]) {
+    constructor(users: InstanceUsers) {
         super(users, 998)
 
         this.ninjas = {}

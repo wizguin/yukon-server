@@ -1,15 +1,17 @@
 import type GameHandler from '../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
+export type InstanceUsers = (GameUser | null)[]
+
 export default class BaseInstance {
 
     private roomId: number
 
-    users: (GameUser | null)[]
+    users: InstanceUsers
     ready: GameUser[] = []
     started = false
 
-    constructor(users: (GameUser | null)[], roomId: number) {
+    constructor(users: InstanceUsers, roomId: number) {
         this.users = [...users]
         this.roomId = roomId
 

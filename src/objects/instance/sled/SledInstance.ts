@@ -1,4 +1,4 @@
-import BaseInstance from '../BaseInstance'
+import BaseInstance, { type InstanceUsers } from '../BaseInstance'
 
 import GameUser from '@objects/user/GameUser'
 
@@ -12,7 +12,7 @@ export default class SledInstance extends BaseInstance {
 
     coins = [20, 10, 5, 5]
 
-    constructor(users: (GameUser | null)[]) {
+    constructor(users: InstanceUsers) {
         super(users, 999)
     }
 
