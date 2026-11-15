@@ -11,12 +11,12 @@ export default class BaseInstance {
     ready: GameUser[] = []
     started = false
 
+    private readonly startGameListener = this.handleStartGame.bind(this)
+    private readonly leaveGameListener = this.handleLeaveGame.bind(this)
+
     constructor(users: InstanceUsers, roomId: number) {
         this.users = [...users]
         this.roomId = roomId
-
-        this.handleStartGame = this.handleStartGame.bind(this)
-        this.handleLeaveGame = this.handleLeaveGame.bind(this)
     }
 
     init() {
@@ -34,20 +34,16 @@ export default class BaseInstance {
     }
 
     addListeners(user: GameUser) {
-        // @ts-expect-error temp
-        user.events.on('start_game', this.handleStartGame)
-        // @ts-expect-error temp
-        user.events.on('leave_game', this.handleLeaveGame)
+        user.events?.on('start_game', this.startGameListener)
+        user.events?.on('leave_game', this.leaveGameListener)
     }
 
     removeListeners(user: GameUser) {
-        // @ts-expect-error temp
-        user.events.off('start_game', this.handleStartGame)
-        // @ts-expect-error temp
-        user.events.off('leave_game', this.handleLeaveGame)
+        user.events?.off('start_game', this.startGameListener)
+        user.events?.off('leave_game', this.leaveGameListener)
     }
 
-    handleStartGame(_args: any, user: GameUser) {
+    handleStartGame(_args: unknown, user: GameUser) {
         if (!this.started && !this.ready.includes(user)) {
             this.ready.push(user)
 
@@ -55,7 +51,7 @@ export default class BaseInstance {
         }
     }
 
-    handleLeaveGame(_args: any, user: GameUser) {
+    handleLeaveGame(_args: unknown, user: GameUser) {
         this.remove(user)
     }
 
@@ -78,7 +74,7 @@ export default class BaseInstance {
         this.users[seat] = null
 
         // Remove from ready
-        this.ready = this.ready.filter(u => u != user)
+        this.ready = this.ready.filter(u => u !== user)
 
         user.minigameRoom = null
     }
