@@ -87,7 +87,7 @@ export default class CardInstance extends BaseInstance {
 
         me.pickCard(args.card)
 
-        if (!me.opponent!.pick) {
+        if (!me.opponent?.pick) {
             return
         }
 
@@ -117,7 +117,7 @@ export default class CardInstance extends BaseInstance {
         }
 
         me.resetTurn()
-        me.opponent!.resetTurn()
+        me.opponent?.resetTurn()
     }
 
     getRoundWinner() {
@@ -301,7 +301,7 @@ export default class CardInstance extends BaseInstance {
 
     async checkWin(winSeat: number) {
         const winner = this.getNinja(winSeat)
-        const winCard = winner.pick!
+        const winCard = this.getPick(winSeat)
 
         const loser = this.getNinja(this.getOppositeSeat(winSeat))
 
@@ -390,9 +390,12 @@ export default class CardInstance extends BaseInstance {
                 continue
             }
 
-            const winSeat = ninjas.indexOf(ninja.opponent!)
+            const opponent = ninja.opponent!
 
-            await this.updateNinja(ninja.opponent!, ninja)
+            const winSeat = ninjas.indexOf(opponent)
+
+            await this.updateNinja(opponent, ninja)
+
             this.sendWin(winSeat)
 
             return
@@ -487,13 +490,29 @@ export default class CardInstance extends BaseInstance {
     getPick(seat: number) {
         const ninja = this.getNinja(seat)
 
-        return ninja.pick!
+        const pick = ninja.pick
+
+        if (!pick) {
+            throw new Error('Ninja has no selected card')
+        }
+
+        return pick
     }
 
     getNinja(seat: number) {
         const user = this.users[seat]
 
-        return this.ninjas[user!.id]
+        if (!user) {
+            throw new Error(`No player in seat ${seat}`)
+        }
+
+        const ninja = this.ninjas[user.id]
+
+        if (!ninja) {
+            throw new Error(`Ninja not found for player ${user.id}`)
+        }
+
+        return ninja
     }
 
     getOpponent(user: GameUser) {
