@@ -9,15 +9,18 @@ export default class Waddle {
 
     users: (GameUser | null)[]
 
-    id!: number
-    roomId!: number
-    seats!: number
-    game!: string
+    id: number
+    roomId: number
+    seats: number
+    game: string
 
-    constructor(data: WaddleData) {
-        Object.assign(this, data)
+    constructor({ id, roomId, seats, game }: WaddleData) {
+        this.id = id
+        this.roomId = roomId
+        this.seats = seats
+        this.game = game
 
-        this.users = new Array<GameUser | null>(data.seats).fill(null)
+        this.users = new Array<GameUser | null>(seats).fill(null)
     }
 
     get notFull() {
@@ -30,6 +33,7 @@ export default class Waddle {
         }
 
         const seat = this.users.indexOf(null)
+
         this.users[seat] = user
 
         user.waddle = this
@@ -45,6 +49,7 @@ export default class Waddle {
 
     remove(user: GameUser) {
         const seat = this.users.indexOf(user)
+
         this.users[seat] = null
 
         user.waddle = null
