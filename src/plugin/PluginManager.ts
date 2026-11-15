@@ -17,7 +17,8 @@ export default class PluginManager {
     events: EventEmitter
     id: string
     dir: string
-    plugins: Record<string, Plugin> = {}
+    pluginsCount = 0
+    eventsCount = 0
 
     constructor(private handler: BaseHandler, pluginsDir: string) {
         this.events = handler.events
@@ -28,20 +29,6 @@ export default class PluginManager {
         this.loadPlugins().catch(error => {
             this.handler.handleError(error)
         })
-    }
-
-    get pluginsCount() {
-        return Object.keys(this.plugins).length
-    }
-
-    get eventsCount() {
-        let eventsCount = 0
-
-        for (const plugin of Object.values(this.plugins)) {
-            eventsCount += Object.keys(plugin.events).length
-        }
-
-        return eventsCount
     }
 
     async loadPlugins() {
@@ -59,7 +46,7 @@ export default class PluginManager {
 
         const plugin = new pluginClass(this.handler)
 
-        this.plugins[name.toLowerCase()] = plugin
+        this.pluginsCount++
 
         this.loadEvents(plugin)
     }
@@ -74,6 +61,8 @@ export default class PluginManager {
         const handler = plugin.events[event]
 
         this.events.on(event, (...args: unknown[]) => this.handleEvent(plugin, handler, args))
+
+        this.eventsCount++
     }
 
     private handleEvent(plugin: Plugin, handler: EventHandler, args: unknown[]) {

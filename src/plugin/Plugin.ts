@@ -16,8 +16,4 @@ export default class Plugin {
         this.users = handler.users
     }
 
-    get plugins() {
-        return this.handler.plugins.plugins
-    }
-
 }
