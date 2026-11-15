@@ -1,5 +1,6 @@
+import createInstance from '@objects/instance/createInstance'
+
 import type GameUser from '@objects/user/GameUser'
-import InstanceFactory from '@objects/instance/InstanceFactory'
 
 export default class Waddle {
 
@@ -49,7 +50,7 @@ export default class Waddle {
     }
 
     start() {
-        const instance = InstanceFactory.createInstance(this)
+        const instance = createInstance(this)
 
         this.reset()
         instance.init()
