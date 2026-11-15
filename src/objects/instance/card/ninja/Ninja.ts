@@ -4,6 +4,8 @@ import type GameUser from '@objects/user/GameUser'
 
 import { cards } from '@data'
 
+export type ElementCards = [Card[], Card[], Card[]]
+
 export default class Ninja {
 
     user: GameUser | null
@@ -38,6 +40,10 @@ export default class Ninja {
         if (user) {
             this.setDeck()
         }
+    }
+
+    getWinValues(): ElementCards {
+        return [this.wins.f, this.wins.w, this.wins.s]
     }
 
     setDeck() {

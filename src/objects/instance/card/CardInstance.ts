@@ -1,6 +1,6 @@
 import BaseInstance, { type InstanceUsers } from '../BaseInstance'
 
-import Ninja from './ninja/Ninja'
+import Ninja, { type ElementCards } from './ninja/Ninja'
 import Power from './Power'
 import Rules from './Rules'
 
@@ -329,7 +329,7 @@ export default class CardInstance extends BaseInstance {
     }
 
     getWinningCards(winner: Ninja) {
-        const wins = Object.values(winner.wins)
+        const wins = winner.getWinValues()
 
         for (const element of wins) {
             const result = this.check1ElementWin(element)
@@ -368,7 +368,7 @@ export default class CardInstance extends BaseInstance {
         return false
     }
 
-    check3ElementWin(cards: Card[][]) {
+    check3ElementWin(cards: ElementCards) {
         const product = this.product(cards)
 
         for (const combo of product) {
@@ -507,13 +507,18 @@ export default class CardInstance extends BaseInstance {
         return (seat + 1) % 2
     }
 
-    product(arrays: Card[][]): Card[][] {
-        const first = arrays[0].map(card => [card])
+    product([fire, water, snow]: ElementCards) {
+        const combinations: [Card, Card, Card][] = []
 
-        return arrays.slice(1).reduce(
-            (acc, arr) => acc.flatMap(x => arr.map(y => [...x, y])),
-            first
-        )
+        for (const fireCard of fire) {
+            for (const waterCard of water) {
+                for (const snowCard of snow) {
+                    combinations.push([fireCard, waterCard, snowCard])
+                }
+            }
+        }
+
+        return combinations
     }
 
 }
