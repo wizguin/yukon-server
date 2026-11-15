@@ -1,6 +1,9 @@
 import createInstance from '@objects/instance/createInstance'
 
 import type GameUser from '@objects/user/GameUser'
+import type { waddles } from '@data'
+
+type WaddleData = (typeof waddles)[number]
 
 export default class Waddle {
 
@@ -11,10 +14,10 @@ export default class Waddle {
     seats!: number
     game!: string
 
-    constructor(data: any) {
+    constructor(data: WaddleData) {
         Object.assign(this, data)
 
-        this.users = new Array(data.seats).fill(null)
+        this.users = new Array<GameUser | null>(data.seats).fill(null)
     }
 
     get notFull() {
