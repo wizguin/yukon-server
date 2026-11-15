@@ -17,5 +17,5 @@ export default function createInstance(waddle: Waddle) {
         throw new Error(`Unsupported waddle game: ${game}`)
     }
 
-    return new types[game as InstanceType](waddle)
+    return new types[game as InstanceType](waddle.users)
 }

@@ -3,12 +3,15 @@ import type GameUser from '@objects/user/GameUser'
 
 export default class BaseInstance {
 
+    private roomId: number
+
     users: (GameUser | null)[]
     ready: GameUser[] = []
     started = false
 
-    constructor(waddle: any, private id: number) {
-        this.users = [...waddle.users]
+    constructor(users: (GameUser | null)[], roomId: number) {
+        this.users = [...users]
+        this.roomId = roomId
 
         this.handleStartGame = this.handleStartGame.bind(this)
         this.handleLeaveGame = this.handleLeaveGame.bind(this)
@@ -22,7 +25,7 @@ export default class BaseInstance {
 
             this.addListeners(user)
 
-            user.joinRoom((user.handler as GameHandler).rooms[this.id])
+            user.joinRoom((user.handler as GameHandler).rooms[this.roomId])
 
             user.minigameRoom = this
         }
@@ -56,7 +59,7 @@ export default class BaseInstance {
 
     checkStart() {
         // Compare with non null values in case user disconnects
-        if (this.ready.length == this.users.length) {
+        if (this.ready.length === this.users.length) {
             this.start()
         }
     }

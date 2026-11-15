@@ -5,11 +5,12 @@ import BaseInstance from '../BaseInstance'
 import Ninja from './ninja/Ninja'
 import Power from './Power'
 import Rules from './Rules'
+import type GameUser from '@objects/user/GameUser'
 
 export default class CardInstance extends BaseInstance {
 
-    constructor(waddle) {
-        super(waddle, 998)
+    constructor(users: (GameUser | null)[]) {
+        super(users, 998)
 
         this.ninjas = {}
 

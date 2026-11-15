@@ -69,7 +69,7 @@ export default class CardMatchmaker {
         }
 
         const users = matched.map(player => player.user)
-        const instance = new CardInstance({ users })
+        const instance = new CardInstance(users)
 
         instance.init()
     }

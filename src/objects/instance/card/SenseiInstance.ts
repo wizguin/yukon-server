@@ -7,7 +7,7 @@ import SenseiNinja from './ninja/SenseiNinja'
 export default class SenseiInstance extends CardInstance {
 
     constructor(user) {
-        super({ users: [user] })
+        super([user])
 
         this.user = user
 

@@ -12,8 +12,8 @@ export default class SledInstance extends BaseInstance {
 
     coins = [20, 10, 5, 5]
 
-    constructor(waddle: any) {
-        super(waddle, 999)
+    constructor(users: (GameUser | null)[]) {
+        super(users, 999)
     }
 
     addListeners(user: GameUser) {
