@@ -163,10 +163,10 @@ export default class Pet extends GamePlugin {
         }
     }
 
-    petStartWalk(args: unknown, user: GameUser) {
+    async petStartWalk(args: unknown, user: GameUser) {
         const { id } = PetId.assert(args)
 
-        user.startWalkingPet(id)
+        await user.startWalkingPet(id)
     }
 
     sendInteraction(user: GameUser, petId: number, action: string, updates: Record<string, number>) {
