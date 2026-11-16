@@ -58,7 +58,7 @@ export default class GameAuth extends GamePlugin {
             return user.close()
         }
 
-        this.compareLoginKey(user, key, token, createToken)
+        await this.compareLoginKey(user, key, token, createToken)
     }
 
     async compareLoginKey(user: GameUser, key: string, token?: string, createToken?: boolean) {
