@@ -369,8 +369,8 @@ export default class GameUser extends User {
         this.send('buddy_accept', { id, username, requester, online })
     }
 
-    removeBuddy(id: number) {
-        this.buddies.remove(id)
+    async removeBuddy(id: number) {
+        await this.buddies.remove(id)
 
         this.send('buddy_remove', { id })
     }

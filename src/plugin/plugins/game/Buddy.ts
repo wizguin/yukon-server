@@ -97,12 +97,12 @@ export default class Buddy extends GamePlugin {
             return
         }
 
-        user.removeBuddy(id)
+        await user.removeBuddy(id)
 
         const buddy = this.usersById[id]
 
         if (buddy) {
-            buddy.removeBuddy(user.id)
+            await buddy.removeBuddy(user.id)
 
         } else {
             await Database.buddy.delete({
