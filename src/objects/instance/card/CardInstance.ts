@@ -473,7 +473,7 @@ export default class CardInstance extends BaseInstance {
         await user.addItem(item, false)
 
         if (rank in this.postcardAwards) {
-            user.addSystemMail(this.postcardAwards[rank])
+            await user.addSystemMail(this.postcardAwards[rank])
         }
     }
 
