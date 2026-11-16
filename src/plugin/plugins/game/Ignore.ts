@@ -52,14 +52,14 @@ export default class Ignore extends GamePlugin {
         user.send('ignore_add', { id, username })
     }
 
-    ignoreRemove(args: unknown, user: GameUser) {
+    async ignoreRemove(args: unknown, user: GameUser) {
         const { id } = IgnoreId.assert(args)
 
         if (!user.ignores.includes(id)) {
             return
         }
 
-        user.ignores.remove(id)
+        await user.ignores.remove(id)
         user.send('ignore_remove', { id })
     }
 
