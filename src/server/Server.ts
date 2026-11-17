@@ -78,11 +78,11 @@ export default class Server {
     }
 
     async onMessage(message: Message, user: User | GameUser) {
-        if (this.handler.isOnCooldown(message, user)) {
-            return
-        }
-
         try {
+            if (this.handler.isOnCooldown(message, user)) {
+                return
+            }
+
             if (this.rateLimiter) {
                 await this.rateLimiter.addressEvents.consume(user.address)
                 await this.rateLimiter.userEvents.consume(user.getId())
