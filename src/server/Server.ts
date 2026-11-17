@@ -10,14 +10,17 @@ import type User from '@objects/user/User'
 import { Server as IoServer } from 'socket.io'
 import { RateLimiterRes } from 'rate-limiter-flexible'
 import type { Socket } from 'socket.io'
+import { type } from 'arktype'
 
 export type Action = string
 export type Args = Record<string, any>
 
-export interface Message {
-    action: Action
-    args: Args
-}
+const Message = type({
+    action: 'string',
+    args: type({ '[string]': 'unknown' }).narrow(args => !Array.isArray(args))
+})
+
+export type Message = typeof Message.infer
 
 export default class Server {
 
@@ -73,12 +76,14 @@ export default class Server {
 
         console.log(`[${this.id}] Connection from: ${socket.id} ${user.address}`)
 
-        socket.on('message', message => this.onMessage(message, user))
+        socket.on('message', (message: unknown) => this.onMessage(message, user))
         socket.on('disconnect', () => this.onDisconnect(user))
     }
 
-    async onMessage(message: Message, user: User | GameUser) {
+    async onMessage(payload: unknown, user: User | GameUser) {
         try {
+            const message = Message.assert(payload)
+
             if (this.handler.isOnCooldown(message, user)) {
                 return
             }
@@ -92,8 +97,7 @@ export default class Server {
 
         } catch (error) {
             if (!(error instanceof RateLimiterRes)) {
-                // @ts-expect-error temp
-                this.handler.error(error)
+                this.handler.handleError(error)
             }
         }
     }
