@@ -108,6 +108,7 @@ export default class GameAuth extends GamePlugin {
             response.token = await this.genAuthToken(user)
         }
 
+        user.pets.startPetUpdate()
         user.send('game_auth', response)
     }
 

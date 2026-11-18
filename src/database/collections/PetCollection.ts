@@ -22,15 +22,12 @@ const updateInterval = 3.6 * 60000
 
 export default class PetCollection extends BaseCollection<Pet> {
 
-    petUpdate: NodeJS.Timeout
+    petUpdate?: NodeJS.Timeout
 
     constructor(user: User, records: PrismaPet[]) {
         const pets = records.map(record => createPet(user as GameUser, record))
 
         super(user, pets, 'id')
-
-        // First update happens immediately
-        this.petUpdate = setTimeout(() => this.runPetUpdate(), 1)
     }
 
     async add(typeId: number, name: string) {
@@ -112,6 +109,11 @@ export default class PetCollection extends BaseCollection<Pet> {
         } catch (error) {
             console.error(error)
         }
+    }
+
+    startPetUpdate() {
+        // First update happens immediately
+        this.petUpdate = setTimeout(() => this.runPetUpdate(), 1)
     }
 
     private runPetUpdate() {
