@@ -81,7 +81,7 @@ export default class GameUser extends User {
         this.events = new EventEmitter({ captureRejections: true })
 
         this.events.on('error', error => {
-            this.handler.error(error)
+            this.handler.handleError(error)
         })
     }
 
