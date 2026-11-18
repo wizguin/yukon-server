@@ -125,10 +125,9 @@ export default class GameHandler extends BaseHandler {
             }
 
             this.closeAndUpdatePopulation(user)
+
         } catch (error) {
-            if (error instanceof Error) {
-                this.error(error)
-            }
+            this.handleError(error)
         }
     }
 
@@ -162,9 +161,7 @@ export default class GameHandler extends BaseHandler {
             })
 
         } catch (error) {
-            if (error instanceof Error) {
-                this.error(error)
-            }
+            this.handleError(error)
         }
     }
 

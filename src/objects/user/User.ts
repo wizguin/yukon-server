@@ -110,9 +110,7 @@ export default class User {
             return true
 
         } catch (error) {
-            if (error instanceof Error) {
-                this.handler.error(error)
-            }
+            this.handler.handleError(error)
 
             return false
         }

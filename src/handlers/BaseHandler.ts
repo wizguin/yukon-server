@@ -87,14 +87,14 @@ export default class BaseHandler {
         }
 
         if (error instanceof Error) {
-            this.error(error)
+            this.logError(error)
             return
         }
 
         console.error(error)
     }
 
-    error(error: Error) {
+    private logError(error: Error) {
         console.error(`[${this.id}] ERROR: ${error.stack}`)
     }
 
