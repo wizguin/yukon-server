@@ -92,6 +92,10 @@ export default class GameHandler extends BaseHandler {
                 return
             }
 
+            if (user.pets) {
+                user.pets.stopPetUpdate()
+            }
+
             if (!user.authenticated) {
                 return this.closeAndUpdatePopulation(user)
             }
@@ -118,10 +122,6 @@ export default class GameHandler extends BaseHandler {
 
             if (user.id) {
                 this.openIgloos.remove(user)
-            }
-
-            if (user.pets) {
-                user.pets.stopPetUpdate()
             }
 
             this.closeAndUpdatePopulation(user)
