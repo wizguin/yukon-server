@@ -45,7 +45,7 @@ export default class GameAuth extends GamePlugin {
         const { username, key, token, createToken } = auth
         const load = await user.load(username)
 
-        if (!load) {
+        if (!load || !user.socket.connected) {
             return user.close()
         }
 
@@ -106,6 +106,10 @@ export default class GameAuth extends GamePlugin {
         // Create new token
         if (createToken) {
             response.token = await this.genAuthToken(user)
+        }
+
+        if (!user.socket.connected) {
+            return
         }
 
         user.pets.startPetUpdate()
