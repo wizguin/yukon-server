@@ -61,8 +61,7 @@ export default class Server {
 
         } catch (error) {
             if (!(error instanceof RateLimiterRes)) {
-                // @ts-expect-error temp
-                this.handler.error(error)
+                this.handler.handleError(error)
             }
 
             socket.disconnect(true)
