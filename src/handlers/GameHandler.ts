@@ -78,7 +78,7 @@ export default class GameHandler extends BaseHandler {
         for (const id in data.matchmakers) {
             const room = this.rooms[id]
 
-            room.matchmaker = MatchmakerFactory.createMatchmaker(data.matchmakers[id], room)
+            room.matchmaker = MatchmakerFactory.createMatchmaker(data.matchmakers[id], room, this)
         }
     }
 

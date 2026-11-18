@@ -1,3 +1,4 @@
+import type BaseHandler from '../../../handlers/BaseHandler'
 import CardInstance from '@objects/instance/card/CardInstance'
 import type GameUser from '@objects/user/GameUser'
 import MatchmakerPlayer from './MatchmakerPlayer'
@@ -8,19 +9,27 @@ const matchEvery = 10
 
 export default class CardMatchmaker {
 
+    handler: BaseHandler
     room: Room
     players: Record<number, MatchmakerPlayer> = {}
 
-    constructor(matchmaker: any, room: Room) {
+    constructor(matchmaker: any, room: Room, handler: BaseHandler) {
         Object.assign(this, matchmaker)
 
+        this.handler = handler
         this.room = room
 
         this.start()
     }
 
     start() {
-        setInterval(this.tick.bind(this), 1000)
+        setInterval(() => {
+            try {
+                this.tick()
+            } catch (error) {
+                this.handler.handleError(error)
+            }
+        }, 1000)
     }
 
     tick() {
