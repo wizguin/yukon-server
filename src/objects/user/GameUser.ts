@@ -505,6 +505,8 @@ export default class GameUser extends User {
 
             Object.assign(this, rest)
 
+            this.ban = bans[0] ?? null
+
             this.buddies = new BuddyCollection(this, buddies)
             this.cards = new CardCollection(this, cards)
             this.furniture = new FurnitureCollection(this, furnitureInventory)
