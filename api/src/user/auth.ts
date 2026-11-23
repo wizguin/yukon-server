@@ -1,5 +1,5 @@
+import Database from '../../../src/database/Database'
 import Errors from '../errors/Errors'
-import { getUserByUsername } from '../../../src/utils/user'
 
 import { compare } from 'bcrypt'
 import { type } from 'arktype'
@@ -14,7 +14,7 @@ export async function authenticateUser(input: unknown) {
 
     const { username, password } = body
 
-    const user = await getUserByUsername(username)
+    const user = await getUserWithBan(username)
 
     if (!user) {
         return { error: Errors.UserNotFound }
@@ -26,5 +26,40 @@ export async function authenticateUser(input: unknown) {
         return { error: Errors.IncorrectPassword }
     }
 
+    const ban = getBan(user)
+
+    if (ban) {
+        return { error: ban.error }
+    }
+
     return { user }
+}
+
+async function getUserWithBan(username: string) {
+    return Database.user.findUnique({
+        where: { username },
+        include: {
+            bans: {
+                where: { expires: { gt: new Date() } },
+                orderBy: { expires: 'desc' },
+                take: 1
+            }
+        }
+    })
+}
+
+function getBan(user: NonNullable<Awaited<ReturnType<typeof getUserWithBan>>>) {
+    if (user.permaBan) {
+        return { error: Errors.BannedForever }
+    }
+
+    const ban = user.bans[0]
+
+    if (!ban) {
+        return false
+    }
+
+    const hours = Math.round((ban.expires.getTime() - Date.now()) / 60 / 60 / 1000)
+
+    return { error: Errors.Banned.replace('{hours}', String(hours)) }
 }

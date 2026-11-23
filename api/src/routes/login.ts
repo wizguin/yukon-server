@@ -1,5 +1,8 @@
 import { authenticateUser } from '../user/auth'
+import redis from '../../../src/redis/redis'
+import type { User } from '../../../src/generated/prisma/client'
 
+import { createHash, randomBytes } from 'crypto'
 import { type FastifyPluginCallback } from 'fastify'
 import { TraversalError } from 'arktype'
 
@@ -12,7 +15,13 @@ const login: FastifyPluginCallback = (app, _opts, done) => {
                 return reply.code(401).send({ error })
             }
 
-            return reply.send({ success: true })
+            const loginKey = await setLoginKey(user)
+
+            return reply.send({
+                username: user.username,
+                key: loginKey,
+                populations: getWorldPopulations()
+            })
 
         } catch (error) {
             if (error instanceof TraversalError) {
@@ -26,6 +35,21 @@ const login: FastifyPluginCallback = (app, _opts, done) => {
     })
 
     done()
+}
+
+async function setLoginKey(user: User) {
+    const loginKey = randomBytes(32).toString('hex')
+    const loginKeyHash = createHash('sha256').update(loginKey).digest('hex')
+
+    await redis.set(`${user.id}:loginkey`, loginKeyHash, {
+        EX: 300
+    })
+
+    return loginKey
+}
+
+function getWorldPopulations() {
+    return {}
 }
 
 export default login
