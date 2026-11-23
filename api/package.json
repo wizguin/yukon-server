@@ -1,0 +1,14 @@
+{
+    "name": "@yukon-server/api",
+    "description": "Yukon API",
+    "private": true,
+    "scripts": {
+        "dev": "nodemon src/api.ts",
+        "build": "rimraf dist && tsc",
+        "start": "node dist/api/src/api.js"
+    },
+    "devDependencies": {
+        "@fastify/autoload": "^6.6.0",
+        "fastify": "^5.12.8"
+    }
+}
