@@ -10,25 +10,21 @@ const Login = type({
 })
 
 export async function authenticateUser(input: unknown) {
-    const body = Login(input)
-
-    if (body instanceof type.errors) {
-        return { success: false }
-    }
+    const body = Login.assert(input)
 
     const { username, password } = body
 
     const user = await getUserByUsername(username)
 
     if (!user) {
-        return { success: false, error: Errors.UserNotFound }
+        return { error: Errors.UserNotFound }
     }
 
     const match = await compare(password, user.password)
 
     if (!match) {
-        return { success: false, error: Errors.IncorrectPassword }
+        return { error: Errors.IncorrectPassword }
     }
 
-    return { success: true }
+    return { user }
 }
