@@ -1,3 +1,5 @@
+import redis from '../../src/redis/redis'
+
 import fastify from 'fastify'
 import fastifyAutoload from '@fastify/autoload'
 import { join } from 'path'
@@ -16,6 +18,8 @@ app.register(fastifyAutoload, {
 })
 
 async function start() {
+    await redis.connect()
+
     await app.listen({ host: '0.0.0.0', port })
 
     console.log(`Listening on port ${port}`)
