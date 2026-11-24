@@ -36,15 +36,9 @@ npm install
 
 3. Copy "config_example.json" to a new file called "config.json".
 
-4. Generate a new crypto secret.
+4. Import yukon.sql into your MySQL database.
 
-```console
-npm run secret-gen
-```
-
-5. Import yukon.sql into your MySQL database.
-
-6. Update MySQL database credentials.
+5. Update MySQL database credentials.
 
 ```json
 "database": {
@@ -105,12 +99,6 @@ npm run logs
 
 ```console
 npm run monit
-```
-
-* Generate a new crypto secret.
-
-```console
-npm run secret-gen
 ```
 
 ### Account creation

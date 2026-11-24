@@ -10,8 +10,7 @@
     "restart": "pm2 restart ecosystem.config.js",
     "list": "pm2 list",
     "logs": "pm2 logs",
-    "monit": "pm2 monit",
-    "secret-gen": "node ./utils/secret-gen.js"
+    "monit": "pm2 monit"
   },
   "repository": {
     "type": "git",
