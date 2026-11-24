@@ -2,16 +2,12 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import { config } from '@config'
 import type GameUser from '@objects/user/GameUser'
+import redis from '../../../redis/redis'
 
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
-import jwt from 'jsonwebtoken'
 import { type } from 'arktype'
 import { v4 as uuid } from 'uuid'
-
-interface LoginKeyPayload extends jwt.JwtPayload {
-    hash: string
-}
 
 const Auth = type({
     username: '4 <= string <= 12',
@@ -43,67 +39,58 @@ export default class GameAuth extends GamePlugin {
         }
 
         const { username, key, token, createToken } = auth
-        const load = await user.load(username)
 
-        if (!load || !user.socket.connected) {
-            return user.close()
+        const isAuthenticated = await this.authenticateUser(user, username, key)
+
+        if (!isAuthenticated || !user.socket.connected) {
+            user.close()
+            return
+        }
+
+        await this.onAuthSuccess(user, token, createToken)
+    }
+
+    async authenticateUser(user: GameUser, username: string, key: string) {
+        const isLoaded = await user.load(username)
+
+        if (!isLoaded || !user.socket.connected) {
+            return false
         }
 
         // @ts-expect-error temp
         if (this.handler.population >= this.handler.maxUsers && !user.isModerator) {
-            return user.close()
+            return false
         }
 
         if (user.ban || user.permaBan) {
-            return user.close()
+            return false
         }
 
-        await this.compareLoginKey(user, key, token, createToken)
+        const loginKeyHash = await redis.get(`${user.id}:loginkey`)
+
+        if (!loginKeyHash) {
+            return false
+        }
+
+        const hash = crypto.createHash('sha256').update(key).digest('hex')
+
+        return loginKeyHash === hash
     }
 
-    async compareLoginKey(user: GameUser, key: string, token?: string, createToken?: boolean) {
-        if (!user.loginKey) {
-            return user.close()
-        }
+    async onAuthSuccess(user: GameUser, token?: string, createToken?: boolean) {
+        await redis.del(`${user.id}:loginkey`)
 
-        let decoded: LoginKeyPayload
-
-        // Verify JWT
-        try {
-            decoded = jwt.verify(user.loginKey, config.crypto.secret) as LoginKeyPayload
-        } catch {
-            return user.close()
-        }
-
-        // Verify hash
-        const hash = user.createLoginHash(key)
-
-        if (decoded.hash !== hash) {
-            return user.close()
-        }
-
-        // Remove login key from database
-        user.update({ loginKey: null })
+        user.authenticated = true
 
         // Set selector for token destruction
         if (token) {
             user.token.oldSelector = token
         }
 
-        // Disconnect if already logged in
-        if (user.id in this.usersById) {
-            this.usersById[user.id].close()
-        }
+        this.updateUsers(user)
 
-        // Success
-        this.usersById[user.id] = user
-
-        user.authenticated = true
-
-        // Send response
         const response: { success: boolean, token?: string } = { success: true }
 
-        // Create new token
         if (createToken) {
             response.token = await this.genAuthToken(user)
         }
@@ -114,6 +101,14 @@ export default class GameAuth extends GamePlugin {
 
         user.pets.startPetUpdate()
         user.send('game_auth', response)
+    }
+
+    updateUsers(user: GameUser) {
+        if (user.id in this.usersById) {
+            this.usersById[user.id].close()
+        }
+
+        this.usersById[user.id] = user
     }
 
     async genAuthToken(user: GameUser) {
