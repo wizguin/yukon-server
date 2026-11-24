@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../../handlers/GameHandler'
+import type GameHandler from '../../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
 
 import { type } from 'arktype'

@@ -2,7 +2,7 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import { config } from '@config'
 import type GameUser from '@objects/user/GameUser'
-import redis from '../../../redis/redis'
+import redis from '../../redis/redis'
 
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'

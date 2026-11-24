@@ -2,7 +2,7 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import type GameUser from '@objects/user/GameUser'
 import { getUserById } from '@utils/user'
-import type { User } from '../../../generated/prisma/client'
+import type { User } from '../../generated/prisma/client'
 
 import { type } from 'arktype'
 

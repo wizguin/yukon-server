@@ -3,7 +3,7 @@ import GamePlugin from '@plugin/GamePlugin'
 import { X, Y } from '@utils/validation'
 import Database from '@database/Database'
 import type GameUser from '@objects/user/GameUser'
-import type { PetModel } from '../../../generated/prisma/models'
+import type { PetModel } from '../../generated/prisma/models'
 
 import { type } from 'arktype'
 
