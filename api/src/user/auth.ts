@@ -9,6 +9,11 @@ const Login = type({
     password: '3 <= string <= 128'
 })
 
+const TokenLogin = type({
+    username: 'string.trim |> 4 <= string <= 12',
+    token: 'string'
+})
+
 export async function authenticateUser(input: unknown) {
     const body = Login.assert(input)
 
@@ -21,6 +26,50 @@ export async function authenticateUser(input: unknown) {
     }
 
     const match = await compare(password, user.password)
+
+    if (!match) {
+        return { error: Errors.IncorrectPassword }
+    }
+
+    const ban = getBan(user)
+
+    if (ban) {
+        return { error: ban.error }
+    }
+
+    return { user }
+}
+
+export async function authenticateToken(input: unknown) {
+    const { username, token } = TokenLogin.assert(input)
+
+    const parts = token.split(':')
+
+    if (parts.length !== 2 || !parts[0] || !parts[1]) {
+        return { error: Errors.IncorrectPassword }
+    }
+
+    const [selector, validator] = parts
+    const user = await getUserWithBan(username)
+
+    if (!user) {
+        return { error: Errors.UserNotFound }
+    }
+
+    const authToken = await Database.authToken.findUnique({
+        where: {
+            userId_selector: {
+                userId: user.id,
+                selector
+            }
+        }
+    })
+
+    if (!authToken) {
+        return { error: Errors.IncorrectPassword }
+    }
+
+    const match = await compare(validator, authToken.validator)
 
     if (!match) {
         return { error: Errors.IncorrectPassword }
