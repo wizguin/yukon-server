@@ -3,6 +3,7 @@ import Server from './server/Server'
 import { config } from '@config'
 import GameHandler from './handlers/GameHandler'
 import LoginHandler from './handlers/LoginHandler'
+import redis from './redis/redis'
 
 class World extends Server {
 
@@ -19,10 +20,19 @@ class World extends Server {
 
 }
 
-const args = process.argv.slice(2)
+async function start() {
+    await redis.connect()
 
-for (const world of args) {
-    if (world in config.worlds) {
-        new World(world)
+    const args = process.argv.slice(2)
+
+    for (const world of args) {
+        if (world in config.worlds) {
+            new World(world)
+        }
     }
 }
+
+start().catch(error => {
+    console.error(error)
+    process.exit(1)
+})
