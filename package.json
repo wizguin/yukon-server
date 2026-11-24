@@ -44,7 +44,6 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "fastest-validator": "^1.19.1",
     "mysql2": "^3.14.3",
     "pm2": "^6.0.8",
     "rate-limiter-flexible": "^7.2.0",
