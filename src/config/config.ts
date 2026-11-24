@@ -4,9 +4,7 @@ import { type } from 'arktype'
 
 const Config = type({
     crypto: {
-        secret: 'string',
-        rounds: 'number.integer',
-        loginKeyExpiry: 'number.integer'
+        authTokenHashRounds: 'number.integer'
     },
 
     cors: {

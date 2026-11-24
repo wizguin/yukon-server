@@ -1,8 +1,6 @@
 {
     "crypto": {
-        "secret": "",
-        "rounds": 10,
-        "loginKeyExpiry": 300
+        "authTokenHashRounds": 10
     },
     "cors": {
         "origin": "http://localhost:8080"
