@@ -2,7 +2,6 @@ import Server from './server/Server'
 
 import { config } from '@config'
 import GameHandler from './handlers/GameHandler'
-import LoginHandler from './handlers/LoginHandler'
 import redis from './redis/redis'
 
 class World extends Server {
@@ -12,8 +11,7 @@ class World extends Server {
 
         const users = {}
 
-        const handlerClass = id === 'Login' ? LoginHandler : GameHandler
-        const handler = new handlerClass(id, users)
+        const handler = new GameHandler(id, users)
 
         super(id, users, handler)
     }

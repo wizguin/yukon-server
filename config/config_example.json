@@ -13,10 +13,6 @@
         "ipAddressHeader": false
     },
     "worlds": {
-        "Login": {
-            "host": "localhost",
-            "port": 6111
-        },
         "Blizzard": {
             "host": "localhost",
             "port": 6112,

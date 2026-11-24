@@ -3,7 +3,7 @@
   "version": "1.11.0-beta",
   "description": "A server for https://github.com/wizguin/yukon",
   "scripts": {
-    "dev": "nodemon ./src/World.ts Login Blizzard",
+    "dev": "nodemon ./src/World.ts Blizzard",
     "build": "rimraf dist && tsc && tsc-alias",
     "start": "pm2 start ecosystem.config.js",
     "stop": "pm2 stop ecosystem.config.js",
