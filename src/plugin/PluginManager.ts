@@ -20,11 +20,11 @@ export default class PluginManager {
     pluginsCount = 0
     eventsCount = 0
 
-    constructor(private handler: BaseHandler, pluginsDir: string) {
+    constructor(private handler: BaseHandler) {
         this.events = handler.events
         this.id = handler.id
 
-        this.dir = join(__dirname, 'plugins', pluginsDir)
+        this.dir = join(__dirname, 'plugins')
 
         this.loadPlugins().catch(error => {
             this.handler.handleError(error)

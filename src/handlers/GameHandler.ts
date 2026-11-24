@@ -45,7 +45,7 @@ export default class GameHandler extends BaseHandler {
 
         this.openIgloos = new OpenIgloos()
 
-        this.startPlugins('/game')
+        this.startPlugins()
 
         this.updateWorldPopulation()
     }

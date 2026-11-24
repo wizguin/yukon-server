@@ -24,8 +24,8 @@ export default class BaseHandler {
         })
     }
 
-    startPlugins(pluginsDir = '') {
-        this.plugins = new PluginManager(this, pluginsDir)
+    startPlugins() {
+        this.plugins = new PluginManager(this)
     }
 
     handle(message: Message, user: User | GameUser) {
