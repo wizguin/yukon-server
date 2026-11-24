@@ -114,7 +114,7 @@ export default class GameAuth extends GamePlugin {
     async genAuthToken(user: GameUser) {
         const selector = uuid()
         const validator = crypto.randomBytes(32).toString('hex')
-        const validatorHash = await bcrypt.hash(validator, config.crypto.rounds)
+        const validatorHash = await bcrypt.hash(validator, config.crypto.authTokenHashRounds)
 
         user.token.selector = selector
         user.token.validatorHash = validatorHash
