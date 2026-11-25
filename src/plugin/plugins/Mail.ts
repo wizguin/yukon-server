@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { InboxFullError, InsufficientCoinsError } from '@utils/error'
 import Database from '@database/Database'
@@ -29,7 +29,7 @@ const responses = {
     Success: 2
 }
 
-export default class Mail extends GamePlugin {
+export default class Mail extends Plugin {
 
     events = {
         send_mail: this.sendMail,

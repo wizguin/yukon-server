@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { getUserById } from '@utils/user'
 import type { User as PrismaUser } from '../../generated/prisma/client'
@@ -10,7 +10,7 @@ const GetPlayer = type({
     id: 'number.integer'
 })
 
-export default class Get extends GamePlugin {
+export default class Get extends Plugin {
 
     events = {
         get_player: this.getPlayer

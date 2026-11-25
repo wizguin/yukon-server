@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import Database from '@database/Database'
 import { getUsername } from '@utils/user'
@@ -11,7 +11,7 @@ const BuddyId = type({
     id: 'number.integer'
 })
 
-export default class Buddy extends GamePlugin {
+export default class Buddy extends Plugin {
 
     events = {
         buddy_request: this.buddyRequest,

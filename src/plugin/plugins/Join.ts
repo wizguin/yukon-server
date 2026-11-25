@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { X, Y } from '@utils/validation'
 import { config } from '@config'
@@ -20,7 +20,7 @@ const JoinIgloo = type({
     'y?': Y
 })
 
-export default class Join extends GamePlugin {
+export default class Join extends Plugin {
 
     events = {
         join_server: this.joinServer,

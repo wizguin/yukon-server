@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import Database from '@database/Database'
 import lockUsers from '@database/lockUsers'
@@ -10,7 +10,7 @@ const Id = type({
     id: 'number.integer'
 })
 
-export default class Moderation extends GamePlugin {
+export default class Moderation extends Plugin {
 
     events = {
         mute_player: this.mutePlayer,

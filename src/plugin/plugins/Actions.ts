@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { X, Y } from '@utils/validation'
 import type User from '@objects/user/User'
@@ -15,7 +15,7 @@ const Position = type({
     y: Y
 })
 
-export default class Actions extends GamePlugin {
+export default class Actions extends Plugin {
 
     events = {
         send_position: this.sendPosition,

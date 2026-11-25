@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type User from '@objects/user/User'
 
@@ -6,7 +6,7 @@ import SenseiInstance from '@objects/instance/card/SenseiInstance'
 
 const senseiRoom = 951
 
-export default class Sensei extends GamePlugin {
+export default class Sensei extends Plugin {
 
     events = {
         join_sensei: this.joinSensei

@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type Handler from '../../handler/Handler'
 import type User from '@objects/user/User'
@@ -32,7 +32,7 @@ const Integer = type('string.integer.parse')
 const messageRegex = /[^ -~]/i
 const maxMessageLength = 48
 
-export default class Chat extends GamePlugin {
+export default class Chat extends Plugin {
 
     events = {
         send_message: this.sendMessage,

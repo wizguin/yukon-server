@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type User from '@objects/user/User'
 
@@ -8,7 +8,7 @@ const GameOver = type({
     coins: 'number.integer'
 })
 
-export default class Minigame extends GamePlugin {
+export default class Minigame extends Plugin {
 
     events = {
         get_game: this.getGame,

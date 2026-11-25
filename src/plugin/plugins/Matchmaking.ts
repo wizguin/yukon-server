@@ -1,8 +1,8 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type User from '@objects/user/User'
 
-export default class Matchmaking extends GamePlugin {
+export default class Matchmaking extends Plugin {
 
     events = {
         join_matchmaking: this.joinMatchmaking,

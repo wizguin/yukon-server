@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { FlooringAlreadyOwnedError, InsufficientCoinsError } from '@utils/error'
 import { config } from '@config'
@@ -45,7 +45,7 @@ const GetIglooOpen = type({
     igloo: 'number.integer'
 })
 
-export default class Igloo extends GamePlugin {
+export default class Igloo extends Plugin {
 
     events = {
         add_igloo: this.addIgloo,

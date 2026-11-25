@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { config } from '@config'
 import redis from '../../redis/redis'
@@ -16,7 +16,7 @@ const Auth = type({
     'createToken?': 'boolean'
 })
 
-export default class GameAuth extends GamePlugin {
+export default class GameAuth extends Plugin {
 
     events = {
         game_auth: this.gameAuth

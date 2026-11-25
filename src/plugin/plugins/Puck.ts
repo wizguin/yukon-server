@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type User from '@objects/user/User'
 
@@ -13,7 +13,7 @@ const MovePuck = type({
 
 const rinkRoomId = 802
 
-export default class Puck extends GamePlugin {
+export default class Puck extends Plugin {
 
     puckX = 0
     puckY = 0

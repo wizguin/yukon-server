@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { items } from '@data'
 import type User from '@objects/user/User'
@@ -19,7 +19,7 @@ const RemoveItem = type({
     type: 'string'
 })
 
-export default class Item extends GamePlugin {
+export default class Item extends Plugin {
 
     events = {
         update_player: this.updatePlayer,

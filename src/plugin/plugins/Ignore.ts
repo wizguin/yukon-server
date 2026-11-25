@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { getUsername } from '@utils/user'
 import type User from '@objects/user/User'
@@ -9,7 +9,7 @@ const IgnoreId = type({
     id: 'number.integer'
 })
 
-export default class Ignore extends GamePlugin {
+export default class Ignore extends Plugin {
 
     events = {
         ignore_add: this.ignoreAdd,

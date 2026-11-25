@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import { X, Y } from '@utils/validation'
 import Database from '@database/Database'
@@ -31,7 +31,7 @@ const PetId = type({
     id: 'number.integer'
 })
 
-export default class Pet extends GamePlugin {
+export default class Pet extends Plugin {
 
     events = {
         adopt_pet: this.adoptPet,

@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type User from '@objects/user/User'
 
@@ -6,7 +6,7 @@ import { cards, decks } from '@data'
 
 const starterDeckId = 821
 
-export default class Sensei extends GamePlugin {
+export default class Sensei extends Plugin {
 
     events = {
         add_starter_deck: this.addStarterDeck

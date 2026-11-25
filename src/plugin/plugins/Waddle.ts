@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type User from '@objects/user/User'
 
@@ -8,7 +8,7 @@ const JoinWaddle = type({
     waddle: 'number.integer'
 })
 
-export default class Waddle extends GamePlugin {
+export default class Waddle extends Plugin {
 
     events = {
         get_waddles: this.getWaddles,

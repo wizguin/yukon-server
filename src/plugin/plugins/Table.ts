@@ -1,4 +1,4 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type User from '@objects/user/User'
 
@@ -8,7 +8,7 @@ const JoinTable = type({
     table: 'number.integer'
 })
 
-export default class Table extends GamePlugin {
+export default class Table extends Plugin {
 
     events = {
         get_tables: this.getTables,

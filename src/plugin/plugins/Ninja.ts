@@ -1,8 +1,8 @@
-import GamePlugin from '@plugin/GamePlugin'
+import Plugin from '@plugin/Plugin'
 
 import type User from '@objects/user/User'
 
-export default class Sensei extends GamePlugin {
+export default class Sensei extends Plugin {
 
     events = {
         get_ninja: this.getNinja
