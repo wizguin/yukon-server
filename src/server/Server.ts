@@ -1,11 +1,10 @@
 import { config } from '@config'
 import getSocketAddress from '@objects/user/getSocketAddress'
 import RateLimiter from '../ratelimit/RateLimiter'
-import UserFactory from '@objects/user/UserFactory'
+import User from '@objects/user/User'
 
-import type BaseHandler from '../handlers/BaseHandler'
+import type GameHandler from '../handlers/GameHandler'
 import type GameUser from '@objects/user/GameUser'
-import type User from '@objects/user/User'
 
 import { Server as IoServer } from 'socket.io'
 import { RateLimiterRes } from 'rate-limiter-flexible'
@@ -30,7 +29,7 @@ export default class Server {
     constructor(
         public id: string,
         private users: Record<string, User>,
-        public handler: BaseHandler
+        public handler: GameHandler
     ) {
         const io = new IoServer({
             cors: {
@@ -69,7 +68,7 @@ export default class Server {
     }
 
     initUser(socket: Socket) {
-        const user = UserFactory(this, socket)
+        const user = new User(this.handler, socket)
 
         this.users[socket.id] = user
 
