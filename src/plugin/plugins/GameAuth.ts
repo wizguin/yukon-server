@@ -57,7 +57,6 @@ export default class GameAuth extends GamePlugin {
             return false
         }
 
-        // @ts-expect-error temp
         if (this.handler.population >= this.handler.maxUsers && !user.isModerator) {
             return false
         }

@@ -1,6 +1,8 @@
-import BaseHandler from './BaseHandler'
-
+import * as data from '@data'
 import { config } from '@config'
+import Database from '@database/Database'
+import PluginManager from '@plugin/PluginManager'
+
 import MatchmakerFactory from '@objects/room/matchmaker/MatchmakerFactory'
 import OpenIgloos from '@objects/room/OpenIgloos'
 import Room from '@objects/room/Room'
@@ -10,44 +12,43 @@ import Waddle from '@objects/room/waddle/Waddle'
 import type { Message } from '../server/Server'
 import type User from '@objects/user/User'
 
-import * as data from '@data'
-import Database from '@database/Database'
+import EventEmitter from 'events'
+import { TraversalError } from 'arktype'
 
-export default class GameHandler extends BaseHandler {
+export default class Handler {
 
-    crumbs: any
+    id: string
+    users: Record<string, User>
+
+    events: EventEmitter
+    plugins: PluginManager
+
     usersById: Record<string, User> = {}
     maxUsers: number
     rooms: Record<string, Room>
     openIgloos: OpenIgloos
 
-    constructor(
-        public id: string,
-        public users: Record<string, User>
-    ) {
-        super(id, users)
+    constructor(id: string, users: Record<string, User>) {
+        this.id = id
+        this.users = users
 
-        this.crumbs = {
-            items: data.items,
-            igloos: data.igloos,
-            furnitures: data.furniture,
-            floorings: data.flooring,
-            cards: data.cards
-        }
+        this.events = new EventEmitter({ captureRejections: true })
+
+        this.events.on('error', error => {
+            this.handleError(error)
+        })
 
         this.maxUsers = config.worlds[id].maxUsers || 300
 
         this.rooms = this.setRooms()
+        this.openIgloos = new OpenIgloos()
+        this.plugins = new PluginManager(this)
 
         this.setTables()
         this.setWaddles()
         this.setMatchmakers()
 
-        this.openIgloos = new OpenIgloos()
-
-        this.startPlugins()
-
-        this.updateWorldPopulation()
+        this.updateWorldPopulation().catch(error => this.handleError(error))
     }
 
     setRooms() {
@@ -82,8 +83,47 @@ export default class GameHandler extends BaseHandler {
         }
     }
 
-    handleGuard(message: Message, user: User) {
-        return !user.authenticated && message.action != 'game_auth'
+    handle(message: Message, user: User) {
+        try {
+            console.log(`[${this.id}] Received: ${message.action} ${JSON.stringify(message.args)}`)
+
+            if (!user.authenticated && message.action !== 'game_auth') {
+                user.close()
+                return
+            }
+
+            if (message.action in config.cooldowns) {
+                this.setCooldown(message, user)
+            }
+
+            this.events.emit(message.action, message.args, user)
+
+            if (user.events) {
+                user.events.emit(message.action, message.args, user)
+            }
+
+        } catch (error) {
+            this.handleError(error)
+        }
+    }
+
+    setCooldown({ action }: Message, user: User) {
+        user.cooldowns[action] = Date.now()
+    }
+
+    isOnCooldown({ action }: Message, user: User) {
+        if (!(action in config.cooldowns)) {
+            return false
+        }
+
+        if (!(action in user.cooldowns)) {
+            return false
+        }
+
+        const cooldown = config.cooldowns[action]
+        const lastUsed = user.cooldowns[action]
+
+        return Date.now() - lastUsed < cooldown
     }
 
     close(user: User) {
@@ -140,9 +180,9 @@ export default class GameHandler extends BaseHandler {
     }
 
     closeAndUpdatePopulation(user: User) {
-        super.close(user)
+        delete this.users[user.socket.id]
 
-        this.updateWorldPopulation()
+        this.updateWorldPopulation().catch(error => this.handleError(error))
     }
 
     async updateWorldPopulation() {
@@ -163,6 +203,24 @@ export default class GameHandler extends BaseHandler {
         } catch (error) {
             this.handleError(error)
         }
+    }
+
+    handleError(error: unknown) {
+        if (error instanceof TraversalError) {
+            console.warn(`Event validation error: ${error.message}`)
+            return
+        }
+
+        if (error instanceof Error) {
+            this.logError(error)
+            return
+        }
+
+        console.error(error)
+    }
+
+    private logError(error: Error) {
+        console.error(`[${this.id}] ERROR: ${error.stack}`)
     }
 
 }

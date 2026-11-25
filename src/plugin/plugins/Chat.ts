@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameHandler from '../../handlers/GameHandler'
+import type Handler from '../../handler/Handler'
 import type User from '@objects/user/User'
 
 import { type } from 'arktype'
@@ -51,7 +51,7 @@ export default class Chat extends GamePlugin {
         users: this.userPopulation
     }
 
-    constructor(handler: GameHandler) {
+    constructor(handler: Handler) {
         super(handler)
 
         this.bindCommands()
@@ -194,7 +194,6 @@ export default class Chat extends GamePlugin {
     }
 
     userPopulation(args: string[], user: User) {
-        // @ts-expect-error temp
         user.send('error', { error: `Users online: ${this.handler.population}` })
     }
 

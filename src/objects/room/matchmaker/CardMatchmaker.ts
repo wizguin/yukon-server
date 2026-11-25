@@ -1,5 +1,5 @@
-import type BaseHandler from '../../../handlers/BaseHandler'
 import CardInstance from '@objects/instance/card/CardInstance'
+import type Handler from '../../../handler/Handler'
 import MatchmakerPlayer from './MatchmakerPlayer'
 import type Room from '../Room'
 import type User from '@objects/user/User'
@@ -9,11 +9,11 @@ const matchEvery = 10
 
 export default class CardMatchmaker {
 
-    handler: BaseHandler
+    handler: Handler
     room: Room
     players: Record<number, MatchmakerPlayer> = {}
 
-    constructor(matchmaker: any, room: Room, handler: BaseHandler) {
+    constructor(matchmaker: any, room: Room, handler: Handler) {
         Object.assign(this, matchmaker)
 
         this.handler = handler

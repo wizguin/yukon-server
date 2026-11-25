@@ -1,7 +1,6 @@
 import BaseCollection from '@database/BaseCollection'
 
 import Database from '@database/Database'
-import type GameHandler from '../../handlers/GameHandler'
 import type User from '@objects/user/User'
 
 import type { Buddy as PrismaBuddy } from '../../generated/prisma/client'
@@ -24,7 +23,7 @@ export default class BuddyCollection extends BaseCollection<Buddy> {
     }
 
     get usersById() {
-        return (this.user.handler as GameHandler).usersById
+        return this.user.handler.usersById
     }
 
     async add(buddyId: number) {

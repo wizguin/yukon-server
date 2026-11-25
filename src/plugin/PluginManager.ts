@@ -1,12 +1,12 @@
-import type BaseHandler from '../handlers/BaseHandler'
 import type { EventHandler } from './Plugin'
+import type Handler from '../handler/Handler'
 import type Plugin from './Plugin'
 
 import { join, parse } from 'path'
 import type { EventEmitter } from 'stream'
 import { readdir } from 'fs/promises'
 
-type PluginConstructor = new (handler: BaseHandler) => Plugin
+type PluginConstructor = new (handler: Handler) => Plugin
 
 type PluginModule = {
     default: PluginConstructor
@@ -20,7 +20,7 @@ export default class PluginManager {
     pluginsCount = 0
     eventsCount = 0
 
-    constructor(private handler: BaseHandler) {
+    constructor(private handler: Handler) {
         this.events = handler.events
         this.id = handler.id
 

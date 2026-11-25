@@ -14,7 +14,7 @@ import type { Action, Args } from '../../server/Server'
 import type { Ban } from '../../generated/prisma/client'
 import type BaseInstance from '@objects/instance/BaseInstance'
 import type BaseTable from '@objects/room/table/BaseTable'
-import type GameHandler from '../../handlers/GameHandler'
+import type Handler from '../../handler/Handler'
 import type Pet from '@objects/pet/Pet'
 import type { Postcard } from '@database/collections/PostcardCollection'
 import type Room from '@objects/room/Room'
@@ -46,7 +46,7 @@ interface Token {
 
 export default class User {
 
-    handler: GameHandler
+    handler: Handler
     socket: Socket
     address: string
 
@@ -100,7 +100,7 @@ export default class User {
     postcards!: PostcardCollection
     pets!: PetCollection
 
-    constructor(handler: GameHandler, socket: Socket) {
+    constructor(handler: Handler, socket: Socket) {
         this.handler = handler
         this.socket = socket
 

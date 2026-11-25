@@ -3,7 +3,7 @@ import getSocketAddress from '@objects/user/getSocketAddress'
 import RateLimiter from '../ratelimit/RateLimiter'
 import User from '@objects/user/User'
 
-import type GameHandler from '../handlers/GameHandler'
+import type Handler from '../handler/Handler'
 
 import { Server as IoServer } from 'socket.io'
 import { RateLimiterRes } from 'rate-limiter-flexible'
@@ -28,7 +28,7 @@ export default class Server {
     constructor(
         public id: string,
         private users: Record<string, User>,
-        public handler: GameHandler
+        public handler: Handler
     ) {
         const io = new IoServer({
             cors: {

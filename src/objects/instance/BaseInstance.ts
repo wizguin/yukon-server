@@ -1,4 +1,3 @@
-import type GameHandler from '../../handlers/GameHandler'
 import type User from '@objects/user/User'
 
 export type InstanceUsers = (User | null)[]
@@ -27,7 +26,7 @@ export default class BaseInstance {
 
             this.addListeners(user)
 
-            user.joinRoom((user.handler as GameHandler).rooms[this.roomId])
+            user.joinRoom(user.handler.rooms[this.roomId])
 
             user.minigameRoom = this
         }
