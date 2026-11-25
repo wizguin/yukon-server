@@ -1,7 +1,7 @@
 import * as data from '@data'
 import { config } from '@config'
 import Database from '@database/Database'
-import PluginManager from '@plugin/PluginManager'
+import PluginLoader from '@plugin/PluginLoader'
 
 import MatchmakerFactory from '@objects/room/matchmaker/MatchmakerFactory'
 import OpenIgloos from '@objects/room/OpenIgloos'
@@ -21,7 +21,7 @@ export default class Handler {
     users: Record<string, User>
 
     events: EventEmitter
-    plugins: PluginManager
+    plugins: PluginLoader
 
     usersById: Record<string, User> = {}
     maxUsers: number
@@ -42,7 +42,7 @@ export default class Handler {
 
         this.rooms = this.setRooms()
         this.openIgloos = new OpenIgloos()
-        this.plugins = new PluginManager(this)
+        this.plugins = new PluginLoader(this)
 
         this.setTables()
         this.setWaddles()

@@ -12,7 +12,7 @@ type PluginModule = {
     default: PluginConstructor
 }
 
-export default class PluginManager {
+export default class PluginLoader {
 
     events: EventEmitter
     id: string
