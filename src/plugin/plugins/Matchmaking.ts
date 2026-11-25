@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 export default class Matchmaking extends GamePlugin {
 
@@ -9,7 +9,7 @@ export default class Matchmaking extends GamePlugin {
         leave_matchmaking: this.leaveMatchmaking
     }
 
-    joinMatchmaking(args: unknown, user: GameUser) {
+    joinMatchmaking(args: unknown, user: User) {
         if (!user.room?.matchmaker) {
             return
         }
@@ -19,7 +19,7 @@ export default class Matchmaking extends GamePlugin {
         }
     }
 
-    leaveMatchmaking(args: unknown, user: GameUser) {
+    leaveMatchmaking(args: unknown, user: User) {
         if (!user.room?.matchmaker) {
             return
         }

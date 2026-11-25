@@ -1,12 +1,12 @@
 import type { Action, Args } from '../../../server/Server'
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 export default class MatchmakerPlayer {
 
-    user: GameUser
+    user: User
     tick: number
 
-    constructor(user: GameUser, tick: number) {
+    constructor(user: User, tick: number) {
         this.user = user
         this.tick = tick
     }

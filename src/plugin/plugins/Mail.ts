@@ -2,8 +2,8 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import { InboxFullError, InsufficientCoinsError } from '@utils/error'
 import Database from '@database/Database'
-import type GameUser from '@objects/user/GameUser'
 import lockUsers from '@database/lockUsers'
+import type User from '@objects/user/User'
 import { userIdExists } from '@utils/user'
 
 import { type } from 'arktype'
@@ -38,7 +38,7 @@ export default class Mail extends GamePlugin {
         delete_mail_from: this.deleteMailFrom
     }
 
-    async sendMail(args: unknown, user: GameUser) {
+    async sendMail(args: unknown, user: User) {
         const { recipient: recipientId, postcardId } = SendMail.assert(args)
 
         const recipient = this.usersById[recipientId]
@@ -65,7 +65,7 @@ export default class Mail extends GamePlugin {
         }
     }
 
-    async sendMailOnline(sender: GameUser, recipient: GameUser, postcardId: number) {
+    async sendMailOnline(sender: User, recipient: User, postcardId: number) {
         if (recipient.ignores.includes(sender.id)) {
             this.sendMailResponse(sender, responses.Success)
             return
@@ -74,7 +74,7 @@ export default class Mail extends GamePlugin {
         await this.deliverMail(sender, recipient.id, postcardId)
     }
 
-    async sendMailOffline(sender: GameUser, recipientId: number, postcardId: number) {
+    async sendMailOffline(sender: User, recipientId: number, postcardId: number) {
         if (!await userIdExists(recipientId)) {
             return
         }
@@ -87,7 +87,7 @@ export default class Mail extends GamePlugin {
         await this.deliverMail(sender, recipientId, postcardId)
     }
 
-    async deliverMail(sender: GameUser, recipientId: number, postcardId: number) {
+    async deliverMail(sender: User, recipientId: number, postcardId: number) {
         const postcard = await sender.purchase(postcardCost, async tx => {
             const count = await tx.postcard.count({ where: { userId: recipientId } })
 
@@ -129,21 +129,21 @@ export default class Mail extends GamePlugin {
     /**
      * Send response to the sending user.
      */
-    private sendMailResponse(sender: GameUser, response: number) {
+    private sendMailResponse(sender: User, response: number) {
         sender.send('send_mail', { coins: sender.coins, response })
     }
 
-    readMail(args: unknown, user: GameUser) {
+    readMail(args: unknown, user: User) {
         user.postcards.readMail()
     }
 
-    deleteMail(args: unknown, user: GameUser) {
+    deleteMail(args: unknown, user: User) {
         const { id } = DeleteMail.assert(args)
 
         user.postcards.remove(id)
     }
 
-    deleteMailFrom(args: unknown, user: GameUser) {
+    deleteMailFrom(args: unknown, user: User) {
         const { senderId } = DeleteMailFrom.assert(args)
 
         user.postcards.removeFrom(senderId)

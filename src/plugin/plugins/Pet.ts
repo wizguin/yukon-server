@@ -2,8 +2,8 @@ import GamePlugin from '@plugin/GamePlugin'
 
 import { X, Y } from '@utils/validation'
 import Database from '@database/Database'
-import type GameUser from '@objects/user/GameUser'
 import type { PetModel } from '../../generated/prisma/models'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -47,13 +47,13 @@ export default class Pet extends GamePlugin {
         pet_start_walk: this.petStartWalk
     }
 
-    async adoptPet(args: unknown, user: GameUser) {
+    async adoptPet(args: unknown, user: User) {
         const { typeId, name } = AdoptPet.assert(args)
 
         await user.pets.add(typeId, name)
     }
 
-    async getPets(args: unknown, user: GameUser) {
+    async getPets(args: unknown, user: User) {
         const { userId } = GetPets.assert(args)
 
         const owner = this.usersById[userId]
@@ -63,7 +63,7 @@ export default class Pet extends GamePlugin {
         user.send('get_pets', { pets })
     }
 
-    petMove(args: unknown, user: GameUser) {
+    petMove(args: unknown, user: User) {
         const { id, x, y } = PetMove.assert(args)
 
         const pet = user.pets.get(id)
@@ -80,7 +80,7 @@ export default class Pet extends GamePlugin {
         }
     }
 
-    petPlay(args: unknown, user: GameUser) {
+    petPlay(args: unknown, user: User) {
         const { id } = PetId.assert(args)
 
         const pet = user.pets.get(id)
@@ -108,7 +108,7 @@ export default class Pet extends GamePlugin {
         }
     }
 
-    petRest(args: unknown, user: GameUser) {
+    petRest(args: unknown, user: User) {
         const { id } = PetId.assert(args)
 
         this.sendInteraction(user, id, 'pet_rest', {
@@ -117,7 +117,7 @@ export default class Pet extends GamePlugin {
         })
     }
 
-    petFeed(args: unknown, user: GameUser) {
+    petFeed(args: unknown, user: User) {
         const { id } = PetId.assert(args)
 
         this.sendInteraction(user, id, 'pet_feed', {
@@ -125,7 +125,7 @@ export default class Pet extends GamePlugin {
         })
     }
 
-    petBath(args: unknown, user: GameUser) {
+    petBath(args: unknown, user: User) {
         const { id } = PetId.assert(args)
 
         this.sendInteraction(user, id, 'pet_bath', {
@@ -135,7 +135,7 @@ export default class Pet extends GamePlugin {
         })
     }
 
-    petGum(args: unknown, user: GameUser) {
+    petGum(args: unknown, user: User) {
         const { id } = PetId.assert(args)
 
         this.sendInteraction(user, id, 'pet_gum', {
@@ -143,7 +143,7 @@ export default class Pet extends GamePlugin {
         })
     }
 
-    petCookie(args: unknown, user: GameUser) {
+    petCookie(args: unknown, user: User) {
         const { id } = PetId.assert(args)
 
         this.sendInteraction(user, id, 'pet_cookie', {
@@ -151,7 +151,7 @@ export default class Pet extends GamePlugin {
         })
     }
 
-    petFrame(args: unknown, user: GameUser) {
+    petFrame(args: unknown, user: User) {
         const { id, frame } = PetFrame.assert(args)
 
         if (!user.pets.includes(id)) {
@@ -163,13 +163,13 @@ export default class Pet extends GamePlugin {
         }
     }
 
-    async petStartWalk(args: unknown, user: GameUser) {
+    async petStartWalk(args: unknown, user: User) {
         const { id } = PetId.assert(args)
 
         await user.startWalkingPet(id)
     }
 
-    sendInteraction(user: GameUser, petId: number, action: string, updates: Record<string, number>) {
+    sendInteraction(user: User, petId: number, action: string, updates: Record<string, number>) {
         const pet = user.pets.get(petId)
 
         if (!pet) {

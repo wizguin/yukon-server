@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -16,7 +16,7 @@ export default class Table extends GamePlugin {
         leave_table: this.leaveTable
     }
 
-    getTables(args: unknown, user: GameUser) {
+    getTables(args: unknown, user: User) {
         if (!user.room) {
             return
         }
@@ -30,7 +30,7 @@ export default class Table extends GamePlugin {
         user.send('get_tables', { tables })
     }
 
-    joinTable(args: unknown, user: GameUser) {
+    joinTable(args: unknown, user: User) {
         const { table: tableId } = JoinTable.assert(args)
 
         if (!user.room) {
@@ -42,7 +42,7 @@ export default class Table extends GamePlugin {
         user.joinTable(table)
     }
 
-    leaveTable(args: unknown, user: GameUser) {
+    leaveTable(args: unknown, user: User) {
         if (user.minigameRoom) {
             user.minigameRoom.remove(user)
         }

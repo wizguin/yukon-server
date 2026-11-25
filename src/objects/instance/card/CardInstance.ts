@@ -5,7 +5,7 @@ import Power from './Power'
 import Rules from './Rules'
 
 import type Card from './ninja/Card'
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 export default class CardInstance extends BaseInstance {
 
@@ -51,21 +51,21 @@ export default class CardInstance extends BaseInstance {
         }
     }
 
-    addListeners(user: GameUser) {
+    addListeners(user: User) {
         user.events?.on('send_deal', this.sendDealListener)
         user.events?.on('pick_card', this.pickCardListener)
 
         super.addListeners(user)
     }
 
-    removeListeners(user: GameUser) {
+    removeListeners(user: User) {
         user.events?.off('send_deal', this.sendDealListener)
         user.events?.off('pick_card', this.pickCardListener)
 
         super.removeListeners(user)
     }
 
-    handleSendDeal(_args: unknown, user: GameUser) {
+    handleSendDeal(_args: unknown, user: User) {
         const me = this.ninjas[user.id]
 
         if (me.hasDealt) {
@@ -78,7 +78,7 @@ export default class CardInstance extends BaseInstance {
         me.sendOpponent('send_opponent_deal', { deal: cards.length })
     }
 
-    async handlePickCard(args: { card: number }, user: GameUser) {
+    async handlePickCard(args: { card: number }, user: User) {
         const me = this.ninjas[user.id]
 
         if (!me.isInDealt(args.card) || me.pick) {
@@ -96,7 +96,7 @@ export default class CardInstance extends BaseInstance {
     }
 
     start() {
-        const users = this.users.filter((user): user is GameUser => user !== null).map(user => ({
+        const users = this.users.filter((user): user is User => user !== null).map(user => ({
             username: user.username,
             color: user.color,
             ninjaRank: user.ninjaRank
@@ -423,7 +423,7 @@ export default class CardInstance extends BaseInstance {
         await this.updateProgress(loser.user, false)
     }
 
-    async updateProgress(user: GameUser | null, won: boolean) {
+    async updateProgress(user: User | null, won: boolean) {
         if (!user) {
             return
         }
@@ -444,7 +444,7 @@ export default class CardInstance extends BaseInstance {
         }
     }
 
-    checkNoBeltWin(user: GameUser, won: boolean) {
+    checkNoBeltWin(user: User, won: boolean) {
         return user.ninjaRank === 0 && won
     }
 
@@ -452,7 +452,7 @@ export default class CardInstance extends BaseInstance {
         return Math.floor(this.xpPercentageStart / (rank + 1))
     }
 
-    async rankUp(user: GameUser) {
+    async rankUp(user: User) {
         const rank = user.ninjaRank + 1
 
         if (rank > this.itemAwards.length) {
@@ -467,7 +467,7 @@ export default class CardInstance extends BaseInstance {
         user.send('award', { rank: user.ninjaRank })
     }
 
-    async addAwards(user: GameUser, rank: number) {
+    async addAwards(user: User, rank: number) {
         const item = this.itemAwards[rank - 1]
 
         await user.addItem(item, false)
@@ -477,13 +477,13 @@ export default class CardInstance extends BaseInstance {
         }
     }
 
-    remove(user: GameUser) {
+    remove(user: User) {
         super.remove(user)
 
         this.closeGame(user)
     }
 
-    closeGame(user: GameUser) {
+    closeGame(user: User) {
         this.send('close_game', { username: user.username })
     }
 
@@ -515,7 +515,7 @@ export default class CardInstance extends BaseInstance {
         return ninja
     }
 
-    getOpponent(user: GameUser) {
+    getOpponent(user: User) {
         const seat = this.getSeat(user)
         const opponentSeat = this.getOppositeSeat(seat)
 

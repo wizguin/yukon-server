@@ -1,7 +1,7 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
 import { items } from '@data'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -27,7 +27,7 @@ export default class Item extends GamePlugin {
         remove_item: this.removeItem
     }
 
-    updatePlayer(args: unknown, user: GameUser) {
+    updatePlayer(args: unknown, user: User) {
         const { item: itemId } = UpdatePlayer.assert(args)
 
         const item = items[itemId]
@@ -44,13 +44,13 @@ export default class Item extends GamePlugin {
         user.setItem(slot, itemId)
     }
 
-    async addItem(args: unknown, user: GameUser) {
+    async addItem(args: unknown, user: User) {
         const { item: itemId } = AddItem.assert(args)
 
         await user.addItem(itemId)
     }
 
-    removeItem(args: unknown, user: GameUser) {
+    removeItem(args: unknown, user: User) {
         const { type } = RemoveItem.assert(args)
 
         if (!slots.includes(type)) {

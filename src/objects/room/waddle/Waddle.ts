@@ -1,13 +1,13 @@
 import createInstance from '@objects/instance/createInstance'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 import type { waddles } from '@data'
 
 type WaddleData = (typeof waddles)[number]
 
 export default class Waddle {
 
-    users: (GameUser | null)[]
+    users: (User | null)[]
 
     id: number
     roomId: number
@@ -20,14 +20,14 @@ export default class Waddle {
         this.seats = seats
         this.game = game
 
-        this.users = new Array<GameUser | null>(seats).fill(null)
+        this.users = new Array<User | null>(seats).fill(null)
     }
 
     get notFull() {
         return this.users.includes(null)
     }
 
-    add(user: GameUser) {
+    add(user: User) {
         if (this.game === 'card' && !user.cards.hasCards) {
             return
         }
@@ -47,7 +47,7 @@ export default class Waddle {
         user.room?.send(user, 'update_waddle', { waddle: this.id, seat, username: user.username }, [])
     }
 
-    remove(user: GameUser) {
+    remove(user: User) {
         const seat = this.users.indexOf(user)
 
         this.users[seat] = null

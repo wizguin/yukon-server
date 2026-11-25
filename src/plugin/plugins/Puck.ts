@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -23,7 +23,7 @@ export default class Puck extends GamePlugin {
         move_puck: this.movePuck
     }
 
-    getPuck(args: unknown, user: GameUser) {
+    getPuck(args: unknown, user: User) {
         if (user.room?.id !== rinkRoomId) {
             return
         }
@@ -31,7 +31,7 @@ export default class Puck extends GamePlugin {
         user.send('get_puck', { x: this.puckX, y: this.puckY })
     }
 
-    movePuck(args: unknown, user: GameUser) {
+    movePuck(args: unknown, user: User) {
         if (user.room?.id !== rinkRoomId) {
             return
         }

@@ -1,6 +1,6 @@
 import Card from './Card'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { cards } from '@data'
 
@@ -8,7 +8,7 @@ export type ElementCards = [Card[], Card[], Card[]]
 
 export default class Ninja {
 
-    user: GameUser | null
+    user: User | null
     opponent: Ninja | null
     deck: number[]
     dealt: Card[]
@@ -17,7 +17,7 @@ export default class Ninja {
     dealtSize: number
     hasDealt: boolean
 
-    constructor(user: GameUser | null = null) {
+    constructor(user: User | null = null) {
         this.user = user
 
         this.opponent = null

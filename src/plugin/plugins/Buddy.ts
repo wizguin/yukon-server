@@ -1,9 +1,9 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import Database from '@database/Database'
-import type GameUser from '@objects/user/GameUser'
 import { getUsername } from '@utils/user'
 import Igloo from '@objects/room/Igloo'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -21,7 +21,7 @@ export default class Buddy extends GamePlugin {
         buddy_find: this.buddyFind
     }
 
-    buddyRequest(args: unknown, user: GameUser) {
+    buddyRequest(args: unknown, user: User) {
         const { id } = BuddyId.assert(args)
 
         const recipient = this.usersById[id]
@@ -50,7 +50,7 @@ export default class Buddy extends GamePlugin {
         recipient.send('buddy_request', { id: user.id, username: user.username })
     }
 
-    async buddyAccept(args: unknown, user: GameUser) {
+    async buddyAccept(args: unknown, user: User) {
         const { id } = BuddyId.assert(args)
 
         if (!user.buddyRequests.includes(id)) {
@@ -84,13 +84,13 @@ export default class Buddy extends GamePlugin {
         user.addBuddy(id, username)
     }
 
-    buddyReject(args: unknown, user: GameUser) {
+    buddyReject(args: unknown, user: User) {
         const { id } = BuddyId.assert(args)
 
         user.buddyRequests = user.buddyRequests.filter(item => item !== id)
     }
 
-    async buddyRemove(args: unknown, user: GameUser) {
+    async buddyRemove(args: unknown, user: User) {
         const { id } = BuddyId.assert(args)
 
         if (!user.buddies.includes(id)) {
@@ -116,7 +116,7 @@ export default class Buddy extends GamePlugin {
         }
     }
 
-    buddyFind(args: unknown, user: GameUser) {
+    buddyFind(args: unknown, user: User) {
         const { id } = BuddyId.assert(args)
 
         if (!user.buddies.includes(id) || !(id in this.usersById)) {

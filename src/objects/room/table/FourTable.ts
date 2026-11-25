@@ -1,6 +1,6 @@
 import BaseTable from './BaseTable'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -16,7 +16,7 @@ export default class FourTable extends BaseTable {
         this.map = Array.from({ length: 7 }, () => Array(6).fill(0))
     }
 
-    async sendMove(args: unknown, user: GameUser) {
+    async sendMove(args: unknown, user: User) {
         const { column } = SendMove.assert(args)
 
         if (!this.started) {
@@ -58,7 +58,7 @@ export default class FourTable extends BaseTable {
         this.currentTurn = this.currentTurn === 1 ? 2 : 1
     }
 
-    isValidMove(user: GameUser, col: number) {
+    isValidMove(user: User, col: number) {
         const turn = this.users.indexOf(user) + 1
 
         if (turn !== this.currentTurn) {

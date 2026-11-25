@@ -1,8 +1,8 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import Database from '@database/Database'
-import type GameUser from '@objects/user/GameUser'
 import lockUsers from '@database/lockUsers'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -18,11 +18,11 @@ export default class Moderation extends GamePlugin {
         ban_player: this.banPlayer
     }
 
-    mutePlayer(args: unknown, user: GameUser) {
+    mutePlayer(args: unknown, user: User) {
 
     }
 
-    kickPlayer(args: unknown, user: GameUser) {
+    kickPlayer(args: unknown, user: User) {
         const { id } = Id.assert(args)
 
         if (!user.isModerator) {
@@ -36,7 +36,7 @@ export default class Moderation extends GamePlugin {
         }
     }
 
-    async banPlayer(args: unknown, user: GameUser) {
+    async banPlayer(args: unknown, user: User) {
         const { id } = Id.assert(args)
 
         if (!user.isModerator) {
@@ -58,7 +58,7 @@ export default class Moderation extends GamePlugin {
         }
     }
 
-    async applyBan(moderator: GameUser, userId: number, hours = 24, message = '') {
+    async applyBan(moderator: User, userId: number, hours = 24, message = '') {
         const expires = new Date(Date.now() + hours * 60 * 60 * 1000)
 
         await Database.$transaction(async transaction => {

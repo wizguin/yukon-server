@@ -1,4 +1,4 @@
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 interface OpenIgloo {
     id: number
@@ -17,13 +17,13 @@ export default class OpenIgloos {
         return this.flat.includes(igloo)
     }
 
-    add(user: GameUser) {
+    add(user: User) {
         if (!this.includes(user.id)) {
             this.list.push({ id: user.id, username: user.username })
         }
     }
 
-    remove(user: GameUser) {
+    remove(user: User) {
         if (this.includes(user.id)) {
             this.list = this.list.filter(igloo => igloo.id != user.id)
         }

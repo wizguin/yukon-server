@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -16,7 +16,7 @@ export default class Waddle extends GamePlugin {
         leave_waddle: this.leaveWaddle
     }
 
-    getWaddles(args: unknown, user: GameUser) {
+    getWaddles(args: unknown, user: User) {
         if (!user.room) {
             return
         }
@@ -30,7 +30,7 @@ export default class Waddle extends GamePlugin {
         user.send('get_waddles', { waddles })
     }
 
-    joinWaddle(args: unknown, user: GameUser) {
+    joinWaddle(args: unknown, user: User) {
         const { waddle: waddleId } = JoinWaddle.assert(args)
 
         if (!user.room) {
@@ -48,7 +48,7 @@ export default class Waddle extends GamePlugin {
         }
     }
 
-    leaveWaddle(args: unknown, user: GameUser) {
+    leaveWaddle(args: unknown, user: User) {
         if (user.waddle) {
             user.waddle.remove(user)
         }

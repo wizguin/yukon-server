@@ -1,10 +1,10 @@
 import { clamp } from '@utils/math'
 import pick from '@utils/pick'
 
-import type GameUser from '@objects/user/GameUser'
-import { pets } from '@data'
 import Database from '@database/Database'
+import { pets } from '@data'
 import type { Pet as PrismaPet } from '../../generated/prisma/client'
+import type User from '@objects/user/User'
 
 export interface Update {
     energy?: number
@@ -22,7 +22,7 @@ export default class Pet implements PrismaPet {
     walking = false
 
     constructor(
-        public user: GameUser,
+        public user: User,
         public id: number,
         public userId: number,
         public typeId: number,

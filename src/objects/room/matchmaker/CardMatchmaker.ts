@@ -1,8 +1,8 @@
 import type BaseHandler from '../../../handlers/BaseHandler'
 import CardInstance from '@objects/instance/card/CardInstance'
-import type GameUser from '@objects/user/GameUser'
 import MatchmakerPlayer from './MatchmakerPlayer'
 import type Room from '../Room'
+import type User from '@objects/user/User'
 
 const maxPlayers = 2
 const matchEvery = 10
@@ -89,7 +89,7 @@ export default class CardMatchmaker {
         }
     }
 
-    add(user: GameUser) {
+    add(user: User) {
         if (!user.cards.hasCards) {
             return
         }
@@ -99,11 +99,11 @@ export default class CardMatchmaker {
         user.send('join_matchmaking')
     }
 
-    remove(user: GameUser) {
+    remove(user: User) {
         delete this.players[user.id]
     }
 
-    includes(user: GameUser) {
+    includes(user: User) {
         return user.id in this.players
     }
 

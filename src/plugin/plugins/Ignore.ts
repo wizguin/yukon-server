@@ -1,7 +1,7 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
 import { getUsername } from '@utils/user'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -16,7 +16,7 @@ export default class Ignore extends GamePlugin {
         ignore_remove: this.ignoreRemove
     }
 
-    async ignoreAdd(args: unknown, user: GameUser) {
+    async ignoreAdd(args: unknown, user: User) {
         const { id } = IgnoreId.assert(args)
 
         if (user.id === id) {
@@ -52,7 +52,7 @@ export default class Ignore extends GamePlugin {
         user.send('ignore_add', { id, username })
     }
 
-    async ignoreRemove(args: unknown, user: GameUser) {
+    async ignoreRemove(args: unknown, user: User) {
         const { id } = IgnoreId.assert(args)
 
         if (!user.ignores.includes(id)) {

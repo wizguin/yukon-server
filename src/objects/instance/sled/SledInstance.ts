@@ -1,6 +1,6 @@
 import BaseInstance, { type InstanceUsers } from '../BaseInstance'
 
-import GameUser from '@objects/user/GameUser'
+import User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -16,16 +16,16 @@ export default class SledInstance extends BaseInstance {
         super(users, 999)
     }
 
-    addListeners(user: GameUser) {
+    addListeners(user: User) {
         super.addListeners(user)
     }
 
-    removeListeners(user: GameUser) {
+    removeListeners(user: User) {
         super.removeListeners(user)
     }
 
     start() {
-        const users = this.users.filter(user => user instanceof GameUser).map(user => ({
+        const users = this.users.filter(user => user instanceof User).map(user => ({
             username: user.username,
             color: user.color,
             hand: user.hand
@@ -36,7 +36,7 @@ export default class SledInstance extends BaseInstance {
         super.start()
     }
 
-    sendMove(args: unknown, user: GameUser) {
+    sendMove(args: unknown, user: User) {
         const { move } = SendMove.assert(args)
 
         if (move === 5) {
@@ -46,7 +46,7 @@ export default class SledInstance extends BaseInstance {
         this.send('send_move', { id: this.getSeat(user), move }, user)
     }
 
-    async sendGameOver(user: GameUser) {
+    async sendGameOver(user: User) {
         this.remove(user)
         await user.addCoins(this.coins.shift() || 0, true)
     }

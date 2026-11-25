@@ -3,7 +3,6 @@ import BaseCollection from '@database/BaseCollection'
 import { InsufficientCoinsError, PetLimitError } from '@utils/error'
 import Pet, { type Update } from '@objects/pet/Pet'
 import Database from '@database/Database'
-import type GameUser from '@objects/user/GameUser'
 import { pets } from '@data'
 import type User from '@objects/user/User'
 
@@ -26,7 +25,7 @@ export default class PetCollection extends BaseCollection<Pet> {
     private petUpdatesActive = false
 
     constructor(user: User, records: PrismaPet[]) {
-        const pets = records.map(record => createPet(user as GameUser, record))
+        const pets = records.map(record => createPet(user, record))
 
         super(user, pets, 'id')
     }
@@ -43,7 +42,7 @@ export default class PetCollection extends BaseCollection<Pet> {
 
         const { cost } = pets[typeId]
 
-        const user = this.user as GameUser
+        const user = this.user
         let record: PrismaPet
 
         try {
@@ -72,7 +71,7 @@ export default class PetCollection extends BaseCollection<Pet> {
     }
 
     private insertPetRecord(typeId: number, name: string, cost: number) {
-        return (this.user as GameUser).purchase(cost, async tx => {
+        return this.user.purchase(cost, async tx => {
             const count = await tx.pet.count({
                 where: {
                     userId: this.user.id
@@ -157,7 +156,7 @@ export default class PetCollection extends BaseCollection<Pet> {
     }
 
     sendUpdates(updates: SendUpdate[]) {
-        const user = this.user as GameUser
+        const user = this.user
 
         if (user.inOwnIgloo() && user.room) {
             user.room.send(user, 'update_pets', { updates }, [])
@@ -176,6 +175,6 @@ export default class PetCollection extends BaseCollection<Pet> {
 
 }
 
-function createPet(user: GameUser, { id, userId, typeId, name, adoptionDate, energy, health, rest, feedPostcardId }: PrismaPet) {
+function createPet(user: User, { id, userId, typeId, name, adoptionDate, energy, health, rest, feedPostcardId }: PrismaPet) {
     return new Pet(user, id, userId, typeId, name, adoptionDate, energy, health, rest, feedPostcardId)
 }

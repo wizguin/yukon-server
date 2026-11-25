@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -17,28 +17,28 @@ export default class Minigame extends GamePlugin {
         game_over: this.gameOver
     }
 
-    getGame(args: unknown, user: GameUser) {
+    getGame(args: unknown, user: User) {
         if (user.minigameRoom) {
             // @ts-expect-error temp
             user.minigameRoom.getGame(args, user)
         }
     }
 
-    joinGame(args: unknown, user: GameUser) {
+    joinGame(args: unknown, user: User) {
         if (user.minigameRoom) {
             // @ts-expect-error temp
             user.minigameRoom.joinGame(args, user)
         }
     }
 
-    async sendMove(args: unknown, user: GameUser) {
+    async sendMove(args: unknown, user: User) {
         if (user.minigameRoom) {
             // @ts-expect-error temp
             await user.minigameRoom.sendMove(args, user)
         }
     }
 
-    async gameOver(args: unknown, user: GameUser) {
+    async gameOver(args: unknown, user: User) {
         const { coins } = GameOver.assert(args)
 
         if (user.room?.game || user.minigameRoom) {

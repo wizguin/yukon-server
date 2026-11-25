@@ -1,9 +1,9 @@
-import type GameUser from '@objects/user/GameUser'
 import type Room from '../Room'
+import type User from '@objects/user/User'
 
 export default class BaseTable {
 
-    users: GameUser[] = []
+    users: User[] = []
     started = false
     currentTurn = 1
 
@@ -28,15 +28,15 @@ export default class BaseTable {
         return this.users.slice(0, 2).map(user => user.username)
     }
 
-    isPlayingUser(user: GameUser) {
+    isPlayingUser(user: User) {
         return this.playingUsers.includes(user.username)
     }
 
-    getGame(args: any, user: GameUser) {
+    getGame(args: any, user: User) {
         user.send('get_game', this)
     }
 
-    joinGame(args: any, user: GameUser) {
+    joinGame(args: any, user: User) {
         if (this.started) {
             return
         }
@@ -52,7 +52,7 @@ export default class BaseTable {
         }
     }
 
-    add(user: GameUser) {
+    add(user: User) {
         this.users.push(user)
 
         const seat = this.users.length
@@ -61,7 +61,7 @@ export default class BaseTable {
         user.room?.send(user, 'update_table', { table: this.id, seat }, [])
     }
 
-    remove(user: GameUser) {
+    remove(user: User) {
         if (this.started && this.isPlayingUser(user)) {
             this.reset(user.username)
 

@@ -1,6 +1,6 @@
 import BaseTable from './BaseTable'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 export default class MancalaTable extends BaseTable {
 
@@ -13,7 +13,7 @@ export default class MancalaTable extends BaseTable {
         ]
     }
 
-    async sendMove(args: any, user: GameUser) {
+    async sendMove(args: any, user: User) {
         if (!this.started) {
             return
         }
@@ -37,7 +37,7 @@ export default class MancalaTable extends BaseTable {
         }
     }
 
-    isValidMove(user: GameUser, hole: number) {
+    isValidMove(user: User, hole: number) {
         if (this.map[hole] <= 0) {
             return false
         }

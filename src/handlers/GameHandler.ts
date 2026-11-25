@@ -7,8 +7,8 @@ import Room from '@objects/room/Room'
 import TableFactory from '@objects/room/table/TableFactory'
 import Waddle from '@objects/room/waddle/Waddle'
 
-import type GameUser from '@objects/user/GameUser'
 import type { Message } from '../server/Server'
+import type User from '@objects/user/User'
 
 import * as data from '@data'
 import Database from '@database/Database'
@@ -16,14 +16,14 @@ import Database from '@database/Database'
 export default class GameHandler extends BaseHandler {
 
     crumbs: any
-    usersById: Record<string, GameUser> = {}
+    usersById: Record<string, User> = {}
     maxUsers: number
     rooms: Record<string, Room>
     openIgloos: OpenIgloos
 
     constructor(
         public id: string,
-        public users: Record<string, GameUser>
+        public users: Record<string, User>
     ) {
         super(id, users)
 
@@ -82,11 +82,11 @@ export default class GameHandler extends BaseHandler {
         }
     }
 
-    handleGuard(message: Message, user: GameUser) {
+    handleGuard(message: Message, user: User) {
         return !user.authenticated && message.action != 'game_auth'
     }
 
-    close(user: GameUser) {
+    close(user: User) {
         try {
             if (!user) {
                 return
@@ -139,7 +139,7 @@ export default class GameHandler extends BaseHandler {
         return this.joined.length
     }
 
-    closeAndUpdatePopulation(user: GameUser) {
+    closeAndUpdatePopulation(user: User) {
         super.close(user)
 
         this.updateWorldPopulation()

@@ -1,14 +1,14 @@
 import type GameHandler from '../../handlers/GameHandler'
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
-export type InstanceUsers = (GameUser | null)[]
+export type InstanceUsers = (User | null)[]
 
 export default class BaseInstance {
 
     private roomId: number
 
     users: InstanceUsers
-    ready: GameUser[] = []
+    ready: User[] = []
     started = false
 
     private readonly startGameListener = this.handleStartGame.bind(this)
@@ -33,17 +33,17 @@ export default class BaseInstance {
         }
     }
 
-    addListeners(user: GameUser) {
+    addListeners(user: User) {
         user.events?.on('start_game', this.startGameListener)
         user.events?.on('leave_game', this.leaveGameListener)
     }
 
-    removeListeners(user: GameUser) {
+    removeListeners(user: User) {
         user.events?.off('start_game', this.startGameListener)
         user.events?.off('leave_game', this.leaveGameListener)
     }
 
-    handleStartGame(_args: unknown, user: GameUser) {
+    handleStartGame(_args: unknown, user: User) {
         if (!this.started && !this.ready.includes(user)) {
             this.ready.push(user)
 
@@ -51,7 +51,7 @@ export default class BaseInstance {
         }
     }
 
-    handleLeaveGame(_args: unknown, user: GameUser) {
+    handleLeaveGame(_args: unknown, user: User) {
         this.remove(user)
     }
 
@@ -66,7 +66,7 @@ export default class BaseInstance {
         this.started = true
     }
 
-    remove(user: GameUser) {
+    remove(user: User) {
         this.removeListeners(user)
 
         // Remove from users
@@ -79,11 +79,11 @@ export default class BaseInstance {
         user.minigameRoom = null
     }
 
-    getSeat(user: GameUser) {
+    getSeat(user: User) {
         return this.users.indexOf(user)
     }
 
-    send(action: string, args = {}, user: GameUser | null = null, filter = [user]) {
+    send(action: string, args = {}, user: User | null = null, filter = [user]) {
         const users = this.users.filter(u => !filter.includes(u)).filter(Boolean)
 
         for (const u of users) {

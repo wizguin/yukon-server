@@ -1,7 +1,7 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import { X, Y } from '@utils/validation'
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -23,7 +23,7 @@ export default class Actions extends GamePlugin {
         snowball: this.snowball
     }
 
-    sendPosition(args: unknown, user: GameUser) {
+    sendPosition(args: unknown, user: User) {
         const { x, y } = Position.assert(args)
 
         user.x = x
@@ -33,7 +33,7 @@ export default class Actions extends GamePlugin {
         user.room?.send(user, 'send_position', { id: user.id, x, y })
     }
 
-    sendFrame(args: unknown, user: GameUser) {
+    sendFrame(args: unknown, user: User) {
         const { set, frame } = SendFrame.assert(args)
 
         user.frame = set ? frame : 1
@@ -41,7 +41,7 @@ export default class Actions extends GamePlugin {
         user.room?.send(user, 'send_frame', { id: user.id, frame, set })
     }
 
-    snowball(args: unknown, user: GameUser) {
+    snowball(args: unknown, user: User) {
         const { x, y } = Position.assert(args)
 
         user.room?.send(user, 'snowball', { id: user.id, x, y })

@@ -1,11 +1,11 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import type GameHandler from '../../handlers/GameHandler'
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
-type CommandHandler = (args: string[], user: GameUser) => void | Promise<void>
+type CommandHandler = (args: string[], user: User) => void | Promise<void>
 
 const SendMessage = type({
     message: 'string'
@@ -57,7 +57,7 @@ export default class Chat extends GamePlugin {
         this.bindCommands()
     }
 
-    async sendMessage(args: unknown, user: GameUser) {
+    async sendMessage(args: unknown, user: User) {
         const { message: rawMessage } = SendMessage.assert(args)
 
         if (messageRegex.test(rawMessage)) {
@@ -80,7 +80,7 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    sendSafe(args: unknown, user: GameUser) {
+    sendSafe(args: unknown, user: User) {
         const { safe } = SendSafe.assert(args)
 
         if (user.room) {
@@ -88,7 +88,7 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    sendEmote(args: unknown, user: GameUser) {
+    sendEmote(args: unknown, user: User) {
         const { emote } = SendEmote.assert(args)
 
         if (user.room) {
@@ -96,7 +96,7 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    sendJoke(args: unknown, user: GameUser) {
+    sendJoke(args: unknown, user: User) {
         const { joke } = SendJoke.assert(args)
 
         if (user.room) {
@@ -104,7 +104,7 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    sendTour(args: unknown, user: GameUser) {
+    sendTour(args: unknown, user: User) {
         const { roomId } = SendTour.assert(args)
 
         if (roomId !== user.room?.id) {
@@ -122,7 +122,7 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    async processCommand(message: string, user: GameUser) {
+    async processCommand(message: string, user: User) {
         message = message.substring(1)
 
         const args = message.split(' ')
@@ -136,7 +136,7 @@ export default class Chat extends GamePlugin {
         return false
     }
 
-    async addItem(args: string[], user: GameUser) {
+    async addItem(args: string[], user: User) {
         if (!user.isModerator) {
             return
         }
@@ -146,7 +146,7 @@ export default class Chat extends GamePlugin {
         await user.addItem(itemId)
     }
 
-    async addFurniture(args: string[], user: GameUser) {
+    async addFurniture(args: string[], user: User) {
         if (!user.isModerator) {
             return
         }
@@ -156,7 +156,7 @@ export default class Chat extends GamePlugin {
         await user.addFurniture(furnitureId)
     }
 
-    async addCoins(args: string[], user: GameUser) {
+    async addCoins(args: string[], user: User) {
         if (!user.isModerator) {
             return
         }
@@ -166,7 +166,7 @@ export default class Chat extends GamePlugin {
         await user.addCoins(coins, true)
     }
 
-    joinRoom([room]: string[], user: GameUser) {
+    joinRoom([room]: string[], user: User) {
         if (!user.isModerator) {
             return
         }
@@ -189,11 +189,11 @@ export default class Chat extends GamePlugin {
         }
     }
 
-    id(args: string[], user: GameUser) {
+    id(args: string[], user: User) {
         user.send('error', { error: `Your ID: ${user.id}` })
     }
 
-    userPopulation(args: string[], user: GameUser) {
+    userPopulation(args: string[], user: User) {
         // @ts-expect-error temp
         user.send('error', { error: `Users online: ${this.handler.population}` })
     }

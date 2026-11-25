@@ -1,7 +1,6 @@
 import BaseCollection from '@database/BaseCollection'
 
 import { cards } from '@data'
-import type GameUser from '@objects/user/GameUser'
 import Database from '@database/Database'
 import type User from '@objects/user/User'
 
@@ -27,7 +26,7 @@ export default class CardCollection extends BaseCollection<Card> {
     }
 
     get hasCards() {
-        const hasStarterDeck = (this.user as GameUser).inventory.includes(starterDeckId)
+        const hasStarterDeck = this.user.inventory.includes(starterDeckId)
         const hasCards = this.count > 0
 
         return hasStarterDeck && hasCards

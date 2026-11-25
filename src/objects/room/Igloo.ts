@@ -1,9 +1,9 @@
 import Room from './Room'
 
 import { config } from '@config'
-import type GameUser from '@objects/user/GameUser'
-import type { IglooUpdateInput } from '../../generated/prisma/models'
 import Database from '@database/Database'
+import type { IglooUpdateInput } from '../../generated/prisma/models'
+import type User from '@objects/user/User'
 
 interface Furniture {
     userId: number
@@ -31,14 +31,14 @@ export default class Igloo extends Room {
         this.id = userId + config.game.iglooIdOffset
     }
 
-    add(user: GameUser) {
+    add(user: User) {
         this.users[user.socket.id] = user
 
         user.send('join_igloo', this)
         this.send(user, 'add_player', { user })
     }
 
-    refresh(user: GameUser) {
+    refresh(user: User) {
         for (const u of this.userValues) {
             u.x = 0
             u.y = 0

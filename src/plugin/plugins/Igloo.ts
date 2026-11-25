@@ -4,8 +4,8 @@ import { FlooringAlreadyOwnedError, InsufficientCoinsError } from '@utils/error'
 import { config } from '@config'
 import Database from '@database/Database'
 import { flooring } from '@data'
-import type GameUser from '@objects/user/GameUser'
 import type IglooRoom from '@objects/room/Igloo'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -63,19 +63,19 @@ export default class Igloo extends GamePlugin {
         get_igloo_open: this.getIglooOpen
     }
 
-    async addIgloo(args: unknown, user: GameUser) {
+    async addIgloo(args: unknown, user: User) {
         const { igloo: iglooId } = AddIgloo.assert(args)
 
         await user.addIgloo(iglooId)
     }
 
-    async addFurniture(args: unknown, user: GameUser) {
+    async addFurniture(args: unknown, user: User) {
         const { furniture: furnitureId } = AddFurniture.assert(args)
 
         await user.addFurniture(furnitureId)
     }
 
-    async updateIgloo(args: unknown, user: GameUser) {
+    async updateIgloo(args: unknown, user: User) {
         const { type } = UpdateIgloo.assert(args)
 
         const igloo = this.getIgloo(user.id)
@@ -99,7 +99,7 @@ export default class Igloo extends GamePlugin {
         igloo.refresh(user)
     }
 
-    async updateFurniture(args: unknown, user: GameUser) {
+    async updateFurniture(args: unknown, user: User) {
         const { furniture } = UpdateFurniture.assert(args)
 
         const igloo = this.getIgloo(user.id)
@@ -135,7 +135,7 @@ export default class Igloo extends GamePlugin {
         })
     }
 
-    async updateFlooring(args: unknown, user: GameUser) {
+    async updateFlooring(args: unknown, user: User) {
         const { flooring: flooringId } = UpdateFlooring.assert(args)
 
         const igloo = this.getIgloo(user.id)
@@ -195,7 +195,7 @@ export default class Igloo extends GamePlugin {
         user.send('update_flooring', { flooring: flooringId, coins: user.coins })
     }
 
-    updateMusic(args: unknown, user: GameUser) {
+    updateMusic(args: unknown, user: User) {
         const { music } = UpdateMusic.assert(args)
 
         const igloo = this.getIgloo(user.id)
@@ -210,7 +210,7 @@ export default class Igloo extends GamePlugin {
         user.send('update_music', { music })
     }
 
-    openIgloo(args: unknown, user: GameUser) {
+    openIgloo(args: unknown, user: User) {
         const igloo = this.getIgloo(user.id)
 
         if (igloo && igloo === user.room) {
@@ -218,7 +218,7 @@ export default class Igloo extends GamePlugin {
         }
     }
 
-    closeIgloo(args: unknown, user: GameUser) {
+    closeIgloo(args: unknown, user: User) {
         const igloo = this.getIgloo(user.id)
 
         if (igloo && igloo === user.room) {
@@ -226,11 +226,11 @@ export default class Igloo extends GamePlugin {
         }
     }
 
-    getIgloos(args: unknown, user: GameUser) {
+    getIgloos(args: unknown, user: User) {
         user.send('get_igloos', { igloos: this.openIgloos })
     }
 
-    getIglooOpen(args: unknown, user: GameUser) {
+    getIglooOpen(args: unknown, user: User) {
         const { igloo } = GetIglooOpen.assert(args)
 
         const open = this.openIgloos.includes(igloo)

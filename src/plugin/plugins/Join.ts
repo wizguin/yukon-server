@@ -3,8 +3,8 @@ import GamePlugin from '@plugin/GamePlugin'
 import { X, Y } from '@utils/validation'
 import { config } from '@config'
 import Database from '@database/Database'
-import type GameUser from '@objects/user/GameUser'
 import Igloo from '@objects/room/Igloo'
+import type User from '@objects/user/User'
 
 import { type } from 'arktype'
 
@@ -28,7 +28,7 @@ export default class Join extends GamePlugin {
         join_igloo: this.joinIgloo
     }
 
-    async joinServer(args: unknown, user: GameUser) {
+    async joinServer(args: unknown, user: User) {
         if (user.joinedServer) {
             return
         }
@@ -76,13 +76,13 @@ export default class Join extends GamePlugin {
         await this.handler.updateWorldPopulation()
     }
 
-    joinRoom(args: unknown, user: GameUser) {
+    joinRoom(args: unknown, user: User) {
         const { room, x, y } = JoinRoom.assert(args)
 
         user.joinRoom(this.rooms[room], x, y)
     }
 
-    async joinIgloo(args: unknown, user: GameUser) {
+    async joinIgloo(args: unknown, user: User) {
         const { igloo: iglooId, x, y } = JoinIgloo.assert(args)
 
         const igloo = await this.getIgloo(iglooId)

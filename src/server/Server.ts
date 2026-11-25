@@ -4,7 +4,6 @@ import RateLimiter from '../ratelimit/RateLimiter'
 import User from '@objects/user/User'
 
 import type GameHandler from '../handlers/GameHandler'
-import type GameUser from '@objects/user/GameUser'
 
 import { Server as IoServer } from 'socket.io'
 import { RateLimiterRes } from 'rate-limiter-flexible'
@@ -78,7 +77,7 @@ export default class Server {
         socket.on('disconnect', () => this.onDisconnect(user))
     }
 
-    async onMessage(payload: unknown, user: User | GameUser) {
+    async onMessage(payload: unknown, user: User) {
         try {
             const message = Message.assert(payload)
 
@@ -100,7 +99,7 @@ export default class Server {
         }
     }
 
-    onDisconnect(user: User | GameUser) {
+    onDisconnect(user: User) {
         console.log(`[${this.id}] Disconnect from: ${user.socket.id} ${user.address}`)
 
         this.handler.close(user)

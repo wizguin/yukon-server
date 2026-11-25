@@ -1,8 +1,8 @@
 import GamePlugin from '@plugin/GamePlugin'
 
 import { config } from '@config'
-import type GameUser from '@objects/user/GameUser'
 import redis from '../../redis/redis'
+import type User from '@objects/user/User'
 
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
@@ -22,7 +22,7 @@ export default class GameAuth extends GamePlugin {
         game_auth: this.gameAuth
     }
 
-    async gameAuth(args: unknown, user: GameUser) {
+    async gameAuth(args: unknown, user: User) {
         if (user.gameAuthSent || user.authenticated) {
             return user.close()
         }
@@ -50,7 +50,7 @@ export default class GameAuth extends GamePlugin {
         await this.onAuthSuccess(user, token, createToken)
     }
 
-    async authenticateUser(user: GameUser, username: string, key: string) {
+    async authenticateUser(user: User, username: string, key: string) {
         const isLoaded = await user.load(username)
 
         if (!isLoaded || !user.socket.connected) {
@@ -77,7 +77,7 @@ export default class GameAuth extends GamePlugin {
         return loginKeyHash === hash
     }
 
-    async onAuthSuccess(user: GameUser, token?: string, createToken?: boolean) {
+    async onAuthSuccess(user: User, token?: string, createToken?: boolean) {
         await redis.del(`${user.id}:loginkey`)
 
         user.authenticated = true
@@ -103,7 +103,7 @@ export default class GameAuth extends GamePlugin {
         user.send('game_auth', response)
     }
 
-    updateUsers(user: GameUser) {
+    updateUsers(user: User) {
         if (user.id in this.usersById) {
             this.usersById[user.id].close()
         }
@@ -111,7 +111,7 @@ export default class GameAuth extends GamePlugin {
         this.usersById[user.id] = user
     }
 
-    async genAuthToken(user: GameUser) {
+    async genAuthToken(user: User) {
         const selector = uuid()
         const validator = crypto.randomBytes(32).toString('hex')
         const validatorHash = await bcrypt.hash(validator, config.crypto.authTokenHashRounds)

@@ -1,12 +1,12 @@
 import type { Action, Args } from '../../server/Server'
 import type BaseTable from './table/BaseTable'
 import type CardMatchmaker from './matchmaker/CardMatchmaker'
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 import type Waddle from './waddle/Waddle'
 
 export default class Room {
 
-    users: Record<string, GameUser> = {}
+    users: Record<string, User> = {}
     tables: Record<string, BaseTable> = {}
     waddles: Record<string, Waddle> = {}
 
@@ -31,7 +31,7 @@ export default class Room {
         return Object.keys(this.users).length >= this.maxUsers
     }
 
-    add(user: GameUser) {
+    add(user: User) {
         this.users[user.socket.id] = user
 
         if (this.game) {
@@ -42,7 +42,7 @@ export default class Room {
         this.send(user, 'add_player', { user })
     }
 
-    remove(user: GameUser) {
+    remove(user: User) {
         if (!this.game) {
             this.send(user, 'remove_player', { user: user.id })
         }
@@ -63,7 +63,7 @@ export default class Room {
      * @param filter - Users to exclude
      * @param checkIgnore - Whether or not to exclude users who have user added to their ignore list
      */
-    send(user: GameUser | null, action: Action, args: Args = {}, filter: (GameUser | null)[] = [user], checkIgnore: boolean = false) {
+    send(user: User | null, action: Action, args: Args = {}, filter: (User | null)[] = [user], checkIgnore: boolean = false) {
         const users = this.userValues.filter(u => !filter.includes(u))
 
         for (const u of users) {

@@ -1,6 +1,5 @@
 import BaseCollection from '@database/BaseCollection'
 
-import type GameUser from '@objects/user/GameUser'
 import type User from '@objects/user/User'
 
 import type { Inventory } from '../../generated/prisma/client'
@@ -12,7 +11,7 @@ export default class InventoryCollection extends BaseCollection<Inventory> {
     }
 
     async add(itemId: number, cost: number) {
-        const record = await (this.user as GameUser).purchase(cost, tx =>
+        const record = await this.user.purchase(cost, tx =>
             tx.inventory.create({
                 data: {
                     userId: this.user.id,

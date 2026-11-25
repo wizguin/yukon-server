@@ -1,7 +1,6 @@
 import BaseCollection from '@database/BaseCollection'
 
 import { FurnitureLimitError } from '@utils/error'
-import type GameUser from '@objects/user/GameUser'
 import type User from '@objects/user/User'
 
 import type { FurnitureInventory } from '../../generated/prisma/client'
@@ -13,7 +12,7 @@ export default class FurnitureCollection extends BaseCollection<FurnitureInvento
     }
 
     async add(itemId: number, cost: number, max: number) {
-        const record = await (this.user as GameUser).purchase(cost, async tx => {
+        const record = await this.user.purchase(cost, async tx => {
             // Ensure row exists
             await tx.$executeRaw`
                 INSERT IGNORE INTO furniture_inventories (userId, itemId, quantity)

@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import { cards, decks } from '@data'
 
@@ -12,7 +12,7 @@ export default class Sensei extends GamePlugin {
         add_starter_deck: this.addStarterDeck
     }
 
-    async addStarterDeck(args: unknown, user: GameUser) {
+    async addStarterDeck(args: unknown, user: User) {
         if (user.inventory.includes(starterDeckId)) {
             return
         }

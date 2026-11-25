@@ -1,5 +1,4 @@
 import { config } from '@config'
-import type GameUser from '@objects/user/GameUser'
 import type { Message } from '../server/Server'
 import PluginManager from '@plugin/PluginManager'
 import type User from '@objects/user/User'
@@ -15,7 +14,7 @@ export default class BaseHandler {
 
     constructor(
         public id: string,
-        public users: Record<string, User | GameUser>
+        public users: Record<string, User>
     ) {
         this.events = new EventEmitter({ captureRejections: true })
 
@@ -28,7 +27,7 @@ export default class BaseHandler {
         this.plugins = new PluginManager(this)
     }
 
-    handle(message: Message, user: User | GameUser) {
+    handle(message: Message, user: User) {
         try {
             if (this.logging) {
                 console.log(`[${this.id}] Received: ${message.action} ${JSON.stringify(message.args)}`)
@@ -53,15 +52,15 @@ export default class BaseHandler {
         }
     }
 
-    handleGuard(_message: Message, _user: User | GameUser) {
+    handleGuard(_message: Message, _user: User) {
         return false
     }
 
-    setCooldown({ action }: Message, user: User | GameUser) {
+    setCooldown({ action }: Message, user: User) {
         user.cooldowns[action] = Date.now()
     }
 
-    isOnCooldown({ action }: Message, user: User | GameUser) {
+    isOnCooldown({ action }: Message, user: User) {
         if (!(action in config.cooldowns)) {
             return false
         }
@@ -76,7 +75,7 @@ export default class BaseHandler {
         return Date.now() - lastUsed < cooldown
     }
 
-    close(user: User | GameUser) {
+    close(user: User) {
         delete this.users[user.socket.id]
     }
 

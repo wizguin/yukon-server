@@ -1,6 +1,6 @@
 import GamePlugin from '@plugin/GamePlugin'
 
-import type GameUser from '@objects/user/GameUser'
+import type User from '@objects/user/User'
 
 import SenseiInstance from '@objects/instance/card/SenseiInstance'
 
@@ -12,7 +12,7 @@ export default class Sensei extends GamePlugin {
         join_sensei: this.joinSensei
     }
 
-    joinSensei(args: unknown, user: GameUser) {
+    joinSensei(args: unknown, user: User) {
         if (user.room?.id !== senseiRoom) {
             return
         }
